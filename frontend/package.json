@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "NEXT_DIST_DIR=.next-build next build",
+    "start": "NEXT_DIST_DIR=.next-build next start -p 3000",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@testing-library/react": "14.1.2",
+    "@types/node": "20.11.5",
+    "@types/react": "18.2.48",
+    "@types/react-dom": "18.2.18",
+    "jsdom": "^22.1.0",
+    "lucide-react": "0.468.0",
+    "next": "^13.4.19",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.3.3",
+    "vitest": "^0.34.6"
+  }
+}

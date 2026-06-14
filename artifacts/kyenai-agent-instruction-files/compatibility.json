@@ -1,0 +1,171 @@
+{
+  "verifiedAt": "2026-06-14",
+  "records": [
+    {
+      "id": "codex-agents-md",
+      "toolId": "openai-codex",
+      "toolName": "OpenAI Codex",
+      "path": "AGENTS.override.md → AGENTS.md → configured fallback filename",
+      "status": "documented",
+      "scopes": [
+        "user",
+        "repository",
+        "nested-directory"
+      ],
+      "surfaces": [
+        "Codex app",
+        "Codex CLI",
+        "Codex IDE extension",
+        "Codex web"
+      ],
+      "priority": "At startup, Codex reads the first non-empty global file from AGENTS.override.md then AGENTS.md. From the project root to the initial working directory, each directory contributes at most one non-empty file selected in this order: AGENTS.override.md, AGENTS.md, then configured project_doc_fallback_filenames.",
+      "nesting": "Codex concatenates the selected project files from root toward the initial working directory. Closer files appear later and override earlier guidance; discovery stops at that initial working directory rather than expanding dynamically into other directories.",
+      "recommendation": "Keep shared rules in root AGENTS.md, use AGENTS.override.md only where it should win within one directory, and reserve configured fallback filenames for repositories that require another recognized name.",
+      "sourceUrl": "https://developers.openai.com/codex/guides/agents-md",
+      "publisher": "OpenAI",
+      "verifiedAt": "2026-06-14"
+    },
+    {
+      "id": "claude-code-claude-md",
+      "toolId": "claude-code",
+      "toolName": "Claude Code",
+      "path": "CLAUDE.md",
+      "status": "documented",
+      "scopes": [
+        "user",
+        "repository",
+        "nested-directory",
+        "path-specific"
+      ],
+      "surfaces": [
+        "Claude Code"
+      ],
+      "priority": "CLAUDE.md files above the working directory load at launch; files in child directories load when Claude works with files there.",
+      "nesting": "Use nested CLAUDE.md files or path-scoped rules for instructions that should not apply repository-wide.",
+      "recommendation": "Put stable repository commands in root CLAUDE.md and move specialized guidance into scoped files.",
+      "sourceUrl": "https://docs.anthropic.com/en/docs/claude-code/memory",
+      "publisher": "Anthropic",
+      "verifiedAt": "2026-06-14"
+    },
+    {
+      "id": "copilot-repository-instructions",
+      "toolId": "github-copilot",
+      "toolName": "GitHub Copilot",
+      "path": ".github/copilot-instructions.md",
+      "status": "documented",
+      "scopes": [
+        "repository"
+      ],
+      "surfaces": [
+        "GitHub.com Copilot Chat",
+        "Copilot cloud agent",
+        "Copilot code review",
+        "VS Code Copilot Chat",
+        "Visual Studio Copilot Chat",
+        "JetBrains Copilot Chat",
+        "Eclipse Copilot Chat",
+        "Xcode Copilot Chat",
+        "Copilot CLI"
+      ],
+      "priority": "Repository-wide instructions are combined with applicable path-specific instructions where supported.",
+      "nesting": "This file has one fixed repository-wide location; use .github/instructions/*.instructions.md for paths.",
+      "recommendation": "Use .github/copilot-instructions.md as the broad-compatibility Copilot baseline, even when agent-specific files also exist.",
+      "sourceUrl": "https://docs.github.com/en/copilot/reference/custom-instructions-support",
+      "publisher": "GitHub",
+      "verifiedAt": "2026-06-14"
+    },
+    {
+      "id": "copilot-claude-md-cloud-agent",
+      "toolId": "github-copilot",
+      "toolName": "GitHub Copilot",
+      "path": "CLAUDE.md",
+      "status": "documented",
+      "scopes": [
+        "repository"
+      ],
+      "surfaces": [
+        "GitHub.com Copilot cloud agent",
+        "Visual Studio Code Copilot cloud agent",
+        "JetBrains IDEs Copilot cloud agent",
+        "Eclipse Copilot cloud agent",
+        "Xcode Copilot cloud agent"
+      ],
+      "priority": "GitHub's support matrix lists CLAUDE.md agent instructions for these cloud agent surfaces, separately from Copilot Chat in the same IDE.",
+      "nesting": "The support matrix establishes file-type support by surface; no broader CLAUDE.md scope behavior is inferred here.",
+      "recommendation": "Keep CLAUDE.md when Claude Code is part of the workflow, but add .github/copilot-instructions.md for Copilot surfaces beyond the cloud agent.",
+      "sourceUrl": "https://docs.github.com/en/copilot/reference/custom-instructions-support",
+      "publisher": "GitHub",
+      "verifiedAt": "2026-06-14"
+    },
+    {
+      "id": "copilot-claude-md-other-surfaces",
+      "toolId": "github-copilot",
+      "toolName": "GitHub Copilot",
+      "path": "CLAUDE.md",
+      "status": "unsupported",
+      "scopes": [
+        "repository"
+      ],
+      "surfaces": [
+        "GitHub.com Copilot Chat",
+        "GitHub.com Copilot code review",
+        "Visual Studio Code Copilot Chat",
+        "Visual Studio Code Copilot code review",
+        "Visual Studio Copilot Chat",
+        "Visual Studio Copilot code review",
+        "JetBrains IDEs Copilot Chat",
+        "JetBrains IDEs Copilot code review",
+        "Eclipse Copilot Chat",
+        "Eclipse Copilot code review",
+        "Xcode Copilot Chat",
+        "Xcode Copilot code review",
+        "Copilot CLI"
+      ],
+      "priority": "GitHub's support matrix does not list CLAUDE.md for these surfaces.",
+      "nesting": "Do not rely on CLAUDE.md to provide instructions on these surfaces.",
+      "recommendation": "Mirror shared Copilot guidance in .github/copilot-instructions.md.",
+      "sourceUrl": "https://docs.github.com/en/copilot/reference/custom-instructions-support",
+      "publisher": "GitHub",
+      "verifiedAt": "2026-06-14"
+    },
+    {
+      "id": "cursor-project-rules",
+      "toolId": "cursor",
+      "toolName": "Cursor",
+      "path": ".cursor/rules/*.mdc",
+      "status": "documented",
+      "scopes": [
+        "repository",
+        "path-specific"
+      ],
+      "surfaces": [
+        "Cursor"
+      ],
+      "priority": "Rule metadata controls whether a rule is always applied, matched to files, requested, or selected manually.",
+      "nesting": "Store focused project rules under .cursor/rules and use matching metadata to limit their scope.",
+      "recommendation": "Prefer small .mdc rules with explicit descriptions and globs over one large repository prompt.",
+      "sourceUrl": "https://cursor.com/docs/rules",
+      "publisher": "Cursor",
+      "verifiedAt": "2026-06-14"
+    },
+    {
+      "id": "cursor-cursorrules-status-unknown",
+      "toolId": "cursor",
+      "toolName": "Cursor",
+      "path": ".cursorrules",
+      "status": "unknown",
+      "scopes": [
+        "repository"
+      ],
+      "surfaces": [
+        "Cursor"
+      ],
+      "priority": "The current Cursor rules documentation prescribes project rules under .cursor/rules; it does not, on the cited page, establish an official legacy or deprecation status for .cursorrules.",
+      "nesting": "No nesting or precedence behavior for .cursorrules is asserted here because the cited current documentation does not establish it.",
+      "recommendation": "For new maintained guidance, follow the currently documented .cursor/rules project-rule format. Review existing .cursorrules behavior separately before removing it.",
+      "sourceUrl": "https://cursor.com/docs/rules",
+      "publisher": "Cursor",
+      "verifiedAt": "2026-06-14"
+    }
+  ]
+}

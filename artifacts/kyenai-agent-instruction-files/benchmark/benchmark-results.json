@@ -1,0 +1,71 @@
+{
+  "taskId": "instruction-drift-fix-001",
+  "status": "Not measured",
+  "measurementPolicy": "Numeric values remain null until a controlled run is completed.",
+  "runs": [
+    {
+      "id": "instruction-drift-fix-001-openai-codex",
+      "toolId": "openai-codex",
+      "toolVersion": null,
+      "status": "not-measured",
+      "metricSource": "unavailable",
+      "elapsedSeconds": null,
+      "measuredCostUsd": null,
+      "humanInterventions": null,
+      "filesChanged": null,
+      "verificationPassed": null,
+      "evidenceUrl": null,
+      "limitations": [
+        "No controlled run has been completed; no values are estimated."
+      ]
+    },
+    {
+      "id": "instruction-drift-fix-001-claude-code",
+      "toolId": "claude-code",
+      "toolVersion": null,
+      "status": "not-measured",
+      "metricSource": "unavailable",
+      "elapsedSeconds": null,
+      "measuredCostUsd": null,
+      "humanInterventions": null,
+      "filesChanged": null,
+      "verificationPassed": null,
+      "evidenceUrl": null,
+      "limitations": [
+        "No controlled run has been completed; no values are estimated."
+      ]
+    },
+    {
+      "id": "instruction-drift-fix-001-github-copilot",
+      "toolId": "github-copilot",
+      "toolVersion": null,
+      "status": "not-measured",
+      "metricSource": "unavailable",
+      "elapsedSeconds": null,
+      "measuredCostUsd": null,
+      "humanInterventions": null,
+      "filesChanged": null,
+      "verificationPassed": null,
+      "evidenceUrl": null,
+      "limitations": [
+        "No controlled run has been completed; no values are estimated."
+      ]
+    },
+    {
+      "id": "instruction-drift-fix-001-cursor",
+      "toolId": "cursor",
+      "toolVersion": null,
+      "status": "not-measured",
+      "metricSource": "unavailable",
+      "elapsedSeconds": null,
+      "measuredCostUsd": null,
+      "humanInterventions": null,
+      "filesChanged": null,
+      "verificationPassed": null,
+      "evidenceUrl": null,
+      "limitations": [
+        "No controlled run has been completed; no values are estimated."
+      ]
+    }
+  ]
+}

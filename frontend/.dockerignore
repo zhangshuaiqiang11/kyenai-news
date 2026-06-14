@@ -1,0 +1,10 @@
+node_modules/
+.next/
+.next-build/
+npm-debug.log*
+._*
+**/._*
+.DS_Store
+**/.DS_Store
+Dockerfile
+.dockerignore

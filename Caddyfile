@@ -1,0 +1,25 @@
+{$FRONTEND_DOMAIN:www.kyenai.com} {
+	encode zstd gzip
+	reverse_proxy frontend:3000
+}
+
+{$APEX_DOMAIN:kyenai.com} {
+	redir https://{$FRONTEND_DOMAIN:www.kyenai.com}{uri} permanent
+}
+
+{$API_DOMAIN:api.kyenai.com} {
+	encode zstd gzip
+	reverse_proxy backend:8000
+}
+
+:80 {
+	encode zstd gzip
+
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
+
+	handle {
+		reverse_proxy frontend:3000
+	}
+}

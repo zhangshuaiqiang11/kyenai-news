@@ -1,0 +1,15 @@
+---
+description: Repository implementation and verification standards
+globs:
+alwaysApply: true
+---
+
+# Project guidance
+
+- Read nearby implementation and tests before editing.
+- Follow existing architecture, naming, and formatting.
+- Prefer focused changes over broad refactors.
+- Do not edit generated files unless generation is part of the task.
+- Run `npm run lint` and `npm test` after code changes.
+- Run `npm run build` for production-facing changes.
+- Report changed files, test results, and unresolved risks.

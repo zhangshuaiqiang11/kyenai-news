@@ -1,0 +1,28 @@
+# Environment & secrets
+.env
+.env.local
+.env.production
+.env.*.local
+client_secret_*.json
+*.apps.googleusercontent.com.json
+secrets/*.json
+!secrets/.gitkeep
+
+# Dependencies & build output
+node_modules/
+frontend/.next/
+frontend/.next-build/
+__pycache__/
+backend/.pytest_cache/
+*.pyc
+.Python
+
+# Internal agent/planning docs (may contain deployment details)
+docs/superpowers/
+.superpowers/
+
+# Generated research artifacts
+artifacts/*.json
+
+# OS
+.DS_Store

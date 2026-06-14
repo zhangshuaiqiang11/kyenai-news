@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "dev:api": "python3 -m uvicorn app.main:app --app-dir backend --reload --port 8000",
+    "dev:web": "npm run dev --prefix frontend",
+    "test": "npm run test:web && npm run test:api",
+    "test:api": "python3 -m pytest backend/tests -q",
+    "test:web": "npm test --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "audit:pagespeed": "bash scripts/run-node-script.sh scripts/pagespeed-audit.mjs",
+    "audit:gsc": "bash scripts/run-node-script.sh scripts/gsc-probe.mjs",
+    "generate:resources": "bash scripts/run-node-script.sh --experimental-strip-types scripts/generate-instruction-resources.mjs",
+    "audit:resources": "bash scripts/run-node-script.sh --experimental-strip-types --test scripts/resource-generation.test.mjs",
+    "test:scripts": "bash scripts/run-node-script.sh --test scripts/*.test.mjs",
+    "dev": "npm run dev:web"
+  }
+}

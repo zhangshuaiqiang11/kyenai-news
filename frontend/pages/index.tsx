@@ -1,0 +1,156 @@
+import Link from "next/link";
+
+import { ArticleExplorer } from "../components/ArticleExplorer";
+import { Layout } from "../components/Layout";
+import { SeoHead } from "../components/SeoHead";
+import { SignalPanel } from "../components/SignalPanel";
+import { getArticles } from "../lib/api";
+import { getEntityCoverage } from "../lib/entities";
+import {
+  INSTRUCTION_COMPARISON_GUIDE_HREF,
+  MCP_SECURITY_GUIDE_HREF,
+} from "../lib/guide-routes";
+import {
+  buildGuideItemListJsonLd,
+  buildItemListJsonLd,
+  buildOrganizationJsonLd,
+  buildWebsiteJsonLd,
+  SITE_NAME,
+} from "../lib/seo";
+import type { Article, Guide } from "../lib/types";
+
+type HomeProps = {
+  articles: Article[];
+  guides: Guide[];
+};
+
+export default function Home({ articles, guides }: HomeProps) {
+  const websiteJsonLd = buildWebsiteJsonLd();
+  const organizationJsonLd = buildOrganizationJsonLd();
+  const itemListJsonLd = buildItemListJsonLd(articles.slice(0, 12), "Latest AI coding agent articles", "/");
+  const guideItemListJsonLd = buildGuideItemListJsonLd(guides, "AI coding agent playbooks", "/guides");
+  const entities = getEntityCoverage(articles);
+  const pageTitle = `${SITE_NAME} | AI coding agent guides and evidence watch`;
+  const description =
+    "Compare Codex, Claude Code, Copilot, Cursor, and other AI coding agents with source-backed setup, security, migration, and workflow guides.";
+
+  return (
+    <Layout>
+      <SeoHead title={pageTitle} description={description} path="/">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(guideItemListJsonLd) }} />
+      </SeoHead>
+      <div className="page-shell">
+        <section className="feed-panel" aria-labelledby="latest-heading">
+          <div className="section-heading">
+            <div>
+              <h1 id="latest-heading">AI Coding Agent Playbooks</h1>
+              <p>Source-backed guides for configuring, migrating, comparing, and securing AI coding agents.</p>
+            </div>
+            <Link href="/guides">All guides</Link>
+          </div>
+          <section className="guide-strip" aria-labelledby="priority-guides-heading">
+            <div>
+              <h2 id="priority-guides-heading">Practical playbooks</h2>
+              <p>Complete comparison, setup, security, and migration tasks with clear, source-backed guidance.</p>
+            </div>
+            <div className="guide-strip-grid">
+              {guides.map((guide) => (
+                <Link href={`/guides/${guide.slug}`} key={guide.id}>
+                  <strong>{guide.title}</strong>
+                  <small>{guide.pageType}</small>
+                </Link>
+              ))}
+            </div>
+            <div className="guide-strip-next-steps" aria-label="Recommended guide starting points">
+              <p>
+                Standardizing repository guidance?{" "}
+                <Link href={INSTRUCTION_COMPARISON_GUIDE_HREF}>
+                  Compare instruction files by tool and surface
+                </Link>{" "}
+                before choosing the adapters your team will maintain.
+              </p>
+              <p>
+                Connecting agents to external tools?{" "}
+                <Link href={MCP_SECURITY_GUIDE_HREF}>Review the MCP security checklist</Link>{" "}
+                before granting credentials, network access, or write permissions.
+              </p>
+            </div>
+          </section>
+          <div className="section-heading latest-evidence-heading">
+            <div>
+              <h2>Latest Evidence Updates</h2>
+              <p>Official-source updates across Codex, Copilot, Claude Code, Cursor, Antigravity, and governance.</p>
+            </div>
+            <Link href="/sources">Source ledger</Link>
+          </div>
+          <ArticleExplorer articles={articles} />
+          <section className="signal-table" aria-labelledby="signal-table-heading">
+            <h2 id="signal-table-heading">Signal Table <span>Last 7 days</span></h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Signal</th>
+                  <th>Change</th>
+                  <th>Direction</th>
+                  <th>Confidence</th>
+                  <th>Primary Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Agent runtime releases</td>
+                  <td>+7 official updates</td>
+                  <td>Up</td>
+                  <td>High</td>
+                  <td>OpenAI, GitHub, Google</td>
+                </tr>
+                <tr>
+                  <td>Governance surface</td>
+                  <td>+3 policy-control updates</td>
+                  <td>Up</td>
+                  <td>High</td>
+                  <td>GitHub, Cursor</td>
+                </tr>
+                <tr>
+                  <td>Unverified story intake</td>
+                  <td>0 auto-published</td>
+                  <td>Down</td>
+                  <td>High</td>
+                  <td>Source guardrails</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section className="entity-summary-panel" aria-labelledby="entity-summary-heading">
+            <div>
+              <h2 id="entity-summary-heading">Entity Coverage</h2>
+              <p>Official brand and product entities are tracked with non-endorsement boundaries.</p>
+            </div>
+            <div>
+              {entities.slice(0, 8).map((entity) => (
+                <Link href={`/entities#${entity.slug}`} key={entity.id}>{entity.name}</Link>
+              ))}
+            </div>
+            <Link href="/entities">View entity ledger</Link>
+          </section>
+        </section>
+        <SignalPanel />
+      </div>
+    </Layout>
+  );
+}
+
+export async function getStaticProps() {
+  const { getPriorityGuides } = await import("../lib/guide-editorial");
+
+  return {
+    props: {
+      articles: await getArticles(),
+      guides: getPriorityGuides(),
+    },
+    revalidate: 300,
+  };
+}
