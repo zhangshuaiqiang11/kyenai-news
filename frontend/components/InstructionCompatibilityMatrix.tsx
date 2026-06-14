@@ -49,17 +49,19 @@ export function InstructionCompatibilityMatrix() {
           <tbody>
             {toolInstructionSupport.map((record) => (
               <tr key={record.id}>
-                <th scope="row">{record.toolName}</th>
-                <td>
+                <th scope="row" data-label="Tool">
+                  {record.toolName}
+                </th>
+                <td data-label="File or pattern">
                   <code>{record.path}</code>
                 </td>
-                <td>
+                <td data-label="Status">
                   <span className={`instruction-status instruction-status-${record.status}`}>
                     {statusLabels[record.status]}
                   </span>
                 </td>
-                <td>{record.surfaces.join(", ")}</td>
-                <td>
+                <td data-label="Surfaces">{record.surfaces.join(", ")}</td>
+                <td data-label="Scope and recommendation">
                   <p>{record.nesting}</p>
                   <p className="instruction-cell-recommendation">{record.recommendation}</p>
                 </td>

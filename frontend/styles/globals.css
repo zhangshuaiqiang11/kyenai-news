@@ -1,12 +1,15 @@
 :root {
   --ink: #111418;
-  --muted: #5f6873;
+  --muted: #4a5360;
   --border: #dbe1e7;
   --surface: #ffffff;
   --surface-soft: #f6f8f9;
   --teal: #007f7a;
   --teal-dark: #004f4c;
   --amber: #b36b00;
+  --amber-bg: #fde4bd;
+  --amber-border: #e0b56a;
+  --amber-text: #3d2808;
   --red: #c2410c;
   --shadow: 0 12px 34px rgba(17, 20, 24, 0.08);
 }
@@ -885,7 +888,7 @@ dd {
 }
 
 .source-note-block {
-  background: #fff8ec;
+  background: var(--amber-bg);
   border: 1px solid #f0d6ae;
   border-radius: 8px;
   color: #4b3820;
@@ -1124,9 +1127,18 @@ dd {
 }
 
 .guide-action-list span {
-  color: var(--amber);
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  border-radius: 6px;
+  color: var(--amber-text);
+  display: inline-flex;
   font-size: 12px;
   font-weight: 900;
+  justify-self: start;
+  letter-spacing: 0.04em;
+  min-width: 2.4rem;
+  padding: 6px 10px;
+  text-transform: uppercase;
 }
 
 .guide-action-list h3,
@@ -1204,9 +1216,16 @@ dd {
 }
 
 .related-guides span {
-  color: var(--amber);
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  border-radius: 6px;
+  color: var(--amber-text);
+  display: inline-flex;
   font-size: 12px;
   font-weight: 850;
+  justify-self: start;
+  letter-spacing: 0.04em;
+  padding: 6px 10px;
   text-transform: uppercase;
 }
 
@@ -1476,8 +1495,8 @@ dd {
 }
 
 .integration-list .missing {
-  background: #fff8ec;
-  color: #6e4a17;
+  background: var(--amber-bg);
+  color: var(--amber-text);
 }
 
 .job-list {
@@ -1685,6 +1704,31 @@ dd {
   min-width: 150px;
 }
 
+@media (min-width: 701px) {
+  .instruction-table-scroll thead th:nth-child(3),
+  .instruction-table-scroll tbody td:nth-child(3) {
+    max-width: 178px;
+    min-width: 178px;
+    width: 178px;
+  }
+
+  .instruction-table-scroll thead th:nth-child(4),
+  .instruction-table-scroll tbody td:nth-child(4) {
+    max-width: 168px;
+    min-width: 168px;
+    width: 168px;
+  }
+
+  .instruction-table-scroll tbody td:nth-child(3) .instruction-status {
+    box-sizing: border-box;
+    display: block;
+    line-height: 1.35;
+    max-width: 100%;
+    width: 100%;
+    white-space: normal;
+  }
+}
+
 .instruction-table-scroll td p {
   margin: 0;
 }
@@ -1699,8 +1743,9 @@ dd {
   display: inline-block;
   font-size: 12px;
   font-weight: 800;
+  line-height: 1.35;
   padding: 5px 8px;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .instruction-status-documented {
@@ -1711,8 +1756,8 @@ dd {
 .instruction-status-unsupported,
 .instruction-status-unknown,
 .instruction-status-legacy {
-  background: #fff8ec;
-  color: #6e4a17;
+  background: var(--amber-bg);
+  color: var(--amber-text);
 }
 
 .instruction-status-observed {
@@ -1802,9 +1847,9 @@ dd {
 }
 
 .instruction-template-caution {
-  background: #fff8ec;
+  background: var(--amber-bg);
   border-radius: 6px;
-  color: #6e4a17;
+  color: var(--amber-text);
   font-size: 13px;
   line-height: 1.5;
   padding: 12px;
@@ -1860,6 +1905,15 @@ dd {
 
 .instruction-benchmark-protocol ul {
   padding-left: 19px;
+}
+
+.instruction-benchmark-pending {
+  margin-top: 20px;
+}
+
+.instruction-benchmark-pending a {
+  color: var(--teal-dark);
+  font-weight: 800;
 }
 
 @media (max-width: 700px) {
@@ -1952,5 +2006,156 @@ dd {
 @media (max-width: 700px) {
   .featured-guide-path-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --muted: #353b44;
+    --teal: #006662;
+    --amber-bg: #f5d08a;
+    --amber-border: #c9952e;
+    --amber-text: #2a1a06;
+  }
+
+  .positive {
+    color: var(--teal-dark);
+  }
+}
+
+@media (max-width: 700px) {
+  .guide-table-wrap,
+  .instruction-table-scroll,
+  .signal-table,
+  .fact-table {
+    border: 0;
+    overflow-x: visible;
+  }
+
+  .guide-table-wrap table,
+  .instruction-table-scroll table,
+  .signal-table table,
+  .fact-table {
+    border: 0;
+    margin-top: 0;
+    min-width: 0;
+  }
+
+  .guide-table-wrap thead,
+  .instruction-table-scroll thead,
+  .signal-table thead,
+  .fact-table thead {
+    border: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  .guide-table-wrap tbody,
+  .instruction-table-scroll tbody,
+  .signal-table tbody,
+  .fact-table tbody {
+    display: block;
+  }
+
+  .guide-table-wrap tbody tr,
+  .instruction-table-scroll tbody tr,
+  .signal-table tbody tr,
+  .fact-table tbody tr {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: block;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .guide-table-wrap tbody tr:last-child,
+  .instruction-table-scroll tbody tr:last-child,
+  .signal-table tbody tr:last-child,
+  .fact-table tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .guide-table-wrap tbody th[scope="row"],
+  .instruction-table-scroll tbody th[scope="row"] {
+    background: var(--surface-soft);
+    border-bottom: 1px solid var(--border);
+    display: block;
+    padding: 12px 14px;
+    width: auto;
+  }
+
+  .guide-table-wrap tbody th[scope="row"]::before,
+  .instruction-table-scroll tbody th[scope="row"]::before {
+    color: var(--muted);
+    content: attr(data-label);
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .guide-table-wrap tbody th[scope="row"]::before {
+    color: var(--teal-dark);
+  }
+
+  .guide-table-wrap tbody td,
+  .instruction-table-scroll tbody td,
+  .signal-table tbody td,
+  .fact-table tbody td {
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    gap: 4px 12px;
+    grid-template-columns: minmax(0, 38%) minmax(0, 1fr);
+    padding: 12px 14px;
+  }
+
+  .guide-table-wrap tbody tr > :last-child,
+  .instruction-table-scroll tbody tr > :last-child,
+  .signal-table tbody tr > :last-child,
+  .fact-table tbody tr > :last-child {
+    border-bottom: 0;
+  }
+
+  .guide-table-wrap tbody td::before,
+  .instruction-table-scroll tbody td::before,
+  .signal-table tbody td::before,
+  .fact-table tbody td::before {
+    color: #3f4750;
+    content: attr(data-label);
+    font-size: 12px;
+    font-weight: 850;
+    letter-spacing: 0.02em;
+  }
+
+  .instruction-table-scroll tbody td::before {
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .guide-table-wrap th,
+  .guide-table-wrap td,
+  .instruction-table-scroll th,
+  .instruction-table-scroll td,
+  .signal-table td,
+  .fact-table td {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .guide-table-wrap tbody tr:last-child th,
+  .guide-table-wrap tbody tr:last-child td {
+    border-bottom: 0;
   }
 }

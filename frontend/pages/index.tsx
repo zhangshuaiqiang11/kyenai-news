@@ -101,25 +101,25 @@ export default function Home({ articles, guides }: HomeProps) {
               </thead>
               <tbody>
                 <tr>
-                  <td>Agent runtime releases</td>
-                  <td>+7 official updates</td>
-                  <td>Up</td>
-                  <td>High</td>
-                  <td>OpenAI, GitHub, Google</td>
+                  <td data-label="Signal">Agent runtime releases</td>
+                  <td data-label="Change">+7 official updates</td>
+                  <td data-label="Direction">Up</td>
+                  <td data-label="Confidence">High</td>
+                  <td data-label="Primary Source">OpenAI, GitHub, Google</td>
                 </tr>
                 <tr>
-                  <td>Governance surface</td>
-                  <td>+3 policy-control updates</td>
-                  <td>Up</td>
-                  <td>High</td>
-                  <td>GitHub, Cursor</td>
+                  <td data-label="Signal">Governance surface</td>
+                  <td data-label="Change">+3 policy-control updates</td>
+                  <td data-label="Direction">Up</td>
+                  <td data-label="Confidence">High</td>
+                  <td data-label="Primary Source">GitHub, Cursor</td>
                 </tr>
                 <tr>
-                  <td>Unverified story intake</td>
-                  <td>0 auto-published</td>
-                  <td>Down</td>
-                  <td>High</td>
-                  <td>Source guardrails</td>
+                  <td data-label="Signal">Unverified story intake</td>
+                  <td data-label="Change">0 auto-published</td>
+                  <td data-label="Direction">Down</td>
+                  <td data-label="Confidence">High</td>
+                  <td data-label="Primary Source">Source guardrails</td>
                 </tr>
               </tbody>
             </table>

@@ -171,7 +171,13 @@ function ArticleBlockView({ block }: { block: ArticleBlock }) {
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={row.join("-")}>{row.map((cell) => <td key={cell}>{cell}</td>)}</tr>
+            <tr key={row.join("-")}>
+              {row.map((cell, index) => (
+                <td key={`${row.join("-")}-${header[index]}`} data-label={header[index]}>
+                  {cell}
+                </td>
+              ))}
+            </tr>
           ))}
         </tbody>
       </table>

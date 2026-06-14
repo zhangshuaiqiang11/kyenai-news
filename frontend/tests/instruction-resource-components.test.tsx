@@ -97,7 +97,7 @@ describe("instruction resource components", () => {
     }
   });
 
-  it("shows the same-repository benchmark protocol without invented zero metrics", () => {
+  it("shows the benchmark protocol and hides the empty results table", () => {
     const { container } = render(<BenchmarkPanel />);
 
     expect(
@@ -105,34 +105,15 @@ describe("instruction resource components", () => {
     ).toBeTruthy();
     expect(screen.getByText(/^Task$/i)).toBeTruthy();
     expect(screen.getByText(/^Success criteria$/i)).toBeTruthy();
-
-    const table = screen.getByRole("table", { name: /benchmark results/i });
-    for (const heading of [
-      "Success",
-      "Elapsed time",
-      "Measured cost",
-      "Human interventions",
-      "Files changed",
-    ]) {
-      expect(within(table).getByRole("columnheader", { name: heading })).toBeTruthy();
-    }
-
-    const resultRows = within(table).getAllByRole("row").slice(1);
-    expect(resultRows).toHaveLength(benchmarkProtocol.runs.length);
-
-    benchmarkProtocol.runs.forEach((run, index) => {
-      if (run.metricSource !== "unavailable") {
-        return;
-      }
-
-      const metricCells = within(resultRows[index]).getAllByRole("cell");
-      expect(metricCells.length).toBeGreaterThan(0);
-      for (const cell of metricCells) {
-        expect(cell.textContent).toBe("Not measured");
-      }
-    });
+    expect(screen.getByRole("note", { name: /benchmark status/i })).toBeTruthy();
+    expect(screen.getByText(/benchmark not yet run/i)).toBeTruthy();
+    expect(
+      screen.getByRole("link", { name: /benchmark-results\.json/i }).getAttribute("href"),
+    ).toBe("/resources/instruction-files/benchmark-results.json");
+    expect(screen.queryByRole("table", { name: /benchmark results/i })).toBeNull();
     expect(container.textContent).not.toContain("$0");
     expect(container.textContent).not.toContain("0 seconds");
     expect(container.textContent).not.toContain("0 interventions");
+    expect(benchmarkProtocol.runs.every((run) => run.metricSource === "unavailable")).toBe(true);
   });
 });

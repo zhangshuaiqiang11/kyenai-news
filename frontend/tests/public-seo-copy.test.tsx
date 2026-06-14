@@ -204,7 +204,8 @@ describe("public guide SEO copy", () => {
     expect(resourceMarkup).toContain("Repository instruction tree");
     expect(resourceMarkup).toContain("Instruction template downloads");
     expect(resourceMarkup).toContain("Same-repository benchmark");
-    expect(resourceMarkup).toContain("Not measured");
+    expect(resourceMarkup).toContain("Benchmark not yet run");
+    expect(resourceMarkup).toContain("/resources/instruction-files/benchmark-results.json");
     expect(resourceMarkup).toContain("/resources/instruction-files/AGENTS.md");
 
     render(<GuidePage guide={guide!} relatedGuides={relatedGuides} relatedArticles={[]} />);
@@ -225,7 +226,8 @@ describe("public guide SEO copy", () => {
     expect(screen.getByRole("heading", { name: /same-repository benchmark/i })).toBeTruthy();
     expect(screen.getAllByRole("link", { name: /download/i })).toHaveLength(4);
     expect(screen.getAllByText(/\.cursor\/rules\//i, { selector: "code" }).length).toBeGreaterThan(0);
-    expect(screen.getAllByText("Not measured").length).toBeGreaterThan(0);
+    expect(screen.getByText(/benchmark not yet run/i)).toBeTruthy();
+    expect(screen.queryByRole("table", { name: /benchmark results/i })).toBeNull();
     const quickAnswerHeading = screen.getByRole("heading", { name: /^quick answer$/i });
     const compatibilityHeading = screen.getByRole("heading", { name: /instruction file compatibility/i });
     const articleHeading = screen.getByRole("heading", { name: /compatibility is a surface policy/i });
@@ -273,14 +275,6 @@ describe("public guide SEO copy", () => {
 
     expect(benchmarkResults.status).toBe("Not measured");
     expect(benchmarkResults.runs).toHaveLength(4);
-    const rows = screen.getAllByRole("row").slice(1);
-    expect(rows).toHaveLength(benchmarkResults.runs.length);
-    const expectedToolNames = {
-      "openai-codex": "OpenAI Codex",
-      "claude-code": "Claude Code",
-      "github-copilot": "GitHub Copilot",
-      cursor: "Cursor",
-    } as const;
     expect(new Set(benchmarkResults.runs.map((run) => run.id)).size).toBe(
       benchmarkResults.runs.length,
     );
@@ -288,23 +282,20 @@ describe("public guide SEO copy", () => {
       benchmarkResults.runs.length,
     );
 
-    benchmarkResults.runs.forEach((run, index) => {
+    benchmarkResults.runs.forEach((run) => {
       expect(run.status).toBe("not-measured");
       expect(run.elapsedSeconds).toBeNull();
       expect(run.measuredCostUsd).toBeNull();
       expect(run.humanInterventions).toBeNull();
       expect(run.filesChanged).toBeNull();
       expect(run.verificationPassed).toBeNull();
-
-      expect(within(rows[index]).getByRole("rowheader").textContent).toBe(
-        expectedToolNames[run.toolId],
-      );
-      const cells = within(rows[index]).getAllByRole("cell");
-      expect(cells).toHaveLength(5);
-      for (const cell of cells) {
-        expect(cell.textContent).toBe("Not measured");
-      }
     });
+
+    expect(screen.getByText(/benchmark not yet run/i)).toBeTruthy();
+    expect(
+      screen.getByRole("link", { name: /benchmark-results\.json/i }).getAttribute("href"),
+    ).toBe("/resources/instruction-files/benchmark-results.json");
+    expect(screen.queryByRole("table", { name: /benchmark results/i })).toBeNull();
 
     const markup = document.body.textContent || "";
     expect(markup).not.toMatch(/\b0 seconds\b|\$0(?:\.00)?|\bestimated?\b/i);

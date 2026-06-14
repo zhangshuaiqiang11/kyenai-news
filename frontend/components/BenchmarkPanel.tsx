@@ -1,33 +1,25 @@
 import React from "react";
 
+import {
+  getVisibleBenchmarkColumns,
+  hasAnyMeasuredBenchmarkData,
+} from "../lib/benchmark-display";
 import { benchmarkProtocol } from "../lib/instruction-resources";
-import type { BenchmarkRun } from "../lib/types";
 
-const toolNames: Record<BenchmarkRun["toolId"], string> = {
+const toolNames: Record<(typeof benchmarkProtocol.runs)[number]["toolId"], string> = {
   "openai-codex": "OpenAI Codex",
   "claude-code": "Claude Code",
   "github-copilot": "GitHub Copilot",
   cursor: "Cursor",
 };
 
-const formatSuccess = (run: BenchmarkRun) => {
-  if (run.verificationPassed === null) {
-    return "Not measured";
-  }
-
-  return run.verificationPassed ? "Passed" : "Did not pass";
-};
-
-const formatElapsed = (seconds: number | null) =>
-  seconds === null ? "Not measured" : `${seconds} seconds`;
-
-const formatCost = (cost: number | null) =>
-  cost === null ? "Not measured" : `$${cost.toFixed(2)}`;
-
-const formatCount = (count: number | null) =>
-  count === null ? "Not measured" : count.toLocaleString("en-US");
+const benchmarkResultsUrl = "/resources/instruction-files/benchmark-results.json";
 
 export function BenchmarkPanel() {
+  const { runs } = benchmarkProtocol;
+  const hasMeasuredData = hasAnyMeasuredBenchmarkData(runs);
+  const visibleColumns = getVisibleBenchmarkColumns(runs);
+
   return (
     <section className="instruction-resource-section" aria-labelledby="benchmark-heading">
       <div className="instruction-resource-heading">
@@ -53,32 +45,50 @@ export function BenchmarkPanel() {
         </div>
       </div>
 
-      <div className="instruction-table-scroll">
-        <table aria-label="Benchmark results">
-          <thead>
-            <tr>
-              <th scope="col">Tool</th>
-              <th scope="col">Success</th>
-              <th scope="col">Elapsed time</th>
-              <th scope="col">Measured cost</th>
-              <th scope="col">Human interventions</th>
-              <th scope="col">Files changed</th>
-            </tr>
-          </thead>
-          <tbody>
-            {benchmarkProtocol.runs.map((run) => (
-              <tr key={run.id}>
-                <th scope="row">{toolNames[run.toolId]}</th>
-                <td>{formatSuccess(run)}</td>
-                <td>{formatElapsed(run.elapsedSeconds)}</td>
-                <td>{formatCost(run.measuredCostUsd)}</td>
-                <td>{formatCount(run.humanInterventions)}</td>
-                <td>{formatCount(run.filesChanged)}</td>
+      {hasMeasuredData ? (
+        <div className="instruction-table-scroll">
+          <table aria-label="Benchmark results">
+            <thead>
+              <tr>
+                <th scope="col">Tool</th>
+                {visibleColumns.map((column) => (
+                  <th key={column.key} scope="col">
+                    {column.label}
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {runs.map((run) => (
+                <tr key={run.id}>
+                  <th scope="row" data-label="Tool">
+                    {toolNames[run.toolId]}
+                  </th>
+                  {visibleColumns.map((column) => (
+                    <td key={column.key} data-label={column.label}>
+                      {column.format(run)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <aside
+          className="instruction-direct-answer instruction-benchmark-pending"
+          role="note"
+          aria-label="Benchmark status"
+        >
+          <strong>Benchmark not yet run</strong>
+          <p>
+            No controlled run has been completed for this protocol. Numeric metrics stay null until
+            a run finishes; this panel does not publish placeholder numbers. Use the task and
+            success criteria above, then publish measured results in{" "}
+            <a href={benchmarkResultsUrl}>benchmark-results.json</a>.
+          </p>
+        </aside>
+      )}
     </section>
   );
 }

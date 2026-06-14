@@ -80,12 +80,14 @@ export function McpSecurityControls() {
             <tbody>
               {mcpSecurityPermissionMatrix.map((row) => (
                 <tr key={row.id}>
-                  <th scope="row">{row.capability}</th>
-                  <td>{row.default}</td>
-                  <td>{row.dataRisk}</td>
-                  <td>{row.approval}</td>
-                  <td>{row.logging}</td>
-                  <td>{row.launchGate}</td>
+                  <th scope="row" data-label="Capability">
+                    {row.capability}
+                  </th>
+                  <td data-label="Default">{row.default}</td>
+                  <td data-label="Data risk">{row.dataRisk}</td>
+                  <td data-label="Approval">{row.approval}</td>
+                  <td data-label="Logging">{row.logging}</td>
+                  <td data-label="Launch gate">{row.launchGate}</td>
                 </tr>
               ))}
             </tbody>

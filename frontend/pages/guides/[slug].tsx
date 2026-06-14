@@ -146,9 +146,16 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
                   <tbody>
                     {guide.decisionTable.rows.map((row) => (
                       <tr key={row.label}>
-                        <th scope="row">{row.label}</th>
+                        <th scope="row" data-label="Area">
+                          {row.label}
+                        </th>
                         {row.values.map((value, index) => (
-                          <td key={`${row.label}-${guide.decisionTable.columns[index]}`}>{value}</td>
+                          <td
+                            key={`${row.label}-${guide.decisionTable.columns[index]}`}
+                            data-label={guide.decisionTable.columns[index]}
+                          >
+                            {value}
+                          </td>
                         ))}
                       </tr>
                     ))}
