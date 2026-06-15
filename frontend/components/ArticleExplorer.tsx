@@ -25,8 +25,8 @@ export function ArticleExplorer({ articles }: ArticleExplorerProps) {
       <div className="explorer-toolbar" aria-label="Article filters">
         <label className="search-control">
           <Search aria-hidden="true" size={18} />
+          <span className="visually-hidden">Search articles</span>
           <input
-            aria-label="Search articles"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search Codex, Copilot, Claude Code..."
@@ -34,7 +34,8 @@ export function ArticleExplorer({ articles }: ArticleExplorerProps) {
         </label>
         <label className="select-control">
           <Filter aria-hidden="true" size={18} />
-          <select aria-label="Filter by category" value={category} onChange={(event) => setCategory(event.target.value)}>
+          <span className="visually-hidden">Filter by category</span>
+          <select value={category} onChange={(event) => setCategory(event.target.value)}>
             <option value="">All categories</option>
             {Object.keys(categoryCounts).map((item) => (
               <option value={item} key={item}>
@@ -44,7 +45,8 @@ export function ArticleExplorer({ articles }: ArticleExplorerProps) {
           </select>
         </label>
         <label className="select-control">
-          <select aria-label="Filter by source" value={source} onChange={(event) => setSource(event.target.value)}>
+          <span className="visually-hidden">Filter by source</span>
+          <select value={source} onChange={(event) => setSource(event.target.value)}>
             <option value="">All sources</option>
             {publishers.map((publisher) => (
               <option value={publisher} key={publisher}>
@@ -54,7 +56,8 @@ export function ArticleExplorer({ articles }: ArticleExplorerProps) {
           </select>
         </label>
         <label className="select-control">
-          <select aria-label="Sort articles" value={sort} onChange={(event) => setSort(event.target.value as ArticleSort)}>
+          <span className="visually-hidden">Sort articles</span>
+          <select value={sort} onChange={(event) => setSort(event.target.value as ArticleSort)}>
             <option value="newest">Newest update</option>
             <option value="source-credibility">Source credibility</option>
             <option value="title">Title</option>

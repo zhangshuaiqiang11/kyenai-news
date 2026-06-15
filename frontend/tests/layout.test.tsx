@@ -105,4 +105,16 @@ describe("Layout", () => {
 
     expect(screen.queryByRole("link", { name: "Operations" })).toBeNull();
   });
+
+  it("exposes a focusable skip link to the main landmark", () => {
+    render(
+      <Layout>
+        <p>Public page</p>
+      </Layout>,
+    );
+
+    const skipLink = screen.getByRole("link", { name: "Skip to main content" });
+    expect(skipLink.getAttribute("href")).toBe("#main-content");
+    expect(document.getElementById("main-content")).toBeTruthy();
+  });
 });

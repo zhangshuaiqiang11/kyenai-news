@@ -167,15 +167,21 @@ function ArticleBlockView({ block }: { block: ArticleBlock }) {
     return (
       <table className="fact-table">
         <thead>
-          <tr>{header.map((cell) => <th key={cell}>{cell}</th>)}</tr>
+          <tr>{header.map((cell) => <th key={cell} scope="col">{cell}</th>)}</tr>
         </thead>
         <tbody>
           {rows.map((row) => (
             <tr key={row.join("-")}>
               {row.map((cell, index) => (
-                <td key={`${row.join("-")}-${header[index]}`} data-label={header[index]}>
-                  {cell}
-                </td>
+                index === 0 ? (
+                  <th key={`${row.join("-")}-${header[index]}`} scope="row" data-label={header[index]}>
+                    {cell}
+                  </th>
+                ) : (
+                  <td key={`${row.join("-")}-${header[index]}`} data-label={header[index]}>
+                    {cell}
+                  </td>
+                )
               ))}
             </tr>
           ))}

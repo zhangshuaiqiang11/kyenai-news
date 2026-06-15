@@ -113,16 +113,16 @@ export function OperationsConsole() {
         <h2>Automation Control</h2>
         <div className="ops-actions">
           <button disabled={busy} onClick={runCollect} type="button">
-            <Activity size={18} /> Collect Signals
+            <Activity aria-hidden="true" size={18} /> Collect Signals
           </button>
           <button disabled={busy} onClick={runOptimize} type="button">
-            <Sparkles size={18} /> Optimize
+            <Sparkles aria-hidden="true" size={18} /> Optimize
           </button>
           <button disabled={busy} onClick={runPublish} type="button">
-            <Send size={18} /> Publish
+            <Send aria-hidden="true" size={18} /> Publish
           </button>
           <button disabled={busy} onClick={runRollback} type="button">
-            <RotateCcw size={18} /> Rollback
+            <RotateCcw aria-hidden="true" size={18} /> Rollback
           </button>
         </div>
       </section>
@@ -141,7 +141,7 @@ export function OperationsConsole() {
         )}
       </section>
       <section className="ops-panel guardrail-panel">
-        <h2><ShieldCheck size={20} /> Guardrails</h2>
+        <h2><ShieldCheck aria-hidden="true" size={20} /> Guardrails</h2>
         <ul>
           <li>Failed validation: skip and alert</li>
           <li>Source policy: authoritative whitelist</li>

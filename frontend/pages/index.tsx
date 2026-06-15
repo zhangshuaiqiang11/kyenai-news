@@ -89,14 +89,14 @@ export default function Home({ articles, guides }: HomeProps) {
           <ArticleExplorer articles={articles} />
           <section className="signal-table" aria-labelledby="signal-table-heading">
             <h2 id="signal-table-heading">Signal Table <span>Last 7 days</span></h2>
-            <table>
+            <table aria-labelledby="signal-table-heading">
               <thead>
                 <tr>
-                  <th>Signal</th>
-                  <th>Change</th>
-                  <th>Direction</th>
-                  <th>Confidence</th>
-                  <th>Primary Source</th>
+                  <th scope="col">Signal</th>
+                  <th scope="col">Change</th>
+                  <th scope="col">Direction</th>
+                  <th scope="col">Confidence</th>
+                  <th scope="col">Primary Source</th>
                 </tr>
               </thead>
               <tbody>

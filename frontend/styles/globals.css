@@ -26,6 +26,39 @@ body {
   letter-spacing: 0;
 }
 
+.skip-link {
+  background: var(--teal-dark);
+  border-radius: 0 0 8px 0;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 650;
+  left: 16px;
+  padding: 10px 16px;
+  position: absolute;
+  text-decoration: none;
+  top: -48px;
+  z-index: 100;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+  top: 0;
+}
+
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
 a {
   color: inherit;
   text-decoration: none;

@@ -14,6 +14,9 @@ export function Layout({ children }: LayoutProps) {
 
   return (
     <>
+      <a className="skip-link" href="#main-content">
+        Skip to main content
+      </a>
       <header className="site-header">
         <Link href="/" className="brand" aria-label={`${SITE_NAME} home`}>
           {SITE_NAME}
@@ -41,8 +44,8 @@ export function Layout({ children }: LayoutProps) {
         <span>Cited sources visible</span>
         <span>Editorial guardrails active</span>
       </div>
-      <main>{children}</main>
-      <footer className="site-footer">
+      <main id="main-content">{children}</main>
+      <footer className="site-footer" aria-label="Footer">
         <Link href="/about">About</Link>
         <Link href="/guides">Guides</Link>
         <Link href="/entities">Entities</Link>

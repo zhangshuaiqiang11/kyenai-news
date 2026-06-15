@@ -128,11 +128,11 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
                 ))}
               </ol>
             </section>
-            <section className="guide-table-section">
-              <h2>{guide.decisionTable.title}</h2>
+            <section className="guide-table-section" aria-labelledby="guide-decision-table-heading">
+              <h2 id="guide-decision-table-heading">{guide.decisionTable.title}</h2>
               <p>{guide.decisionTable.intro}</p>
               <div className="guide-table-wrap">
-                <table>
+                <table aria-labelledby="guide-decision-table-heading">
                   <thead>
                     <tr>
                       <th scope="col">Area</th>

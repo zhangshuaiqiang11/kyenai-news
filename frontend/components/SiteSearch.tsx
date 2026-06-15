@@ -72,11 +72,19 @@ export function SiteSearch({ loadSearch = loadDefaultSearch }: SiteSearchProps =
 
   return (
     <div className="site-search">
-      <button aria-expanded={isOpen} aria-label="Search guides and articles" className="icon-button" onClick={openSearch} type="button">
+      <button
+        aria-controls="site-search-panel"
+        aria-expanded={isOpen}
+        aria-haspopup="dialog"
+        aria-label="Search guides and articles"
+        className="icon-button"
+        onClick={openSearch}
+        type="button"
+      >
         <Search aria-hidden="true" size={20} />
       </button>
       {isOpen ? (
-        <div className="site-search-panel" role="search">
+        <div className="site-search-panel" id="site-search-panel" role="search" aria-label="Site search">
           <form className="site-search-input-row" onSubmit={submitFirstResult}>
             <Search aria-hidden="true" size={18} />
             <input

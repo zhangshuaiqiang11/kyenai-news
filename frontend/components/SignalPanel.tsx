@@ -20,7 +20,7 @@ export function SignalPanel() {
               <div className="signal-value">
                 <b>{signal.value}</b>
                 <span className={signal.direction === "up" ? "positive" : "negative"}>
-                  {signal.direction === "up" ? <ArrowUp size={14} /> : <ArrowDown size={14} />}
+                  {signal.direction === "up" ? <ArrowUp aria-hidden="true" size={14} /> : <ArrowDown aria-hidden="true" size={14} />}
                   {signal.change}
                 </span>
               </div>

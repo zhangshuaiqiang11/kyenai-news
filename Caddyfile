@@ -13,6 +13,16 @@
 }
 
 :80 {
+	@apex host {$APEX_DOMAIN:kyenai.com}
+	handle @apex {
+		redir https://{$FRONTEND_DOMAIN:www.kyenai.com}{uri} permanent
+	}
+
+	@https_hosts host {$FRONTEND_DOMAIN:www.kyenai.com} {$API_DOMAIN:api.kyenai.com}
+	handle @https_hosts {
+		redir https://{host}{uri} permanent
+	}
+
 	encode zstd gzip
 
 	handle /api/* {
