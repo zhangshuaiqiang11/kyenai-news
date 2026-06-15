@@ -8,6 +8,7 @@ import { ArticleExplorer } from "../components/ArticleExplorer";
 import { BenchmarkPanel } from "../components/BenchmarkPanel";
 import { InstructionCompatibilityMatrix } from "../components/InstructionCompatibilityMatrix";
 import { Layout } from "../components/Layout";
+import { McpSecurityControls } from "../components/McpSecurityControls";
 import { SiteSearch } from "../components/SiteSearch";
 import { SignalPanel } from "../components/SignalPanel";
 import { seedArticles } from "../lib/seed";
@@ -22,11 +23,11 @@ vi.mock("next/router", () => ({
 
 afterEach(cleanup);
 
-async function expectNoAxeViolations(container: HTMLElement) {
+async function expectNoAxeViolations(container: HTMLElement, options?: { enableRegion?: boolean }) {
   const results = await axe.run(container, {
     rules: {
-      colorContrast: { enabled: false },
-      region: { enabled: false },
+      "color-contrast": { enabled: false },
+      region: { enabled: options?.enableRegion ?? false },
     },
   });
 
@@ -42,7 +43,7 @@ describe("accessibility", () => {
       </Layout>,
     );
 
-    await expectNoAxeViolations(container);
+    await expectNoAxeViolations(container, { enableRegion: true });
   });
 
   it("keeps the article explorer filters free of axe violations", async () => {
@@ -64,6 +65,12 @@ describe("accessibility", () => {
         <BenchmarkPanel />
       </>,
     );
+
+    await expectNoAxeViolations(container);
+  });
+
+  it("keeps MCP security resource tables free of axe violations", async () => {
+    const { container } = render(<McpSecurityControls />);
 
     await expectNoAxeViolations(container);
   });

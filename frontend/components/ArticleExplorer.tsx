@@ -23,19 +23,24 @@ export function ArticleExplorer({ articles }: ArticleExplorerProps) {
   return (
     <>
       <div className="explorer-toolbar" aria-label="Article filters">
-        <label className="search-control">
+        <label className="search-control" htmlFor="article-search">
           <Search aria-hidden="true" size={18} />
           <span className="visually-hidden">Search articles</span>
           <input
+            id="article-search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search Codex, Copilot, Claude Code..."
           />
         </label>
-        <label className="select-control">
+        <label className="select-control" htmlFor="article-category">
           <Filter aria-hidden="true" size={18} />
           <span className="visually-hidden">Filter by category</span>
-          <select value={category} onChange={(event) => setCategory(event.target.value)}>
+          <select
+            id="article-category"
+            value={category}
+            onChange={(event) => setCategory(event.target.value)}
+          >
             <option value="">All categories</option>
             {Object.keys(categoryCounts).map((item) => (
               <option value={item} key={item}>
@@ -44,9 +49,9 @@ export function ArticleExplorer({ articles }: ArticleExplorerProps) {
             ))}
           </select>
         </label>
-        <label className="select-control">
+        <label className="select-control" htmlFor="article-source">
           <span className="visually-hidden">Filter by source</span>
-          <select value={source} onChange={(event) => setSource(event.target.value)}>
+          <select id="article-source" value={source} onChange={(event) => setSource(event.target.value)}>
             <option value="">All sources</option>
             {publishers.map((publisher) => (
               <option value={publisher} key={publisher}>
@@ -55,22 +60,23 @@ export function ArticleExplorer({ articles }: ArticleExplorerProps) {
             ))}
           </select>
         </label>
-        <label className="select-control">
+        <label className="select-control" htmlFor="article-sort">
           <span className="visually-hidden">Sort articles</span>
-          <select value={sort} onChange={(event) => setSort(event.target.value as ArticleSort)}>
+          <select id="article-sort" value={sort} onChange={(event) => setSort(event.target.value as ArticleSort)}>
             <option value="newest">Newest update</option>
             <option value="source-credibility">Source credibility</option>
             <option value="title">Title</option>
           </select>
         </label>
       </div>
-      <div className="explorer-summary">
+      <div aria-live="polite" className="explorer-summary">
         <strong>{visibleArticles.length}</strong>
         <span>of {articles.length} articles visible</span>
       </div>
       <div className="topic-rail" aria-label="Topic counts">
         {Object.entries(categoryCounts).map(([name, count]) => (
           <button
+            aria-pressed={category === name}
             className={category === name ? "active" : ""}
             key={name}
             onClick={() => setCategory(category === name ? "" : name)}

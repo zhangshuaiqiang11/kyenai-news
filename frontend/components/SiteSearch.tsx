@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Search, X } from "lucide-react";
-import React, { FormEvent, KeyboardEvent, useMemo, useRef, useState } from "react";
+import React, { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 
 import type { SearchSite } from "../lib/search-index";
 
@@ -14,6 +14,7 @@ type SiteSearchProps = {
 export function SiteSearch({ loadSearch = loadDefaultSearch }: SiteSearchProps = {}) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [searchSite, setSearchSite] = useState<SearchSite | null>(null);
@@ -39,7 +40,30 @@ export function SiteSearch({ loadSearch = loadDefaultSearch }: SiteSearchProps =
   function closeSearch() {
     setIsOpen(false);
     setQuery("");
+    window.setTimeout(() => triggerRef.current?.focus(), 0);
   }
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    function handlePointerDown(event: MouseEvent) {
+      const target = event.target;
+      if (!(target instanceof Node)) {
+        return;
+      }
+
+      if (triggerRef.current?.contains(target) || inputRef.current?.closest(".site-search-panel")?.contains(target)) {
+        return;
+      }
+
+      closeSearch();
+    }
+
+    document.addEventListener("mousedown", handlePointerDown);
+    return () => document.removeEventListener("mousedown", handlePointerDown);
+  }, [isOpen]);
 
   function navigateTo(destination: string) {
     closeSearch();
@@ -75,10 +99,10 @@ export function SiteSearch({ loadSearch = loadDefaultSearch }: SiteSearchProps =
       <button
         aria-controls="site-search-panel"
         aria-expanded={isOpen}
-        aria-haspopup="dialog"
         aria-label="Search guides and articles"
         className="icon-button"
         onClick={openSearch}
+        ref={triggerRef}
         type="button"
       >
         <Search aria-hidden="true" size={20} />
@@ -100,7 +124,7 @@ export function SiteSearch({ loadSearch = loadDefaultSearch }: SiteSearchProps =
               <X aria-hidden="true" size={18} />
             </button>
           </form>
-          <div className="site-search-results">
+          <div aria-live="polite" className="site-search-results">
             {query.trim() ? (
               searchLoadFailed ? (
                 <p>Search is temporarily unavailable. Close and try again.</p>

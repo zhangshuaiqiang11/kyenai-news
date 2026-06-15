@@ -12,6 +12,8 @@ function SiteSearchPlaceholder() {
   return (
     <div className="site-search">
       <button
+        aria-controls="site-search-panel"
+        aria-expanded={false}
         aria-label="Search guides and articles"
         className="icon-button"
         type="button"
@@ -112,13 +114,17 @@ export function Layout({ children }: LayoutProps) {
           <Link href="/entities">Entities</Link>
           <Link href="/editorial-policy">Editorial</Link>
         </nav>
-        <div className="header-actions" aria-label="Portal status">
+        <div className="header-actions">
           <SiteSearch />
-          <IconBell size={20} />
-          <span className="avatar">AK</span>
+          <span aria-hidden="true">
+            <IconBell size={20} />
+          </span>
+          <span aria-hidden="true" className="avatar">
+            AK
+          </span>
         </div>
       </header>
-      <div className="status-strip">
+      <div className="status-strip" role="status">
         {latestEditorialUpdate ? (
           <span>Latest site update {formatDate(latestEditorialUpdate)}</span>
         ) : null}
