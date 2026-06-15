@@ -496,6 +496,7 @@ const coreGuides: Guide[] = [
     metaTitle: "Claude Code Hooks and MCP Setup Guide",
     metaDescription:
       "Set up Claude Code hooks, MCP servers, and skills with clear security boundaries and practical rollout checks.",
+    resourceIds: ["claude-code-setup"],
   },
   {
     id: "guide-secure-mcp-servers",

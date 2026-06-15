@@ -163,11 +163,19 @@ describe("guide SEO data", () => {
     const guide = getGuide("claude-code-hooks-mcp-setup");
 
     expect(guide).toBeDefined();
+    expect(guide!.resourceIds).toEqual(["claude-code-setup"]);
     const relatedGuides = getInternalLinkedGuides(guide!);
     const relatedSlugs = relatedGuides.map((relatedGuide) => relatedGuide.slug);
 
     expect(relatedSlugs).toContain("secure-mcp-servers-ai-coding-agents");
     expect(relatedSlugs).toContain("claude-code-subagents-examples");
+  });
+
+  it("attaches template preview resources to the AGENTS.md template guide", () => {
+    const guide = getGuide("agents-md-template-for-ai-coding-agents");
+
+    expect(guide).toBeDefined();
+    expect(guide!.resourceIds).toEqual(["agents-md-template"]);
   });
 
   it("keeps private editorial signals available by guide slug", () => {

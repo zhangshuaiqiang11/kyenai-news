@@ -4,9 +4,11 @@ import {
   mcpSecurityControls,
   mcpSecurityPermissionMatrix,
   mcpSecurityReviewPolicy,
+  mcpSecurityReviewPreview,
   mcpSecurityThreats,
   mcpSecurityVerifiedAt,
 } from "../lib/mcp-security-resource";
+import { CodeExampleCard } from "./CodeExampleCard";
 
 const claimLabels = {
   "official-mcp": "Official MCP requirement or guidance",
@@ -98,8 +100,31 @@ export function McpSecurityControls() {
       <section className="instruction-resource-section" aria-labelledby="mcp-review-heading">
         <div className="instruction-resource-heading">
           <div>
+            <p className="instruction-resource-eyebrow">Starter files</p>
+            <h2 id="mcp-review-heading">MCP security review template</h2>
+          </div>
+          <p>Use this structure to record server profile, threats, controls, permissions, validation, and sign-off.</p>
+        </div>
+        <div className="instruction-template-grid instruction-template-grid-single">
+          <CodeExampleCard
+            title="MCP security review"
+            purpose="Document one named server, its capabilities, launch gates, and evidence before production use."
+            body={mcpSecurityReviewPreview}
+            cautions={[
+              "Label KyenAI operational recommendations separately from official MCP requirements.",
+              "Complete every permission row before enabling write, delete, network, secret, or production access.",
+            ]}
+            downloadHref="/resources/mcp-security-review.md"
+            downloadName="mcp-security-review.md"
+          />
+        </div>
+      </section>
+
+      <section className="instruction-resource-section" aria-labelledby="mcp-review-cadence-heading">
+        <div className="instruction-resource-heading">
+          <div>
             <p className="instruction-resource-eyebrow">Ongoing ownership</p>
-            <h2 id="mcp-review-heading">Review cadence and revocation</h2>
+            <h2 id="mcp-review-cadence-heading">Review cadence and revocation</h2>
           </div>
         </div>
         <dl className="instruction-scope-list">
@@ -112,11 +137,6 @@ export function McpSecurityControls() {
             <dd>{mcpSecurityReviewPolicy.revocation}</dd>
           </div>
         </dl>
-        <p>
-          <a href="/resources/mcp-security-review.md" download>
-            Download MCP security review
-          </a>
-        </p>
       </section>
     </div>
   );

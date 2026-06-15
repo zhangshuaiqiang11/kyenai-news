@@ -77,7 +77,7 @@ describe("instruction resource components", () => {
     expect(code?.textContent).toBe(repositoryTree);
   });
 
-  it("offers all four templates as exact downloadable resource links", () => {
+  it("offers all four templates as exact downloadable resource links with full previews", () => {
     render(<TemplateDownloads />);
 
     const links = screen.getAllByRole("link", { name: /download/i });
@@ -94,6 +94,8 @@ describe("instruction resource components", () => {
       expect(link.hasAttribute("download")).toBe(true);
       expect(screen.getByText(template.purpose)).toBeTruthy();
       expect(screen.getByText(template.cautions[0])).toBeTruthy();
+      expect(document.body.textContent).toContain(template.body.trim().split("\n")[0]);
+      expect(document.body.textContent).toContain(template.body.trim().split("\n").slice(-1)[0]);
     }
   });
 

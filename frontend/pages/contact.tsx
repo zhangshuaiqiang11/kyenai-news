@@ -58,8 +58,8 @@ export default function ContactPage() {
           <section>
             <h2>Automation Review</h2>
             <p>
-              The local operations console exposes collect, optimize, publish, and rollback actions for validating the
-              self-optimizing workflow before connecting production analytics.
+              Collect, optimize, publish, and rollback actions are available through the FastAPI backend for validating
+              the self-optimizing workflow before connecting production analytics.
             </p>
           </section>
         </div>

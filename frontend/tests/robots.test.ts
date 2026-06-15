@@ -3,18 +3,17 @@ import { describe, expect, it } from "vitest";
 import { buildRobotsTxt } from "../lib/robots";
 
 describe("robots helpers", () => {
-  it("allows public pages, excludes operations, and points to the canonical sitemap", () => {
+  it("allows public pages, excludes api routes, and points to the canonical sitemap", () => {
     const robots = buildRobotsTxt();
 
     expect(robots).toContain("User-agent: *");
     expect(robots).toContain("Allow: /");
-    expect(robots).toContain("Disallow: /operations");
     expect(robots).toContain("Disallow: /api/");
     expect(robots).not.toContain("Disallow: /tags");
     expect(robots).toContain("Sitemap: https://www.kyenai.com/sitemap.xml");
   });
 
-  it("explicitly allows verified search and AI answer crawlers without exposing operational routes", () => {
+  it("explicitly allows verified search and AI answer crawlers without exposing api routes", () => {
     const robots = buildRobotsTxt();
     const allowedAgents = [
       "Googlebot",
@@ -36,7 +35,7 @@ describe("robots helpers", () => {
 
     for (const agent of allowedAgents) {
       expect(robots).toContain(
-        [`User-agent: ${agent}`, "Allow: /", "Disallow: /operations", "Disallow: /api/"].join("\n"),
+        [`User-agent: ${agent}`, "Allow: /", "Disallow: /api/"].join("\n"),
       );
     }
   });

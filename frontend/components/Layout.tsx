@@ -1,13 +1,95 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { Bell, ShieldCheck } from "lucide-react";
 
 import { formatDate, SITE_NAME } from "../lib/seo";
 import { getVisibleEditorialUpdate } from "../lib/site-status";
-import { SiteSearch } from "./SiteSearch";
 
 type LayoutProps = {
   children: React.ReactNode;
 };
+
+function SiteSearchPlaceholder() {
+  return (
+    <div className="site-search">
+      <button
+        aria-label="Search guides and articles"
+        className="icon-button"
+        type="button"
+      >
+        <IconSearch size={20} />
+      </button>
+    </div>
+  );
+}
+
+const SiteSearch = dynamic(
+  () => import("./SiteSearch").then(({ SiteSearch }) => SiteSearch),
+  {
+    ssr: false,
+    loading: () => <SiteSearchPlaceholder />,
+  },
+);
+
+type IconProps = {
+  size: number;
+};
+
+function IconSearch({ size }: IconProps) {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      height={size}
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width={size}
+    >
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.3-4.3" />
+    </svg>
+  );
+}
+
+function IconBell({ size }: IconProps) {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      height={size}
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width={size}
+    >
+      <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+      <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+    </svg>
+  );
+}
+
+function IconShieldCheck({ size }: IconProps) {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      height={size}
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width={size}
+    >
+      <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  );
+}
 
 export function Layout({ children }: LayoutProps) {
   const latestEditorialUpdate = getVisibleEditorialUpdate();
@@ -32,7 +114,7 @@ export function Layout({ children }: LayoutProps) {
         </nav>
         <div className="header-actions" aria-label="Portal status">
           <SiteSearch />
-          <Bell aria-hidden="true" size={20} />
+          <IconBell size={20} />
           <span className="avatar">AK</span>
         </div>
       </header>
@@ -40,7 +122,7 @@ export function Layout({ children }: LayoutProps) {
         {latestEditorialUpdate ? (
           <span>Latest site update {formatDate(latestEditorialUpdate)}</span>
         ) : null}
-        <span><ShieldCheck aria-hidden="true" size={16} /> Evidence-first</span>
+        <span><IconShieldCheck size={16} /> Evidence-first</span>
         <span>Cited sources visible</span>
         <span>Editorial guardrails active</span>
       </div>

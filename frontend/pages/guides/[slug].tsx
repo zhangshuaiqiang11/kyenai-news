@@ -34,6 +34,32 @@ const InstructionResources = dynamic(
   { ssr: true },
 );
 
+export const loadAgentsMdTemplateResource = () =>
+  import("../../components/AgentsMdTemplateResource").then(
+    ({ AgentsMdTemplateResource }) => AgentsMdTemplateResource,
+  );
+
+const AgentsMdTemplateResources = dynamic(
+  () =>
+    import("../../components/AgentsMdTemplateResource").then(
+      ({ AgentsMdTemplateResource }) => AgentsMdTemplateResource,
+    ),
+  { ssr: true },
+);
+
+export const loadClaudeCodeSetupResources = () =>
+  import("../../components/ClaudeCodeSetupResources").then(
+    ({ ClaudeCodeSetupResources }) => ClaudeCodeSetupResources,
+  );
+
+const ClaudeCodeSetupResourcePanel = dynamic(
+  () =>
+    import("../../components/ClaudeCodeSetupResources").then(
+      ({ ClaudeCodeSetupResources }) => ClaudeCodeSetupResources,
+    ),
+  { ssr: true },
+);
+
 export const loadMcpSecurityResources = () =>
   import("../../components/McpSecurityControls").then(
     ({ McpSecurityControls }) => McpSecurityControls,
@@ -50,6 +76,14 @@ const McpSecurityResources = dynamic(
 function GuideResources({ guide }: { guide: Guide }) {
   if (guide.resourceIds?.includes("instruction-files")) {
     return <InstructionResources />;
+  }
+
+  if (guide.resourceIds?.includes("agents-md-template")) {
+    return <AgentsMdTemplateResources />;
+  }
+
+  if (guide.resourceIds?.includes("claude-code-setup")) {
+    return <ClaudeCodeSetupResourcePanel />;
   }
 
   if (guide.resourceIds?.includes("mcp-security")) {

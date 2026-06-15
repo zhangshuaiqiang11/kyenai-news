@@ -1,8 +1,7 @@
 import React from "react";
 
 import { instructionTemplates } from "../lib/instruction-resources";
-
-const previewLines = (body: string) => body.split("\n").slice(0, 5).join("\n");
+import { CodeExampleCard } from "./CodeExampleCard";
 
 export function TemplateDownloads() {
   return (
@@ -16,33 +15,15 @@ export function TemplateDownloads() {
 
       <div className="instruction-template-grid">
         {instructionTemplates.map((template) => (
-          <article className="instruction-template-card" key={template.id}>
-            <div>
-              <h3>{template.title}</h3>
-              <p>{template.purpose}</p>
-            </div>
-
-            <pre>
-              <code>{previewLines(template.body)}</code>
-            </pre>
-
-            <div className="instruction-template-caution">
-              <strong>Cautions</strong>
-              <ul>
-                {template.cautions.map((caution) => (
-                  <li key={caution}>{caution}</li>
-                ))}
-              </ul>
-            </div>
-
-            <a
-              className="instruction-download-link"
-              href={`/resources/instruction-files/${template.downloadName}`}
-              download={template.downloadName}
-            >
-              Download {template.downloadName}
-            </a>
-          </article>
+          <CodeExampleCard
+            key={template.id}
+            title={template.title}
+            purpose={template.purpose}
+            body={template.body}
+            cautions={template.cautions}
+            downloadHref={`/resources/instruction-files/${template.downloadName}`}
+            downloadName={template.downloadName}
+          />
         ))}
       </div>
     </section>

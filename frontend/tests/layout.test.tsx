@@ -51,6 +51,18 @@ describe("Layout", () => {
     expect(siteStatusSource).toContain("NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE");
   });
 
+  it("code-splits site search without static component imports", () => {
+    const testDirectory = dirname(fileURLToPath(import.meta.url));
+    const layoutSource = readFileSync(resolve(testDirectory, "../components/Layout.tsx"), "utf8");
+
+    expect(layoutSource).toContain('import dynamic from "next/dynamic"');
+    expect(layoutSource).toMatch(/dynamic\(\s*\(\)\s*=>\s*import\("\.\/SiteSearch"\)/);
+    expect(layoutSource).not.toMatch(
+      /import\s+\{[^}]*SiteSearch[^}]*\}\s+from\s+["']\.\/SiteSearch["']/,
+    );
+    expect(layoutSource).not.toContain('from "lucide-react"');
+  });
+
   it("shows the editorial update derived into the build environment", () => {
     process.env.NEXT_PUBLIC_BUILD_TIMESTAMP = "2026-06-14T12:00:00.000Z";
     process.env.NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE = "2026-06-14";
@@ -94,16 +106,6 @@ describe("Layout", () => {
     );
 
     expect(screen.queryByText(/Latest site update/)).toBeNull();
-  });
-
-  it("does not expose the robots-blocked operations route in public navigation", () => {
-    render(
-      <Layout>
-        <p>Public page</p>
-      </Layout>,
-    );
-
-    expect(screen.queryByRole("link", { name: "Operations" })).toBeNull();
   });
 
   it("exposes a focusable skip link to the main landmark", () => {

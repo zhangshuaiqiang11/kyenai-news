@@ -312,11 +312,11 @@ describe("SEO helpers", () => {
   });
 
   it("formats page titles as one plain string for Next head rendering", () => {
-    expect(formatPageTitle("Operations")).toBe("Operations | KyenAI");
+    expect(formatPageTitle("Sources")).toBe("Sources | KyenAI");
     expect(formatPageTitle("KyenAI | AI coding agent news and evidence watch")).toBe(
       "KyenAI | AI coding agent news and evidence watch"
     );
-    expect(formatPageTitle("Operations")).not.toContain("EXTERNAL_UNTRUSTED_CONTENT");
+    expect(formatPageTitle("Sources")).not.toContain("EXTERNAL_UNTRUSTED_CONTENT");
   });
 
   it("builds canonical, Open Graph, and Twitter metadata for major pages", () => {

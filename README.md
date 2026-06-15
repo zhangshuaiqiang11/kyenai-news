@@ -5,7 +5,7 @@ KyenAI is a single-site MVP for evidence-led AI coding agent playbooks. It inclu
 ## What Is Implemented
 
 - Next.js pages for homepage, articles, categories, tags, author profile, `sitemap.xml`, and `robots.txt`.
-- Source ledger and operations console routes at `/sources` and `/operations`.
+- Source ledger route at `/sources`.
 - Entity ledger route at `/entities` for official brand/product mentions, watchlist status, and non-endorsement boundaries.
 - Five demand-led guide pages covering AI coding agent instruction files, Claude Code subagents, Claude Code hooks and MCP, MCP security, and Antigravity CLI migration.
 - Current AI coding article inventory covering OpenAI Codex, GitHub Copilot, Claude Code, Cursor Enterprise, and Google's Antigravity CLI transition.

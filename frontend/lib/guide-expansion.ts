@@ -292,6 +292,7 @@ export const expansionGuides: Guide[] = [
     metaTitle: "AGENTS.md Template for AI Coding Agents",
     metaDescription:
       "Copy a practical AGENTS.md template for AI coding agents with commands, safe boundaries, review rules, and common mistakes.",
+    resourceIds: ["agents-md-template"],
   },
   {
     id: "guide-agent-mode-vs-chat-mode",

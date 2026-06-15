@@ -141,6 +141,7 @@ describe("McpSecurityControls", () => {
     expect(markup).toContain("<dl");
     expect(markup).toContain("<ul");
     expect(markup).toContain('href="/resources/mcp-security-review.md"');
+    expect(markup).toContain("MCP security review template");
   });
 
   it("renders all threats, controls, and permission capabilities", () => {
@@ -156,8 +157,9 @@ describe("McpSecurityControls", () => {
       expect(screen.getByRole("rowheader", { name: row.capability })).toBeTruthy();
     }
     expect(
-      screen.getByRole("link", { name: /download mcp security review/i }).getAttribute("href"),
+      screen.getByRole("link", { name: /download mcp-security-review\.md/i }).getAttribute("href"),
     ).toBe("/resources/mcp-security-review.md");
+    expect(screen.getByRole("heading", { name: /mcp security review template/i })).toBeTruthy();
   });
 });
 

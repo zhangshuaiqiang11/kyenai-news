@@ -352,6 +352,73 @@ function escapeMarkdownTableCell(value: string): string {
     .replace(/\|/g, "\\|");
 }
 
+export const mcpSecurityReviewPreview = `# MCP security review
+
+Verified: ${mcpSecurityVerifiedAt}
+
+Use this template for one named server and deployment context.
+
+## Server profile
+
+- Server owner:
+- Version / publisher:
+- Distribution source:
+- Deployment environment:
+- Data classes:
+- Methods / capabilities:
+- Credentials / authentication:
+- Network reach:
+- Approval gates:
+- Logging:
+- Dependency / supply-chain review:
+- Revocation / incident response:
+
+## Threat model
+
+- [ ] **Prompt injection** - Untrusted input can steer an agent toward a dangerous MCP call.
+- [ ] **Excessive permissions or scope** - Broader scopes than the workflow needs increase blast radius.
+- [ ] **Secret or token exposure** - Token passthrough, logs, or prompts can disclose credentials.
+- [ ] **Unsafe writes or deletes** - A valid tool call can still overwrite code or mutate production state.
+- [ ] **Network reach or SSRF** - URL retrieval can become a path to internal services.
+- [ ] **Third-party supply chain or local server compromise** - A compromised local server runs with user privileges.
+
+## Control checklist
+
+- [ ] **Authentication and authorization** - Document token audience, scopes, and deny-path tests.
+- [ ] **Least privilege** - Every enabled method, root, scope, and environment has a documented use case.
+- [ ] **Secure secret and token storage with rotation** - Record storage, redaction, lifetime, and revocation.
+- [ ] **Read and write separation** - A read-only profile works without write, delete, or production access.
+- [ ] **Human approval for destructive or production actions** - Approval identifies actor, target, and rollback limits.
+- [ ] **Attributable audit logs** - A reviewer can reconstruct a consequential call without exposing credentials.
+- [ ] **Isolation and network allowlists** - The server cannot reach undeclared private or metadata endpoints.
+- [ ] **Revocation and incident response** - Disablement and credential revocation are tested.
+
+## Permission matrix
+
+| Capability | Default | Data risk | Approval | Logging | Launch gate |
+| --- | --- | --- | --- | --- | --- |
+| Read repository files | Allow read-only access to declared roots | Source code and embedded sensitive data | Owner approval at onboarding | Log actor, method, root, and outcome | Roots are explicit and secret paths excluded |
+| Write repository files | Deny until a bounded write workflow is approved | Code integrity and policy changes | Per-task approval for bounded paths | Log target paths, approval, and result | Writes are path-scoped and reversible |
+| Delete repository files | Deny | Irrecoverable source or configuration loss | Per-action human approval with exact targets | Log target list, approver, and recovery reference | Wildcard or root deletion is blocked |
+| Outbound network access | Deny except approved destinations | Data exfiltration and SSRF | Owner approval for an allowlist | Log destination, method, and outcome | Private ranges and metadata services are tested |
+| Secret access | Deny; inject only the minimum runtime credential | Account takeover and credential disclosure | Security owner approval | Log secret identifier, never the value | Rotation and revocation are tested |
+| Production access | Deny | Customer impact and destructive changes | Per-action approval by production owner | Log actor, approver, action, and outcome | Rollback and emergency disablement are proven |
+
+## Validation workflow
+
+- [ ] Run the MCP Inspector against the reviewed server and version.
+- [ ] Enumerate resources, prompts, tools, notifications, and protocol exchanges.
+- [ ] Exercise expected allow and deny cases for every enabled capability.
+- [ ] Confirm errors and logs do not expose tokens or unnecessary sensitive payloads.
+- [ ] Record evidence links and unresolved findings.
+
+## Sign-off
+
+- Reviewer:
+- Review date:
+- Sign-off:
+- Findings or exceptions:`;
+
 export function renderMcpSecurityReviewMarkdown(
   permissionMatrix: McpPermissionRow[] = mcpSecurityPermissionMatrix,
 ): string {

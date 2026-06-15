@@ -1,6 +1,6 @@
 import { buildCanonicalUrl } from "./seo";
 
-const publicDisallowRules = ["/operations", "/api/"];
+const publicDisallowRules = ["/api/"];
 
 const verifiedSearchAndAiCrawlers = [
   "Googlebot",

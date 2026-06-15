@@ -125,7 +125,7 @@ export type BenchmarkRun = {
   limitations: string[];
 };
 
-export type GuideResourceId = "instruction-files" | "mcp-security";
+export type GuideResourceId = "instruction-files" | "mcp-security" | "agents-md-template" | "claude-code-setup";
 
 export type Guide = {
   id: string;
