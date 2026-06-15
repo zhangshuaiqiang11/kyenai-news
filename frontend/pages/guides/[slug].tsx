@@ -73,6 +73,19 @@ const McpSecurityResources = dynamic(
   { ssr: true },
 );
 
+export const loadLoopEngineeringResources = () =>
+  import("../../components/LoopEngineeringResources").then(
+    ({ LoopEngineeringResources }) => LoopEngineeringResources,
+  );
+
+const LoopEngineeringResourcePanel = dynamic(
+  () =>
+    import("../../components/LoopEngineeringResources").then(
+      ({ LoopEngineeringResources }) => LoopEngineeringResources,
+    ),
+  { ssr: true },
+);
+
 function GuideResources({ guide }: { guide: Guide }) {
   if (guide.resourceIds?.includes("instruction-files")) {
     return <InstructionResources />;
@@ -88,6 +101,10 @@ function GuideResources({ guide }: { guide: Guide }) {
 
   if (guide.resourceIds?.includes("mcp-security")) {
     return <McpSecurityResources />;
+  }
+
+  if (guide.resourceIds?.includes("loop-engineering")) {
+    return <LoopEngineeringResourcePanel />;
   }
 
   return null;

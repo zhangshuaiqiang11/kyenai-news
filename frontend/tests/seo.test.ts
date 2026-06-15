@@ -26,6 +26,7 @@ describe("SEO helpers", () => {
   const targetGuideSlugs = [
     "agents-md-vs-claude-md-cursorrules-copilot-instructions",
     "secure-mcp-servers-ai-coding-agents",
+    "loop-engineering-ai-coding-agents",
   ] as const;
 
   it("formats date-only editorial values in UTC", () => {

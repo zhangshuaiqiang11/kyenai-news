@@ -8,7 +8,7 @@ import { cleanup, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { BenchmarkPanel } from "../components/BenchmarkPanel";
-import GuidePage, { loadInstructionResources } from "../pages/guides/[slug]";
+import GuidePage, { loadInstructionResources, loadLoopEngineeringResources } from "../pages/guides/[slug]";
 import GuidesPage, { getStaticProps as getGuidesStaticProps } from "../pages/guides";
 import { getStaticProps as getHomeStaticProps } from "../pages";
 import { getGuide, getGuides, getInternalLinkedGuides } from "../lib/guides";
@@ -39,6 +39,7 @@ const privateScoringLabels = [
 const targetGuideSlugs = [
   "agents-md-vs-claude-md-cursorrules-copilot-instructions",
   "secure-mcp-servers-ai-coding-agents",
+  "loop-engineering-ai-coding-agents",
 ] as const;
 
 vi.mock("next/router", () => ({
@@ -183,6 +184,9 @@ describe("public guide SEO copy", () => {
     expect(guidePageSource).toMatch(
       /dynamic\(\s*\(\)\s*=>\s*import\("\.\.\/\.\.\/components\/McpSecurityControls"\)/,
     );
+    expect(guidePageSource).toMatch(
+      /dynamic\(\s*\(\)\s*=>\s*import\("\.\.\/\.\.\/components\/LoopEngineeringResources"\)/,
+    );
     expect(guidePageSource).not.toMatch(
       /import\s+\{[^}]*InstructionCompatibilityMatrix[^}]*\}\s+from\s+["'][^"']+["']/,
     );
@@ -299,6 +303,27 @@ describe("public guide SEO copy", () => {
 
     const markup = document.body.textContent || "";
     expect(markup).not.toMatch(/\b0 seconds\b|\$0(?:\.00)?|\bestimated?\b/i);
+  });
+
+  it("renders loop engineering resources in server HTML only for the loop guide", async () => {
+    const guide = getGuide("loop-engineering-ai-coding-agents");
+
+    expect(guide).toBeDefined();
+    const relatedGuides = getInternalLinkedGuides(guide!);
+    const LoopResources = await loadLoopEngineeringResources();
+    const resourceMarkup = renderToStaticMarkup(<LoopResources />);
+
+    expect(resourceMarkup).toContain("Loop engineering pattern matrix");
+    expect(resourceMarkup).toContain("Five loop building blocks");
+    expect(resourceMarkup).toContain("Plan → execute → verify");
+    expect(resourceMarkup).not.toContain('type="application/ld+json"');
+
+    render(<GuidePage guide={guide!} relatedGuides={relatedGuides} relatedArticles={[]} />);
+    await screen.findByRole("heading", { name: /loop engineering pattern matrix/i });
+
+    const answerPanel = screen.getByRole("heading", { name: /^quick answer$/i }).closest("section");
+    expect(answerPanel?.textContent).toMatch(/act → observe → reason/i);
+    expect(answerPanel?.textContent).toMatch(/stop rule/i);
   });
 
   it("keeps static resource downloads as ordinary links and out of guide JSON-LD", async () => {

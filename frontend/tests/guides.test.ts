@@ -49,7 +49,7 @@ describe("guide SEO data", () => {
     const guides = getGuides();
     const slugs = guides.map((guide) => guide.slug);
 
-    expect(guides).toHaveLength(10);
+    expect(guides).toHaveLength(11);
     expect(slugs).toContain("agents-md-vs-claude-md-cursorrules-copilot-instructions");
     expect(slugs).toContain("claude-code-subagents-examples");
     expect(slugs).toContain("claude-code-hooks-mcp-setup");
@@ -60,6 +60,7 @@ describe("guide SEO data", () => {
     expect(slugs).toContain("agent-mode-vs-chat-mode-in-ide");
     expect(slugs).toContain("local-vs-cloud-ai-coding-agent");
     expect(slugs).toContain("agent-governance-checklist-for-software-teams");
+    expect(slugs).toContain("loop-engineering-ai-coding-agents");
     expect(guides.every((guide) => guide.evidence.length >= 2)).toBe(true);
     expect(guides.every((guide) => guide.checklist.length >= 5)).toBe(true);
   });
@@ -72,7 +73,7 @@ describe("guide SEO data", () => {
     );
 
     expect(new Set(slugs).size).toBe(slugs.length);
-    expect(primaryKeywords).toHaveLength(10);
+    expect(primaryKeywords).toHaveLength(11);
     expect(primaryKeywords.every(Boolean)).toBe(true);
     expect(new Set(primaryKeywords).size).toBe(primaryKeywords.length);
   });
@@ -178,6 +179,22 @@ describe("guide SEO data", () => {
     expect(guide!.resourceIds).toEqual(["agents-md-template"]);
   });
 
+  it("attaches loop pattern resources to the loop engineering guide", () => {
+    const guide = getGuide("loop-engineering-ai-coding-agents");
+
+    expect(guide).toBeDefined();
+    expect(guide!.resourceIds).toEqual(["loop-engineering"]);
+    expect(guide!.updatedAt).toBe("2026-06-15");
+
+    const quickAnswer = guide!.sections[0].body[0];
+    expect(quickAnswer).toMatch(/act → observe → reason/i);
+    expect(quickAnswer).toMatch(/stop rule/i);
+    expect(quickAnswer).not.toMatch(/in today's fast-paced|unlock|revolutionize|game-changer/i);
+
+    const unrelatedGuides = getGuides().filter((candidate) => candidate.slug !== guide!.slug);
+    expect(unrelatedGuides.every((candidate) => !candidate.resourceIds?.includes("loop-engineering"))).toBe(true);
+  });
+
   it("keeps private editorial signals available by guide slug", () => {
     const signals = getGuideEditorialSignals("codex-vs-claude-code");
 
@@ -201,10 +218,10 @@ describe("guide SEO data", () => {
 
     expect(priorityGuides.map((guide) => guide.slug)).toEqual([
       "agents-md-template-for-ai-coding-agents",
+      "loop-engineering-ai-coding-agents",
       "agents-md-vs-claude-md-cursorrules-copilot-instructions",
       "codex-vs-claude-code",
       "local-vs-cloud-ai-coding-agent",
-      "agent-mode-vs-chat-mode-in-ide",
     ]);
     expect(JSON.stringify(priorityGuides)).not.toContain('"demandScore"');
   });

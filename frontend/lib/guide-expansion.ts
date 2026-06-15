@@ -720,4 +720,217 @@ export const expansionGuides: Guide[] = [
     metaDescription:
       "A plain governance checklist for software teams adopting AI coding agents: permissions, logs, approval, sandboxing, and review.",
   },
+  {
+    id: "guide-loop-engineering",
+    title: "Loop engineering for AI coding agents",
+    slug: "loop-engineering-ai-coding-agents",
+    summary:
+      "Loop engineering designs autonomous act-observe-reason cycles for coding agents instead of one-shot prompts. Define goals, tools, termination rules, and cost limits before scaling Cursor Automations, Claude Code /loop, or subagent workflows.",
+    intent:
+      "Developers want to move from prompting agents task-by-task to designing durable loops that plan, change code, verify results, and stop safely.",
+    audience: "Developers, staff engineers, and platform teams adopting agentic coding workflows in Cursor, Claude Code, Codex, or custom CI agents.",
+    pageType: "Practical loop design guide",
+    secondaryKeywords: [
+      "agentic loop AI coding",
+      "Cursor loop automation",
+      "Claude Code /loop scheduling",
+      "plan-execute-verify agent loop",
+      "loop engineering vs prompt engineering",
+    ],
+    sections: [
+      {
+        heading: "Quick answer",
+        body: [
+          "Loop engineering is the practice of designing AI coding systems that repeat act → observe → reason cycles until a goal is met or a stop rule fires. Unlike single-shot prompting or fixed cron scripts, the agent inside the loop chooses the next step from test output, logs, diffs, or tool results. Your job shifts from writing every prompt to defining the goal, verification command, iteration cap, escalation path, and cost boundary.",
+        ],
+      },
+      {
+        heading: "Loop engineering is not prompt engineering at scale",
+        body: [
+          "Prompt engineering optimizes one interaction. Loop engineering turns that interaction into a component inside a larger system with memory, tools, and termination logic. A cron job runs the same script on a schedule; a loop runs an agent that inspects current state, picks the next action, checks the outcome, and decides whether to continue, retry, roll back, or stop.",
+          "Practitioner writing in mid-2026 frames the shift plainly: stop babysitting agents with manual prompts and start designing the systems that prompt them. That does not remove engineering judgment. It moves judgment to loop design—what success looks like, what evidence counts, and when a human must intervene.",
+        ],
+      },
+      {
+        heading: "Where loops live in today's tools",
+        body: [
+          "Claude Code supports recurring work through /loop scheduling, hooks that fire at lifecycle points, subagents for split explore-implement-verify roles, and headless or CI-style runs that persist after a laptop closes. Cursor supports long-running cloud agents, parallel agents on isolated branches, and Automations triggered by GitHub, Slack, Linear, or schedules. Codex and similar agents implement loops through tool calls, subagents, and repository instructions that name verification commands.",
+          "The surface differs by vendor, but the architecture repeats: goal, context, tools, observation, adjustment, termination. Pick the tool by where your team already works, then design the loop around observable repo evidence rather than model charisma.",
+        ],
+      },
+      {
+        heading: "Common patterns and when to use them",
+        body: [
+          "Plan-execute-verify fits bounded repo tasks with a clear pass command. Retry-with-cap helps flaky setup steps but needs a hard attempt limit per item. Evaluator-optimizer pairs work well for reviews and docs when criteria are explicit. Explore-narrow prevents premature edits in unfamiliar code. Scheduled wake-up loops handle recurring triage. Human-in-the-loop checkpoints belong before production, permission widening, or destructive operations.",
+          "Anthropic's agent guidance recommends adding complexity only when simpler flows fail. Start with one loop on one repository task, measure review effort and token use, then add subagents or schedules only when the simpler loop stalls.",
+        ],
+      },
+    ],
+    recommendedPlay: [
+      "Start with one real repository task and a single plan-execute-verify loop before adding schedules or parallel agents.",
+      "Write the done signal as a command or artifact, not a vibe: passing tests, green build, opened PR, or filed ticket.",
+      "Cap iterations per item and escalate when the same failure repeats twice.",
+      "Separate exploration from implementation so read-only passes cannot mutate production paths.",
+      "Budget tokens and concurrency before running unattended cloud or scheduled loops.",
+    ],
+    decisionTable: {
+      title: "When to prompt vs when to loop",
+      intro: "Use this table to decide whether a task needs a durable loop or a single supervised agent session.",
+      columns: ["Prompt once when", "Design a loop when", "Stop rule to add"],
+      rows: [
+        {
+          label: "Task shape",
+          values: [
+            "The steps are predictable and fit one focused session",
+            "The agent must read errors, revise, and re-run verification",
+            "Name the verification command and maximum iterations",
+          ],
+        },
+        {
+          label: "Duration",
+          values: [
+            "You can stay at the keyboard for the whole task",
+            "Work should continue while you review other items or close the laptop",
+            "Set a schedule or queue with a summary artifact per run",
+          ],
+        },
+        {
+          label: "Risk",
+          values: [
+            "Changes are reversible and confined to a local branch",
+            "The loop touches shared files, CI, production config, or permissions",
+            "Require a human checkpoint before merge or deploy",
+          ],
+        },
+        {
+          label: "Cost",
+          values: [
+            "Token use is small and visible in one sitting",
+            "Retries, parallel agents, or long horizons can compound quickly",
+            "Set per-run and per-day budgets with automatic stop",
+          ],
+        },
+        {
+          label: "Team workflow",
+          values: [
+            "One engineer needs a quick answer or small patch",
+            "A team wants repeatable triage, review, or hygiene across repos",
+            "Publish run logs without secrets and name an owner for loop drift",
+          ],
+        },
+      ],
+    },
+    actionSteps: [
+      {
+        title: "Name the goal and done signal",
+        body: "Write what finished means in observable terms: command output, PR state, ticket link, or report section. Avoid fuzzy goals like 'make it better' that let the loop run without a verdict.",
+      },
+      {
+        title: "Choose the first pattern",
+        body: "Default to plan-execute-verify for code changes. Add evaluator-optimizer only when review criteria are explicit. Reserve scheduled wake-up loops for recurring triage after the single-task loop works once.",
+      },
+      {
+        title: "Wire observation before speed",
+        body: "Give the agent tests, linters, build commands, diff review, or MCP tools that return ground truth. A loop without observation is just expensive repetition.",
+      },
+      {
+        title: "Set termination and escalation",
+        body: "Cap attempts per file or task, stop when the same error repeats, and name who approves production or permission changes. Document what the loop should do when blocked.",
+      },
+      {
+        title: "Pilot, measure, then parallelize",
+        body: "Run the loop on one repo task, record review time, token use, and human interventions actually observed. Add parallel agents or cloud handoff only when single-threaded loops are trustworthy.",
+      },
+    ],
+    pitfalls: [
+      {
+        title: "Fuzzy goals with no done signal",
+        fix: "Translate goals into a verification command, required artifact, or explicit human acceptance step before the first unattended run.",
+      },
+      {
+        title: "Unbounded retries on the same mistake",
+        fix: "Cap iterations per item and change strategy after repeated failures instead of paying for identical attempts.",
+      },
+      {
+        title: "Cron without an agent decision-maker",
+        fix: "Ensure each run observes current state and chooses the next action; a fixed script on a timer is scheduling, not loop engineering.",
+      },
+      {
+        title: "Parallel agents on shared files",
+        fix: "Isolate branches or assign disjoint ownership; merge results deliberately instead of letting agents overwrite each other.",
+      },
+    ],
+    internalLinks: [
+      {
+        slug: "claude-code-subagents-examples",
+        anchor: "Claude Code subagents workflow examples",
+        reason: "Subagents are a common way to split explore, implement, and verify inside a loop.",
+      },
+      {
+        slug: "claude-code-hooks-mcp-setup",
+        anchor: "Claude Code hooks and MCP setup",
+        reason: "Hooks and MCP supply the observation and tool access loops need to act on real systems.",
+      },
+      {
+        slug: "agent-mode-vs-chat-mode-in-ide",
+        anchor: "agent mode vs chat mode in IDE",
+        reason: "Loops usually run in agent mode; chat mode stays better for one-off questions.",
+      },
+      {
+        slug: "local-vs-cloud-ai-coding-agent",
+        anchor: "local vs cloud AI coding agent",
+        reason: "Long-running loops often move to cloud agents once local proof is complete.",
+      },
+      {
+        slug: "agent-governance-checklist-for-software-teams",
+        anchor: "agent governance checklist",
+        reason: "Unattended loops need permissions, logs, and approval rules before team-wide rollout.",
+      },
+    ],
+    checklist: [
+      "Write the goal and done signal in observable terms.",
+      "Pick plan-execute-verify as the default loop pattern.",
+      "Attach tests, linters, or builds as loop observation.",
+      "Cap iterations and name escalation for repeated failures.",
+      "Add human checkpoints before production or destructive actions.",
+      "Budget tokens and parallel agents before unattended runs.",
+      "Log outcomes without secrets and assign a loop owner.",
+    ],
+    evidence: [
+      {
+        title: "Loop Engineering",
+        url: "https://addyosmani.com/blog/loop-engineering/",
+        publisher: "Addy Osmani",
+        note: "Practitioner overview of moving from prompting agents to designing autonomous loops.",
+      },
+      {
+        title: "Building effective AI agents",
+        url: "https://www.anthropic.com/research/building-effective-agents",
+        publisher: "Anthropic",
+        note: "Official guidance on agent workflows, evaluator-optimizer loops, and when to add complexity.",
+      },
+      {
+        title: "What is loop engineering?",
+        url: "https://kilo.ai/articles/what-is-loop-engineering",
+        publisher: "Kilo",
+        note: "Defines the plan-search-modify-verify-repair cycle for AI-assisted software work.",
+      },
+      {
+        title: "Claude Code overview",
+        url: "https://docs.anthropic.com/en/docs/claude-code/overview",
+        publisher: "Anthropic",
+        note: "Places scheduling, hooks, subagents, and headless runs in the Claude Code workflow.",
+      },
+    ],
+    relatedArticleSlugs: [
+      "claude-code-dynamic-workflows-parallel-subagents",
+      "cursor-enterprise-organizations-governance",
+      "github-copilot-cloud-local-sandboxes-preview",
+    ],
+    updatedAt: "2026-06-15",
+    metaTitle: "Loop Engineering for AI Coding Agents",
+    metaDescription:
+      "Learn loop engineering for AI coding agents: act-observe-reason cycles, stop rules, Cursor Automations, Claude Code /loop, and subagent patterns.",
+    resourceIds: ["loop-engineering"],
+  },
 ];

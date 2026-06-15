@@ -8,6 +8,7 @@ import { ArticleExplorer } from "../components/ArticleExplorer";
 import { BenchmarkPanel } from "../components/BenchmarkPanel";
 import { InstructionCompatibilityMatrix } from "../components/InstructionCompatibilityMatrix";
 import { Layout } from "../components/Layout";
+import { LoopPatternMatrix } from "../components/LoopPatternMatrix";
 import { McpSecurityControls } from "../components/McpSecurityControls";
 import { SiteSearch } from "../components/SiteSearch";
 import { SignalPanel } from "../components/SignalPanel";
@@ -71,6 +72,12 @@ describe("accessibility", () => {
 
   it("keeps MCP security resource tables free of axe violations", async () => {
     const { container } = render(<McpSecurityControls />);
+
+    await expectNoAxeViolations(container);
+  });
+
+  it("keeps loop engineering resource tables free of axe violations", async () => {
+    const { container } = render(<LoopPatternMatrix />);
 
     await expectNoAxeViolations(container);
   });

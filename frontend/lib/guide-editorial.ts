@@ -134,6 +134,21 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
       "ai agent permissions checklist",
     ],
   },
+  "loop-engineering-ai-coding-agents": {
+    priority: "P0",
+    primaryKeyword: "loop engineering",
+    demandScore: 8.7,
+    attackabilityScore: 9.1,
+    fitScore: 9.6,
+    gscWatchQueries: [
+      "what is loop engineering",
+      "loop engineering ai coding agents",
+      "cursor loop automation",
+      "claude code loop command",
+      "loop engineering vs prompt engineering",
+      "how to design agent loops",
+    ],
+  },
 };
 
 export function getGuideEditorialSignals(slug: string): GuideEditorialSignals | undefined {
