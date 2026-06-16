@@ -23,7 +23,12 @@ export default function AuthorPage({ articles }: AuthorPageProps) {
 
   return (
     <Layout>
-      <SeoHead title="Editorial Automation Desk" description={description} path="/authors/editorial-automation-desk">
+      <SeoHead
+        title="Editorial Automation Desk"
+        description={description}
+        path="/authors/editorial-automation-desk"
+        robots="noindex,follow"
+      >
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(authorJsonLd) }} />
       </SeoHead>
