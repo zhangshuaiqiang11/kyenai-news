@@ -4,6 +4,7 @@ import { Layout } from "../components/Layout";
 import { SeoHead } from "../components/SeoHead";
 import { getArticles } from "../lib/api";
 import { getEntityCoverage, type BrandEntity } from "../lib/entities";
+import { getPublishedArticles } from "../lib/publication";
 import { buildBreadcrumbJsonLd, buildCanonicalUrl } from "../lib/seo";
 import type { Article } from "../lib/types";
 
@@ -112,7 +113,7 @@ function EntityCard({ articleBySlug, entity }: { articleBySlug: Map<string, Arti
 }
 
 export async function getStaticProps() {
-  const articles = await getArticles();
+  const articles = getPublishedArticles(await getArticles());
   return {
     props: {
       articles,
