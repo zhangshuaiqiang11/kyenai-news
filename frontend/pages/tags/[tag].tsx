@@ -5,6 +5,7 @@ import { ArticleCard } from "../../components/ArticleCard";
 import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import { getArticles } from "../../lib/api";
+import { getPublishedArticles } from "../../lib/publication";
 import { buildBreadcrumbJsonLd, buildItemListJsonLd, slugify } from "../../lib/seo";
 import type { Article } from "../../lib/types";
 
@@ -45,14 +46,14 @@ export default function TagPage({ tag, tagSlug, articles }: TagPageProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const articles = await getArticles();
+  const articles = getPublishedArticles(await getArticles());
   const tags = Array.from(new Set(articles.flatMap((article) => article.tags.concat(article.keywords)).map(slugify)));
   return { paths: tags.map((tag) => ({ params: { tag } })), fallback: "blocking" };
 };
 
 export const getStaticProps: GetStaticProps<TagPageProps> = async ({ params }) => {
   const tagSlug = String(params?.tag || "");
-  const allArticles = await getArticles();
+  const allArticles = getPublishedArticles(await getArticles());
   const articles = allArticles.filter((article) =>
     article.tags.concat(article.keywords).some((tag) => slugify(tag) === tagSlug)
   );
