@@ -194,9 +194,7 @@ export function buildGuideFaqs(guide: Guide): FaqItem[] {
       question: "What evidence supports this guide?",
       answer:
         sourcePublishers.length > 0
-          ? `This guide uses listed source material from ${sourcePublishers.join(
-              ", "
-            )}. Source links and scope notes are available on this page.`
+          ? `This guide uses listed source material from ${sourcePublishers.join(", ")}. Source links and scope notes are available on this page.`
           : "This guide does not currently list supporting source records.",
     },
   ];
@@ -222,9 +220,7 @@ export function buildArticleFaqs(article: Article): FaqItem[] {
       question: "What sources support this article?",
       answer:
         sourcePublishers.length > 0
-          ? `The article is based on source records from ${sourcePublishers.join(
-              ", "
-            )}, with links and publication dates listed in the Sources section.`
+          ? `The article is based on source records from ${sourcePublishers.join(", ")}, with links and publication dates listed in the Sources section.`
           : "This page does not currently list supporting source records.",
     },
   ];
@@ -263,10 +259,10 @@ export function buildFaqPageJsonLd(faqs: FaqItem[]) {
 export function buildAuthorJsonLd(name: string, includeContext = true) {
   return {
     ...(includeContext ? { "@context": "https://schema.org" } : {}),
-    "@type": "Person",
+    "@type": "Organization",
     name,
     url: buildCanonicalUrl("/authors/editorial-automation-desk"),
-    worksFor: {
+    parentOrganization: {
       "@type": "Organization",
       name: SITE_NAME,
       url: buildCanonicalUrl("/"),
