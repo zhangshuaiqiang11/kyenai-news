@@ -30,7 +30,7 @@ export default function CategoryPage({ category, articles }: CategoryPageProps) 
 
   return (
     <Layout>
-      <SeoHead title={category} description={description} path={categoryPath}>
+      <SeoHead title={category} description={description} path={categoryPath} robots="noindex,follow">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       </SeoHead>
