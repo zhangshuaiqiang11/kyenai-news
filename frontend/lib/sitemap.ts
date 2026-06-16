@@ -1,4 +1,3 @@
-import { buildCategoryPath } from "./categories";
 import { buildCanonicalUrl } from "./seo";
 import { getGuides } from "./guides";
 import type { Article } from "./types";
@@ -8,37 +7,47 @@ export type SitemapEntry = {
   lastmod: string;
 };
 
+const indexableStaticPaths = ["/", "/about", "/editorial-policy"] as const;
+
+export const noindexUtilityPaths = [
+  "/contact",
+  "/sources",
+  "/entities",
+  "/authors/editorial-automation-desk",
+] as const;
+
+export const noindexPathPrefixes = ["/categories/"] as const;
+
+export function shouldIncludePathInSitemap(path: string): boolean {
+  return !isNoindexPath(path);
+}
+
+export function isNoindexPath(path: string): boolean {
+  const cleanPath = normalizePath(path);
+
+  return (
+    noindexUtilityPaths.includes(cleanPath as (typeof noindexUtilityPaths)[number]) ||
+    noindexPathPrefixes.some((prefix) => cleanPath.startsWith(prefix))
+  );
+}
+
 export function buildSitemapEntries(articles: Article[]): SitemapEntry[] {
-  const latestSiteUpdate = latestDate(articles.map((article) => article.updatedAt));
-  const categories = Array.from(new Set(articles.map((article) => article.category))).sort();
+  const publishedArticles = articles.filter((article) => article.status === "published");
+  const latestSiteUpdate = latestDate(publishedArticles.map((article) => article.updatedAt));
   const guides = getGuides();
 
   return [
-    { loc: buildCanonicalUrl("/"), lastmod: latestSiteUpdate },
-    { loc: buildCanonicalUrl("/about"), lastmod: latestSiteUpdate },
-    { loc: buildCanonicalUrl("/editorial-policy"), lastmod: latestSiteUpdate },
-    { loc: buildCanonicalUrl("/contact"), lastmod: latestSiteUpdate },
-    { loc: buildCanonicalUrl("/sources"), lastmod: latestSiteUpdate },
-    { loc: buildCanonicalUrl("/entities"), lastmod: latestSiteUpdate },
+    ...indexableStaticPaths.map((path) => ({ loc: buildCanonicalUrl(path), lastmod: latestSiteUpdate })),
     { loc: buildCanonicalUrl("/guides"), lastmod: latestDate(guides.map((guide) => guide.updatedAt)) },
-    { loc: buildCanonicalUrl("/authors/editorial-automation-desk"), lastmod: latestSiteUpdate },
     ...guides.map((guide) => ({
       loc: buildCanonicalUrl(`/guides/${guide.slug}`),
       lastmod: toDateOnly(guide.updatedAt),
     })),
-    ...articles
-      .filter((article) => article.status === "published")
-      .map((article) => ({
-        loc: buildCanonicalUrl(`/articles/${article.slug}`),
-        lastmod: toDateOnly(article.updatedAt),
-      })),
-    ...categories.map((category) => ({
-      loc: buildCanonicalUrl(buildCategoryPath(category)),
-      lastmod: latestDate(
-        articles.filter((article) => article.category === category).map((article) => article.updatedAt)
-      ),
+    ...publishedArticles.map((article) => ({
+      loc: buildCanonicalUrl(`/articles/${article.slug}`),
+      lastmod: toDateOnly(article.updatedAt),
     })),
-  ];
+  ].filter((entry) => shouldIncludePathInSitemap(new URL(entry.loc).pathname));
 }
 
 export function renderSitemapXml(entries: SitemapEntry[]): string {
@@ -55,6 +64,12 @@ function latestDate(values: string[]): string {
     return toDateOnly(new Date().toISOString());
   }
   return toDateOnly(new Date(sorted[0]).toISOString());
+}
+
+function normalizePath(path: string): string {
+  const pathname = path.startsWith("http") ? new URL(path).pathname : path;
+  const cleanPath = pathname.split("?")[0].split("#")[0].replace(/\/+$/, "");
+  return cleanPath || "/";
 }
 
 function toDateOnly(value: string): string {
