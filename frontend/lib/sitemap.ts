@@ -1,5 +1,7 @@
-import { buildCanonicalUrl } from "./seo";
+import { getIndexableCategoryNames } from "./category-hubs";
+import { buildCategoryPath } from "./categories";
 import { getGuides } from "./guides";
+import { buildCanonicalUrl } from "./seo";
 import type { Article } from "./types";
 
 export type SitemapEntry = {
@@ -7,7 +9,10 @@ export type SitemapEntry = {
   lastmod: string;
 };
 
-const indexableStaticPaths = ["/", "/about", "/editorial-policy"] as const;
+const staticPageDates = {
+  "/about": "2026-06-06",
+  "/editorial-policy": "2026-06-06",
+} as const;
 
 export const noindexUtilityPaths = [
   "/contact",
@@ -16,7 +21,7 @@ export const noindexUtilityPaths = [
   "/authors/editorial-automation-desk",
 ] as const;
 
-export const noindexPathPrefixes = ["/categories/"] as const;
+export const noindexPathPrefixes = ["/tags/", "/resources/"] as const;
 
 export function shouldIncludePathInSitemap(path: string): boolean {
   return !isNoindexPath(path);
@@ -24,7 +29,6 @@ export function shouldIncludePathInSitemap(path: string): boolean {
 
 export function isNoindexPath(path: string): boolean {
   const cleanPath = normalizePath(path);
-
   return (
     noindexUtilityPaths.includes(cleanPath as (typeof noindexUtilityPaths)[number]) ||
     noindexPathPrefixes.some((prefix) => cleanPath.startsWith(prefix))
@@ -33,11 +37,16 @@ export function isNoindexPath(path: string): boolean {
 
 export function buildSitemapEntries(articles: Article[]): SitemapEntry[] {
   const publishedArticles = articles.filter((article) => article.status === "published");
-  const latestSiteUpdate = latestDate(publishedArticles.map((article) => article.updatedAt));
   const guides = getGuides();
+  const latestContentUpdate = latestDate([
+    ...publishedArticles.map((article) => article.updatedAt),
+    ...guides.map((guide) => guide.updatedAt),
+  ]);
+  const indexableCategories = getIndexableCategoryNames(publishedArticles);
 
   return [
-    ...indexableStaticPaths.map((path) => ({ loc: buildCanonicalUrl(path), lastmod: latestSiteUpdate })),
+    { loc: buildCanonicalUrl("/"), lastmod: latestContentUpdate },
+    ...Object.entries(staticPageDates).map(([path, lastmod]) => ({ loc: buildCanonicalUrl(path), lastmod })),
     { loc: buildCanonicalUrl("/guides"), lastmod: latestDate(guides.map((guide) => guide.updatedAt)) },
     ...guides.map((guide) => ({
       loc: buildCanonicalUrl(`/guides/${guide.slug}`),
@@ -46,6 +55,12 @@ export function buildSitemapEntries(articles: Article[]): SitemapEntry[] {
     ...publishedArticles.map((article) => ({
       loc: buildCanonicalUrl(`/articles/${article.slug}`),
       lastmod: toDateOnly(article.updatedAt),
+    })),
+    ...indexableCategories.map((category) => ({
+      loc: buildCanonicalUrl(buildCategoryPath(category)),
+      lastmod: latestDate(
+        publishedArticles.filter((article) => article.category === category).map((article) => article.updatedAt),
+      ),
     })),
   ].filter((entry) => shouldIncludePathInSitemap(new URL(entry.loc).pathname));
 }
