@@ -4,6 +4,7 @@ import Head from "next/head";
 import { Analytics } from "../components/Analytics";
 
 import "../styles/globals.css";
+import "../styles/seo-hubs.css";
 
 declare global {
   interface Window {
