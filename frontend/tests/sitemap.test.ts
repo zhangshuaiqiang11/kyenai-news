@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { buildSitemapEntries, renderSitemapXml } from "../lib/sitemap";
 import { buildCategoryPath } from "../lib/categories";
-import { seedArticles } from "../lib/seed";
 import { getGuides } from "../lib/guides";
+import { shouldIndexCategory } from "../lib/indexation";
+import { seedArticles } from "../lib/seed";
+import { buildSitemapEntries, renderSitemapXml } from "../lib/sitemap";
 
 describe("sitemap helpers", () => {
   const resourcePaths = [
@@ -18,7 +19,14 @@ describe("sitemap helpers", () => {
     "/resources/mcp-security-review.md",
   ];
 
-  it("keeps indexable editorial URLs in the sitemap with lastmod dates", () => {
+  const noindexPaths = [
+    "/contact",
+    "/sources",
+    "/entities",
+    "/authors/editorial-automation-desk",
+  ];
+
+  it("keeps only indexable editorial URLs in the sitemap with lastmod dates", () => {
     const entries = buildSitemapEntries(seedArticles);
     const locations = entries.map((entry) => entry.loc);
     const publishedArticles = seedArticles.filter((article) => article.status === "published");
@@ -28,23 +36,33 @@ describe("sitemap helpers", () => {
     expect(locations).toContain("https://www.kyenai.com");
     expect(locations).toContain("https://www.kyenai.com/about");
     expect(locations).toContain("https://www.kyenai.com/editorial-policy");
-    expect(locations).toContain("https://www.kyenai.com/contact");
-    expect(locations).toContain("https://www.kyenai.com/sources");
-    expect(locations).toContain("https://www.kyenai.com/entities");
     expect(locations).toContain("https://www.kyenai.com/guides");
-    expect(locations).toContain("https://www.kyenai.com/authors/editorial-automation-desk");
+
+    for (const path of noindexPaths) {
+      expect(locations).not.toContain(`https://www.kyenai.com${path}`);
+    }
+
     for (const article of publishedArticles) {
       expect(locations).toContain(`https://www.kyenai.com/articles/${article.slug}`);
     }
+
     for (const category of categories) {
-      expect(locations).toContain(`https://www.kyenai.com${buildCategoryPath(category)}`);
+      const articleCount = publishedArticles.filter((article) => article.category === category).length;
+      const categoryLocation = `https://www.kyenai.com${buildCategoryPath(category)}`;
+      if (shouldIndexCategory(articleCount)) {
+        expect(locations).toContain(categoryLocation);
+      } else {
+        expect(locations).not.toContain(categoryLocation);
+      }
     }
+
     for (const guide of guides) {
       expect(locations).toContain(`https://www.kyenai.com/guides/${guide.slug}`);
     }
     const guideLocations = locations.filter((location) => location.startsWith("https://www.kyenai.com/guides/"));
     expect(guideLocations).toHaveLength(guides.length);
     expect(guideLocations).toEqual(guides.map((guide) => `https://www.kyenai.com/guides/${guide.slug}`));
+
     for (const resourcePath of resourcePaths) {
       expect(locations.some((location) => location.includes(resourcePath))).toBe(false);
     }
@@ -61,6 +79,9 @@ describe("sitemap helpers", () => {
     expect(xml).toContain("<lastmod>");
     expect(xml).toContain(`https://www.kyenai.com/articles/${seedArticles[0].slug}`);
     expect(xml).not.toContain("/operations");
+    for (const path of noindexPaths) {
+      expect(xml).not.toContain(path);
+    }
     for (const resourcePath of resourcePaths) {
       expect(xml).not.toContain(resourcePath);
     }
