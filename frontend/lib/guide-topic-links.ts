@@ -1,4 +1,3 @@
-import { buildCategoryPath } from "./categories";
 import { getGuides } from "./guides";
 import { slugify } from "./seo";
 
@@ -20,6 +19,10 @@ const TOPIC_GUIDE_OVERRIDES: Record<string, string> = {
   "claude code sub-agents": "claude-code-subagents-examples",
   "ai coding subagents": "claude-code-subagents-examples",
   "mcp security": "secure-mcp-servers-ai-coding-agents",
+  "mcp server security": "secure-mcp-servers-ai-coding-agents",
+  "mcp authentication": "secure-mcp-servers-ai-coding-agents",
+  "mcp permissions": "secure-mcp-servers-ai-coding-agents",
+  "ai agent tool security": "secure-mcp-servers-ai-coding-agents",
   "loop engineering": "loop-engineering-ai-coding-agents",
   "agentic loop ai coding": "loop-engineering-ai-coding-agents",
   "cursor loop automation": "loop-engineering-ai-coding-agents",
@@ -27,16 +30,13 @@ const TOPIC_GUIDE_OVERRIDES: Record<string, string> = {
   "plan-execute-verify agent loop": "loop-engineering-ai-coding-agents",
   "loop engineering vs prompt engineering": "loop-engineering-ai-coding-agents",
   "how to design agent loops": "loop-engineering-ai-coding-agents",
+  "gemini cli migration": "antigravity-cli-gemini-cli-migration",
+  "antigravity cli": "antigravity-cli-gemini-cli-migration",
+  "gemini cli transition": "antigravity-cli-gemini-cli-migration",
+  "google coding agent cli": "antigravity-cli-gemini-cli-migration",
 };
 
-const TOPIC_CATEGORY_OVERRIDES: Record<string, string> = {
-  "ai coding agents": "AI Coding Agents",
-  "ide cli": "IDE & CLI",
-  "agent workflows": "Agent Workflows",
-  "security governance": "Security & Governance",
-};
-
-export function resolveGuideTopicHref(keyword: string, currentGuideSlug?: string): string {
+export function resolveGuideTopicHref(keyword: string, currentGuideSlug?: string): string | null {
   const normalized = keyword.trim().toLowerCase();
   const guides = getGuides();
   const overrideSlug = TOPIC_GUIDE_OVERRIDES[normalized];
@@ -67,14 +67,5 @@ export function resolveGuideTopicHref(keyword: string, currentGuideSlug?: string
     return `/guides/${guideBySlug.slug}`;
   }
 
-  const categoryName = TOPIC_CATEGORY_OVERRIDES[keywordSlug];
-  if (categoryName) {
-    return buildCategoryPath(categoryName);
-  }
-
-  if (keywordSlug.length > 0) {
-    return `/tags/${keywordSlug}`;
-  }
-
-  return "/guides";
+  return null;
 }
