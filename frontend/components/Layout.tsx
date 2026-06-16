@@ -1,8 +1,12 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
+import {
+  INSTRUCTION_COMPARISON_GUIDE_HREF,
+  LOOP_ENGINEERING_GUIDE_HREF,
+  MCP_SECURITY_GUIDE_HREF,
+} from "../lib/guide-routes";
 import { formatDate, SITE_NAME } from "../lib/seo";
-import { buildCategoryPath } from "../lib/categories";
 import { getVisibleEditorialUpdate } from "../lib/site-status";
 
 type LayoutProps = {
@@ -108,11 +112,9 @@ export function Layout({ children }: LayoutProps) {
         </Link>
         <nav className="main-nav" aria-label="Primary navigation">
           <Link href="/guides">Guides</Link>
-          <Link href={buildCategoryPath("AI Coding Agents")}>AI Agents</Link>
-          <Link href={buildCategoryPath("IDE & CLI")}>IDE & CLI</Link>
-          <Link href={buildCategoryPath("Security & Governance")}>Governance</Link>
-          <Link href="/sources">Sources</Link>
-          <Link href="/entities">Entities</Link>
+          <Link href={INSTRUCTION_COMPARISON_GUIDE_HREF}>Agent Instructions</Link>
+          <Link href={MCP_SECURITY_GUIDE_HREF}>MCP Security</Link>
+          <Link href={LOOP_ENGINEERING_GUIDE_HREF}>Agent Loops</Link>
           <Link href="/editorial-policy">Editorial</Link>
         </nav>
         <div className="header-actions">
@@ -137,6 +139,7 @@ export function Layout({ children }: LayoutProps) {
       <footer className="site-footer" aria-label="Footer">
         <Link href="/about">About</Link>
         <Link href="/guides">Guides</Link>
+        <Link href="/sources">Sources</Link>
         <Link href="/entities">Entities</Link>
         <Link href="/editorial-policy">Methodology</Link>
         <Link href="/contact">Contact</Link>
