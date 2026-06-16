@@ -86,6 +86,19 @@ const nextConfig = {
   async redirects() {
     return categoryRedirects;
   },
+  async headers() {
+    return [
+      {
+        source: "/resources/:path*",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow, noarchive",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
