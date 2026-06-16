@@ -1,15 +1,16 @@
 import { describe, expect, it } from "vitest";
 
 import { buildCategoryPath } from "../lib/categories";
+import { getGuides } from "../lib/guides";
 import {
-  buildArticleJsonLd,
   buildArticleFaqs,
+  buildArticleJsonLd,
   buildAuthorJsonLd,
   buildBreadcrumbJsonLd,
   buildCanonicalUrl,
   buildFaqPageJsonLd,
-  buildGuideItemListJsonLd,
   buildGuideFaqs,
+  buildGuideItemListJsonLd,
   buildGuideJsonLd,
   buildItemListJsonLd,
   buildMetaDescription,
@@ -22,7 +23,18 @@ import {
   formatPageTitle,
 } from "../lib/seo";
 import { seedArticles } from "../lib/seed";
-import { getGuides } from "../lib/guides";
+
+const editorialOrganization = (includeContext = false) => ({
+  ...(includeContext ? { "@context": "https://schema.org" } : {}),
+  "@type": "Organization",
+  name: "Editorial Automation Desk",
+  url: "https://www.kyenai.com/authors/editorial-automation-desk",
+  parentOrganization: {
+    "@type": "Organization",
+    name: "KyenAI",
+    url: "https://www.kyenai.com",
+  },
+});
 
 describe("SEO helpers", () => {
   const targetGuideSlugs = [
@@ -37,13 +49,12 @@ describe("SEO helpers", () => {
 
   it("builds stable canonical article URLs without query noise", () => {
     expect(buildCanonicalUrl("/articles/google-antigravity-cli-gemini-cli-transition?utm_source=x")).toBe(
-      "https://www.kyenai.com/articles/google-antigravity-cli-gemini-cli-transition"
+      "https://www.kyenai.com/articles/google-antigravity-cli-gemini-cli-transition",
     );
   });
 
   it.each(targetGuideSlugs)("keeps the %s guide canonical path stable and strips query and fragment noise", (slug) => {
     const path = `/guides/${slug}`;
-
     expect(buildCanonicalUrl(path)).toBe(`https://www.kyenai.com${path}`);
     expect(buildCanonicalUrl(`${path}?utm_source=regression#benchmark`)).toBe(`https://www.kyenai.com${path}`);
   });
@@ -51,7 +62,6 @@ describe("SEO helpers", () => {
   it("keeps generated meta descriptions readable and page-specific", () => {
     const article = seedArticles.find((item) => item.slug === "google-antigravity-cli-gemini-cli-transition") || seedArticles[0];
     const description = buildMetaDescription(article);
-
     expect(description.length).toBeLessThanOrEqual(160);
     expect(description).toContain("Antigravity CLI");
     expect(description).not.toContain("In today's digital era");
@@ -60,7 +70,6 @@ describe("SEO helpers", () => {
   it("keeps the seed article set focused on AI coding agent evidence", () => {
     const slugs = seedArticles.map((article) => article.slug);
     const categories = new Set(seedArticles.map((article) => article.category));
-
     expect(slugs).not.toContain("ai-search-visibility-tools");
     expect(categories).not.toContain("SEO Systems");
   });
@@ -78,16 +87,7 @@ describe("SEO helpers", () => {
     expect(jsonLd.wordCount).toBe(countArticleWords(article));
     expect(jsonLd.about).toEqual(expect.arrayContaining([{ "@type": "Thing", name: article.keywords[0] }]));
     expect(jsonLd.image).toEqual({ "@type": "ImageObject", url: expect.stringContaining("og-image") });
-    expect(jsonLd.author).toEqual({
-      "@type": "Person",
-      name: article.authorName,
-      url: "https://www.kyenai.com/authors/editorial-automation-desk",
-      worksFor: {
-        "@type": "Organization",
-        name: "KyenAI",
-        url: "https://www.kyenai.com",
-      },
-    });
+    expect(jsonLd.author).toEqual(editorialOrganization());
     expect(jsonLd.publisher).toEqual({
       "@type": "Organization",
       name: "KyenAI",
@@ -116,7 +116,6 @@ describe("SEO helpers", () => {
 
   it.each(targetGuideSlugs)("keeps %s TechArticle schema aligned with visible guide evidence", (slug) => {
     const guide = getGuides().find((item) => item.slug === slug);
-
     expect(guide).toBeDefined();
     const jsonLd = buildGuideJsonLd(guide!);
     const serializedJsonLd = JSON.stringify(jsonLd);
@@ -125,16 +124,7 @@ describe("SEO helpers", () => {
     expect(jsonLd.headline).toBe(guide!.title);
     expect(jsonLd.url).toBe(`https://www.kyenai.com/guides/${slug}`);
     expect(jsonLd.dateModified).toBe(guide!.updatedAt);
-    expect(jsonLd.author).toEqual({
-      "@type": "Person",
-      name: "Editorial Automation Desk",
-      url: "https://www.kyenai.com/authors/editorial-automation-desk",
-      worksFor: {
-        "@type": "Organization",
-        name: "KyenAI",
-        url: "https://www.kyenai.com",
-      },
-    });
+    expect(jsonLd.author).toEqual(editorialOrganization());
     expect(jsonLd.citation).toEqual(guide!.evidence.map((source) => source.url));
     expect(jsonLd.isBasedOn.map((source) => source.url)).toEqual(guide!.evidence.map((source) => source.url));
     expect(jsonLd).not.toHaveProperty("aggregateRating");
@@ -150,7 +140,6 @@ describe("SEO helpers", () => {
 
   it.each(targetGuideSlugs)("derives %s FAQ schema only from visible guide recommendations, audience, and evidence", (slug) => {
     const guide = getGuides().find((item) => item.slug === slug);
-
     expect(guide).toBeDefined();
     const faqs = buildGuideFaqs(guide!);
     const jsonLd = buildFaqPageJsonLd(faqs);
@@ -162,9 +151,7 @@ describe("SEO helpers", () => {
     for (const publisher of Array.from(new Set(guide!.evidence.map((source) => source.publisher)))) {
       expect(faqs[2].answer).toContain(publisher);
     }
-    expect(jsonLd.mainEntity.map((entity) => entity.acceptedAnswer.text)).toEqual(
-      faqs.map((faq) => faq.answer),
-    );
+    expect(jsonLd.mainEntity.map((entity) => entity.acceptedAnswer.text)).toEqual(faqs.map((faq) => faq.answer));
     expect(serializedFaqs).not.toMatch(
       /(?:\bbenchmark (?:passed|succeeded)|\b\d+(?:\.\d+)?%\s+(?:success|pass(?:ed| rate)?)|\b\d+\s+(?:benchmark\s+)?runs?\b|\b\d+\s+files?\s+changed\b|\b\d+\s+(?:human\s+)?interventions?\b|\b\d+(?:\.\d+)?\s+seconds?\b|\$\d|\bmeasured cost\b)/i,
     );
@@ -191,11 +178,8 @@ describe("SEO helpers", () => {
       faqs.map((faq) => ({
         "@type": "Question",
         name: faq.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: faq.answer,
-        },
-      }))
+        acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      })),
     );
   });
 
@@ -208,7 +192,6 @@ describe("SEO helpers", () => {
         { id: "depth-implications", type: "paragraph", content: "Implications paragraph.", sourceIds: [] },
       ],
     });
-
     expect(faqs[1].answer).toBe("Implications paragraph.");
   });
 
@@ -219,7 +202,6 @@ describe("SEO helpers", () => {
       blocks: [{ id: "first-context", type: "paragraph", content: "First paragraph fallback.", sourceIds: [] }],
     });
     const summaryFaqs = buildArticleFaqs({ ...article, blocks: [] });
-
     expect(paragraphFaqs[1].answer).toBe("First paragraph fallback.");
     expect(summaryFaqs[1].answer).toBe(article.summary);
   });
@@ -232,7 +214,6 @@ describe("SEO helpers", () => {
     ["Research Operations", "research operations"],
   ])("uses a natural team label for the %s category", (category, label) => {
     const faqs = buildArticleFaqs({ ...seedArticles[0], category });
-
     expect(faqs[1].question).toBe(`Why does this matter for ${label} teams?`);
   });
 
@@ -244,41 +225,25 @@ describe("SEO helpers", () => {
       ...article,
       sources: [firstSource, { ...firstSource, id: "duplicate-publisher" }, secondSource],
     });
-
     expect(faqs[2].answer).toBe(
-      `The article is based on source records from ${firstSource.publisher}, ${secondSource.publisher}, with links and publication dates listed in the Sources section.`
+      `The article is based on source records from ${firstSource.publisher}, ${secondSource.publisher}, with links and publication dates listed in the Sources section.`,
     );
   });
 
   it("does not invent a Sources section claim when an article has no sources", () => {
     const faqs = buildArticleFaqs({ ...seedArticles[0], sources: [] });
-
     expect(faqs[2].answer).toBe("This page does not currently list supporting source records.");
     expect(faqs[2].answer).not.toContain("links and publication dates");
   });
 
-  it("builds author Person JSON-LD from the visible editorial byline only", () => {
-    const jsonLd = buildAuthorJsonLd(seedArticles[0].authorName);
-
-    expect(jsonLd).toEqual({
-      "@context": "https://schema.org",
-      "@type": "Person",
-      name: "Editorial Automation Desk",
-      url: "https://www.kyenai.com/authors/editorial-automation-desk",
-      worksFor: {
-        "@type": "Organization",
-        name: "KyenAI",
-        url: "https://www.kyenai.com",
-      },
-    });
+  it("builds author Organization JSON-LD from the visible editorial byline", () => {
+    expect(buildAuthorJsonLd(seedArticles[0].authorName)).toEqual(editorialOrganization(true));
   });
 
   it("keeps every article deep enough for snippet and AI answer extraction", () => {
     const bannedPhrases = ["in today's digital era", "comprehensive guide", "unlock the power", "game-changing"];
-
     for (const article of seedArticles) {
       const text = article.blocks.map((block) => block.content).join(" ").toLowerCase();
-
       expect(countArticleWords(article)).toBeGreaterThanOrEqual(340);
       expect(article.blocks.some((block) => block.type === "fact_table")).toBe(true);
       expect(article.blocks.some((block) => block.type === "source_note")).toBe(true);
@@ -295,7 +260,6 @@ describe("SEO helpers", () => {
       { name: article.category, path: buildCategoryPath(article.category) },
       { name: article.title, path: `/articles/${article.slug}` },
     ]);
-
     expect(jsonLd["@type"]).toBe("BreadcrumbList");
     expect(jsonLd.itemListElement[0].item).toBe("https://www.kyenai.com");
     expect(jsonLd.itemListElement[2].name).toBe(article.title);
@@ -305,7 +269,6 @@ describe("SEO helpers", () => {
     const listJsonLd = buildItemListJsonLd(seedArticles.slice(0, 3), "Latest AI coding articles", "/");
     const guideListJsonLd = buildGuideItemListJsonLd(getGuides().slice(0, 2), "AI coding agent playbooks", "/guides");
     const websiteJsonLd = buildWebsiteJsonLd();
-
     expect(listJsonLd["@type"]).toBe("ItemList");
     expect(listJsonLd.numberOfItems).toBe(3);
     expect(listJsonLd.itemListElement[0].url).toBe(`https://www.kyenai.com/articles/${seedArticles[0].slug}`);
@@ -317,7 +280,6 @@ describe("SEO helpers", () => {
 
   it("builds top-level organization JSON-LD for brand identity", () => {
     const organizationJsonLd = buildOrganizationJsonLd();
-
     expect(organizationJsonLd["@type"]).toBe("Organization");
     expect(organizationJsonLd.name).toBe("KyenAI");
     expect(organizationJsonLd.url).toBe("https://www.kyenai.com");
@@ -327,7 +289,7 @@ describe("SEO helpers", () => {
   it("formats page titles as one plain string for Next head rendering", () => {
     expect(formatPageTitle("Sources")).toBe("Sources | KyenAI");
     expect(formatPageTitle("KyenAI | AI coding agent news and evidence watch")).toBe(
-      "KyenAI | AI coding agent news and evidence watch"
+      "KyenAI | AI coding agent news and evidence watch",
     );
     expect(formatPageTitle("Sources")).not.toContain("EXTERNAL_UNTRUSTED_CONTENT");
   });
@@ -338,7 +300,6 @@ describe("SEO helpers", () => {
       description: "Evidence-led IDE and CLI updates for AI coding agent workflows.",
       path: "/categories/ide-cli",
     });
-
     expect(seo.title).toBe("IDE & CLI | KyenAI");
     expect(seo.description).toBe("Evidence-led IDE and CLI updates for AI coding agent workflows.");
     expect(seo.canonical).toBe("https://www.kyenai.com/categories/ide-cli");
