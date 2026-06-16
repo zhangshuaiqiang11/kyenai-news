@@ -1,6 +1,7 @@
 import { buildCategoryPath } from "./categories";
-import { buildCanonicalUrl } from "./seo";
 import { getGuides } from "./guides";
+import { shouldIndexCategory, shouldIndexPath } from "./indexation";
+import { buildCanonicalUrl } from "./seo";
 import type { Article } from "./types";
 
 export type SitemapEntry = {
@@ -9,34 +10,39 @@ export type SitemapEntry = {
 };
 
 export function buildSitemapEntries(articles: Article[]): SitemapEntry[] {
-  const latestSiteUpdate = latestDate(articles.map((article) => article.updatedAt));
-  const categories = Array.from(new Set(articles.map((article) => article.category))).sort();
+  const publishedArticles = articles.filter((article) => article.status === "published");
+  const latestSiteUpdate = latestDate(publishedArticles.map((article) => article.updatedAt));
   const guides = getGuides();
+  const categoryEntries = Array.from(new Set(publishedArticles.map((article) => article.category)))
+    .sort()
+    .map((category) => {
+      const categoryArticles = publishedArticles.filter((article) => article.category === category);
+      return {
+        category,
+        articleCount: categoryArticles.length,
+        lastmod: latestDate(categoryArticles.map((article) => article.updatedAt)),
+      };
+    })
+    .filter((category) => shouldIndexCategory(category.articleCount));
+
+  const staticPaths = ["/", "/about", "/editorial-policy", "/guides"].filter(shouldIndexPath);
 
   return [
-    { loc: buildCanonicalUrl("/"), lastmod: latestSiteUpdate },
-    { loc: buildCanonicalUrl("/about"), lastmod: latestSiteUpdate },
-    { loc: buildCanonicalUrl("/editorial-policy"), lastmod: latestSiteUpdate },
-    { loc: buildCanonicalUrl("/contact"), lastmod: latestSiteUpdate },
-    { loc: buildCanonicalUrl("/sources"), lastmod: latestSiteUpdate },
-    { loc: buildCanonicalUrl("/entities"), lastmod: latestSiteUpdate },
-    { loc: buildCanonicalUrl("/guides"), lastmod: latestDate(guides.map((guide) => guide.updatedAt)) },
-    { loc: buildCanonicalUrl("/authors/editorial-automation-desk"), lastmod: latestSiteUpdate },
+    ...staticPaths.map((path) => ({
+      loc: buildCanonicalUrl(path),
+      lastmod: path === "/guides" ? latestDate(guides.map((guide) => guide.updatedAt)) : latestSiteUpdate,
+    })),
     ...guides.map((guide) => ({
       loc: buildCanonicalUrl(`/guides/${guide.slug}`),
       lastmod: toDateOnly(guide.updatedAt),
     })),
-    ...articles
-      .filter((article) => article.status === "published")
-      .map((article) => ({
-        loc: buildCanonicalUrl(`/articles/${article.slug}`),
-        lastmod: toDateOnly(article.updatedAt),
-      })),
-    ...categories.map((category) => ({
+    ...publishedArticles.map((article) => ({
+      loc: buildCanonicalUrl(`/articles/${article.slug}`),
+      lastmod: toDateOnly(article.updatedAt),
+    })),
+    ...categoryEntries.map(({ category, lastmod }) => ({
       loc: buildCanonicalUrl(buildCategoryPath(category)),
-      lastmod: latestDate(
-        articles.filter((article) => article.category === category).map((article) => article.updatedAt)
-      ),
+      lastmod,
     })),
   ];
 }
