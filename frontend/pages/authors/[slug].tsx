@@ -5,6 +5,7 @@ import { ArticleCard } from "../../components/ArticleCard";
 import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import { getArticles } from "../../lib/api";
+import { NOINDEX_FOLLOW_ROBOTS } from "../../lib/indexation";
 import { buildAuthorJsonLd, buildBreadcrumbJsonLd } from "../../lib/seo";
 import type { Article } from "../../lib/types";
 
@@ -23,7 +24,12 @@ export default function AuthorPage({ articles }: AuthorPageProps) {
 
   return (
     <Layout>
-      <SeoHead title="Editorial Automation Desk" description={description} path="/authors/editorial-automation-desk">
+      <SeoHead
+        title="Editorial Automation Desk"
+        description={description}
+        path="/authors/editorial-automation-desk"
+        robots={NOINDEX_FOLLOW_ROBOTS}
+      >
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(authorJsonLd) }} />
       </SeoHead>

@@ -2,6 +2,7 @@ import { Layout } from "../components/Layout";
 import { SeoHead } from "../components/SeoHead";
 import { getArticles } from "../lib/api";
 import { getAllSources } from "../lib/catalog";
+import { NOINDEX_FOLLOW_ROBOTS } from "../lib/indexation";
 import { buildBreadcrumbJsonLd, buildCanonicalUrl, formatDate } from "../lib/seo";
 import type { EvidenceSource } from "../lib/types";
 
@@ -32,7 +33,12 @@ export default function SourcesPage({ sources }: SourcesPageProps) {
 
   return (
     <Layout>
-      <SeoHead title="Source Ledger" description={description} path="/sources">
+      <SeoHead
+        title="Source Ledger"
+        description={description}
+        path="/sources"
+        robots={NOINDEX_FOLLOW_ROBOTS}
+      >
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       </SeoHead>

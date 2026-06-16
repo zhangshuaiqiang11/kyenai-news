@@ -11,6 +11,7 @@ import {
   isCanonicalCategoryParam,
   resolveCategoryFromParam,
 } from "../../lib/categories";
+import { NOINDEX_FOLLOW_ROBOTS, shouldIndexCategory } from "../../lib/indexation";
 import { buildBreadcrumbJsonLd, buildItemListJsonLd } from "../../lib/seo";
 import type { Article } from "../../lib/types";
 
@@ -27,10 +28,11 @@ export default function CategoryPage({ category, articles }: CategoryPageProps) 
     { name: category, path: categoryPath },
   ]);
   const itemListJsonLd = buildItemListJsonLd(articles, `${category} articles`, categoryPath);
+  const robots = shouldIndexCategory(articles.length) ? undefined : NOINDEX_FOLLOW_ROBOTS;
 
   return (
     <Layout>
-      <SeoHead title={category} description={description} path={categoryPath}>
+      <SeoHead title={category} description={description} path={categoryPath} robots={robots}>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       </SeoHead>
@@ -77,7 +79,9 @@ export const getStaticProps: GetStaticProps<CategoryPageProps> = async ({ params
     };
   }
 
-  const categoryArticles = articles.filter((article) => article.category === category);
+  const categoryArticles = articles.filter(
+    (article) => article.status === "published" && article.category === category
+  );
   if (categoryArticles.length === 0) {
     return { notFound: true };
   }

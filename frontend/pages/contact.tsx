@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Layout } from "../components/Layout";
 import { SeoHead } from "../components/SeoHead";
+import { NOINDEX_FOLLOW_ROBOTS } from "../lib/indexation";
 import { buildBreadcrumbJsonLd } from "../lib/seo";
 
 const editorialEmail = process.env.NEXT_PUBLIC_EDITORIAL_EMAIL || "";
@@ -16,7 +17,12 @@ export default function ContactPage() {
 
   return (
     <Layout>
-      <SeoHead title="Contact and Corrections" description={description} path="/contact">
+      <SeoHead
+        title="Contact and Corrections"
+        description={description}
+        path="/contact"
+        robots={NOINDEX_FOLLOW_ROBOTS}
+      >
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       </SeoHead>
       <section className="listing-page trust-page">

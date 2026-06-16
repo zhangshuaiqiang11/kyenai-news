@@ -4,6 +4,7 @@ import { Layout } from "../components/Layout";
 import { SeoHead } from "../components/SeoHead";
 import { getArticles } from "../lib/api";
 import { getEntityCoverage, type BrandEntity } from "../lib/entities";
+import { NOINDEX_FOLLOW_ROBOTS } from "../lib/indexation";
 import { buildBreadcrumbJsonLd, buildCanonicalUrl } from "../lib/seo";
 import type { Article } from "../lib/types";
 
@@ -38,7 +39,12 @@ export default function EntitiesPage({ articles, entities }: EntitiesPageProps) 
 
   return (
     <Layout>
-      <SeoHead title="Entity Ledger" description={description} path="/entities">
+      <SeoHead
+        title="Entity Ledger"
+        description={description}
+        path="/entities"
+        robots={NOINDEX_FOLLOW_ROBOTS}
+      >
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(entityListJsonLd) }} />
       </SeoHead>
