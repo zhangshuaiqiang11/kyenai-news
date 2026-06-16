@@ -2,6 +2,7 @@ import { Layout } from "../components/Layout";
 import { SeoHead } from "../components/SeoHead";
 import { getArticles } from "../lib/api";
 import { getAllSources } from "../lib/catalog";
+import { getPublishedArticles } from "../lib/publication";
 import { buildBreadcrumbJsonLd, buildCanonicalUrl, formatDate } from "../lib/seo";
 import type { EvidenceSource } from "../lib/types";
 
@@ -57,7 +58,7 @@ export default function SourcesPage({ sources }: SourcesPageProps) {
 }
 
 export async function getStaticProps() {
-  const articles = await getArticles();
+  const articles = getPublishedArticles(await getArticles());
   return {
     props: {
       sources: getAllSources(articles),
