@@ -1,0 +1,23 @@
+.keyword-list > span {
+  background: #f3f5f7;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 10px;
+}
+
+.category-overview {
+  display: grid;
+  gap: 14px;
+  margin: 18px 0 30px;
+  max-width: 900px;
+}
+
+.category-overview p {
+  color: #2f3943;
+  font-size: 17px;
+  line-height: 1.7;
+  margin: 0;
+}
