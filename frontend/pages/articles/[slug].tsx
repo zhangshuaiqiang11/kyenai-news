@@ -9,6 +9,7 @@ import { getRelatedGuidesForArticle } from "../../lib/article-guide-links";
 import { buildCategoryPath } from "../../lib/categories";
 import { getArticleEntities } from "../../lib/entities";
 import { resolveIndexableGuideTopicHref } from "../../lib/guide-topic-links";
+import { getPublishedArticles, isPublishedArticle } from "../../lib/publication";
 import {
   buildArticleJsonLd,
   buildArticleFaqs,
@@ -187,15 +188,15 @@ function ArticleBlockView({ block }: { block: ArticleBlock }) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const articles = await getArticles();
+  const articles = getPublishedArticles(await getArticles());
   return { paths: articles.map((article) => ({ params: { slug: article.slug } })), fallback: "blocking" };
 };
 
 export const getStaticProps: GetStaticProps<ArticlePageProps> = async ({ params }) => {
   const slug = String(params?.slug || "");
   const article = await getArticle(slug);
-  if (!article) return { notFound: true };
-  const articles = await getArticles();
+  if (!article || !isPublishedArticle(article)) return { notFound: true };
+  const articles = getPublishedArticles(await getArticles());
   return {
     props: {
       article,
@@ -209,7 +210,7 @@ export const getStaticProps: GetStaticProps<ArticlePageProps> = async ({ params 
 function getRelatedArticles(article: Article, articles: Article[]): Article[] {
   const articleTags = new Set(article.tags.concat(article.keywords).map(slugify));
   return articles
-    .filter((candidate) => candidate.status === "published" && candidate.id !== article.id)
+    .filter((candidate) => candidate.id !== article.id)
     .map((candidate) => ({
       article: candidate,
       score: (candidate.category === article.category ? 4 : 0) +
