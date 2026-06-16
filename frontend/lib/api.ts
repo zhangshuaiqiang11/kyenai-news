@@ -1,3 +1,4 @@
+import { featuredArticles } from "./articles/spacex-cursor-acquisition";
 import { seedArticles } from "./seed";
 import type { Article } from "./types";
 
@@ -34,16 +35,21 @@ export async function getArticles(): Promise<Article[]> {
   try {
     const response = await fetch(`${API_BASE_URL}/api/articles`, { next: { revalidate: 300 } as never });
     if (!response.ok) {
-      return seedArticles;
+      return mergeFeaturedArticles(seedArticles);
     }
     const data = (await response.json()) as BackendArticle[];
-    return data.map(fromBackendArticle);
+    return mergeFeaturedArticles(data.map(fromBackendArticle));
   } catch {
-    return seedArticles;
+    return mergeFeaturedArticles(seedArticles);
   }
 }
 
 export async function getArticle(slug: string): Promise<Article | undefined> {
+  const featuredArticle = featuredArticles.find((article) => article.slug === slug);
+  if (featuredArticle) {
+    return featuredArticle;
+  }
+
   try {
     const response = await fetch(`${API_BASE_URL}/api/articles/${slug}`, { next: { revalidate: 300 } as never });
     if (response.ok) {
@@ -53,6 +59,14 @@ export async function getArticle(slug: string): Promise<Article | undefined> {
     return seedArticles.find((article) => article.slug === slug);
   }
   return seedArticles.find((article) => article.slug === slug);
+}
+
+export function mergeFeaturedArticles(articles: Article[]): Article[] {
+  const featuredSlugs = new Set(featuredArticles.map((article) => article.slug));
+  return [
+    ...featuredArticles,
+    ...articles.filter((article) => !featuredSlugs.has(article.slug)),
+  ];
 }
 
 export function fromBackendArticle(article: BackendArticle): Article {
