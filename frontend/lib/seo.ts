@@ -1,3 +1,4 @@
+import { EDITORIAL_AUTHOR_NAME } from "./editorial";
 import type { Article, Guide } from "./types";
 import { getArticleEntities } from "./entities";
 
@@ -30,6 +31,11 @@ export function formatPageTitle(pageTitle: string): string {
   return `${clean} | ${SITE_NAME}`;
 }
 
+export function buildOgImageUrl(title: string): string {
+  const params = new URLSearchParams({ title: title.trim().slice(0, 120) || SITE_NAME });
+  return `${SITE_URL}/api/og?${params.toString()}`;
+}
+
 export function buildPageSeo({ title, description, path, type = "website" }: PageSeoInput) {
   const canonical = buildCanonicalUrl(path);
 
@@ -37,7 +43,7 @@ export function buildPageSeo({ title, description, path, type = "website" }: Pag
     title: formatPageTitle(title),
     description,
     canonical,
-    ogImage: OG_IMAGE_URL,
+    ogImage: buildOgImageUrl(title),
     openGraph: {
       title,
       description,
@@ -136,10 +142,11 @@ export function buildGuideJsonLd(guide: Guide) {
     url: canonical,
     image: {
       "@type": "ImageObject",
-      url: OG_IMAGE_URL,
+      url: buildOgImageUrl(guide.metaTitle || guide.title),
     },
     inLanguage: "en",
     dateModified: guide.updatedAt,
+    author: buildAuthorJsonLd(EDITORIAL_AUTHOR_NAME, false),
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,

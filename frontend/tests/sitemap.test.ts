@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { buildSitemapEntries, renderSitemapXml } from "../lib/sitemap";
+import { buildCategoryPath } from "../lib/categories";
 import { seedArticles } from "../lib/seed";
 import { getGuides } from "../lib/guides";
 
@@ -36,7 +37,7 @@ describe("sitemap helpers", () => {
       expect(locations).toContain(`https://www.kyenai.com/articles/${article.slug}`);
     }
     for (const category of categories) {
-      expect(locations).toContain(`https://www.kyenai.com/categories/${encodeURIComponent(category)}`);
+      expect(locations).toContain(`https://www.kyenai.com${buildCategoryPath(category)}`);
     }
     for (const guide of guides) {
       expect(locations).toContain(`https://www.kyenai.com/guides/${guide.slug}`);

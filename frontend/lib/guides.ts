@@ -221,7 +221,7 @@ const coreGuides: Guide[] = [
     updatedAt: "2026-06-14",
     metaTitle: "AGENTS.md vs CLAUDE.md vs Cursor vs Copilot Instructions",
     metaDescription:
-      "Compare AGENTS.md, CLAUDE.md, Cursor rules, and Copilot instructions by surface, scope, migration path, and measured testing policy.",
+      "Compare AGENTS.md, CLAUDE.md, Cursor rules, and Copilot instructions in 2026 by surface, scope, migration path, and measured testing policy.",
     resourceIds: ["instruction-files"],
   },
   {

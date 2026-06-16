@@ -1,3 +1,4 @@
+import { buildCategoryPath } from "./categories";
 import { buildCanonicalUrl } from "./seo";
 import { getGuides } from "./guides";
 import type { Article } from "./types";
@@ -32,7 +33,7 @@ export function buildSitemapEntries(articles: Article[]): SitemapEntry[] {
         lastmod: toDateOnly(article.updatedAt),
       })),
     ...categories.map((category) => ({
-      loc: buildCanonicalUrl(`/categories/${encodeURIComponent(category)}`),
+      loc: buildCanonicalUrl(buildCategoryPath(category)),
       lastmod: latestDate(
         articles.filter((article) => article.category === category).map((article) => article.updatedAt)
       ),

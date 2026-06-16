@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { buildCategoryPath } from "../lib/categories";
 import {
   buildArticleJsonLd,
   buildArticleFaqs,
@@ -12,6 +13,7 @@ import {
   buildGuideJsonLd,
   buildItemListJsonLd,
   buildMetaDescription,
+  buildOgImageUrl,
   buildOrganizationJsonLd,
   buildPageSeo,
   buildWebsiteJsonLd,
@@ -123,6 +125,16 @@ describe("SEO helpers", () => {
     expect(jsonLd.headline).toBe(guide!.title);
     expect(jsonLd.url).toBe(`https://www.kyenai.com/guides/${slug}`);
     expect(jsonLd.dateModified).toBe(guide!.updatedAt);
+    expect(jsonLd.author).toEqual({
+      "@type": "Person",
+      name: "Editorial Automation Desk",
+      url: "https://www.kyenai.com/authors/editorial-automation-desk",
+      worksFor: {
+        "@type": "Organization",
+        name: "KyenAI",
+        url: "https://www.kyenai.com",
+      },
+    });
     expect(jsonLd.citation).toEqual(guide!.evidence.map((source) => source.url));
     expect(jsonLd.isBasedOn.map((source) => source.url)).toEqual(guide!.evidence.map((source) => source.url));
     expect(jsonLd).not.toHaveProperty("aggregateRating");
@@ -280,7 +292,7 @@ describe("SEO helpers", () => {
     const article = seedArticles[0];
     const jsonLd = buildBreadcrumbJsonLd([
       { name: "Home", path: "/" },
-      { name: article.category, path: `/categories/${encodeURIComponent(article.category)}` },
+      { name: article.category, path: buildCategoryPath(article.category) },
       { name: article.title, path: `/articles/${article.slug}` },
     ]);
 
@@ -324,17 +336,18 @@ describe("SEO helpers", () => {
     const seo = buildPageSeo({
       title: "IDE & CLI",
       description: "Evidence-led IDE and CLI updates for AI coding agent workflows.",
-      path: "/categories/IDE%20%26%20CLI",
+      path: "/categories/ide-cli",
     });
 
     expect(seo.title).toBe("IDE & CLI | KyenAI");
     expect(seo.description).toBe("Evidence-led IDE and CLI updates for AI coding agent workflows.");
-    expect(seo.canonical).toBe("https://www.kyenai.com/categories/IDE%20%26%20CLI");
+    expect(seo.canonical).toBe("https://www.kyenai.com/categories/ide-cli");
+    expect(seo.ogImage).toContain("https://www.kyenai.com/api/og?title=");
     expect(seo.openGraph).toEqual({
       title: "IDE & CLI",
       description: "Evidence-led IDE and CLI updates for AI coding agent workflows.",
       type: "website",
-      url: "https://www.kyenai.com/categories/IDE%20%26%20CLI",
+      url: "https://www.kyenai.com/categories/ide-cli",
       siteName: "KyenAI",
     });
     expect(seo.twitter).toEqual({
@@ -342,5 +355,11 @@ describe("SEO helpers", () => {
       title: "IDE & CLI",
       description: "Evidence-led IDE and CLI updates for AI coding agent workflows.",
     });
+  });
+
+  it("builds parameterized OG image URLs from page titles", () => {
+    expect(buildOgImageUrl("Codex vs Claude Code")).toBe(
+      "https://www.kyenai.com/api/og?title=Codex+vs+Claude+Code",
+    );
   });
 });

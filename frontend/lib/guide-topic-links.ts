@@ -1,0 +1,74 @@
+import { buildCategoryPath } from "./categories";
+import { getGuides } from "./guides";
+import { slugify } from "./seo";
+
+const TOPIC_GUIDE_OVERRIDES: Record<string, string> = {
+  "openai codex vs claude code": "codex-vs-claude-code",
+  "codex alternatives": "codex-vs-claude-code",
+  "claude code alternatives": "codex-vs-claude-code",
+  "ai coding agent comparison": "codex-vs-claude-code",
+  "agents.md vs claude.md": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+  "github copilot claude.md support": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+  ".github/copilot-instructions.md": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+  ".cursor/rules mdc migration": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+  "ai coding agent instruction files": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+  "agents.md template": "agents-md-template-for-ai-coding-agents",
+  "ai coding agent instructions template": "agents-md-template-for-ai-coding-agents",
+  "codex agents.md example": "agents-md-template-for-ai-coding-agents",
+  "repository instructions template": "agents-md-template-for-ai-coding-agents",
+  "claude code subagents workflow": "claude-code-subagents-examples",
+  "claude code sub-agents": "claude-code-subagents-examples",
+  "ai coding subagents": "claude-code-subagents-examples",
+  "mcp security": "secure-mcp-servers-ai-coding-agents",
+  "loop engineering": "loop-engineering-ai-coding-agents",
+};
+
+const TOPIC_CATEGORY_OVERRIDES: Record<string, string> = {
+  "ai coding agents": "AI Coding Agents",
+  "ide cli": "IDE & CLI",
+  "agent workflows": "Agent Workflows",
+  "security governance": "Security & Governance",
+};
+
+export function resolveGuideTopicHref(keyword: string, currentGuideSlug?: string): string {
+  const normalized = keyword.trim().toLowerCase();
+  const guides = getGuides();
+  const overrideSlug = TOPIC_GUIDE_OVERRIDES[normalized];
+
+  if (overrideSlug && overrideSlug !== currentGuideSlug) {
+    return `/guides/${overrideSlug}`;
+  }
+
+  const guideByTitle = guides.find(
+    (guide) => guide.slug !== currentGuideSlug && guide.title.trim().toLowerCase() === normalized,
+  );
+  if (guideByTitle) {
+    return `/guides/${guideByTitle.slug}`;
+  }
+
+  const guideByKeyword = guides.find(
+    (guide) =>
+      guide.slug !== currentGuideSlug &&
+      guide.secondaryKeywords.some((candidate) => candidate.trim().toLowerCase() === normalized),
+  );
+  if (guideByKeyword) {
+    return `/guides/${guideByKeyword.slug}`;
+  }
+
+  const keywordSlug = slugify(keyword);
+  const guideBySlug = guides.find((guide) => guide.slug !== currentGuideSlug && guide.slug === keywordSlug);
+  if (guideBySlug) {
+    return `/guides/${guideBySlug.slug}`;
+  }
+
+  const categoryName = TOPIC_CATEGORY_OVERRIDES[keywordSlug];
+  if (categoryName) {
+    return buildCategoryPath(categoryName);
+  }
+
+  if (keywordSlug.length > 0) {
+    return `/tags/${keywordSlug}`;
+  }
+
+  return "/guides";
+}

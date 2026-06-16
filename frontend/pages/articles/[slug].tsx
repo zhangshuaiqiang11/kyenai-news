@@ -5,6 +5,7 @@ import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import { SourceList } from "../../components/SourceList";
 import { getArticle, getArticles } from "../../lib/api";
+import { buildCategoryPath } from "../../lib/categories";
 import { getArticleEntities } from "../../lib/entities";
 import {
   buildArticleJsonLd,
@@ -15,6 +16,7 @@ import {
   formatDate,
   slugify,
 } from "../../lib/seo";
+import { EDITORIAL_AUTHOR_PATH } from "../../lib/editorial";
 import type { Article, ArticleBlock } from "../../lib/types";
 
 type ArticlePageProps = {
@@ -25,7 +27,7 @@ type ArticlePageProps = {
 export default function ArticlePage({ article, relatedArticles }: ArticlePageProps) {
   const metaDescription = buildMetaDescription(article);
   const articleJsonLd = buildArticleJsonLd(article);
-  const categoryPath = `/categories/${encodeURIComponent(article.category)}`;
+  const categoryPath = buildCategoryPath(article.category);
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: "Home", path: "/" },
     { name: article.category, path: categoryPath },
@@ -69,7 +71,9 @@ export default function ArticlePage({ article, relatedArticles }: ArticlePagePro
             </div>
             <div>
               <dt>Author</dt>
-              <dd>{article.authorName}</dd>
+              <dd>
+                <Link href={EDITORIAL_AUTHOR_PATH}>{article.authorName}</Link>
+              </dd>
             </div>
             <div>
               <dt>Version</dt>

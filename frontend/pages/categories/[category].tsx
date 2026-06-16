@@ -5,6 +5,12 @@ import { ArticleCard } from "../../components/ArticleCard";
 import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import { getArticles } from "../../lib/api";
+import {
+  buildCategoryPath,
+  buildCategorySlug,
+  isCanonicalCategoryParam,
+  resolveCategoryFromParam,
+} from "../../lib/categories";
 import { buildBreadcrumbJsonLd, buildItemListJsonLd } from "../../lib/seo";
 import type { Article } from "../../lib/types";
 
@@ -14,7 +20,7 @@ type CategoryPageProps = {
 };
 
 export default function CategoryPage({ category, articles }: CategoryPageProps) {
-  const categoryPath = `/categories/${encodeURIComponent(category)}`;
+  const categoryPath = buildCategoryPath(category);
   const description = `Evidence-led ${category} news from official vendor sources. Each article is sourced, dated, and validated before it publishes on KyenAI.`;
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: "Home", path: "/" },
@@ -46,14 +52,35 @@ export default function CategoryPage({ category, articles }: CategoryPageProps) 
 export const getStaticPaths: GetStaticPaths = async () => {
   const articles = await getArticles();
   const categories = Array.from(new Set(articles.map((article) => article.category)));
-  return { paths: categories.map((category) => ({ params: { category } })), fallback: "blocking" };
+  return {
+    paths: categories.map((category) => ({ params: { category: buildCategorySlug(category) } })),
+    fallback: "blocking",
+  };
 };
 
 export const getStaticProps: GetStaticProps<CategoryPageProps> = async ({ params }) => {
-  const category = decodeURIComponent(String(params?.category || ""));
-  const articles = (await getArticles()).filter((article) => article.category === category);
-  if (articles.length === 0) {
+  const param = String(params?.category || "");
+  const articles = await getArticles();
+  const categories = Array.from(new Set(articles.map((article) => article.category)));
+  const category = resolveCategoryFromParam(param, categories);
+
+  if (!category) {
     return { notFound: true };
   }
-  return { props: { category, articles }, revalidate: 300 };
+
+  if (!isCanonicalCategoryParam(param, category)) {
+    return {
+      redirect: {
+        destination: buildCategoryPath(category),
+        permanent: true,
+      },
+    };
+  }
+
+  const categoryArticles = articles.filter((article) => article.category === category);
+  if (categoryArticles.length === 0) {
+    return { notFound: true };
+  }
+
+  return { props: { category, articles: categoryArticles }, revalidate: 300 };
 };

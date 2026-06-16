@@ -66,11 +66,25 @@ function deriveLatestEditorialUpdate(buildTimestamp, sourceRoot = __dirname) {
 const buildTimestamp = new Date().toISOString();
 const latestEditorialUpdate = deriveLatestEditorialUpdate(buildTimestamp);
 
+const categoryRedirects = [
+  ["AI Coding Agents", "ai-coding-agents"],
+  ["IDE & CLI", "ide-cli"],
+  ["Agent Workflows", "agent-workflows"],
+  ["Security & Governance", "security-governance"],
+].map(([category, slug]) => ({
+  source: `/categories/${encodeURIComponent(category)}`,
+  destination: `/categories/${slug}`,
+  permanent: true,
+}));
+
 const nextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
   env: {
     NEXT_PUBLIC_BUILD_TIMESTAMP: buildTimestamp,
     NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE: latestEditorialUpdate,
+  },
+  async redirects() {
+    return categoryRedirects;
   },
 };
 

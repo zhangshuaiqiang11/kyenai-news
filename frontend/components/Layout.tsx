@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 
 import { formatDate, SITE_NAME } from "../lib/seo";
+import { buildCategoryPath } from "../lib/categories";
 import { getVisibleEditorialUpdate } from "../lib/site-status";
 
 type LayoutProps = {
@@ -107,9 +108,9 @@ export function Layout({ children }: LayoutProps) {
         </Link>
         <nav className="main-nav" aria-label="Primary navigation">
           <Link href="/guides">Guides</Link>
-          <Link href="/categories/AI%20Coding%20Agents">AI Agents</Link>
-          <Link href="/categories/IDE%20%26%20CLI">IDE & CLI</Link>
-          <Link href="/categories/Security%20%26%20Governance">Governance</Link>
+          <Link href={buildCategoryPath("AI Coding Agents")}>AI Agents</Link>
+          <Link href={buildCategoryPath("IDE & CLI")}>IDE & CLI</Link>
+          <Link href={buildCategoryPath("Security & Governance")}>Governance</Link>
           <Link href="/sources">Sources</Link>
           <Link href="/entities">Entities</Link>
           <Link href="/editorial-policy">Editorial</Link>

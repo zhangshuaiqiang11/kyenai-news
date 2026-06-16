@@ -6,11 +6,14 @@ import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import { getArticles } from "../../lib/api";
 import { getGuide, getGuides, getInternalLinkedGuides, getRelatedArticlesForGuide } from "../../lib/guides";
+import { EDITORIAL_AUTHOR_NAME, EDITORIAL_AUTHOR_PATH } from "../../lib/editorial";
+import { resolveGuideTopicHref } from "../../lib/guide-topic-links";
 import {
   buildBreadcrumbJsonLd,
   buildFaqPageJsonLd,
   buildGuideFaqs,
   buildGuideJsonLd,
+  buildOgImageUrl,
   formatDate,
 } from "../../lib/seo";
 import type { Article, Guide } from "../../lib/types";
@@ -127,7 +130,12 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
 
   return (
     <Layout>
-      <SeoHead title={guide.metaTitle} description={guide.metaDescription} path={guidePath}>
+      <SeoHead
+        title={guide.metaTitle}
+        description={guide.metaDescription}
+        path={guidePath}
+        ogImage={buildOgImageUrl(guide.metaTitle || guide.title)}
+      >
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(guideJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
@@ -142,6 +150,9 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
           <div className="guide-meta-row">
             <span>{guide.pageType}</span>
             <span>Updated {formatDate(guide.updatedAt)}</span>
+            <span>
+              By <Link href={EDITORIAL_AUTHOR_PATH}>{EDITORIAL_AUTHOR_NAME}</Link>
+            </span>
           </div>
           <h1>{guide.title}</h1>
           <p>{guide.summary}</p>
@@ -260,7 +271,9 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
               <h2>Related topics</h2>
               <div className="keyword-list">
                 {guide.secondaryKeywords.map((keyword) => (
-                  <span key={keyword}>{keyword}</span>
+                  <Link href={resolveGuideTopicHref(keyword, guide.slug)} key={keyword}>
+                    {keyword}
+                  </Link>
                 ))}
               </div>
             </section>

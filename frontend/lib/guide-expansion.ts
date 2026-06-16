@@ -153,7 +153,7 @@ export const expansionGuides: Guide[] = [
     updatedAt: "2026-06-06",
     metaTitle: "Codex vs Claude Code: Which AI Coding Agent Fits?",
     metaDescription:
-      "A plain Codex vs Claude Code comparison with answer-first guidance, workflow fit, review checks, and rollout risks.",
+      "Compare Codex vs Claude Code in 2026 with answer-first guidance on workflow fit, review checks, and rollout risks for real repositories.",
   },
   {
     id: "guide-agents-md-template",
@@ -429,7 +429,7 @@ export const expansionGuides: Guide[] = [
     updatedAt: "2026-06-06",
     metaTitle: "Agent Mode vs Chat Mode in IDEs",
     metaDescription:
-      "Know when to use IDE chat mode and when to switch to agent mode for file edits, commands, tests, and reviewable diffs.",
+      "In 2026, know when to use IDE chat mode vs agent mode for file edits, commands, tests, and reviewable diffs in VS Code and Cursor.",
   },
   {
     id: "guide-local-vs-cloud-agent",
@@ -572,7 +572,7 @@ export const expansionGuides: Guide[] = [
     updatedAt: "2026-06-06",
     metaTitle: "Local vs Cloud AI Coding Agent",
     metaDescription:
-      "Compare local and cloud AI coding agents by privacy, sandboxing, task length, commands, review flow, and team risk.",
+      "Compare local vs cloud AI coding agents in 2026 by privacy, sandboxing, task length, commands, review flow, and team risk.",
   },
   {
     id: "guide-agent-governance-checklist",
