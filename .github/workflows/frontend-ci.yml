@@ -37,7 +37,15 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm test
+        run: npm test -- --reporter=verbose 2>&1 | tee vitest-output.log
+
+      - name: Upload test failure log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vitest-failure-log
+          path: frontend/vitest-output.log
+          retention-days: 3
 
       - name: Build production frontend
         run: npm run build
