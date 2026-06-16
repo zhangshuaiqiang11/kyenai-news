@@ -84,6 +84,23 @@ describe("Next build configuration", () => {
     expect(appSource).toContain("width=device-width, initial-scale=1");
   });
 
+  it("sends noindex headers for downloadable resource files", async () => {
+    const nextConfig = require(resolve(frontendRoot, "next.config.js")) as {
+      headers?: () => Promise<Array<{
+        source: string;
+        headers: Array<{ key: string; value: string }>;
+      }>>;
+    };
+    const headerRules = await nextConfig.headers?.();
+    const resourceRule = headerRules?.find((rule) => rule.source === "/resources/:path*");
+    const robotsHeader = resourceRule?.headers.find((header) => header.key === "X-Robots-Tag");
+
+    expect(resourceRule).toBeDefined();
+    expect(robotsHeader?.value).toContain("noindex");
+    expect(robotsHeader?.value).toContain("nofollow");
+    expect(robotsHeader?.value).toContain("noarchive");
+  });
+
   it("keeps production service environment maps free of duplicate keys", () => {
     const compose = readFileSync(resolve(repoRoot, "docker-compose.prod.yml"), "utf8");
     const lines = compose.split("\n");
