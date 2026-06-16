@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { buildSitemapEntries, isNoindexPath, renderSitemapXml, shouldIncludePathInSitemap } from "../lib/sitemap";
-import { seedArticles } from "../lib/seed";
+import { getIndexableCategoryNames } from "../lib/category-hubs";
+import { buildCategoryPath } from "../lib/categories";
 import { getGuides } from "../lib/guides";
+import { seedArticles } from "../lib/seed";
+import { buildSitemapEntries, isNoindexPath, renderSitemapXml, shouldIncludePathInSitemap } from "../lib/sitemap";
 
 describe("sitemap helpers", () => {
   const resourcePaths = [
@@ -16,37 +18,47 @@ describe("sitemap helpers", () => {
     "/resources/instruction-files/benchmark-results.json",
     "/resources/mcp-security-review.md",
   ];
-  const noindexPaths = [
+  const utilityNoindexPaths = [
     "/contact",
     "/sources",
     "/entities",
     "/authors/editorial-automation-desk",
-    "/categories/ai-coding-agents",
-    "/categories/agent-workflows",
-    "/categories/ide-cli",
-    "/categories/security-governance",
+  ];
+  const archiveNoindexPaths = [
+    "/tags/claude-code",
+    "/resources/mcp-security-review.md",
   ];
 
-  it("keeps only indexable editorial URLs in the sitemap with lastmod dates", () => {
+  it("keeps only indexable editorial URLs in the sitemap with truthful lastmod dates", () => {
     const entries = buildSitemapEntries(seedArticles);
     const locations = entries.map((entry) => entry.loc);
     const publishedArticles = seedArticles.filter((article) => article.status === "published");
     const guides = getGuides();
+    const categories = Array.from(new Set(publishedArticles.map((article) => article.category)));
+    const indexableCategories = new Set(getIndexableCategoryNames(publishedArticles));
 
     expect(locations).toContain("https://www.kyenai.com");
     expect(locations).toContain("https://www.kyenai.com/about");
     expect(locations).toContain("https://www.kyenai.com/editorial-policy");
     expect(locations).toContain("https://www.kyenai.com/guides");
+    expect(entries.find((entry) => entry.loc.endsWith("/about"))?.lastmod).toBe("2026-06-06");
+    expect(entries.find((entry) => entry.loc.endsWith("/editorial-policy"))?.lastmod).toBe("2026-06-06");
+
     for (const article of publishedArticles) {
       expect(locations).toContain(`https://www.kyenai.com/articles/${article.slug}`);
     }
     for (const guide of guides) {
       expect(locations).toContain(`https://www.kyenai.com/guides/${guide.slug}`);
     }
-    const guideLocations = locations.filter((location) => location.startsWith("https://www.kyenai.com/guides/"));
-    expect(guideLocations).toHaveLength(guides.length);
-    expect(guideLocations).toEqual(guides.map((guide) => `https://www.kyenai.com/guides/${guide.slug}`));
-    for (const noindexPath of noindexPaths) {
+    for (const category of categories) {
+      const categoryUrl = `https://www.kyenai.com${buildCategoryPath(category)}`;
+      if (indexableCategories.has(category)) {
+        expect(locations).toContain(categoryUrl);
+      } else {
+        expect(locations).not.toContain(categoryUrl);
+      }
+    }
+    for (const noindexPath of utilityNoindexPaths) {
       expect(locations).not.toContain(`https://www.kyenai.com${noindexPath}`);
     }
     for (const resourcePath of resourcePaths) {
@@ -58,8 +70,8 @@ describe("sitemap helpers", () => {
     expect(new Set(locations).size).toBe(locations.length);
   });
 
-  it("keeps noindex utility and archive paths out of sitemap decisions", () => {
-    for (const noindexPath of noindexPaths) {
+  it("keeps utility, tag, and resource paths out of sitemap decisions", () => {
+    for (const noindexPath of [...utilityNoindexPaths, ...archiveNoindexPaths]) {
       expect(isNoindexPath(noindexPath)).toBe(true);
       expect(shouldIncludePathInSitemap(noindexPath)).toBe(false);
       expect(shouldIncludePathInSitemap(`https://www.kyenai.com${noindexPath}?utm_source=test#section`)).toBe(false);
@@ -68,14 +80,31 @@ describe("sitemap helpers", () => {
     expect(shouldIncludePathInSitemap("/articles/github-copilot-sdk-general-availability")).toBe(true);
   });
 
-  it("renders sitemap XML with canonical locations and lastmod", () => {
+  it("adds a category hub only after it reaches the indexing gate", () => {
+    const category = "AI Coding Agents";
+    const template = seedArticles[0];
+    const qualifyingArticles = Array.from({ length: 5 }, (_, index) => ({
+      ...template,
+      id: `category-gate-${index}`,
+      slug: `category-gate-${index}`,
+      category,
+      status: "published" as const,
+      updatedAt: `2026-06-${String(index + 10).padStart(2, "0")}`,
+    }));
+    const locations = buildSitemapEntries(qualifyingArticles).map((entry) => entry.loc);
+
+    expect(getIndexableCategoryNames(qualifyingArticles)).toContain(category);
+    expect(locations).toContain(`https://www.kyenai.com${buildCategoryPath(category)}`);
+  });
+
+  it("renders sitemap XML without utility or downloadable resource URLs", () => {
     const xml = renderSitemapXml(buildSitemapEntries(seedArticles.slice(0, 1)));
 
     expect(xml).toContain("<urlset");
     expect(xml).toContain("<lastmod>");
     expect(xml).toContain(`https://www.kyenai.com/articles/${seedArticles[0].slug}`);
     expect(xml).not.toContain("/operations");
-    for (const noindexPath of noindexPaths) {
+    for (const noindexPath of utilityNoindexPaths) {
       expect(xml).not.toContain(noindexPath);
     }
     for (const resourcePath of resourcePaths) {
