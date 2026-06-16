@@ -36,7 +36,7 @@ const TOPIC_GUIDE_OVERRIDES: Record<string, string> = {
   "google coding agent cli": "antigravity-cli-gemini-cli-migration",
 };
 
-export function resolveGuideTopicHref(keyword: string, currentGuideSlug?: string): string | null {
+export function resolveIndexableGuideTopicHref(keyword: string, currentGuideSlug?: string): string | null {
   const normalized = keyword.trim().toLowerCase();
   const guides = getGuides();
   const overrideSlug = TOPIC_GUIDE_OVERRIDES[normalized];
@@ -68,4 +68,8 @@ export function resolveGuideTopicHref(keyword: string, currentGuideSlug?: string
   }
 
   return null;
+}
+
+export function resolveGuideTopicHref(keyword: string, currentGuideSlug?: string): string {
+  return resolveIndexableGuideTopicHref(keyword, currentGuideSlug) || "/guides";
 }
