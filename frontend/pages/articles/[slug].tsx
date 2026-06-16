@@ -5,8 +5,10 @@ import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import { SourceList } from "../../components/SourceList";
 import { getArticle, getArticles } from "../../lib/api";
+import { getRelatedGuidesForArticle } from "../../lib/article-guide-links";
 import { buildCategoryPath } from "../../lib/categories";
 import { getArticleEntities } from "../../lib/entities";
+import { resolveGuideTopicHref } from "../../lib/guide-topic-links";
 import {
   buildArticleJsonLd,
   buildArticleFaqs,
@@ -17,14 +19,15 @@ import {
   slugify,
 } from "../../lib/seo";
 import { EDITORIAL_AUTHOR_PATH } from "../../lib/editorial";
-import type { Article, ArticleBlock } from "../../lib/types";
+import type { Article, ArticleBlock, Guide } from "../../lib/types";
 
 type ArticlePageProps = {
   article: Article;
   relatedArticles: Article[];
+  relatedGuides: Guide[];
 };
 
-export default function ArticlePage({ article, relatedArticles }: ArticlePageProps) {
+export default function ArticlePage({ article, relatedArticles, relatedGuides }: ArticlePageProps) {
   const metaDescription = buildMetaDescription(article);
   const articleJsonLd = buildArticleJsonLd(article);
   const categoryPath = buildCategoryPath(article.category);
@@ -120,11 +123,16 @@ export default function ArticlePage({ article, relatedArticles }: ArticlePagePro
               <p>Updates publish only when evidence, style, duplicate-content, and freshness checks pass.</p>
             </section>
             <section>
-              <h2>Keywords</h2>
+              <h2>Topics</h2>
               <div className="keyword-list">
-                {article.keywords.map((keyword) => (
-                  <Link href={`/tags/${slugify(keyword)}`} key={keyword}>{keyword}</Link>
-                ))}
+                {article.keywords.map((keyword) => {
+                  const href = resolveGuideTopicHref(keyword);
+                  return href ? (
+                    <Link href={href} key={keyword}>{keyword}</Link>
+                  ) : (
+                    <span key={keyword}>{keyword}</span>
+                  );
+                })}
               </div>
             </section>
             {entities.length > 0 ? (
@@ -143,6 +151,28 @@ export default function ArticlePage({ article, relatedArticles }: ArticlePagePro
             ) : null}
           </aside>
         </div>
+        {relatedGuides.length > 0 ? (
+          <section className="related-guides" aria-labelledby="related-guides-heading">
+            <div className="section-heading">
+              <div>
+                <h2 id="related-guides-heading">Practical Guides</h2>
+                <p>Use these evergreen playbooks to apply, migrate, or secure the update covered above.</p>
+              </div>
+              <Link href="/guides">All guides</Link>
+            </div>
+            <div>
+              {relatedGuides.map((guide) => (
+                <article key={guide.id}>
+                  <span>{guide.pageType}</span>
+                  <h3>
+                    <Link href={`/guides/${guide.slug}`}>{guide.title}</Link>
+                  </h3>
+                  <p>{guide.summary}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
         {relatedArticles.length > 0 ? (
           <section className="related-articles" aria-labelledby="related-articles-heading">
             <h2 id="related-articles-heading">Related Coverage</h2>
@@ -227,7 +257,11 @@ export const getStaticProps: GetStaticProps<ArticlePageProps> = async ({ params 
   }
   const articles = await getArticles();
   return {
-    props: { article, relatedArticles: getRelatedArticles(article, articles) },
+    props: {
+      article,
+      relatedArticles: getRelatedArticles(article, articles),
+      relatedGuides: getRelatedGuidesForArticle(article),
+    },
     revalidate: 300,
   };
 };
