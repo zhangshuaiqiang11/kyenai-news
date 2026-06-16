@@ -193,6 +193,33 @@ describe("guide SEO data", () => {
 
     const unrelatedGuides = getGuides().filter((candidate) => candidate.slug !== guide!.slug);
     expect(unrelatedGuides.every((candidate) => !candidate.resourceIds?.includes("loop-engineering"))).toBe(true);
+
+    const internalSlugs = guide!.internalLinks.map((link) => link.slug);
+    expect(internalSlugs).toEqual(
+      expect.arrayContaining([
+        "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+        "codex-vs-claude-code",
+        "secure-mcp-servers-ai-coding-agents",
+        "claude-code-subagents-examples",
+        "agent-governance-checklist-for-software-teams",
+      ]),
+    );
+    expect(new Set(internalSlugs).size).toBe(internalSlugs.length);
+
+    const inboundSlugs = getGuides()
+      .filter((candidate) => candidate.slug !== guide!.slug)
+      .filter((candidate) => candidate.internalLinks.some((link) => link.slug === guide!.slug))
+      .map((candidate) => candidate.slug);
+    expect(inboundSlugs).toEqual(
+      expect.arrayContaining([
+        "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+        "codex-vs-claude-code",
+        "claude-code-subagents-examples",
+        "claude-code-hooks-mcp-setup",
+        "secure-mcp-servers-ai-coding-agents",
+        "agent-governance-checklist-for-software-teams",
+      ]),
+    );
   });
 
   it("keeps private editorial signals available by guide slug", () => {

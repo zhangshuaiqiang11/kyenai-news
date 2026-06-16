@@ -4,6 +4,7 @@ import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import {
   INSTRUCTION_COMPARISON_GUIDE_HREF,
+  LOOP_ENGINEERING_GUIDE_HREF,
   MCP_SECURITY_GUIDE_HREF,
 } from "../../lib/guide-routes";
 import { getGuides } from "../../lib/guides";
@@ -55,6 +56,10 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
             <Link href={MCP_SECURITY_GUIDE_HREF}>
               <strong>Set boundaries for MCP access</strong>
               <span>Review permissions, secrets, authentication, logs, and revocation before enabling an MCP server.</span>
+            </Link>
+            <Link href={LOOP_ENGINEERING_GUIDE_HREF}>
+              <strong>Design durable agent loops</strong>
+              <span>Move from one-shot prompts to act-observe-reason cycles with verification commands, stop rules, and cost limits.</span>
             </Link>
           </div>
         </section>

@@ -21,6 +21,12 @@ const TOPIC_GUIDE_OVERRIDES: Record<string, string> = {
   "ai coding subagents": "claude-code-subagents-examples",
   "mcp security": "secure-mcp-servers-ai-coding-agents",
   "loop engineering": "loop-engineering-ai-coding-agents",
+  "agentic loop ai coding": "loop-engineering-ai-coding-agents",
+  "cursor loop automation": "loop-engineering-ai-coding-agents",
+  "claude code /loop scheduling": "loop-engineering-ai-coding-agents",
+  "plan-execute-verify agent loop": "loop-engineering-ai-coding-agents",
+  "loop engineering vs prompt engineering": "loop-engineering-ai-coding-agents",
+  "how to design agent loops": "loop-engineering-ai-coding-agents",
 };
 
 const TOPIC_CATEGORY_OVERRIDES: Record<string, string> = {

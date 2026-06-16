@@ -8,6 +8,7 @@ import { getArticles } from "../lib/api";
 import { getEntityCoverage } from "../lib/entities";
 import {
   INSTRUCTION_COMPARISON_GUIDE_HREF,
+  LOOP_ENGINEERING_GUIDE_HREF,
   MCP_SECURITY_GUIDE_HREF,
 } from "../lib/guide-routes";
 import {
@@ -76,6 +77,11 @@ export default function Home({ articles, guides }: HomeProps) {
                 Connecting agents to external tools?{" "}
                 <Link href={MCP_SECURITY_GUIDE_HREF}>Review the MCP security checklist</Link>{" "}
                 before granting credentials, network access, or write permissions.
+              </p>
+              <p>
+                Moving from one-shot prompts to repeatable workflows?{" "}
+                <Link href={LOOP_ENGINEERING_GUIDE_HREF}>Design loop engineering for AI coding agents</Link>{" "}
+                with stop rules, verification commands, and cost limits before scaling Automations or /loop schedules.
               </p>
             </div>
           </section>

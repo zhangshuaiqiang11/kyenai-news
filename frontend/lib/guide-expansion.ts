@@ -10,7 +10,7 @@ export const expansionGuides: Guide[] = [
     intent: "Developers want a plain comparison of Codex and Claude Code before choosing an AI coding agent.",
     audience: "Developers, staff engineers, and team leads comparing agentic coding tools for real repositories.",
     pageType: "Comparison decision guide",
-    secondaryKeywords: ["OpenAI Codex vs Claude Code", "Codex alternatives", "Claude Code alternatives", "AI coding agent comparison"],
+    secondaryKeywords: ["OpenAI Codex vs Claude Code", "Codex alternatives", "Claude Code alternatives", "AI coding agent comparison", "agentic loop AI coding"],
     sections: [
       {
         heading: "Quick answer",
@@ -125,6 +125,11 @@ export const expansionGuides: Guide[] = [
         slug: "agents-md-template-for-ai-coding-agents",
         anchor: "AGENTS.md template",
         reason: "Codex workflows need clear repo instructions before serious use.",
+      },
+      {
+        slug: "loop-engineering-ai-coding-agents",
+        anchor: "loop engineering for AI coding agents",
+        reason: "Tool choice often leads to whether work stays in one session or becomes a durable plan-execute-verify loop.",
       },
     ],
     checklist: [
@@ -264,6 +269,11 @@ export const expansionGuides: Guide[] = [
         anchor: "agent governance checklist",
         reason: "Team instructions should connect to broader approval and audit rules.",
       },
+      {
+        slug: "loop-engineering-ai-coding-agents",
+        anchor: "loop engineering for AI coding agents",
+        reason: "AGENTS.md should name the verification command and iteration cap that agent loops rely on.",
+      },
     ],
     checklist: [
       "Explain what the repo does in one sentence.",
@@ -402,6 +412,11 @@ export const expansionGuides: Guide[] = [
         anchor: "agent governance checklist",
         reason: "Teams should define when agent actions need approval.",
       },
+      {
+        slug: "loop-engineering-ai-coding-agents",
+        anchor: "loop engineering for AI coding agents",
+        reason: "Agent mode can loop through errors; durable loops need explicit stop rules beyond a single IDE session.",
+      },
     ],
     checklist: [
       "Use chat for explanation and planning.",
@@ -539,6 +554,11 @@ export const expansionGuides: Guide[] = [
         anchor: "secure MCP servers",
         reason: "MCP tools can change the risk profile of both local and cloud agents.",
       },
+      {
+        slug: "loop-engineering-ai-coding-agents",
+        anchor: "loop engineering for AI coding agents",
+        reason: "Long-running cloud loops need branch isolation, budgets, and termination rules before unattended runs.",
+      },
     ],
     checklist: [
       "Classify data sensitivity before choosing an environment.",
@@ -583,7 +603,7 @@ export const expansionGuides: Guide[] = [
     intent: "Engineering leaders and platform teams want a one-page governance checklist for adopting AI coding agents.",
     audience: "Engineering managers, platform teams, security reviewers, and developer-experience teams rolling out coding agents.",
     pageType: "Governance checklist",
-    secondaryKeywords: ["AI coding agent governance", "AI coding agent audit logs", "coding agent policy", "AI agent permissions checklist"],
+    secondaryKeywords: ["AI coding agent governance", "AI coding agent audit logs", "coding agent policy", "AI agent permissions checklist", "loop engineering"],
     sections: [
       {
         heading: "Quick answer",
@@ -680,6 +700,11 @@ export const expansionGuides: Guide[] = [
         slug: "agents-md-template-for-ai-coding-agents",
         anchor: "AGENTS.md template",
         reason: "Some governance rules should be visible inside repo instructions.",
+      },
+      {
+        slug: "loop-engineering-ai-coding-agents",
+        anchor: "loop engineering for AI coding agents",
+        reason: "Governance for unattended loops needs iteration caps, audit logs, and escalation before team-wide rollout.",
       },
     ],
     checklist: [
@@ -885,6 +910,21 @@ export const expansionGuides: Guide[] = [
         slug: "agent-governance-checklist-for-software-teams",
         anchor: "agent governance checklist",
         reason: "Unattended loops need permissions, logs, and approval rules before team-wide rollout.",
+      },
+      {
+        slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+        anchor: "AI coding agent instruction files",
+        reason: "Loops inherit verification commands and boundaries from repository instruction adapters.",
+      },
+      {
+        slug: "codex-vs-claude-code",
+        anchor: "Codex vs Claude Code",
+        reason: "Pick the tool surface first, then design the loop around where your team already works.",
+      },
+      {
+        slug: "secure-mcp-servers-ai-coding-agents",
+        anchor: "MCP security checklist",
+        reason: "Observation tools inside loops often use MCP; scope permissions before unattended runs.",
       },
     ],
     checklist: [

@@ -174,6 +174,11 @@ const coreGuides: Guide[] = [
         anchor: "MCP security checklist",
         reason: "Instruction adapters should name safe tool boundaries before agents receive MCP access.",
       },
+      {
+        slug: "loop-engineering-ai-coding-agents",
+        anchor: "loop engineering for AI coding agents",
+        reason: "Shared instruction files should name verification commands and stop rules for agent loops, not only one-shot prompts.",
+      },
     ],
     checklist: [
       "List every agent surface, not just each vendor name.",
@@ -233,7 +238,7 @@ const coreGuides: Guide[] = [
     intent: "Claude Code users want concrete examples for when and how to delegate work to subagents.",
     audience: "Developers using Claude Code for larger codebases, migrations, and multi-step reviews.",
     pageType: "Practical examples tutorial",
-    secondaryKeywords: ["Claude Code subagents workflow", "Claude Code sub-agents", "AI coding subagents"],
+    secondaryKeywords: ["Claude Code subagents workflow", "Claude Code sub-agents", "AI coding subagents", "plan-execute-verify agent loop"],
     sections: [
       {
         heading: "Quick answer",
@@ -327,6 +332,11 @@ const coreGuides: Guide[] = [
         anchor: "AI coding agent instruction files",
         reason: "Subagents perform better when repository instructions are current and tool-specific guidance is not contradictory.",
       },
+      {
+        slug: "loop-engineering-ai-coding-agents",
+        anchor: "loop engineering for AI coding agents",
+        reason: "Subagents are building blocks inside plan-execute-verify loops that need iteration caps and escalation rules.",
+      },
     ],
     checklist: [
       "Name the output you need before spawning a subagent.",
@@ -364,7 +374,7 @@ const coreGuides: Guide[] = [
     intent: "Advanced Claude Code users want to connect hooks and MCP safely and understand where each control belongs.",
     audience: "Developers and platform teams wiring Claude Code into repo-specific workflows.",
     pageType: "Setup guide and control map",
-    secondaryKeywords: ["Claude Code hooks", "Claude Code MCP", "Claude Code skills", "MCP setup"],
+    secondaryKeywords: ["Claude Code hooks", "Claude Code MCP", "Claude Code skills", "MCP setup", "cursor loop automation"],
     sections: [
       {
         heading: "Quick answer",
@@ -462,6 +472,11 @@ const coreGuides: Guide[] = [
         slug: "claude-code-subagents-examples",
         anchor: "Claude Code subagents workflow examples",
         reason: "Hooks and MCP become more useful when paired with clear delegation patterns.",
+      },
+      {
+        slug: "loop-engineering-ai-coding-agents",
+        anchor: "loop engineering for AI coding agents",
+        reason: "Hooks and MCP supply the observe-and-act cycles that make agent loops repeatable and stoppable.",
       },
     ],
     checklist: [
@@ -656,6 +671,11 @@ const coreGuides: Guide[] = [
         slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
         anchor: "repository instruction files",
         reason: "Instruction files are where teams should document safe tool usage and escalation rules.",
+      },
+      {
+        slug: "loop-engineering-ai-coding-agents",
+        anchor: "loop engineering for AI coding agents",
+        reason: "MCP servers inside unattended loops need scoped permissions, observation tools, and stop rules before scaling.",
       },
     ],
     checklist: [

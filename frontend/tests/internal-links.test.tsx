@@ -7,6 +7,7 @@ import Home from "../pages";
 import GuidesPage from "../pages/guides";
 import {
   INSTRUCTION_COMPARISON_GUIDE_SLUG,
+  LOOP_ENGINEERING_GUIDE_SLUG,
   MCP_SECURITY_GUIDE_SLUG,
 } from "../lib/guide-routes";
 import { getGuide, getGuides } from "../lib/guides";
@@ -26,6 +27,14 @@ const approvedGuidePlacements = [
   ["claude-code-hooks-mcp-setup", INSTRUCTION_COMPARISON_GUIDE_SLUG],
   ["agent-governance-checklist-for-software-teams", MCP_SECURITY_GUIDE_SLUG],
   ["local-vs-cloud-ai-coding-agent", MCP_SECURITY_GUIDE_SLUG],
+  [INSTRUCTION_COMPARISON_GUIDE_SLUG, LOOP_ENGINEERING_GUIDE_SLUG],
+  ["loop-engineering-ai-coding-agents", INSTRUCTION_COMPARISON_GUIDE_SLUG],
+  ["codex-vs-claude-code", LOOP_ENGINEERING_GUIDE_SLUG],
+  ["loop-engineering-ai-coding-agents", "codex-vs-claude-code"],
+  ["claude-code-subagents-examples", LOOP_ENGINEERING_GUIDE_SLUG],
+  ["agent-governance-checklist-for-software-teams", LOOP_ENGINEERING_GUIDE_SLUG],
+  ["loop-engineering-ai-coding-agents", MCP_SECURITY_GUIDE_SLUG],
+  [MCP_SECURITY_GUIDE_SLUG, LOOP_ENGINEERING_GUIDE_SLUG],
 ] as const;
 
 const privateSeoLabels = [
@@ -83,15 +92,22 @@ describe("contextual internal links", () => {
     const securityLink = within(nextSteps).getByRole("link", {
       name: "Review the MCP security checklist",
     });
+    const loopLink = within(nextSteps).getByRole("link", {
+      name: "Design loop engineering for AI coding agents",
+    });
 
     expectValidUniqueGuideLinks(nextSteps, "homepage", validHrefs);
     expect(instructionLink.getAttribute("href")).toBe(`/guides/${INSTRUCTION_COMPARISON_GUIDE_SLUG}`);
     expect(securityLink.getAttribute("href")).toBe(`/guides/${MCP_SECURITY_GUIDE_SLUG}`);
+    expect(loopLink.getAttribute("href")).toBe(`/guides/${LOOP_ENGINEERING_GUIDE_SLUG}`);
     expect(instructionLink.closest("p")?.textContent).toMatch(
       /before choosing the adapters your team will maintain/i,
     );
     expect(securityLink.closest("p")?.textContent).toMatch(
       /before granting credentials, network access, or write permissions/i,
+    );
+    expect(loopLink.closest("p")?.textContent).toMatch(
+      /before scaling Automations or \/loop schedules/i,
     );
 
     for (const label of privateSeoLabels) {
@@ -112,14 +128,19 @@ describe("contextual internal links", () => {
     const securityLink = within(featuredPaths!).getByRole("link", {
       name: /Set boundaries for MCP access/i,
     });
+    const loopLink = within(featuredPaths!).getByRole("link", {
+      name: /Design durable agent loops/i,
+    });
     const guideGrid = document.querySelector(".guide-grid");
 
     // Featured paths and the full grid have different navigation roles, so cross-block repeats are intentional.
     expectValidUniqueGuideLinks(featuredPaths!, "guides-index", validHrefs);
     expect(instructionLink.getAttribute("href")).toBe(`/guides/${INSTRUCTION_COMPARISON_GUIDE_SLUG}`);
     expect(securityLink.getAttribute("href")).toBe(`/guides/${MCP_SECURITY_GUIDE_SLUG}`);
+    expect(loopLink.getAttribute("href")).toBe(`/guides/${LOOP_ENGINEERING_GUIDE_SLUG}`);
     expect(instructionLink.textContent).toMatch(/before standardizing guidance/i);
     expect(securityLink.textContent).toMatch(/before enabling an MCP server/i);
+    expect(loopLink.textContent).toMatch(/act-observe-reason cycles/i);
     expect(
       featuredPaths!.compareDocumentPosition(guideGrid!) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
@@ -170,7 +191,7 @@ describe("contextual internal links", () => {
       ...homepagePlacements,
       ...guidesIndexPlacements,
     ];
-    expect(actualRequiredPlacements).toHaveLength(approvedGuidePlacements.length + 4);
+    expect(actualRequiredPlacements).toHaveLength(approvedGuidePlacements.length + 6);
     expect(new Set(actualRequiredPlacements).size).toBe(actualRequiredPlacements.length);
 
     for (const guide of guides) {
