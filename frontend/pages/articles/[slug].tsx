@@ -5,6 +5,7 @@ import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import { SourceList } from "../../components/SourceList";
 import { getArticle, getArticles } from "../../lib/api";
+import { getVisibleArticleFaqs } from "../../lib/article-faqs";
 import { getRelatedGuidesForArticle } from "../../lib/article-guide-links";
 import { buildCategoryPath } from "../../lib/categories";
 import { getArticleEntities } from "../../lib/entities";
@@ -12,7 +13,6 @@ import { resolveIndexableGuideTopicHref } from "../../lib/guide-topic-links";
 import { getPublishedArticles, isPublishedArticle } from "../../lib/publication";
 import {
   buildArticleJsonLd,
-  buildArticleFaqs,
   buildBreadcrumbJsonLd,
   buildFaqPageJsonLd,
   buildMetaDescription,
@@ -38,7 +38,7 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
     { name: article.title, path: `/articles/${article.slug}` },
   ]);
   const primarySource = article.sources[0];
-  const faqs = buildArticleFaqs(article);
+  const faqs = getVisibleArticleFaqs(article);
   const faqJsonLd = buildFaqPageJsonLd(faqs);
   const entities = getArticleEntities(article);
 
@@ -106,6 +106,18 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
                 })}
               </div>
             </section>
+            <section>
+              <h2>Evidence sources</h2>
+              <div className="guide-source-list">
+                {article.sources.map((source) => (
+                  <a href={source.url} key={source.id} rel="noreferrer" target="_blank">
+                    <strong>{source.publisher}</strong>
+                    <span>{source.title}</span>
+                    <small>Published {formatDate(source.publishedAt)}</small>
+                  </a>
+                ))}
+              </div>
+            </section>
             {entities.length > 0 ? (
               <section>
                 <h2>Mentioned Entities</h2>
@@ -159,6 +171,7 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
 }
 
 function ArticleBlockView({ block }: { block: ArticleBlock }) {
+  if (block.type === "faq") return null;
   if (block.type === "fact_table") {
     const [header, ...rows] = block.content.split("\n").map((row) => row.split("|").map((cell) => cell.trim()));
     return (
@@ -177,10 +190,6 @@ function ArticleBlockView({ block }: { block: ArticleBlock }) {
         </tbody>
       </table>
     );
-  }
-  if (block.type === "faq") {
-    const [question, answer] = block.content.split("\n");
-    return <section className="faq-block"><h2>{question}</h2><p>{answer}</p></section>;
   }
   if (block.type === "source_note") return <p className="source-note-block">{block.content}</p>;
   if (block.type === "heading") return <h2>{block.content}</h2>;
