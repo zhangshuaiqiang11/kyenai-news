@@ -5,6 +5,7 @@ const EDITORIAL_SOURCE_FILES = [
   "lib/guides.ts",
   "lib/guide-expansion.ts",
   "lib/seed.ts",
+  "lib/articles/spacex-cursor-acquisition.ts",
 ];
 const EDITORIAL_DATE_PATTERN =
   /\b(?:updatedAt|publishedAt)\s*:\s*["'](\d{4}-\d{2}-\d{2})["']/g;
@@ -77,6 +78,14 @@ const categoryRedirects = [
   permanent: true,
 }));
 
+const articleRedirects = [
+  {
+    source: "/article/:slug",
+    destination: "/articles/:slug",
+    permanent: true,
+  },
+];
+
 const nextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
   env: {
@@ -84,7 +93,7 @@ const nextConfig = {
     NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE: latestEditorialUpdate,
   },
   async redirects() {
-    return categoryRedirects;
+    return [...categoryRedirects, ...articleRedirects];
   },
   async headers() {
     return [
