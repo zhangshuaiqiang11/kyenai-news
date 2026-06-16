@@ -7,7 +7,7 @@ import { SeoHead } from "../../components/SeoHead";
 import { getArticles } from "../../lib/api";
 import { getGuide, getGuides, getInternalLinkedGuides, getRelatedArticlesForGuide } from "../../lib/guides";
 import { EDITORIAL_AUTHOR_NAME, EDITORIAL_AUTHOR_PATH } from "../../lib/editorial";
-import { resolveGuideTopicHref } from "../../lib/guide-topic-links";
+import { resolveIndexableGuideTopicHref } from "../../lib/guide-topic-links";
 import {
   buildBreadcrumbJsonLd,
   buildFaqPageJsonLd,
@@ -270,11 +270,14 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
             <section>
               <h2>Related topics</h2>
               <div className="keyword-list">
-                {guide.secondaryKeywords.map((keyword) => (
-                  <Link href={resolveGuideTopicHref(keyword, guide.slug)} key={keyword}>
-                    {keyword}
-                  </Link>
-                ))}
+                {guide.secondaryKeywords.map((keyword) => {
+                  const href = resolveIndexableGuideTopicHref(keyword, guide.slug);
+                  return href ? (
+                    <Link href={href} key={keyword}>{keyword}</Link>
+                  ) : (
+                    <span key={keyword}>{keyword}</span>
+                  );
+                })}
               </div>
             </section>
             <section>
