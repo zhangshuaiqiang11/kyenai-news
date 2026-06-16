@@ -16,7 +16,7 @@ export default function ContactPage() {
 
   return (
     <Layout>
-      <SeoHead title="Contact and Corrections" description={description} path="/contact">
+      <SeoHead title="Contact and Corrections" description={description} path="/contact" robots="noindex,follow">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       </SeoHead>
       <section className="listing-page trust-page">
