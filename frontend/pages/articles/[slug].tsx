@@ -8,7 +8,7 @@ import { getArticle, getArticles } from "../../lib/api";
 import { getRelatedGuidesForArticle } from "../../lib/article-guide-links";
 import { buildCategoryPath } from "../../lib/categories";
 import { getArticleEntities } from "../../lib/entities";
-import { resolveGuideTopicHref } from "../../lib/guide-topic-links";
+import { resolveIndexableGuideTopicHref } from "../../lib/guide-topic-links";
 import {
   buildArticleJsonLd,
   buildArticleFaqs,
@@ -64,55 +64,29 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
           <h1>{article.title}</h1>
           <p>{article.summary}</p>
           <dl>
-            <div>
-              <dt>Published</dt>
-              <dd>{formatDate(article.publishedAt)}</dd>
-            </div>
-            <div>
-              <dt>Updated</dt>
-              <dd>{formatDate(article.updatedAt)}</dd>
-            </div>
-            <div>
-              <dt>Author</dt>
-              <dd>
-                <Link href={EDITORIAL_AUTHOR_PATH}>{article.authorName}</Link>
-              </dd>
-            </div>
-            <div>
-              <dt>Version</dt>
-              <dd>{article.version}</dd>
-            </div>
+            <div><dt>Published</dt><dd>{formatDate(article.publishedAt)}</dd></div>
+            <div><dt>Updated</dt><dd>{formatDate(article.updatedAt)}</dd></div>
+            <div><dt>Author</dt><dd><Link href={EDITORIAL_AUTHOR_PATH}>{article.authorName}</Link></dd></div>
+            <div><dt>Version</dt><dd>{article.version}</dd></div>
           </dl>
         </div>
         <section className="answer-panel" aria-labelledby="quick-answer-heading">
           <h2 id="quick-answer-heading">Quick Answer</h2>
           <p>{article.summary}</p>
           <dl>
-            <div>
-              <dt>Topic</dt>
-              <dd>{article.category}</dd>
-            </div>
-            <div>
-              <dt>Primary Source</dt>
-              <dd>{primarySource ? primarySource.publisher : "Source listed below"}</dd>
-            </div>
-            <div>
-              <dt>Source Date</dt>
-              <dd>{primarySource ? formatDate(primarySource.publishedAt) : "Not available"}</dd>
-            </div>
+            <div><dt>Topic</dt><dd>{article.category}</dd></div>
+            <div><dt>Primary Source</dt><dd>{primarySource ? primarySource.publisher : "Source listed below"}</dd></div>
+            <div><dt>Source Date</dt><dd>{primarySource ? formatDate(primarySource.publishedAt) : "Not available"}</dd></div>
           </dl>
         </section>
         <div className="article-content-grid">
           <div className="article-body">
-            {article.blocks.map((block) => (
-              <ArticleBlockView block={block} key={block.id} />
-            ))}
+            {article.blocks.map((block) => <ArticleBlockView block={block} key={block.id} />)}
             <section className="article-faqs" aria-labelledby="article-faq-heading">
               <h2 id="article-faq-heading">Questions This Update Answers</h2>
               {faqs.map((faq) => (
                 <section className="faq-block" key={faq.question}>
-                  <h3>{faq.question}</h3>
-                  <p>{faq.answer}</p>
+                  <h3>{faq.question}</h3><p>{faq.answer}</p>
                 </section>
               ))}
             </section>
@@ -126,12 +100,8 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
               <h2>Topics</h2>
               <div className="keyword-list">
                 {article.keywords.map((keyword) => {
-                  const href = resolveGuideTopicHref(keyword);
-                  return href ? (
-                    <Link href={href} key={keyword}>{keyword}</Link>
-                  ) : (
-                    <span key={keyword}>{keyword}</span>
-                  );
+                  const href = resolveIndexableGuideTopicHref(keyword);
+                  return href ? <Link href={href} key={keyword}>{keyword}</Link> : <span key={keyword}>{keyword}</span>;
                 })}
               </div>
             </section>
@@ -141,8 +111,7 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
                 <div className="entity-chip-list">
                   {entities.map((entity) => (
                     <a href={entity.officialUrl} key={entity.id} rel="noreferrer" target="_blank">
-                      <span>{entity.name}</span>
-                      <small>{entity.kind === "Organization" ? "Organization" : "Product"}</small>
+                      <span>{entity.name}</span><small>{entity.kind === "Organization" ? "Organization" : "Product"}</small>
                     </a>
                   ))}
                 </div>
@@ -154,19 +123,14 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
         {relatedGuides.length > 0 ? (
           <section className="related-guides" aria-labelledby="related-guides-heading">
             <div className="section-heading">
-              <div>
-                <h2 id="related-guides-heading">Practical Guides</h2>
-                <p>Use these evergreen playbooks to apply, migrate, or secure the update covered above.</p>
-              </div>
+              <div><h2 id="related-guides-heading">Practical Guides</h2><p>Use these evergreen playbooks to apply, migrate, or secure the update covered above.</p></div>
               <Link href="/guides">All guides</Link>
             </div>
             <div>
               {relatedGuides.map((guide) => (
                 <article key={guide.id}>
                   <span>{guide.pageType}</span>
-                  <h3>
-                    <Link href={`/guides/${guide.slug}`}>{guide.title}</Link>
-                  </h3>
+                  <h3><Link href={`/guides/${guide.slug}`}>{guide.title}</Link></h3>
                   <p>{guide.summary}</p>
                 </article>
               ))}
@@ -180,9 +144,7 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
               {relatedArticles.map((related) => (
                 <article key={related.id}>
                   <span>{related.category}</span>
-                  <h3>
-                    <Link href={`/articles/${related.slug}`}>{related.title}</Link>
-                  </h3>
+                  <h3><Link href={`/articles/${related.slug}`}>{related.title}</Link></h3>
                   <p>{related.summary}</p>
                 </article>
               ))}
@@ -200,22 +162,14 @@ function ArticleBlockView({ block }: { block: ArticleBlock }) {
     const [header, ...rows] = block.content.split("\n").map((row) => row.split("|").map((cell) => cell.trim()));
     return (
       <table className="fact-table">
-        <thead>
-          <tr>{header.map((cell) => <th key={cell} scope="col">{cell}</th>)}</tr>
-        </thead>
+        <thead><tr>{header.map((cell) => <th key={cell} scope="col">{cell}</th>)}</tr></thead>
         <tbody>
           {rows.map((row) => (
             <tr key={row.join("-")}>
-              {row.map((cell, index) => (
-                index === 0 ? (
-                  <th key={`${row.join("-")}-${header[index]}`} scope="row" data-label={header[index]}>
-                    {cell}
-                  </th>
-                ) : (
-                  <td key={`${row.join("-")}-${header[index]}`} data-label={header[index]}>
-                    {cell}
-                  </td>
-                )
+              {row.map((cell, index) => index === 0 ? (
+                <th key={`${row.join("-")}-${header[index]}`} scope="row" data-label={header[index]}>{cell}</th>
+              ) : (
+                <td key={`${row.join("-")}-${header[index]}`} data-label={header[index]}>{cell}</td>
               ))}
             </tr>
           ))}
@@ -225,36 +179,22 @@ function ArticleBlockView({ block }: { block: ArticleBlock }) {
   }
   if (block.type === "faq") {
     const [question, answer] = block.content.split("\n");
-    return (
-      <section className="faq-block">
-        <h2>{question}</h2>
-        <p>{answer}</p>
-      </section>
-    );
+    return <section className="faq-block"><h2>{question}</h2><p>{answer}</p></section>;
   }
-  if (block.type === "source_note") {
-    return <p className="source-note-block">{block.content}</p>;
-  }
-  if (block.type === "heading") {
-    return <h2>{block.content}</h2>;
-  }
+  if (block.type === "source_note") return <p className="source-note-block">{block.content}</p>;
+  if (block.type === "heading") return <h2>{block.content}</h2>;
   return <p>{block.content}</p>;
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const articles = await getArticles();
-  return {
-    paths: articles.map((article) => ({ params: { slug: article.slug } })),
-    fallback: "blocking",
-  };
+  return { paths: articles.map((article) => ({ params: { slug: article.slug } })), fallback: "blocking" };
 };
 
 export const getStaticProps: GetStaticProps<ArticlePageProps> = async ({ params }) => {
   const slug = String(params?.slug || "");
   const article = await getArticle(slug);
-  if (!article) {
-    return { notFound: true };
-  }
+  if (!article) return { notFound: true };
   const articles = await getArticles();
   return {
     props: {
@@ -268,13 +208,11 @@ export const getStaticProps: GetStaticProps<ArticlePageProps> = async ({ params 
 
 function getRelatedArticles(article: Article, articles: Article[]): Article[] {
   const articleTags = new Set(article.tags.concat(article.keywords).map(slugify));
-
   return articles
     .filter((candidate) => candidate.status === "published" && candidate.id !== article.id)
     .map((candidate) => ({
       article: candidate,
-      score:
-        (candidate.category === article.category ? 4 : 0) +
+      score: (candidate.category === article.category ? 4 : 0) +
         candidate.tags.concat(candidate.keywords).filter((tag) => articleTags.has(slugify(tag))).length,
     }))
     .filter((candidate) => candidate.score > 0)
