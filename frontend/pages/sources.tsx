@@ -32,7 +32,7 @@ export default function SourcesPage({ sources }: SourcesPageProps) {
 
   return (
     <Layout>
-      <SeoHead title="Source Ledger" description={description} path="/sources">
+      <SeoHead title="Source Ledger" description={description} path="/sources" robots="noindex,follow">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       </SeoHead>
