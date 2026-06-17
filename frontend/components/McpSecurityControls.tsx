@@ -1,6 +1,8 @@
 import React from "react";
 
 import {
+  mcpSecurityAuthenticationMatrix,
+  mcpSecurityConfigExample,
   mcpSecurityControls,
   mcpSecurityPermissionMatrix,
   mcpSecurityReviewPolicy,
@@ -97,6 +99,39 @@ export function McpSecurityControls() {
         </div>
       </section>
 
+      <section className="instruction-resource-section" aria-labelledby="mcp-authentication-matrix-heading">
+        <div className="instruction-resource-heading">
+          <div>
+            <p className="instruction-resource-eyebrow">Authentication choices</p>
+            <h2 id="mcp-authentication-matrix-heading">OAuth, API key, and mTLS comparison</h2>
+          </div>
+        </div>
+        <div className="instruction-table-scroll">
+          <table aria-label="MCP authentication comparison">
+            <thead>
+              <tr>
+                <th scope="col">Option</th>
+                <th scope="col">Use when</th>
+                <th scope="col">Main risk</th>
+                <th scope="col">Launch gate</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mcpSecurityAuthenticationMatrix.map((row) => (
+                <tr key={row.id}>
+                  <th scope="row" data-label="Option">
+                    {row.option}
+                  </th>
+                  <td data-label="Use when">{row.useWhen}</td>
+                  <td data-label="Main risk">{row.mainRisk}</td>
+                  <td data-label="Launch gate">{row.launchGate}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section className="instruction-resource-section" aria-labelledby="mcp-review-heading">
         <div className="instruction-resource-heading">
           <div>
@@ -116,6 +151,27 @@ export function McpSecurityControls() {
             ]}
             downloadHref="/resources/mcp-security-review.md"
             downloadName="mcp-security-review.md"
+          />
+        </div>
+      </section>
+
+      <section className="instruction-resource-section" aria-labelledby="mcp-config-example-heading">
+        <div className="instruction-resource-heading">
+          <div>
+            <p className="instruction-resource-eyebrow">Configuration example</p>
+            <h2 id="mcp-config-example-heading">MCP security config example</h2>
+          </div>
+          <p>Copy the shape, not the literal values. Replace commands, domains, scopes, paths, and owners.</p>
+        </div>
+        <div className="instruction-template-grid instruction-template-grid-single">
+          <CodeExampleCard
+            title="Read-only MCP security profile"
+            purpose="Show one conservative launch profile with token audience, blocked paths, network allowlist, approvals, audit fields, and revocation."
+            body={mcpSecurityConfigExample}
+            cautions={[
+              "Do not copy example domains, commands, owners, or paths into production without review.",
+              "Keep write, delete, secret, and production capabilities disabled until a separate approval path exists.",
+            ]}
           />
         </div>
       </section>

@@ -33,6 +33,36 @@ describe("guide topic links", () => {
     );
   });
 
+  it("routes P2 AGENTS.md support topics to the narrow support pages", () => {
+    expect(resolveIndexableGuideTopicHref("github copilot claude.md support")).toBe(
+      "/guides/does-github-copilot-read-claude-md-support-matrix",
+    );
+    expect(resolveIndexableGuideTopicHref("does github copilot read claude.md")).toBe(
+      "/guides/does-github-copilot-read-claude-md-support-matrix",
+    );
+    expect(resolveIndexableGuideTopicHref("agents.md examples")).toBe(
+      "/guides/agents-md-examples-codex-node-python-monorepos",
+    );
+    expect(resolveIndexableGuideTopicHref("agents.md python example")).toBe(
+      "/guides/agents-md-examples-codex-node-python-monorepos",
+    );
+  });
+
+  it("does not link P2 support topics back to their current guide", () => {
+    expect(
+      resolveIndexableGuideTopicHref(
+        "github copilot claude.md support",
+        "does-github-copilot-read-claude-md-support-matrix",
+      ),
+    ).toBeNull();
+    expect(
+      resolveIndexableGuideTopicHref(
+        "agents.md examples",
+        "agents-md-examples-codex-node-python-monorepos",
+      ),
+    ).toBeNull();
+  });
+
   it("does not link a topic back to the current guide", () => {
     expect(resolveIndexableGuideTopicHref("Codex alternatives", "codex-vs-claude-code")).toBeNull();
     expect(resolveIndexableGuideTopicHref("Codex alternatives", "some-other-guide")).toBe(

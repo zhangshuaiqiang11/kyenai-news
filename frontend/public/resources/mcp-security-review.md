@@ -19,6 +19,14 @@ Use this template for one named server and deployment context. It combines offic
 - Dependency / supply-chain review:
 - Revocation / incident response:
 
+## Authentication choice
+
+| Option | Use when | Main risk | Launch gate |
+| --- | --- | --- | --- |
+| OAuth / MCP authorization flow | HTTP-based servers need user or client authorization with audience-bound access tokens and scopes. | Token passthrough, wrong audience, excessive scopes, confused-deputy behavior, and stale refresh paths. | Protected resource metadata exists, token audience is validated, scopes are minimal, and deny-path tests reject wrong-audience tokens. |
+| API key or service token | A server wraps a backend service that already uses scoped service credentials or short-lived runtime tokens. | Long-lived secrets in prompts, logs, repo files, local config, screenshots, or broad environment injection. | The key is stored in managed secret storage, injected only at runtime, redacted from logs, scoped narrowly, and revocable by an owner. |
+| mTLS or private network identity | A production or internal server needs strong service-to-service identity inside a controlled network boundary. | Certificate lifecycle drift, over-trusted network zones, unclear client identity, and missing emergency disablement. | Client identity is mapped to allowed methods, certificate rotation is documented, network allowlists are tested, and break-glass revocation works. |
+
 ## Threat model
 
 - [ ] **Prompt injection** - Untrusted repository, issue, webpage, or tool output can steer an agent toward a dangerous MCP call. Treat this as a general AI agent tool security threat and keep consequential capabilities independently constrained. _KyenAI operational recommendation._
@@ -57,6 +65,63 @@ Use this template for one named server and deployment context. It combines offic
 - [ ] Exercise expected allow and deny cases for every enabled capability.
 - [ ] Confirm errors and logs do not expose tokens, secrets, or unnecessary sensitive payloads.
 - [ ] Record evidence links and unresolved findings.
+
+## Security config example
+
+```yaml
+# Example MCP server security profile
+
+server:
+  name: repo-inspector
+  owner: platform-security
+  transport: http
+  default_capability: read-only
+
+authorization:
+  mode: oauth
+  token_audience: https://mcp.example.com/repo-inspector
+  required_scopes:
+    - repo.read
+  reject_token_passthrough: true
+
+permissions:
+  filesystem_roots:
+    - /workspace/repo
+  blocked_paths:
+    - .env
+    - secrets/
+    - production/
+  outbound_network_allowlist:
+    - https://api.github.com
+  write_methods: []
+  destructive_methods: []
+
+approvals:
+  require_human_for:
+    - secret_access
+    - production_access
+    - write_methods
+    - delete_methods
+
+audit:
+  log_fields:
+    - actor
+    - session_id
+    - server_version
+    - method
+    - target
+    - approval_id
+    - outcome
+  redact:
+    - tokens
+    - secrets
+    - file_contents
+
+revocation:
+  disable_server_command: platformctl mcp disable repo-inspector
+  rotate_credentials_owner: platform-security
+  incident_channel: "#security-incidents"
+```
 
 ## Review cadence and revocation
 

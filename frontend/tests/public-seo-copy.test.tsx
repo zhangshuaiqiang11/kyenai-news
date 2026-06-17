@@ -40,6 +40,8 @@ const targetGuideSlugs = [
   "agents-md-vs-claude-md-cursorrules-copilot-instructions",
   "secure-mcp-servers-ai-coding-agents",
   "loop-engineering-ai-coding-agents",
+  "does-github-copilot-read-claude-md-support-matrix",
+  "agents-md-examples-codex-node-python-monorepos",
 ] as const;
 
 vi.mock("next/router", () => ({
@@ -371,7 +373,7 @@ describe("public guide SEO copy", () => {
       expect.soft(screen.queryAllByText(internalLabel), internalLabel).toHaveLength(0);
     }
 
-    const guideCards = screen.getAllByRole("article");
+    const guideCards = Array.from(document.querySelectorAll<HTMLElement>(".guide-card"));
     expect.soft(guideCards).toHaveLength(2);
     for (const guideCard of guideCards) {
       expect.soft(within(guideCard).queryAllByText(/^Who it helps:$/i)).toHaveLength(1);

@@ -60,8 +60,8 @@ describe("Next build configuration", () => {
       ),
     ).toBe("2026-06-14");
     expect(
-      nextConfig.deriveLatestEditorialUpdate("2026-06-14T23:59:59.000Z", frontendRoot),
-    ).toBe("2026-06-14");
+      nextConfig.deriveLatestEditorialUpdate("2026-06-18T23:59:59.000Z", frontendRoot),
+    ).toBe("2026-06-18");
   });
 
   it("redirects singular article routes to the canonical plural route", async () => {

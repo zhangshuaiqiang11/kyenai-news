@@ -31,7 +31,6 @@ describe("page indexing metadata", () => {
     const pages = [
       <ContactPage key="contact" />,
       <SourcesPage key="sources" sources={[]} />,
-      <EntitiesPage key="entities" articles={[]} entities={[]} />,
       <AuthorPage key="author" articles={[]} />,
       <CategoryPage
         key="category"
@@ -49,6 +48,12 @@ describe("page indexing metadata", () => {
       expectRobots("noindex,follow");
       view.unmount();
     }
+  });
+
+  it("keeps the public entity ledger indexable", () => {
+    render(<EntitiesPage articles={[]} entities={[]} />);
+
+    expectRobots(null);
   });
 
   it("removes the noindex directive when a category hub passes its gate", () => {

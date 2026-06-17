@@ -12,12 +12,12 @@ export type SitemapEntry = {
 const staticPageDates = {
   "/about": "2026-06-06",
   "/editorial-policy": "2026-06-06",
+  "/entities": "2026-06-18",
 } as const;
 
 export const noindexUtilityPaths = [
   "/contact",
   "/sources",
-  "/entities",
   "/authors/editorial-automation-desk",
 ] as const;
 

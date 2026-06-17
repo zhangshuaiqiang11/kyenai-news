@@ -95,6 +95,33 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
       "ai coding agent instructions template",
     ],
   },
+  "does-github-copilot-read-claude-md-support-matrix": {
+    priority: "P1",
+    primaryKeyword: "Does GitHub Copilot read CLAUDE.md",
+    demandScore: 7.6,
+    attackabilityScore: 9.1,
+    fitScore: 9.2,
+    gscWatchQueries: [
+      "does github copilot read claude.md",
+      "github copilot claude.md support",
+      "copilot claude.md support matrix",
+      ".github/copilot-instructions.md vs claude.md",
+    ],
+  },
+  "agents-md-examples-codex-node-python-monorepos": {
+    priority: "P1",
+    primaryKeyword: "AGENTS.md examples",
+    demandScore: 8.1,
+    attackabilityScore: 9.3,
+    fitScore: 9.5,
+    gscWatchQueries: [
+      "agents.md examples",
+      "codex agents.md examples",
+      "agents.md node.js example",
+      "agents.md python example",
+      "agents.md monorepo example",
+    ],
+  },
   "agent-mode-vs-chat-mode-in-ide": {
     priority: "P0",
     primaryKeyword: "agent mode vs chat mode in IDE",

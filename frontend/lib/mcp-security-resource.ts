@@ -69,6 +69,14 @@ export type McpPermissionRow = {
   launchGate: string;
 };
 
+export type McpAuthenticationRow = {
+  id: "oauth" | "api-key" | "mtls";
+  option: string;
+  useWhen: string;
+  mainRisk: string;
+  launchGate: string;
+};
+
 export const mcpSecuritySources: McpSecuritySource[] = [
   {
     id: "mcp-security-best-practices",
@@ -333,12 +341,92 @@ export const mcpSecurityPermissionMatrix: McpPermissionRow[] = [
   },
 ];
 
+export const mcpSecurityAuthenticationMatrix: McpAuthenticationRow[] = [
+  {
+    id: "oauth",
+    option: "OAuth / MCP authorization flow",
+    useWhen: "HTTP-based servers need user or client authorization with audience-bound access tokens and scopes.",
+    mainRisk: "Token passthrough, wrong audience, excessive scopes, confused-deputy behavior, and stale refresh paths.",
+    launchGate:
+      "Protected resource metadata exists, token audience is validated, scopes are minimal, and deny-path tests reject wrong-audience tokens.",
+  },
+  {
+    id: "api-key",
+    option: "API key or service token",
+    useWhen: "A server wraps a backend service that already uses scoped service credentials or short-lived runtime tokens.",
+    mainRisk: "Long-lived secrets in prompts, logs, repo files, local config, screenshots, or broad environment injection.",
+    launchGate:
+      "The key is stored in managed secret storage, injected only at runtime, redacted from logs, scoped narrowly, and revocable by an owner.",
+  },
+  {
+    id: "mtls",
+    option: "mTLS or private network identity",
+    useWhen: "A production or internal server needs strong service-to-service identity inside a controlled network boundary.",
+    mainRisk: "Certificate lifecycle drift, over-trusted network zones, unclear client identity, and missing emergency disablement.",
+    launchGate:
+      "Client identity is mapped to allowed methods, certificate rotation is documented, network allowlists are tested, and break-glass revocation works.",
+  },
+];
+
 export const mcpSecurityReviewPolicy = {
   cadence:
     "Review at least quarterly and whenever the server owner, publisher, version, dependencies, scopes, credentials, methods, data classes, network reach, or deployment environment materially changes.",
   revocation:
     "Disable the server, revoke tokens and secrets, remove client access, preserve attributable records, assess affected systems and data, rotate downstream credentials, and document the decision to restore or retire access.",
 } as const;
+
+export const mcpSecurityConfigExample = `# Example MCP server security profile
+
+server:
+  name: repo-inspector
+  owner: platform-security
+  transport: http
+  default_capability: read-only
+
+authorization:
+  mode: oauth
+  token_audience: https://mcp.example.com/repo-inspector
+  required_scopes:
+    - repo.read
+  reject_token_passthrough: true
+
+permissions:
+  filesystem_roots:
+    - /workspace/repo
+  blocked_paths:
+    - .env
+    - secrets/
+    - production/
+  outbound_network_allowlist:
+    - https://api.github.com
+  write_methods: []
+  destructive_methods: []
+
+approvals:
+  require_human_for:
+    - secret_access
+    - production_access
+    - write_methods
+    - delete_methods
+
+audit:
+  log_fields:
+    - actor
+    - session_id
+    - server_version
+    - method
+    - target
+    - approval_id
+    - outcome
+  redact:
+    - tokens
+    - secrets
+    - file_contents
+
+revocation:
+  disable_server_command: platformctl mcp disable repo-inspector
+  rotate_credentials_owner: platform-security
+  incident_channel: "#security-incidents"`;
 
 const claimTypeLabel: Record<McpClaimType, string> = {
   "official-mcp": "Official MCP requirement or guidance",
@@ -372,6 +460,14 @@ Use this template for one named server and deployment context.
 - Logging:
 - Dependency / supply-chain review:
 - Revocation / incident response:
+
+## Authentication choice
+
+| Option | Use when | Main risk | Launch gate |
+| --- | --- | --- | --- |
+| OAuth / MCP authorization flow | HTTP-based servers need user or client authorization with audience-bound tokens and scopes | Token passthrough, wrong audience, excessive scopes, and confused-deputy behavior | Protected resource metadata exists, token audience is validated, scopes are minimal, and deny-path tests reject wrong-audience tokens |
+| API key or service token | A server wraps a backend service that already uses scoped service credentials | Long-lived secrets in prompts, logs, repo files, local config, screenshots, or broad environment injection | The key is in managed storage, injected only at runtime, redacted from logs, scoped narrowly, and revocable |
+| mTLS or private network identity | A production or internal server needs strong service-to-service identity | Certificate lifecycle drift, over-trusted network zones, unclear client identity, and missing emergency disablement | Client identity maps to allowed methods, certificate rotation is documented, and break-glass revocation works |
 
 ## Threat model
 
@@ -412,6 +508,12 @@ Use this template for one named server and deployment context.
 - [ ] Confirm errors and logs do not expose tokens or unnecessary sensitive payloads.
 - [ ] Record evidence links and unresolved findings.
 
+## Security config example
+
+\`\`\`yaml
+${mcpSecurityConfigExample}
+\`\`\`
+
 ## Sign-off
 
 - Reviewer:
@@ -440,6 +542,12 @@ export function renderMcpSecurityReviewMarkdown(
         `| ${escapeMarkdownTableCell(row.capability)} | ${escapeMarkdownTableCell(row.default)} | ${escapeMarkdownTableCell(row.dataRisk)} | ${escapeMarkdownTableCell(row.approval)} | ${escapeMarkdownTableCell(row.logging)} | ${escapeMarkdownTableCell(row.launchGate)} |`,
     )
     .join("\n");
+  const authenticationRows = mcpSecurityAuthenticationMatrix
+    .map(
+      (row) =>
+        `| ${escapeMarkdownTableCell(row.option)} | ${escapeMarkdownTableCell(row.useWhen)} | ${escapeMarkdownTableCell(row.mainRisk)} | ${escapeMarkdownTableCell(row.launchGate)} |`,
+    )
+    .join("\n");
   const sourceList = mcpSecuritySources
     .map((source) => `- [${source.title}](${source.url}) - ${source.scope}`)
     .join("\n");
@@ -465,6 +573,12 @@ Use this template for one named server and deployment context. It combines offic
 - Dependency / supply-chain review:
 - Revocation / incident response:
 
+## Authentication choice
+
+| Option | Use when | Main risk | Launch gate |
+| --- | --- | --- | --- |
+${authenticationRows}
+
 ## Threat model
 
 ${threatChecklist}
@@ -486,6 +600,12 @@ ${permissionRows}
 - [ ] Exercise expected allow and deny cases for every enabled capability.
 - [ ] Confirm errors and logs do not expose tokens, secrets, or unnecessary sensitive payloads.
 - [ ] Record evidence links and unresolved findings.
+
+## Security config example
+
+\`\`\`yaml
+${mcpSecurityConfigExample}
+\`\`\`
 
 ## Review cadence and revocation
 

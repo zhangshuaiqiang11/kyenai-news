@@ -33,11 +33,13 @@ describe("SpaceX Cursor acquisition article", () => {
     expect(article.status).toBe("published");
     expect(article.publishedAt).toContain("2026-06-16");
     expect(article.sources.map((source) => source.publisher)).toEqual([
+      "SEC",
       "Reuters",
       "Axios",
       "Financial Times",
     ]);
-    expect(visibleText).toMatch(/signed acquisition agreement/i);
+    expect(visibleText).toMatch(/signed merger agreement|signed acquisition agreement/i);
+    expect(visibleText).toMatch(/Form 8-K/i);
     expect(visibleText).toMatch(/not a completed closing|has not yet closed|closing still pending/i);
     expect(visibleText).toMatch(/all-stock/i);
     expect(visibleText).toMatch(/third quarter of 2026/i);

@@ -8,6 +8,8 @@ import { McpSecurityControls } from "../components/McpSecurityControls";
 import { getGuideEditorialSignals } from "../lib/guide-editorial";
 import { getGuide, getInternalLinkedGuides } from "../lib/guides";
 import {
+  mcpSecurityAuthenticationMatrix,
+  mcpSecurityConfigExample,
   mcpSecurityControls,
   mcpSecurityPermissionMatrix,
   mcpSecuritySources,
@@ -110,6 +112,23 @@ describe("MCP security resource records", () => {
     }
   });
 
+  it("defines authentication choices and a conservative security config example", () => {
+    expect(mcpSecurityAuthenticationMatrix.map((row) => row.id)).toEqual(["oauth", "api-key", "mtls"]);
+    expect(mcpSecurityAuthenticationMatrix.map((row) => row.option).join(" ")).toMatch(/OAuth|API key|mTLS/);
+    for (const row of mcpSecurityAuthenticationMatrix) {
+      expect(row.useWhen).toBeTruthy();
+      expect(row.mainRisk).toBeTruthy();
+      expect(row.launchGate).toBeTruthy();
+    }
+
+    expect(mcpSecurityConfigExample).toContain("token_audience");
+    expect(mcpSecurityConfigExample).toContain("blocked_paths");
+    expect(mcpSecurityConfigExample).toContain("outbound_network_allowlist");
+    expect(mcpSecurityConfigExample).toContain("write_methods: []");
+    expect(mcpSecurityConfigExample).toContain("log_fields");
+    expect(mcpSecurityConfigExample).toContain("disable_server_command");
+  });
+
   it("labels official MCP claims separately from general operating controls", () => {
     const allRecords = [...mcpSecurityThreats, ...mcpSecurityControls];
     expect(new Set(allRecords.map((record) => record.claimType))).toEqual(
@@ -135,7 +154,9 @@ describe("McpSecurityControls", () => {
 
     expect(markup).toContain("MCP security threat model");
     expect(markup).toContain("MCP security control checklist");
+    expect(markup).toContain("OAuth, API key, and mTLS comparison");
     expect(markup).toContain("MCP permission matrix");
+    expect(markup).toContain("MCP security config example");
     expect(markup).toContain("Review cadence and revocation");
     expect(markup).toContain("<table");
     expect(markup).toContain("<dl");
@@ -156,6 +177,9 @@ describe("McpSecurityControls", () => {
     for (const row of mcpSecurityPermissionMatrix) {
       expect(screen.getByRole("rowheader", { name: row.capability })).toBeTruthy();
     }
+    for (const row of mcpSecurityAuthenticationMatrix) {
+      expect(screen.getByRole("rowheader", { name: row.option })).toBeTruthy();
+    }
     expect(
       screen.getByRole("link", { name: /download mcp-security-review\.md/i }).getAttribute("href"),
     ).toBe("/resources/mcp-security-review.md");
@@ -170,7 +194,7 @@ describe("MCP security guide integration", () => {
 
     expect(guide).toMatchObject({
       resourceIds: ["mcp-security"],
-      updatedAt: "2026-06-14",
+      updatedAt: "2026-06-18",
     });
     expect(guide!.title).toMatch(/MCP security checklist/i);
     expect(guide!.metaTitle).toMatch(/MCP security checklist/i);
@@ -178,6 +202,8 @@ describe("MCP security guide integration", () => {
     expect(JSON.stringify(guide)).toMatch(/how to secure an MCP server/i);
     expect(JSON.stringify(guide)).toMatch(/MCP authentication/i);
     expect(JSON.stringify(guide)).toMatch(/MCP permissions/i);
+    expect(JSON.stringify(guide)).toMatch(/OAuth, API keys, and mTLS/i);
+    expect(JSON.stringify(guide)).toMatch(/security config example/i);
     expect(JSON.stringify(guide)).toMatch(/AI agent tool security/i);
     expect(editorial).toMatchObject({
       primaryKeyword: "MCP security checklist",
@@ -248,6 +274,7 @@ describe("generated MCP security review", () => {
       "Data classes",
       "Methods / capabilities",
       "Credentials / authentication",
+      "Authentication choice",
       "Network reach",
       "Approval gates",
       "Logging",
@@ -265,9 +292,14 @@ describe("generated MCP security review", () => {
     for (const row of mcpSecurityPermissionMatrix) {
       expect(markdown).toContain(row.capability);
     }
+    for (const row of mcpSecurityAuthenticationMatrix) {
+      expect(markdown).toContain(row.option);
+    }
     for (const source of mcpSecuritySources) {
       expect(markdown).toContain(source.url);
     }
+    expect(markdown).toContain("## Security config example");
+    expect(markdown).toContain("token_audience");
     expect(markdown).toContain("KyenAI operational recommendation");
     expect(markdown).toContain("Official MCP requirement or guidance");
   });

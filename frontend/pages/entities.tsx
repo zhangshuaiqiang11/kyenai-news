@@ -39,7 +39,7 @@ export default function EntitiesPage({ articles, entities }: EntitiesPageProps) 
 
   return (
     <Layout>
-      <SeoHead title="Entity Ledger" description={description} path="/entities" robots="noindex,follow">
+      <SeoHead title="Entity Ledger" description={description} path="/entities">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(entityListJsonLd) }} />
       </SeoHead>

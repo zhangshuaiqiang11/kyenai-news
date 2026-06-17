@@ -22,7 +22,10 @@ vi.mock("next/router", () => ({
 
 const approvedGuidePlacements = [
   [INSTRUCTION_COMPARISON_GUIDE_SLUG, "agents-md-template-for-ai-coding-agents"],
+  [INSTRUCTION_COMPARISON_GUIDE_SLUG, "does-github-copilot-read-claude-md-support-matrix"],
+  [INSTRUCTION_COMPARISON_GUIDE_SLUG, "agents-md-examples-codex-node-python-monorepos"],
   ["agents-md-template-for-ai-coding-agents", INSTRUCTION_COMPARISON_GUIDE_SLUG],
+  ["agents-md-template-for-ai-coding-agents", "agents-md-examples-codex-node-python-monorepos"],
   ["codex-vs-claude-code", INSTRUCTION_COMPARISON_GUIDE_SLUG],
   ["claude-code-hooks-mcp-setup", INSTRUCTION_COMPARISON_GUIDE_SLUG],
   ["agent-governance-checklist-for-software-teams", MCP_SECURITY_GUIDE_SLUG],
@@ -115,7 +118,7 @@ describe("contextual internal links", () => {
     }
   });
 
-  it("renders two compact featured paths above the guide grid with contextual reasons", () => {
+  it("renders compact featured paths above the guide grid with contextual reasons", () => {
     const { guides, validHrefs } = getGuideRouteData();
     render(<GuidesPage guides={guides} />);
 
@@ -148,6 +151,42 @@ describe("contextual internal links", () => {
     for (const label of privateSeoLabels) {
       expect(screen.queryByText(label)).toBeNull();
     }
+  });
+
+  it("renders the four guide topic centers with crawlable links and reading order", () => {
+    const { guides, validHrefs } = getGuideRouteData();
+    render(<GuidesPage guides={guides} />);
+
+    const centers = screen.getByRole("heading", { name: "Topic centers" }).closest("section");
+    expect(centers).not.toBeNull();
+
+    expect(within(centers!).getByRole("heading", { name: "Repository Instructions" })).toBeTruthy();
+    expect(within(centers!).getByRole("heading", { name: "Agent Workflows" })).toBeTruthy();
+    expect(within(centers!).getByRole("heading", { name: "MCP and Security" })).toBeTruthy();
+    expect(within(centers!).getByRole("heading", { name: "Tool Comparisons" })).toBeTruthy();
+    expect(within(centers!).getAllByText("Recommended reading order")).toHaveLength(4);
+    expect(centers!.textContent).toMatch(/Beginner entry:/);
+    expect(centers!.textContent).toMatch(/Advanced page:/);
+
+    const hrefs = expectValidUniqueGuideLinks(centers!, "guides-index", validHrefs);
+    expect(hrefs).toHaveLength(13);
+    expect(hrefs).toEqual(
+      expect.arrayContaining([
+        `guides-index::${INSTRUCTION_COMPARISON_GUIDE_SLUG}`,
+        "guides-index::agents-md-template-for-ai-coding-agents",
+        "guides-index::agents-md-examples-codex-node-python-monorepos",
+        "guides-index::does-github-copilot-read-claude-md-support-matrix",
+        `guides-index::${LOOP_ENGINEERING_GUIDE_SLUG}`,
+        "guides-index::claude-code-subagents-examples",
+        "guides-index::agent-mode-vs-chat-mode-in-ide",
+        `guides-index::${MCP_SECURITY_GUIDE_SLUG}`,
+        "guides-index::claude-code-hooks-mcp-setup",
+        "guides-index::agent-governance-checklist-for-software-teams",
+        "guides-index::codex-vs-claude-code",
+        "guides-index::local-vs-cloud-ai-coding-agent",
+        "guides-index::antigravity-cli-gemini-cli-migration",
+      ]),
+    );
   });
 
   it.each(approvedGuidePlacements)(

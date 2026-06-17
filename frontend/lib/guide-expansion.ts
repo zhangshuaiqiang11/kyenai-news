@@ -33,11 +33,26 @@ export const expansionGuides: Guide[] = [
           "For a small team, the best test is one real bug fix and one real refactor. Watch which tool asks for clearer instructions, which one handles test failures better, and which one leaves a diff that is easier to review.",
         ],
       },
+      {
+        heading: "Public example evidence",
+        body: [
+          "Public same-prompt examples can help choose evaluation dimensions, but they should not be treated as universal benchmark data. In one Tom's Guide comparison published on May 17, 2026, Claude Code was described as stronger for immediate usability on a subscription tracker, while Codex was described as stronger for deeper data handling and analytical dashboards on grocery comparison and financing calculator tasks.",
+          "Use that as an example of what to measure, not a final verdict for your repository. A real engineering team still needs repository tasks: a bug fix, an API addition, a component refactor, and a test or CI repair under the same prompt, same files, same allowed tools, and same verification command.",
+        ],
+      },
+      {
+        heading: "Same-task experiment protocol",
+        body: [
+          "Run four tasks in the same clean repository state: fix one failing test, add one small API endpoint, refactor one UI component without behavior change, and add or repair one test. For each tool, record elapsed time, changed files, verification pass or fail, human interventions, wrong edits, cost or token use when available, and whether the tool followed AGENTS.md or CLAUDE.md correctly.",
+          "If a metric is not captured, write Not measured instead of guessing. Public examples can seed hypotheses, but your decision should come from review effort, reproducibility, safety behavior, and whether the final diff is easy for the team to own.",
+        ],
+      },
     ],
     recommendedPlay: [
       "Run the same small bug fix in both tools before deciding.",
       "Score the output by review effort, test behavior, safety prompts, and how easy the final diff is to understand.",
       "Keep the page updated with product behavior and official docs, not vague model claims.",
+      "Use public examples as hypotheses, then replace them with measured repository data once your team runs the protocol.",
     ],
     decisionTable: {
       title: "Codex and Claude Code fit map",
@@ -92,6 +107,10 @@ export const expansionGuides: Guide[] = [
         body: "Compare final code, test output, reasoning notes, and any extra files created along the way.",
       },
       {
+        title: "Record unavailable metrics honestly",
+        body: "Use Not measured for time, cost, tokens, changed files, or human interventions when the run did not capture them.",
+      },
+      {
         title: "Choose by workflow fit",
         body: "Pick the tool that your team can review and repeat safely, even if the other tool produced a flashier first answer.",
       },
@@ -108,6 +127,10 @@ export const expansionGuides: Guide[] = [
       {
         title: "Mixing instruction files",
         fix: "Keep shared project rules consistent across AGENTS.md, CLAUDE.md, and other tool-specific files.",
+      },
+      {
+        title: "Treating public app demos as repo benchmarks",
+        fix: "Use public examples to choose dimensions, then run the same controlled task inside your own repository.",
       },
     ],
     internalLinks: [
@@ -143,7 +166,7 @@ export const expansionGuides: Guide[] = [
     evidence: [
       {
         title: "OpenAI Codex AGENTS.md documentation",
-        url: "https://github.com/openai/codex/blob/main/docs/agents_md.md",
+        url: "https://developers.openai.com/codex/guides/agents-md",
         publisher: "OpenAI",
         note: "Official repository guidance for AGENTS.md behavior.",
       },
@@ -153,16 +176,28 @@ export const expansionGuides: Guide[] = [
         publisher: "Anthropic",
         note: "Official Claude Code workflow overview.",
       },
+      {
+        title: "Claude Code autonomous workflow update",
+        url: "https://www.anthropic.com/news/enabling-claude-code-to-work-more-autonomously",
+        publisher: "Anthropic",
+        note: "Official note on Claude Code surfaces, checkpoints, subagents, hooks, and background work.",
+      },
+      {
+        title: "Tom's Guide Codex vs Claude Code practical comparison",
+        url: "https://www.tomsguide.com/ai/claude-code-vs-openai-codex-i-built-3-real-apps-to-find-the-better-agent-heres-the-verdict",
+        publisher: "Tom's Guide",
+        note: "Public practical app-building comparison used as an external example, not KyenAI benchmark data.",
+      },
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "claude-code-dynamic-workflows-parallel-subagents"],
-    updatedAt: "2026-06-06",
+    updatedAt: "2026-06-18",
     metaTitle: "Codex vs Claude Code: Which AI Coding Agent Fits?",
     metaDescription:
       "Compare Codex vs Claude Code in 2026 with answer-first guidance on workflow fit, review checks, and rollout risks for real repositories.",
   },
   {
     id: "guide-agents-md-template",
-    title: "AGENTS.md template for AI coding agents",
+    title: "AGENTS.md Template: Practical Examples for Codex and Monorepos",
     slug: "agents-md-template-for-ai-coding-agents",
     summary:
       "Start AGENTS.md with the repo purpose, safe edit boundaries, install commands, test commands, style rules, and review expectations. Keep it short enough that an agent can follow it during a real task.",
@@ -174,15 +209,29 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "A useful AGENTS.md tells the agent what the repo is, which commands prove work is done, what files are sensitive, and how the team wants changes reviewed. Do not turn it into a long policy essay; the best template is short, specific, and easy to verify.",
+          "A useful AGENTS.md tells Codex what the repo is, which commands prove work is done, what files are sensitive, and how the team wants changes reviewed. Start with a root template, then add nested AGENTS.md files only for monorepos or packages with different commands, ownership, or safety boundaries.",
         ],
       },
       {
-        heading: "Copyable starter template",
+        heading: "Copyable starter templates",
         body: [
-          "Use this structure: project purpose, install command, development command, test command, formatting command, safe edit boundaries, files to avoid, pull request expectations, and known failure notes.",
-          "For small repos, one AGENTS.md at the root is enough. For monorepos, add short nested files only where commands or ownership really differ.",
-          "For teams, add one security section: no secrets in prompts, no production writes without approval, and no generated code merge without review.",
+          "Use one root template for the shared policy: project purpose, package manager, install command, development command, test command, build command, formatting command, safe edit boundaries, files to avoid, review expectations, and known failure notes.",
+          "For React or Vue apps, name the frontend package path, generated build folders, UI test command, and screenshot or accessibility check. For Python services, name the virtual environment command, test runner, migration boundary, and formatting command. For monorepos, keep root AGENTS.md short and place nested AGENTS.md files only where commands or ownership really differ.",
+          "For teams, add one security section: no secrets in prompts, no production writes without approval, no migration edits without owner review, and no generated code merge without tests or human diff review.",
+        ],
+      },
+      {
+        heading: "Root vs nested AGENTS.md inheritance",
+        body: [
+          "Put repo-wide rules in the root AGENTS.md: install commands, global test commands, style rules, forbidden files, and review expectations. Put package-specific exceptions in a nested AGENTS.md, such as apps/web/AGENTS.md or packages/api/AGENTS.md, when that folder has different commands or risk boundaries.",
+          "Nested files should override only what changes. If the web app uses npm test and the API uses pytest, write that difference in the nested file instead of duplicating the whole root policy.",
+        ],
+      },
+      {
+        heading: "What every template must say",
+        body: [
+          "Every useful AGENTS.md should declare the test command, completion standard, allowed edit scope, forbidden files, generated folders, secret policy, and review expectation. These are the controls an agent can actually follow during a coding task.",
+          "Avoid vague rules like 'write clean code' unless the repo has a command or reviewer habit that checks the rule. Replace vague style advice with concrete commands, file paths, and approval boundaries.",
         ],
       },
       {
@@ -219,6 +268,10 @@ export const expansionGuides: Guide[] = [
           label: "Review rule",
           values: ["How to prove the change is done", "Show changed files, test result, and known risk", "The rule is only style preference and not checked anywhere"],
         },
+        {
+          label: "Nested scope",
+          values: ["Package-specific commands and boundaries", "apps/web/AGENTS.md uses npm test; packages/api/AGENTS.md uses pytest", "The folder does not actually differ from the root policy"],
+        },
       ],
     },
     actionSteps: [
@@ -254,6 +307,11 @@ export const expansionGuides: Guide[] = [
       },
     ],
     internalLinks: [
+      {
+        slug: "agents-md-examples-codex-node-python-monorepos",
+        anchor: "AGENTS.md examples for Node.js, Python, and monorepos",
+        reason: "Template readers often need concrete examples after they understand the required sections.",
+      },
       {
         slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
         anchor: "AGENTS.md vs CLAUDE.md comparison",
@@ -298,15 +356,380 @@ export const expansionGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
-    updatedAt: "2026-06-06",
-    metaTitle: "AGENTS.md Template for AI Coding Agents",
+    updatedAt: "2026-06-18",
+    metaTitle: "AGENTS.md Template for Codex and Monorepos",
     metaDescription:
-      "Copy a practical AGENTS.md template for AI coding agents with commands, safe boundaries, review rules, and common mistakes.",
+      "Copy AGENTS.md examples for Codex, React, Python, and monorepos with test commands, safe edit scope, and completion standards.",
     resourceIds: ["agents-md-template"],
   },
   {
+    id: "guide-copilot-claude-md-support",
+    title: "Does GitHub Copilot Read CLAUDE.md? Support Matrix by Surface",
+    slug: "does-github-copilot-read-claude-md-support-matrix",
+    summary:
+      "GitHub Copilot support for CLAUDE.md is surface-specific. Use the GitHub support matrix before relying on it, and keep .github/copilot-instructions.md as the broad Copilot baseline.",
+    intent:
+      "Developers want a direct answer about whether GitHub Copilot reads CLAUDE.md in Chat, cloud-agent, code-review, CLI, or IDE workflows.",
+    audience: "Maintainers standardizing Copilot, Claude Code, and Codex repository instruction files.",
+    pageType: "Support matrix",
+    secondaryKeywords: [
+      "Does GitHub Copilot read CLAUDE.md",
+      "GitHub Copilot CLAUDE.md support",
+      "Copilot CLAUDE.md support matrix",
+      ".github/copilot-instructions.md vs CLAUDE.md",
+    ],
+    sections: [
+      {
+        heading: "Quick answer",
+        body: [
+          "GitHub Copilot does not have one universal answer for CLAUDE.md. GitHub documents instruction-file support by Copilot surface, so CLAUDE.md should be treated as a surface-specific input. For broad Copilot repository guidance, use .github/copilot-instructions.md and keep CLAUDE.md for Claude Code.",
+        ],
+      },
+      {
+        heading: "Support is decided by surface",
+        body: [
+          "A Copilot Chat session in an IDE, a Copilot coding agent task, a code review flow, and a command-line workflow may not load the same instruction files. That is why the safe question is not only 'Does Copilot read CLAUDE.md?' but 'Which Copilot surface, on which date, reads which file?'",
+          "When the GitHub support matrix lists CLAUDE.md for a surface, use it as documented support for that surface. When it does not list CLAUDE.md, do not assume Claude Code memory will be honored by Copilot.",
+        ],
+      },
+      {
+        heading: "Recommended file policy",
+        body: [
+          "Use .github/copilot-instructions.md as the Copilot baseline because it is the repository-wide Copilot instructions path. Use CLAUDE.md for Claude Code project memory. Use AGENTS.md for Codex. If the same repo uses all three, keep shared policy language synchronized but keep each file short enough to review.",
+          "The shared policy should cover setup commands, verification commands, safe edit boundaries, secrets policy, generated-file rules, and human review conditions. The tool-specific file should only adapt that policy to the reader that actually loads it.",
+        ],
+      },
+      {
+        heading: "Common failure mode",
+        body: [
+          "The risky pattern is putting all Copilot guidance only in CLAUDE.md because one cloud-agent surface appears to support it. That can leave other Copilot surfaces without the repository rule you expected: no production writes, no secrets, required tests, or a specific package command.",
+          "The opposite mistake is saying Copilot never reads CLAUDE.md. The current safer wording is surface-specific: verify the surface, then keep .github/copilot-instructions.md as the broad baseline unless your usage is intentionally narrower.",
+        ],
+      },
+      {
+        heading: "How to verify your repository",
+        body: [
+          "Inventory the surfaces your team actually uses: IDE chat, GitHub web, coding agent tasks, code review, CLI, and any organization-level instruction sources. Then compare each surface against the current GitHub support matrix and update adapters in one reviewed change.",
+          "After updating files, run one small repository task in each surface and inspect whether the output followed the expected setup command, safety rule, and verification command. Record the date because support matrices and product behavior can change.",
+        ],
+      },
+    ],
+    recommendedPlay: [
+      "Use .github/copilot-instructions.md as the broad Copilot repository baseline.",
+      "Keep CLAUDE.md for Claude Code, and treat Copilot CLAUDE.md support as surface-specific.",
+      "Verify each Copilot surface your team uses before deleting or consolidating instruction files.",
+      "Update adapters together when setup commands, test commands, or security boundaries change.",
+    ],
+    decisionTable: {
+      title: "CLAUDE.md support decision table",
+      intro: "Use this table before deciding where Copilot-facing repository guidance should live.",
+      columns: ["Question", "Safe answer", "Action"],
+      rows: [
+        {
+          label: "Need broad Copilot coverage?",
+          values: [
+            "Use .github/copilot-instructions.md as the baseline",
+            "CLAUDE.md support is not the broad default across every Copilot surface",
+            "Keep Copilot rules in the GitHub instructions path",
+          ],
+        },
+        {
+          label: "Using Claude Code?",
+          values: [
+            "Use CLAUDE.md for Claude Code memory",
+            "Do not remove it just because Copilot has its own instructions file",
+            "Synchronize shared commands and safety boundaries",
+          ],
+        },
+        {
+          label: "Using Codex?",
+          values: [
+            "Use AGENTS.md for Codex repository instructions",
+            "Do not expect AGENTS.md, CLAUDE.md, and Copilot paths to be interchangeable",
+            "Keep one maintained policy and concise adapters",
+          ],
+        },
+        {
+          label: "Unsure about a Copilot surface?",
+          values: [
+            "Check the current GitHub support matrix",
+            "Avoid global yes-or-no claims",
+            "Run a small controlled task and record what was followed",
+          ],
+        },
+      ],
+    },
+    actionSteps: [
+      {
+        title: "List active Copilot surfaces",
+        body: "Write down whether the team uses IDE Chat, GitHub web tasks, coding agent flows, code review, CLI, or organization-level instructions.",
+      },
+      {
+        title: "Map files to each surface",
+        body: "Compare AGENTS.md, CLAUDE.md, .github/copilot-instructions.md, and path-specific instructions against the current support matrix.",
+      },
+      {
+        title: "Set the broad baseline",
+        body: "Put Copilot-wide repository rules in .github/copilot-instructions.md, then keep Claude-specific memory in CLAUDE.md.",
+      },
+      {
+        title: "Run a tiny behavior check",
+        body: "Ask each surface to perform a small task that depends on one instruction, then record whether it followed the expected rule.",
+      },
+    ],
+    pitfalls: [
+      {
+        title: "Using CLAUDE.md as the only Copilot file",
+        fix: "Keep .github/copilot-instructions.md for broad Copilot repository coverage.",
+      },
+      {
+        title: "Saying Copilot never reads CLAUDE.md",
+        fix: "Use surface-specific wording and point readers to the current GitHub support matrix.",
+      },
+      {
+        title: "Letting adapters drift",
+        fix: "Choose one maintained policy and update AGENTS.md, CLAUDE.md, Copilot instructions, and Cursor rules together.",
+      },
+    ],
+    internalLinks: [
+      {
+        slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+        anchor: "AGENTS.md vs CLAUDE.md vs Copilot instructions",
+        reason: "The main comparison explains how all instruction-file adapters fit together.",
+      },
+      {
+        slug: "agents-md-template-for-ai-coding-agents",
+        anchor: "View the AGENTS.md template for monorepos",
+        reason: "Teams using Codex need a parallel AGENTS.md adapter beside Copilot and Claude files.",
+      },
+      {
+        slug: "agent-governance-checklist-for-software-teams",
+        anchor: "agent governance checklist for software teams",
+        reason: "Instruction files should carry the same permission and approval language as the governance checklist.",
+      },
+      {
+        slug: "secure-mcp-servers-ai-coding-agents",
+        anchor: "MCP security checklist",
+        reason: "Tool and credential rules belong in both Copilot instructions and MCP security planning.",
+      },
+    ],
+    checklist: [
+      "Confirm which Copilot surfaces the team uses.",
+      "Check the current GitHub support matrix before relying on CLAUDE.md.",
+      "Keep .github/copilot-instructions.md for broad Copilot guidance.",
+      "Keep CLAUDE.md for Claude Code memory and workflows.",
+      "Synchronize shared commands, safety boundaries, and verification rules.",
+      "Record the verification date because support can change.",
+    ],
+    evidence: [
+      {
+        title: "Custom instructions support in GitHub Copilot",
+        url: "https://docs.github.com/en/copilot/reference/custom-instructions-support",
+        publisher: "GitHub",
+        note: "Official matrix for which Copilot surfaces support which instruction files.",
+      },
+      {
+        title: "Add repository custom instructions for GitHub Copilot",
+        url: "https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions",
+        publisher: "GitHub",
+        note: "Official repository-wide Copilot instructions path and setup guidance.",
+      },
+      {
+        title: "Claude Code memory",
+        url: "https://docs.anthropic.com/en/docs/claude-code/memory",
+        publisher: "Anthropic",
+        note: "Official CLAUDE.md project memory behavior for Claude Code.",
+      },
+    ],
+    relatedArticleSlugs: ["github-copilot-sdk-general-availability"],
+    updatedAt: "2026-06-18",
+    metaTitle: "Does GitHub Copilot Read CLAUDE.md?",
+    metaDescription:
+      "Check whether GitHub Copilot reads CLAUDE.md by surface, when to use copilot-instructions.md, and how to keep adapters aligned.",
+  },
+  {
+    id: "guide-agents-md-examples-codex",
+    title: "AGENTS.md Examples for Codex: Node.js, Python and Monorepos",
+    slug: "agents-md-examples-codex-node-python-monorepos",
+    summary:
+      "Copy practical AGENTS.md patterns for Codex projects, including Node.js apps, Python services, and monorepos with nested package instructions.",
+    intent:
+      "Developers want concrete AGENTS.md examples for Codex instead of only a checklist or conceptual comparison.",
+    audience: "Developers and maintainers writing Codex repository instructions for real projects.",
+    pageType: "Examples and templates",
+    secondaryKeywords: [
+      "AGENTS.md examples",
+      "Codex AGENTS.md examples",
+      "AGENTS.md Node.js example",
+      "AGENTS.md Python example",
+      "AGENTS.md monorepo example",
+    ],
+    sections: [
+      {
+        heading: "Quick answer",
+        body: [
+          "A good AGENTS.md example gives Codex the repo purpose, allowed edit scope, setup commands, verification commands, generated-file boundaries, secret policy, and review expectations. Start with one root file, then add nested AGENTS.md files only where Node.js, Python, or monorepo packages need different commands.",
+        ],
+      },
+      {
+        heading: "Node.js example",
+        body: [
+          "Use a Node.js AGENTS.md when the main risk is stale package commands or broad frontend edits. Include package manager, install command, development command, test command, build command, lint command, generated folders, and UI verification notes.",
+          "Example wording: 'Use npm. Run npm test before completion. Run npm run build for public page changes. Do not edit .env files, generated coverage reports, or production deployment files without approval. For UI changes, mention the route checked and any visual risk.'",
+        ],
+      },
+      {
+        heading: "Python service example",
+        body: [
+          "Use a Python AGENTS.md when the agent needs to know virtual environment setup, test runner, migrations, formatting, and API boundary rules. Name whether pytest, ruff, mypy, Alembic, or another tool proves the change.",
+          "Example wording: 'Create a virtual environment only when needed. Run pytest for backend changes. Do not create or edit migrations without approval. Never log secrets or customer data. If a test requires unavailable external services, report the blocker instead of weakening the test.'",
+        ],
+      },
+      {
+        heading: "Monorepo example",
+        body: [
+          "In a monorepo, the root AGENTS.md should stay short: repo purpose, shared safety rules, top-level install command, workspace layout, generated folders, and the rule for nested files. Then add apps/web/AGENTS.md, packages/api/AGENTS.md, or docs/AGENTS.md only when commands or ownership differ.",
+          "Example wording for a nested file: 'Inside apps/web, use npm test and npm run build. Avoid touching packages/api unless the task explicitly includes backend behavior. For routes, verify the relevant page in a browser and mention mobile overflow risk.'",
+        ],
+      },
+      {
+        heading: "What to keep out",
+        body: [
+          "Do not include tokens, private URLs, customer data, personal credentials, or vague taste rules. Agents follow concrete commands and file boundaries better than slogans.",
+          "Do not duplicate the full root file into every nested AGENTS.md. Duplication makes drift likely. A nested file should explain only what changes inside that directory.",
+        ],
+      },
+    ],
+    recommendedPlay: [
+      "Start with a root AGENTS.md that covers shared commands, safety, and completion criteria.",
+      "Add nested AGENTS.md files only for folders with different commands, generated files, or ownership.",
+      "Keep every example copyable, but replace placeholder commands with commands that pass from a clean checkout.",
+      "Review examples whenever package managers, CI commands, or repo boundaries change.",
+    ],
+    decisionTable: {
+      title: "Which AGENTS.md example should you use?",
+      intro: "Pick the smallest example that matches the repo shape and risk boundary.",
+      columns: ["Use this example", "When it fits", "What must be explicit"],
+      rows: [
+        {
+          label: "Root baseline",
+          values: [
+            "Every Codex-enabled repository",
+            "The repo has one shared install, test, and build flow",
+            "Purpose, commands, forbidden files, secrets policy, and review rule",
+          ],
+        },
+        {
+          label: "Node.js app",
+          values: [
+            "Frontend, Next.js, React, API routes, or package scripts drive the work",
+            "UI and build commands are easy to confuse",
+            "Package manager, route checks, generated folders, and build command",
+          ],
+        },
+        {
+          label: "Python service",
+          values: [
+            "Backend behavior, tests, migrations, or formatting are the main risk",
+            "The agent needs a clear test runner and migration rule",
+            "pytest command, migration boundary, env policy, and external service limits",
+          ],
+        },
+        {
+          label: "Nested monorepo file",
+          values: [
+            "A folder has different commands or owner review",
+            "Root instructions would be too broad or misleading",
+            "Local commands, local forbidden paths, and when to escalate",
+          ],
+        },
+      ],
+    },
+    actionSteps: [
+      {
+        title: "Choose the root baseline",
+        body: "Write the repo purpose, shared commands, safe edit scope, generated folders, secret policy, and completion standard.",
+      },
+      {
+        title: "Replace placeholders",
+        body: "Swap npm, pnpm, pytest, build, lint, and browser-check examples for commands that actually pass in the repository.",
+      },
+      {
+        title: "Add nested files only where needed",
+        body: "Create folder-level AGENTS.md files when a package has different commands, owners, generated files, or approval rules.",
+      },
+      {
+        title: "Test the instruction",
+        body: "Run one small Codex task that depends on the file and confirm the agent used the expected command and respected the boundary.",
+      },
+    ],
+    pitfalls: [
+      {
+        title: "Copying examples without testing commands",
+        fix: "Run the commands once and update the example before asking an agent to follow it.",
+      },
+      {
+        title: "Making nested files too long",
+        fix: "Keep local files focused on what changes in that folder.",
+      },
+      {
+        title: "Turning AGENTS.md into a secrets file",
+        fix: "List environment variable names and approval boundaries, never secret values.",
+      },
+    ],
+    internalLinks: [
+      {
+        slug: "agents-md-template-for-ai-coding-agents",
+        anchor: "AGENTS.md template for Codex and monorepos",
+        reason: "The template page gives a compact checklist to pair with these examples.",
+      },
+      {
+        slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+        anchor: "AGENTS.md vs CLAUDE.md comparison",
+        reason: "Readers should understand which tools read AGENTS.md before standardizing examples.",
+      },
+      {
+        slug: "codex-vs-claude-code",
+        anchor: "Codex vs Claude Code",
+        reason: "Instruction examples should match the agent workflow the team chooses.",
+      },
+      {
+        slug: "loop-engineering-ai-coding-agents",
+        anchor: "loop engineering for AI coding agents",
+        reason: "Good AGENTS.md examples name the verification command and stop rule used in agent loops.",
+      },
+    ],
+    checklist: [
+      "Include the repository purpose.",
+      "List install, test, build, lint, and formatting commands when they exist.",
+      "Name generated folders and files that should not be edited.",
+      "State the secret and credential policy.",
+      "Define the completion standard and expected verification output.",
+      "Use nested files only when folder-level commands or risks differ.",
+    ],
+    evidence: [
+      {
+        title: "Use AGENTS.md with Codex",
+        url: "https://developers.openai.com/codex/guides/agents-md",
+        publisher: "OpenAI",
+        note: "Official Codex guidance for AGENTS.md scope, precedence, and repository instructions.",
+      },
+      {
+        title: "AGENTS.md repository",
+        url: "https://agents.md/",
+        publisher: "AGENTS.md",
+        note: "Community reference for AGENTS.md examples and cross-tool repository guidance.",
+      },
+    ],
+    relatedArticleSlugs: ["openai-codex-plugins-sites-annotations"],
+    updatedAt: "2026-06-18",
+    metaTitle: "AGENTS.md Examples for Codex",
+    metaDescription:
+      "Copy AGENTS.md examples for Codex projects, including Node.js, Python services, monorepos, nested files, commands, and review rules.",
+  },
+  {
     id: "guide-agent-mode-vs-chat-mode",
-    title: "Agent mode vs chat mode in IDEs",
+    title: "Agent Mode vs Chat Mode: Differences, Risks and When to Use Each",
     slug: "agent-mode-vs-chat-mode-in-ide",
     summary:
       "Use chat mode for questions and small explanations. Use agent mode when the assistant must inspect files, edit code, run commands, react to errors, and bring a task closer to done.",
@@ -318,7 +741,14 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Chat mode is for asking; agent mode is for doing. If you need an explanation, a short snippet, or help thinking through an error, use chat. If you need cross-file edits, command output, test failures, or a task finished as a diff, use agent mode.",
+          "Chat mode is for asking; agent mode is for doing. Use chat for explanations, small snippets, and planning. Use agent mode only when the assistant must inspect files, modify code, run terminal commands, react to failures, and return a reviewable diff with a verification result.",
+        ],
+      },
+      {
+        heading: "Key differences",
+        body: [
+          "The real difference is permission and feedback. Chat mode usually answers from conversation context. Agent mode can inspect the repository, edit files, run commands, observe failures, and continue until the task is done or a stop rule fires.",
+          "That extra power creates extra risk. Agent mode can touch more files, spend more tokens, run unsafe commands, or follow the wrong scope if the task is vague. Give it allowed files, forbidden files, terminal limits, and a proof command before it starts.",
         ],
       },
       {
@@ -333,6 +763,13 @@ export const expansionGuides: Guide[] = [
         body: [
           "The task has a clear done condition: edit these files, run this command, fix this failing test, or update this UI. Agent mode is useful because it can loop through code, commands, errors, and fixes.",
           "Give it a narrow job. A good prompt says what to change, what not to change, and how to prove the work is done.",
+        ],
+      },
+      {
+        heading: "High-risk scenarios",
+        body: [
+          "Stay in chat or require approval when the work touches secrets, billing, production configuration, migrations, destructive commands, broad network access, or generated files that are hard to review. Agent mode should propose a plan first in those cases.",
+          "If the task cannot be verified by a command, screenshot, artifact, or human acceptance step, do not run it as an open-ended agent session.",
         ],
       },
     ],
@@ -361,6 +798,14 @@ export const expansionGuides: Guide[] = [
         {
           label: "Reviewing",
           values: ["Ask for a second opinion on a diff", "Ask for changes only after review findings are clear", "Keep final merge responsibility with a human reviewer"],
+        },
+        {
+          label: "Terminal and network",
+          values: ["Ask what a command does before running it", "Run bounded install, test, build, or lint commands", "Block destructive, production, or credentialed commands unless approved"],
+        },
+        {
+          label: "Cost",
+          values: ["One answer or short iteration is enough", "The agent must inspect, patch, and verify across multiple turns", "Set a stop rule when repeated failures or token use grow"],
         },
       ],
     },
@@ -441,14 +886,14 @@ export const expansionGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["github-copilot-vscode-agents-window-may-2026", "visual-studio-agent-mode-mcp-general-availability"],
-    updatedAt: "2026-06-06",
-    metaTitle: "Agent Mode vs Chat Mode in IDEs",
+    updatedAt: "2026-06-18",
+    metaTitle: "Agent Mode vs Chat Mode: Risks and Use Cases",
     metaDescription:
-      "In 2026, know when to use IDE chat mode vs agent mode for file edits, commands, tests, and reviewable diffs in VS Code and Cursor.",
+      "Compare agent mode vs chat mode by file edits, terminal commands, network risk, token cost, safe use cases, and stop rules.",
   },
   {
     id: "guide-local-vs-cloud-agent",
-    title: "Local vs cloud AI coding agent",
+    title: "Local vs Cloud AI Coding Agents: Security, Cost and Speed Compared",
     slug: "local-vs-cloud-ai-coding-agent",
     summary:
       "Use a local coding agent when privacy, local tools, and quick feedback matter most. Use a cloud coding agent when the task is long-running, isolated, or better handled as an asynchronous branch or pull request.",
@@ -460,7 +905,14 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Local agents are better for fast feedback, private context, and work that depends on your machine. Cloud agents are better for isolated execution, longer tasks, and work that can arrive as a branch or pull request. The safe choice depends on data access, command risk, and review flow.",
+          "Use a local AI coding agent when privacy, exact dev-environment context, and fast interactive feedback matter most. Use a cloud coding agent when the work is long-running, easy to isolate, and better reviewed as a branch or pull request. The safe choice depends on data access, command risk, cost visibility, and review flow.",
+        ],
+      },
+      {
+        heading: "Security, cost, and speed comparison",
+        body: [
+          "Local agents keep more context on the developer machine and can use local services quickly, but they sit closer to credentials, private files, and shell access. Cloud agents can isolate work on a branch or sandbox, but teams still need scoped credentials, logs, and revocation.",
+          "Cost is not only model price. Include developer attention, failed retries, parallel runs, CI minutes, and review time. Speed is also task-shaped: local is often faster for tight steering; cloud is often better for long background work that can wait for review.",
         ],
       },
       {
@@ -475,6 +927,13 @@ export const expansionGuides: Guide[] = [
         body: [
           "Use cloud agents when a task can run in an isolated environment, take longer, or be reviewed later as a branch. Cloud sandboxes can reduce risk to a developer machine, but they still need scoped credentials and audit logs.",
           "Cloud is useful for repetitive migration work, background investigation, dependency updates, or tasks that should not block the developer's local session.",
+        ],
+      },
+      {
+        heading: "Hybrid architecture",
+        body: [
+          "A practical team often uses both. Keep planning, risky debugging, and secret-adjacent work local. Send isolated refactors, dependency checks, test-writing, and documentation updates to cloud branches after the task has clear boundaries.",
+          "The handoff rule is simple: if the cloud agent does not need production secrets, private local services, or broad write access, it is a candidate for asynchronous cloud work. If it does, keep it local or require a human approval checkpoint.",
         ],
       },
     ],
@@ -493,6 +952,10 @@ export const expansionGuides: Guide[] = [
           values: ["Sensitive files stay on the developer machine", "A clean repo snapshot is enough", "Do not expose secrets unless the workflow explicitly needs them"],
         },
         {
+          label: "Privacy",
+          values: ["Private context stays near the developer workstation", "Only scoped repository data is shared with the sandbox", "Classify customer, secret, and regulated data before choosing"],
+        },
+        {
           label: "Task length",
           values: ["Short, interactive, or exploratory work", "Long-running branch work or background checks", "Require a clear completion report"],
         },
@@ -503,6 +966,10 @@ export const expansionGuides: Guide[] = [
         {
           label: "Review",
           values: ["Developer reviews each step closely", "Team reviews a branch, PR, or artifact after completion", "Keep logs and changed files visible"],
+        },
+        {
+          label: "Cost and speed",
+          values: ["Fast steering for short tasks and local checks", "Background execution for longer tasks and parallel branches", "Set per-run budgets and stop repeated failures"],
         },
       ],
     },
@@ -589,14 +1056,14 @@ export const expansionGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["github-copilot-cloud-local-sandboxes-preview", "github-copilot-vscode-agents-window-may-2026"],
-    updatedAt: "2026-06-06",
-    metaTitle: "Local vs Cloud AI Coding Agent",
+    updatedAt: "2026-06-18",
+    metaTitle: "Local vs Cloud AI Coding Agents",
     metaDescription:
-      "Compare local vs cloud AI coding agents in 2026 by privacy, sandboxing, task length, commands, review flow, and team risk.",
+      "Compare local vs cloud AI coding agents by privacy, security, cost, speed, sandboxing, hybrid workflows, and team risk.",
   },
   {
     id: "guide-agent-governance-checklist",
-    title: "Agent governance checklist for software teams",
+    title: "AI Coding Agent Governance Checklist: Permissions, Logs and Approvals",
     slug: "agent-governance-checklist-for-software-teams",
     summary:
       "A useful coding agent governance checklist covers identity, permissions, tool access, logs, human approval, sandboxing, cost limits, and incident response. Start with a small pilot before wider rollout.",
@@ -608,7 +1075,7 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Before a software team rolls out coding agents, decide who can use them, what tools they can call, what they may change, what needs approval, where logs are stored, and how to roll back bad changes. Governance is not paperwork; it is how the team keeps agent work reviewable.",
+          "Before a software team rolls out AI coding agents, decide who can use them, what tools they can call, what they may change, what needs approval, where logs are stored, how secrets are protected, and how to roll back or stop bad runs. Governance is useful only when it becomes an executable checklist.",
         ],
       },
       {
@@ -616,6 +1083,27 @@ export const expansionGuides: Guide[] = [
         body: [
           "Start with identity, permission tiers, allowed tools, approval rules, audit logs, sandbox policy, cost controls, and incident response. If any of these are missing, keep the rollout small.",
           "The first rollout should use low-risk repos, read-heavy tasks, and clear human review. Add write access only when the team can explain what happened after each agent run.",
+        ],
+      },
+      {
+        heading: "Permission levels",
+        body: [
+          "Use tiers instead of one broad agent permission. Tier 0 is read-only explanation and search. Tier 1 allows local file edits on a branch. Tier 2 allows command execution for approved test, lint, and build commands. Tier 3 allows network or MCP access. Tier 4 covers deploy, migration, billing, production, or destructive actions and should require explicit human approval.",
+          "A team can start with only Tier 0 and Tier 1. Add higher tiers when audit logs, owners, rollback, and approval prompts are already working.",
+        ],
+      },
+      {
+        heading: "Prohibited actions and approval conditions",
+        body: [
+          "Ban agents from copying secrets into prompts, changing production configuration, deleting data, editing migrations, changing billing, widening permissions, or publishing external messages without approval. These are not productivity tasks; they are control-plane actions.",
+          "Require approval when a task touches credentials, customer data, deployment paths, database schema, external network writes, large generated changes, or repeated failed retries. The approval prompt should name the actor, repository, action, target, rollback limit, and expected evidence.",
+        ],
+      },
+      {
+        heading: "Audit log fields",
+        body: [
+          "Keep logs useful and secret-redacted. Record actor, team, repository, branch, agent surface, model or tool version when available, prompt summary, tools called, files changed, commands run, approval state, final outcome, and rollback link.",
+          "Do not store raw secrets, customer payloads, access tokens, or private content unrelated to the review. Good logs let a reviewer reconstruct a consequential action without collecting sensitive data by accident.",
         ],
       },
       {
@@ -644,12 +1132,20 @@ export const expansionGuides: Guide[] = [
           values: ["Split read, write, command, network, and deploy access", "Limits damage when context is wrong", "High-risk actions need approval"],
         },
         {
+          label: "Forbidden actions",
+          values: ["List actions agents may not perform without explicit approval", "Prevents control-plane drift", "Secrets, production writes, billing, deploy, deletion, and migrations are gated"],
+        },
+        {
           label: "Logs",
           values: ["Record prompt summary, tools, changed files, commands, and approvals", "Makes review and incident response possible", "Logs avoid secrets but keep useful traceability"],
         },
         {
           label: "Review",
           values: ["Require a human diff review before merge", "Agents can pass tests and still change the wrong thing", "No auto-merge for high-risk repos"],
+        },
+        {
+          label: "Emergency stop",
+          values: ["Disable agent access, revoke credentials, close branches, and preserve logs", "Limits blast radius after a bad run", "Owner and rollback path are known before launch"],
         },
       ],
     },
@@ -669,6 +1165,10 @@ export const expansionGuides: Guide[] = [
       {
         title: "Review after two weeks",
         body: "Keep what developers actually used, remove confusing rules, and close gaps found in logs or reviews.",
+      },
+      {
+        title: "Publish the Markdown policy",
+        body: "Keep a copyable checklist in the engineering handbook or repo instructions so developers can apply the same approval, logging, and rollback rules during real work.",
       },
     ],
     pitfalls: [
@@ -711,8 +1211,11 @@ export const expansionGuides: Guide[] = [
       "Name the pilot team and repository scope.",
       "Separate read, write, command, network, and deploy permissions.",
       "Require approval for destructive or production-facing actions.",
+      "Ban agents from copying secrets, changing billing, deleting data, or deploying without approval.",
+      "Record actor, repo, branch, tool surface, files changed, commands run, approval state, and outcome.",
       "Keep audit logs without storing secrets.",
       "Require human review before merging agent changes.",
+      "Document rollback and emergency stop steps.",
       "Write an incident response path before broad rollout.",
     ],
     evidence: [
@@ -740,22 +1243,24 @@ export const expansionGuides: Guide[] = [
       "cursor-enterprise-organizations-governance",
       "visual-studio-agent-mode-mcp-general-availability",
     ],
-    updatedAt: "2026-06-06",
-    metaTitle: "Agent Governance Checklist for Software Teams",
+    updatedAt: "2026-06-18",
+    metaTitle: "AI Coding Agent Governance Checklist",
     metaDescription:
-      "A plain governance checklist for software teams adopting AI coding agents: permissions, logs, approval, sandboxing, and review.",
+      "Use this AI coding agent governance checklist for permissions, logs, approval gates, prohibited actions, rollback, and emergency stop.",
   },
   {
     id: "guide-loop-engineering",
-    title: "Loop engineering for AI coding agents",
+    title: "Loop Engineering for AI Coding Agents: Addy Osmani's Workflow Explained",
     slug: "loop-engineering-ai-coding-agents",
     summary:
-      "Loop engineering designs autonomous act-observe-reason cycles for coding agents instead of one-shot prompts. Define goals, tools, termination rules, and cost limits before scaling Cursor Automations, Claude Code /loop, or subagent workflows.",
+      "Loop engineering turns Addy Osmani's agent-loop idea into a practical workflow for coding agents: plan, act, observe, verify, then retry or stop under explicit limits.",
     intent:
       "Developers want to move from prompting agents task-by-task to designing durable loops that plan, change code, verify results, and stop safely.",
     audience: "Developers, staff engineers, and platform teams adopting agentic coding workflows in Cursor, Claude Code, Codex, or custom CI agents.",
     pageType: "Practical loop design guide",
     secondaryKeywords: [
+      "Addy Osmani loop engineering AI coding agents",
+      "loop engineering AI agents Addy Osmani",
       "agentic loop AI coding",
       "Cursor loop automation",
       "Claude Code /loop scheduling",
@@ -766,14 +1271,28 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Loop engineering is the practice of designing AI coding systems that repeat act → observe → reason cycles until a goal is met or a stop rule fires. Unlike single-shot prompting or fixed cron scripts, the agent inside the loop chooses the next step from test output, logs, diffs, or tool results. Your job shifts from writing every prompt to defining the goal, verification command, iteration cap, escalation path, and cost boundary.",
+          "Addy Osmani's loop engineering approach is about designing the system around an AI agent, not writing a better one-off prompt. For coding agents, the practical loop is Plan → Act → Observe → Verify → Retry/Stop, a stricter version of the act → observe → reason cycle: give the agent a goal, let it make a bounded change, inspect real evidence such as tests or diffs, verify the result, then either retry with a changed strategy or stop under a clear stop rule.",
         ],
       },
       {
-        heading: "Loop engineering is not prompt engineering at scale",
+        heading: "What Is Addy Osmani's Loop Engineering Approach?",
         body: [
-          "Prompt engineering optimizes one interaction. Loop engineering turns that interaction into a component inside a larger system with memory, tools, and termination logic. A cron job runs the same script on a schedule; a loop runs an agent that inspects current state, picks the next action, checks the outcome, and decides whether to continue, retry, roll back, or stop.",
-          "Practitioner writing in mid-2026 frames the shift plainly: stop babysitting agents with manual prompts and start designing the systems that prompt them. That does not remove engineering judgment. It moves judgment to loop design—what success looks like, what evidence counts, and when a human must intervene.",
+          "The useful reading of Osmani's idea is that engineers should stop babysitting every agent turn and start designing the operating loop around the agent. The prompt still matters, but it is only one part of a system that also includes tools, feedback, memory, cost limits, and termination.",
+          "In a coding workflow, that means the loop must know what done looks like before the first edit happens. A good loop names the repository task, the allowed files or tools, the command that proves progress, the maximum attempts, and the human checkpoint for risky actions.",
+        ],
+      },
+      {
+        heading: "How Does Loop Engineering Work for AI Coding Agents?",
+        body: [
+          "Start with a plan, then let the agent act on the smallest useful change. The observe step reads evidence from the repository rather than trusting a fluent status update: failing tests, compiler output, diffs, logs, screenshots, or MCP tool responses. Verification turns that observation into a verdict. Retry only when the next attempt changes the strategy; otherwise stop and hand the evidence to a human.",
+          "This is why loop engineering is especially useful for AI coding agents. Software work already has observable signals: tests pass or fail, builds complete or fail, files changed or did not, and pull requests can be reviewed. The loop should attach to those signals instead of treating agent confidence as evidence.",
+        ],
+      },
+      {
+        heading: "Loop Engineering vs Prompt Engineering",
+        body: [
+          "Prompt engineering optimizes a single instruction or conversation. Loop engineering designs the repeated system around that instruction: context loading, tool access, action, observation, verification, retries, and stop conditions. A strong prompt can still fail inside a weak loop if the agent cannot see test output or has no rule for when to stop.",
+          "Loop engineering is also different from a cron job. A cron job runs a fixed command on a schedule. A coding-agent loop observes current state and decides the next action before it continues. If nothing inside the run observes evidence and changes strategy, it is scheduling, not loop engineering.",
         ],
       },
       {
@@ -784,7 +1303,21 @@ export const expansionGuides: Guide[] = [
         ],
       },
       {
-        heading: "Common patterns and when to use them",
+        heading: "A Practical Loop Engineering Example",
+        body: [
+          "Suppose a dependency upgrade breaks frontend tests. A weak instruction says: fix the tests. A loop-engineered instruction says: inspect the failing output first, edit only the affected test or component files, run the focused test command, then run the wider project check if the focused command passes. Retry once with a different hypothesis, but stop after the same failure repeats twice.",
+          "That example matters because the loop is not trying to be autonomous in every direction. It is narrow, observable, and cheap to review. The agent can keep working through routine failure, but it must stop before rewriting unrelated files, touching production configuration, or burning more attempts on the same root cause.",
+        ],
+      },
+      {
+        heading: "When Should an AI Agent Stop the Loop?",
+        body: [
+          "Stop rules are not administrative decoration; they are the safety feature. Stop when verification passes, when an iteration cap is reached, when the same failure repeats, when the next action requires wider permissions, when cost crosses the budget, or when the agent can no longer tie its next action to observed evidence.",
+          "For team use, make the stop rule visible in AGENTS.md, CLAUDE.md, a Copilot instructions file, or the workflow configuration that starts the loop. The safest loops are boring to audit: every retry has a reason, every escalation has an owner, and every successful run leaves a concise artifact.",
+        ],
+      },
+      {
+        heading: "Common Patterns and When to Use Them",
         body: [
           "Plan-execute-verify fits bounded repo tasks with a clear pass command. Retry-with-cap helps flaky setup steps but needs a hard attempt limit per item. Evaluator-optimizer pairs work well for reviews and docs when criteria are explicit. Explore-narrow prevents premature edits in unfamiliar code. Scheduled wake-up loops handle recurring triage. Human-in-the-loop checkpoints belong before production, permission widening, or destructive operations.",
           "Anthropic's agent guidance recommends adding complexity only when simpler flows fail. Start with one loop on one repository task, measure review effort and token use, then add subagents or schedules only when the simpler loop stalls.",
@@ -794,7 +1327,7 @@ export const expansionGuides: Guide[] = [
     recommendedPlay: [
       "Start with one real repository task and a single plan-execute-verify loop before adding schedules or parallel agents.",
       "Write the done signal as a command or artifact, not a vibe: passing tests, green build, opened PR, or filed ticket.",
-      "Cap iterations per item and escalate when the same failure repeats twice.",
+      "Cap iterations per item and escalate when the same failure repeats twice with the same root cause.",
       "Separate exploration from implementation so read-only passes cannot mutate production paths.",
       "Budget tokens and concurrency before running unattended cloud or scheduled loops.",
     ],
@@ -861,6 +1394,10 @@ export const expansionGuides: Guide[] = [
       {
         title: "Set termination and escalation",
         body: "Cap attempts per file or task, stop when the same error repeats, and name who approves production or permission changes. Document what the loop should do when blocked.",
+      },
+      {
+        title: "Write the loop into repository instructions",
+        body: "Record the verification command, retry cap, forbidden paths, and human checkpoint in AGENTS.md, CLAUDE.md, Copilot instructions, or the workflow file that launches the loop.",
       },
       {
         title: "Pilot, measure, then parallelize",
@@ -967,10 +1504,10 @@ export const expansionGuides: Guide[] = [
       "cursor-enterprise-organizations-governance",
       "github-copilot-cloud-local-sandboxes-preview",
     ],
-    updatedAt: "2026-06-15",
+    updatedAt: "2026-06-18",
     metaTitle: "Loop Engineering for AI Coding Agents",
     metaDescription:
-      "Learn loop engineering for AI coding agents: act-observe-reason cycles, stop rules, Cursor Automations, Claude Code /loop, and subagent patterns.",
+      "Learn Addy Osmani's loop engineering workflow for coding agents: plan, act, observe, verify, stop rules, examples, and bounded retries.",
     resourceIds: ["loop-engineering"],
   },
 ];

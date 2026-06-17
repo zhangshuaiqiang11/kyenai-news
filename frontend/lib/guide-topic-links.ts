@@ -7,13 +7,21 @@ const TOPIC_GUIDE_OVERRIDES: Record<string, string> = {
   "claude code alternatives": "codex-vs-claude-code",
   "ai coding agent comparison": "codex-vs-claude-code",
   "agents.md vs claude.md": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
-  "github copilot claude.md support": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+  "does github copilot read claude.md": "does-github-copilot-read-claude-md-support-matrix",
+  "github copilot claude.md support": "does-github-copilot-read-claude-md-support-matrix",
+  "copilot claude.md support matrix": "does-github-copilot-read-claude-md-support-matrix",
+  ".github/copilot-instructions.md vs claude.md": "does-github-copilot-read-claude-md-support-matrix",
   ".github/copilot-instructions.md": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
   ".cursor/rules mdc migration": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
   "ai coding agent instruction files": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
   "agents.md template": "agents-md-template-for-ai-coding-agents",
   "ai coding agent instructions template": "agents-md-template-for-ai-coding-agents",
   "codex agents.md example": "agents-md-template-for-ai-coding-agents",
+  "agents.md examples": "agents-md-examples-codex-node-python-monorepos",
+  "codex agents.md examples": "agents-md-examples-codex-node-python-monorepos",
+  "agents.md node.js example": "agents-md-examples-codex-node-python-monorepos",
+  "agents.md python example": "agents-md-examples-codex-node-python-monorepos",
+  "agents.md monorepo example": "agents-md-examples-codex-node-python-monorepos",
   "repository instructions template": "agents-md-template-for-ai-coding-agents",
   "claude code subagents workflow": "claude-code-subagents-examples",
   "claude code sub-agents": "claude-code-subagents-examples",
@@ -41,8 +49,8 @@ export function resolveIndexableGuideTopicHref(keyword: string, currentGuideSlug
   const guides = getGuides();
   const overrideSlug = TOPIC_GUIDE_OVERRIDES[normalized];
 
-  if (overrideSlug && overrideSlug !== currentGuideSlug) {
-    return `/guides/${overrideSlug}`;
+  if (overrideSlug) {
+    return overrideSlug === currentGuideSlug ? null : `/guides/${overrideSlug}`;
   }
 
   const guideByTitle = guides.find(

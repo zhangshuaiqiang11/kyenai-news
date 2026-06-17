@@ -8,7 +8,7 @@ import {
 const coreGuides: Guide[] = [
   {
     id: "guide-agent-instructions-comparison",
-    title: "AGENTS.md vs CLAUDE.md vs Cursor rules vs Copilot instructions",
+    title: "AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?",
     slug: INSTRUCTION_COMPARISON_GUIDE_SLUG,
     summary:
       "Compare current repository instruction files by tool and surface, then use one shared policy with small adapters for Codex, Claude Code, Cursor, and GitHub Copilot.",
@@ -27,7 +27,63 @@ const coreGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "GitHub Copilot support for CLAUDE.md depends on the Copilot surface: selected cloud-agent surfaces support it, while many Copilot Chat, code-review, and CLI surfaces do not. Use .github/copilot-instructions.md for broad repository-wide Copilot compatibility. Keep AGENTS.md for Codex, CLAUDE.md for Claude Code, and current Cursor project rules in .cursor/rules/*.mdc.",
+          "Use AGENTS.md for Codex, CLAUDE.md for Claude Code, .github/copilot-instructions.md for broad GitHub Copilot repository guidance, and .cursor/rules/*.mdc for current Cursor project rules. GitHub Copilot support for CLAUDE.md depends on the Copilot surface: selected cloud-agent surfaces support it, while many Copilot Chat, code-review, and CLI surfaces do not.",
+        ],
+      },
+      {
+        heading: "Which instruction file should each tool use?",
+        body: [
+          "Choose the file by the tool that must read it, not by the wording you prefer. Codex documents AGENTS.md for repository instructions. Claude Code documents CLAUDE.md as project memory. GitHub documents .github/copilot-instructions.md as the broad repository-wide Copilot instructions file. Cursor documents project rules under .cursor/rules/*.mdc.",
+          "A repository can keep the same policy language synchronized across those files, but no single filename is the universal reader for all four tools. Treat each file as a small adapter for the surface that actually loads it.",
+        ],
+      },
+      {
+        heading: "Does GitHub Copilot Read CLAUDE.md?",
+        body: [
+          "Sometimes, but not everywhere. GitHub's support matrix lists CLAUDE.md for selected cloud-agent surfaces, while many Copilot Chat, code-review, and CLI surfaces do not list it. That makes CLAUDE.md a surface-specific Copilot input, not a safe universal Copilot baseline.",
+          "If your question is practical repository coverage, use .github/copilot-instructions.md for Copilot and keep CLAUDE.md for Claude Code. If a Copilot surface also reads CLAUDE.md, treat that as extra support rather than the only place to put Copilot guidance.",
+        ],
+      },
+      {
+        heading: "CLAUDE.md vs AGENTS.md: What Is the Difference?",
+        body: [
+          "AGENTS.md is the documented repository instruction file for Codex, including directory-scoped guidance and precedence. CLAUDE.md is the documented project memory file for Claude Code. The files can say similar things, but they are read by different tools and have different scope rules.",
+          "Use AGENTS.md for Codex-specific commands, allowed edits, verification, and nested package instructions. Use CLAUDE.md for Claude Code memory, workflows, and project context. Keep shared facts synchronized, but do not assume Claude Code will use Codex precedence or Codex will read Claude-specific memory behavior.",
+        ],
+      },
+      {
+        heading: "Does Cursor Support AGENTS.md?",
+        body: [
+          "Current Cursor documentation centers project rules under .cursor/rules/*.mdc. Do not assume Cursor reads AGENTS.md as its native project-rule file unless the specific Cursor surface you use documents that behavior. If your team uses Cursor, keep Cursor-specific rules in .cursor/rules/*.mdc and keep AGENTS.md for Codex.",
+          "Recommended practice: synchronize shared policy language, but preserve each tool's documented adapter. Cursor gets scoped .mdc rules with descriptions and globs; Codex gets AGENTS.md; Claude Code gets CLAUDE.md; Copilot gets .github/copilot-instructions.md.",
+        ],
+      },
+      {
+        heading: "CLAUDE.md vs copilot-instructions.md",
+        body: [
+          "CLAUDE.md is the Claude Code project memory file. .github/copilot-instructions.md is the broad repository-level instruction file for GitHub Copilot. They may contain similar setup commands and review rules, but they are not interchangeable because the supported surfaces differ.",
+          "Use CLAUDE.md when the intended reader is Claude Code. Use .github/copilot-instructions.md when the intended reader is Copilot across supported repository workflows. If a Copilot cloud-agent surface also reads CLAUDE.md, treat that as an exception to verify, not the general Copilot baseline.",
+        ],
+      },
+      {
+        heading: "How Do Nested AGENTS.md Files Work?",
+        body: [
+          "Use nested AGENTS.md files only when a folder genuinely needs different guidance: package-specific test commands, generated-file boundaries, ownership rules, or risk limits. Keep the root file for shared repo policy and the nested file for local exceptions.",
+          "A good nested file should be shorter than the root. It should say what changes inside that directory: commands, forbidden files, local completion standards, and when to ask for approval. Avoid duplicating the whole root policy because duplicated policy drifts quickly.",
+        ],
+      },
+      {
+        heading: "Can One Repository Use All Four Instruction Files?",
+        body: [
+          "Yes. A serious AI coding repository can use AGENTS.md, CLAUDE.md, .github/copilot-instructions.md, and .cursor/rules/*.mdc at the same time. The reason to do this is not duplication for its own sake; it is compatibility across tools that load different filenames.",
+          "Keep the shared policy short and stable: setup commands, test commands, architecture boundaries, secrets policy, review expectations, and loop stop rules. Then keep each tool adapter concise so maintainers can update all affected files in one reviewed change.",
+        ],
+      },
+      {
+        heading: "Which File Should Be the Canonical Source?",
+        body: [
+          "The canonical source is the place maintainers agree to edit first; it is not necessarily the file every tool reads. Small teams often make AGENTS.md the canonical human-maintained policy because Codex uses it directly and it maps well to nested repository scope. Claude-heavy teams may choose CLAUDE.md instead.",
+          "Whichever source you choose, mark the other files as synchronized adapters and review drift. A stale adapter is worse than no adapter because it gives one agent outdated commands while another agent follows the current rule.",
         ],
       },
       {
@@ -155,8 +211,18 @@ const coreGuides: Guide[] = [
     ],
     internalLinks: [
       {
+        slug: "does-github-copilot-read-claude-md-support-matrix",
+        anchor: "Does GitHub Copilot read CLAUDE.md? support matrix",
+        reason: "Readers with the Copilot-specific question should move to the narrow support matrix page instead of staying on the broad comparison.",
+      },
+      {
+        slug: "agents-md-examples-codex-node-python-monorepos",
+        anchor: "AGENTS.md examples for Node.js, Python, and monorepos",
+        reason: "Readers who already chose AGENTS.md need concrete copyable examples for real repository shapes.",
+      },
+      {
         slug: "agents-md-template-for-ai-coding-agents",
-        anchor: "AGENTS.md template for coding agents",
+        anchor: "View the AGENTS.md template for monorepos",
         reason: "Use the template to turn the shared policy into a concise Codex repository adapter.",
       },
       {
@@ -223,10 +289,10 @@ const coreGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
-    updatedAt: "2026-06-14",
-    metaTitle: "AGENTS.md vs CLAUDE.md vs Cursor vs Copilot Instructions",
+    updatedAt: "2026-06-18",
+    metaTitle: "AGENTS.md vs CLAUDE.md vs Copilot Instructions",
     metaDescription:
-      "Compare AGENTS.md, CLAUDE.md, Cursor rules, and Copilot instructions in 2026 by surface, scope, migration path, and measured testing policy.",
+      "Choose AGENTS.md, CLAUDE.md, Copilot instructions, or Cursor rules by tool support, scope, canonical policy, and repository coverage.",
     resourceIds: ["instruction-files"],
   },
   {
@@ -367,7 +433,7 @@ const coreGuides: Guide[] = [
   },
   {
     id: "guide-claude-code-hooks-mcp",
-    title: "Claude Code hooks and MCP setup guide",
+    title: "Claude Code Hooks vs MCP: Setup, Examples and Security",
     slug: "claude-code-hooks-mcp-setup",
     summary:
       "A setup-oriented guide for combining Claude Code hooks, skills, and MCP servers without creating brittle automation.",
@@ -379,7 +445,14 @@ const coreGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Use hooks for deterministic lifecycle actions, MCP for external tools and data, and skills for reusable procedural knowledge. Keep security boundaries explicit: every external tool should have a reason, a scope, and a failure mode.",
+          "Use Claude Code hooks for deterministic lifecycle events, skills for reusable procedures, and MCP for external tools or data. Hooks answer when something should run, skills answer how Claude should perform a recurring task, and MCP answers what outside system Claude can safely reach.",
+        ],
+      },
+      {
+        heading: "Hooks vs Skills vs MCP",
+        body: [
+          "Hooks are event triggers: run this check, notification, formatter, or guardrail at a predictable lifecycle point. Skills are reusable instruction packages: follow this playbook, load these references, or apply this review method. MCP servers expose external capabilities: browser, GitHub, database, docs, monitoring, internal tools, or other structured data.",
+          "Do not use MCP when a hook can run a deterministic local command. Do not use a hook when Claude needs reusable domain knowledge. Do not put credentials or broad tool access in a skill file. Keep each control small enough that a teammate can explain what happens when it fails.",
         ],
       },
       {
@@ -394,6 +467,14 @@ const coreGuides: Guide[] = [
         heading: "Safe rollout",
         body: [
           "Start with read-only MCP access, test hooks locally, document expected side effects, and add write capabilities only after the workflow proves useful.",
+          "For a hook-to-MCP workflow, keep the hook deterministic and the MCP call scoped. Example: after Claude prepares a release note, a hook can run a local validation command, while MCP can fetch the related issue metadata. The hook should not silently publish, deploy, or write to external systems without approval.",
+        ],
+      },
+      {
+        heading: "Logging and troubleshooting",
+        body: [
+          "Log hook name, trigger, command, exit code, duration, and whether it blocked the task. For MCP calls, log server name, method, target, approval state, and outcome without storing secrets or raw tokens.",
+          "Common failures are stale credentials, missing local binaries, slow hooks, incorrect working directories, over-broad MCP permissions, and unclear error handling. Write the expected failure behavior before a team depends on the workflow.",
         ],
       },
     ],
@@ -423,6 +504,10 @@ const coreGuides: Guide[] = [
           label: "Manual approval",
           values: ["Destructive or production-facing changes", "Deployments, data deletion, billing changes", "Accidental write operations"],
         },
+        {
+          label: "Logs",
+          values: ["Troubleshooting and audit trail", "Hook trigger, MCP method, target, outcome, approval state", "Secret leakage and noisy records nobody reviews"],
+        },
       ],
     },
     actionSteps: [
@@ -441,6 +526,10 @@ const coreGuides: Guide[] = [
       {
         title: "Promote after proof",
         body: "Only widen permissions after the workflow has completed successfully on a small project and the owner agrees with the logs.",
+      },
+      {
+        title: "Add a troubleshooting note",
+        body: "Record the expected working directory, required binaries, credentials, timeout behavior, and rollback command before teammates copy the setup.",
       },
     ],
     pitfalls: [
@@ -507,10 +596,10 @@ const coreGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["claude-code-dynamic-workflows-parallel-subagents"],
-    updatedAt: "2026-06-06",
-    metaTitle: "Claude Code Hooks and MCP Setup Guide",
+    updatedAt: "2026-06-18",
+    metaTitle: "Claude Code Hooks vs MCP Setup",
     metaDescription:
-      "Set up Claude Code hooks, MCP servers, and skills with clear security boundaries and practical rollout checks.",
+      "Compare Claude Code hooks, skills, and MCP with setup examples, hook-to-MCP boundaries, logs, troubleshooting, and security checks.",
     resourceIds: ["claude-code-setup"],
   },
   {
@@ -549,6 +638,13 @@ const coreGuides: Guide[] = [
         body: [
           "For HTTP transports, follow the MCP authorization flow, publish protected resource metadata, validate access-token audience, reject tokens not issued for the MCP server, and avoid token passthrough. Request minimal initial scopes and elevate only when a specific method needs more access. Keep credentials in managed storage, out of prompts and ordinary logs, and document rotation and revocation.",
           "Use the official MCP Inspector during validation to enumerate resources, prompts, tools, notifications, and protocol exchanges. Exercise both allowed and denied calls so the review covers behavior rather than configuration alone.",
+        ],
+      },
+      {
+        heading: "Compare OAuth, API keys, and mTLS",
+        body: [
+          "Authentication is not one checkbox. Use OAuth or the MCP authorization flow when HTTP-based servers need audience-bound tokens and scopes. Use API keys or service tokens only when they are narrowly scoped, runtime-injected, redacted, and revocable. Use mTLS or private network identity when production service-to-service access needs strong client identity and certificate lifecycle control.",
+          "The included security config example starts from a conservative read-only profile: token audience validation, blocked secret paths, network allowlists, empty write and destructive method lists, human approval for high-impact access, redacted audit fields, and a named revocation command.",
         ],
       },
       {
@@ -717,7 +813,7 @@ const coreGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["github-copilot-cloud-local-sandboxes-preview", "visual-studio-agent-mode-mcp-general-availability"],
-    updatedAt: "2026-06-14",
+    updatedAt: "2026-06-18",
     metaTitle: "MCP Security Checklist for AI Coding Agents",
     metaDescription:
       "Review MCP server security with checks for authentication, permissions, secrets, network reach, approvals, audit logs, and revocation.",

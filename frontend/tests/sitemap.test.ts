@@ -21,7 +21,6 @@ describe("sitemap helpers", () => {
   const utilityNoindexPaths = [
     "/contact",
     "/sources",
-    "/entities",
     "/authors/editorial-automation-desk",
   ];
   const archiveNoindexPaths = [
@@ -40,9 +39,11 @@ describe("sitemap helpers", () => {
     expect(locations).toContain("https://www.kyenai.com");
     expect(locations).toContain("https://www.kyenai.com/about");
     expect(locations).toContain("https://www.kyenai.com/editorial-policy");
+    expect(locations).toContain("https://www.kyenai.com/entities");
     expect(locations).toContain("https://www.kyenai.com/guides");
     expect(entries.find((entry) => entry.loc.endsWith("/about"))?.lastmod).toBe("2026-06-06");
     expect(entries.find((entry) => entry.loc.endsWith("/editorial-policy"))?.lastmod).toBe("2026-06-06");
+    expect(entries.find((entry) => entry.loc.endsWith("/entities"))?.lastmod).toBe("2026-06-18");
 
     for (const article of publishedArticles) {
       expect(locations).toContain(`https://www.kyenai.com/articles/${article.slug}`);
