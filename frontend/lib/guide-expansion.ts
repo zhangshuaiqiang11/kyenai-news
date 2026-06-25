@@ -6,7 +6,7 @@ export const expansionGuides: Guide[] = [
     title: "Codex vs Claude Code",
     slug: "codex-vs-claude-code",
     summary:
-      "Use Codex when you want an OpenAI coding agent tied to ChatGPT and Codex workflows; use Claude Code when your team prefers a terminal-first agent with strong project memory, hooks, MCP, and subagent patterns.",
+      "Compare Codex vs Claude Code by workflow shape, public same-task examples, repository instructions, review effort, and a same-repo checklist your team can run before standardizing.",
     intent: "Developers want a plain comparison of Codex and Claude Code before choosing an AI coding agent.",
     audience: "Developers, staff engineers, and team leads comparing agentic coding tools for real repositories.",
     pageType: "Comparison decision guide",
@@ -15,7 +15,7 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Choose Codex if your team already works inside OpenAI and wants a coding agent connected to ChatGPT-style review, code changes, and shareable work. Choose Claude Code if you want a terminal-first workflow where project memory, hooks, MCP servers, and subagents are part of the daily setup.",
+          "Codex vs Claude Code is a workflow decision: choose Codex when OpenAI-native planning, code review, and shareable agent work fit your team; choose Claude Code when terminal-local memory, hooks, MCP servers, and subagents are part of daily engineering. Use public comparisons as examples, then run one same-repository bug fix, API change, component refactor, and test repair before calling either tool better.",
         ],
       },
       {
@@ -190,17 +190,17 @@ export const expansionGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "claude-code-dynamic-workflows-parallel-subagents"],
-    updatedAt: "2026-06-18",
-    metaTitle: "Codex vs Claude Code: Which AI Coding Agent Fits?",
+    updatedAt: "2026-06-25",
+    metaTitle: "Codex vs Claude Code: Workflow, Public Tests, Repo Checklist",
     metaDescription:
-      "Compare Codex vs Claude Code in 2026 with answer-first guidance on workflow fit, review checks, and rollout risks for real repositories.",
+      "Codex vs Claude Code comparison: use workflow fit, public tests, repo instructions, review effort, and a same-task checklist before rollout.",
   },
   {
     id: "guide-agents-md-template",
     title: "AGENTS.md Template: Practical Examples for Codex and Monorepos",
     slug: "agents-md-template-for-ai-coding-agents",
     summary:
-      "Start AGENTS.md with the repo purpose, safe edit boundaries, install commands, test commands, style rules, and review expectations. Keep it short enough that an agent can follow it during a real task.",
+      "Copy an AGENTS.md template for Codex, Node.js, Python, and monorepos, then add safe edit boundaries, test commands, forbidden files, and review expectations.",
     intent: "Developers want a copyable AGENTS.md template instead of another explanation of what instruction files are.",
     audience: "Developers setting up Codex-compatible agents, team leads standardizing repo instructions, and maintainers cleaning stale agent rules.",
     pageType: "Template and checklist",
@@ -209,7 +209,7 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "A useful AGENTS.md tells Codex what the repo is, which commands prove work is done, what files are sensitive, and how the team wants changes reviewed. Start with a root template, then add nested AGENTS.md files only for monorepos or packages with different commands, ownership, or safety boundaries.",
+          "A useful AGENTS.md template gives Codex copyable repo instructions: project purpose, install command, test command, safe edit boundaries, forbidden files, and review expectations. Start with one root file, then add nested AGENTS.md files only for Node.js, Python, or monorepo packages that need different commands, ownership, or safety boundaries.",
         ],
       },
       {
@@ -356,10 +356,10 @@ export const expansionGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
-    updatedAt: "2026-06-18",
-    metaTitle: "AGENTS.md Template for Codex and Monorepos",
+    updatedAt: "2026-06-25",
+    metaTitle: "AGENTS.md Template: Copyable Examples for Codex, Node.js, Python",
     metaDescription:
-      "Copy AGENTS.md examples for Codex, React, Python, and monorepos with test commands, safe edit scope, and completion standards.",
+      "AGENTS.md template examples for Codex, Node.js, Python, and monorepos with test commands, safe edit boundaries, forbidden files, and review rules.",
     resourceIds: ["agents-md-template"],
   },
   {
@@ -1253,7 +1253,7 @@ export const expansionGuides: Guide[] = [
     title: "Loop Engineering for AI Coding Agents: Addy Osmani's Workflow Explained",
     slug: "loop-engineering-ai-coding-agents",
     summary:
-      "Loop engineering turns Addy Osmani's agent-loop idea into a practical workflow for coding agents: plan, act, observe, verify, then retry or stop under explicit limits.",
+      "Learn Addy Osmani's loop engineering workflow for AI coding agents with examples, stop rules, token and cost caps, verification commands, and human checkpoints.",
     intent:
       "Developers want to move from prompting agents task-by-task to designing durable loops that plan, change code, verify results, and stop safely.",
     audience: "Developers, staff engineers, and platform teams adopting agentic coding workflows in Cursor, Claude Code, Codex, or custom CI agents.",
@@ -1271,7 +1271,7 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Addy Osmani's loop engineering approach is about designing the system around an AI agent, not writing a better one-off prompt. For coding agents, the practical loop is Plan → Act → Observe → Verify → Retry/Stop, a stricter version of the act → observe → reason cycle: give the agent a goal, let it make a bounded change, inspect real evidence such as tests or diffs, verify the result, then either retry with a changed strategy or stop under a clear stop rule.",
+          "Addy Osmani's loop engineering approach means designing the operating loop around the agent, not writing one better prompt. For coding agents, the practical loop is Plan → Act → Observe → Verify → Stop, a stricter version of the act → observe → reason cycle: give the agent a bounded goal, inspect evidence such as tests or diffs, retry only with a changed strategy, and stop on token or cost caps, repeated failure, risky permission changes, or a required human checkpoint.",
         ],
       },
       {
@@ -1504,10 +1504,10 @@ export const expansionGuides: Guide[] = [
       "cursor-enterprise-organizations-governance",
       "github-copilot-cloud-local-sandboxes-preview",
     ],
-    updatedAt: "2026-06-18",
-    metaTitle: "Loop Engineering for AI Coding Agents",
+    updatedAt: "2026-06-25",
+    metaTitle: "Loop Engineering for AI Coding Agents: Addy Osmani, Examples, Stop Rules",
     metaDescription:
-      "Learn Addy Osmani's loop engineering workflow for coding agents: plan, act, observe, verify, stop rules, examples, and bounded retries.",
+      "Loop engineering for AI coding agents: Addy Osmani's workflow, examples, stop rules, token caps, verification commands, and human checkpoints.",
     resourceIds: ["loop-engineering"],
   },
 ];

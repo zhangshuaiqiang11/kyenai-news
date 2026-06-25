@@ -100,7 +100,8 @@ describe("SpaceX Cursor acquisition article", () => {
 
     expect(relatedGuides.map((guide) => guide.slug)).toEqual([
       "codex-vs-claude-code",
-      "agent-governance-checklist-for-software-teams",
+      "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+      "loop-engineering-ai-coding-agents",
     ]);
   });
 

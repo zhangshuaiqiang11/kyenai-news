@@ -9,10 +9,10 @@ const sourceIds = {
 
 export const spacexCursorAcquisitionArticle: Article = {
   id: "article-spacex-cursor-acquisition",
-  title: "SpaceX Signs $60 Billion All-Stock Deal to Acquire Cursor Maker Anysphere",
+  title: "SpaceX Cursor Acquisition: Deal Status, Timeline, and Developer Impact",
   slug: "spacex-cursor-acquisition-2026",
   summary:
-    "SpaceX exercised its acquisition option and signed a $60 billion all-stock agreement for Anysphere, the company behind Cursor. The deal is signed but has not yet closed, with completion expected in the third quarter of 2026.",
+    "SpaceX signed a $60 billion all-stock agreement to acquire Cursor maker Anysphere. The deal is not closed yet; here is the status, expected Q3 2026 timeline, and what developers should watch.",
   category: "AI Coding Agents",
   tags: ["spacex", "cursor", "anysphere", "acquisition", "ai-coding-market"],
   authorName: "Editorial Automation Desk",
@@ -36,7 +36,7 @@ export const spacexCursorAcquisitionArticle: Article = {
       id: "deal-status-summary",
       type: "paragraph",
       content:
-        "On June 16, 2026, SpaceX exercised its option to acquire Anysphere, the company behind the Cursor AI coding editor, and entered into a $60 billion all-stock transaction. The precise status matters: this is a signed merger agreement, not a completed closing. SpaceX's Form 8-K says the merger remains subject to closing conditions, including regulatory approvals, and that the company currently expects closing in the third quarter of 2026. Axios described the purchase as an exercise of the call option disclosed earlier in the year.",
+        "On June 16, 2026, SpaceX exercised its option to acquire Anysphere, the company behind the Cursor AI coding editor, and entered into a $60 billion all-stock transaction. The precise status matters for searchers and Cursor users: this is a signed merger agreement, not a completed closing. SpaceX's Form 8-K says the merger remains subject to closing conditions, including regulatory approvals, and that the company currently expects closing in the third quarter of 2026. Axios described the purchase as an exercise of the call option disclosed earlier in the year.",
       sourceIds: [sourceIds.sec, sourceIds.reuters, sourceIds.axios],
     },
     {
@@ -232,11 +232,11 @@ export const spacexCursorAcquisitionArticle: Article = {
     },
   ],
   publishedAt: "2026-06-16T10:35:00Z",
-  updatedAt: "2026-06-18T06:10:00Z",
-  version: 2,
-  metaTitle: "SpaceX Cursor Acquisition: $60B All-Stock Deal Explained",
+  updatedAt: "2026-06-25",
+  version: 3,
+  metaTitle: "SpaceX Cursor Acquisition: Deal Status, Timeline, Developer Impact",
   metaDescription:
-    "SpaceX signed a $60 billion all-stock deal for Cursor maker Anysphere. The agreement is confirmed, but closing is still expected in Q3 2026.",
+    "SpaceX Cursor acquisition explained: signed $60B all-stock deal, Q3 2026 closing status, timeline, and what Cursor users should watch.",
 };
 
 export const featuredArticles: Article[] = [spacexCursorAcquisitionArticle];

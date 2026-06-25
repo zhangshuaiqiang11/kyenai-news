@@ -11,7 +11,7 @@ const coreGuides: Guide[] = [
     title: "AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?",
     slug: INSTRUCTION_COMPARISON_GUIDE_SLUG,
     summary:
-      "Compare current repository instruction files by tool and surface, then use one shared policy with small adapters for Codex, Claude Code, Cursor, and GitHub Copilot.",
+      "Use this support matrix to decide when CLAUDE.md, Copilot instructions, AGENTS.md, or Cursor rules should carry repository guidance, then keep shared policy text synchronized.",
     intent:
       "Choose compatible instruction files, migrate Cursor rules carefully, and test AI coding tools without unsupported benchmark claims.",
     audience: "Developer tools teams, staff engineers, platform teams, and AI coding adopters.",
@@ -27,7 +27,7 @@ const coreGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Use AGENTS.md for Codex, CLAUDE.md for Claude Code, .github/copilot-instructions.md for broad GitHub Copilot repository guidance, and .cursor/rules/*.mdc for current Cursor project rules. GitHub Copilot support for CLAUDE.md depends on the Copilot surface: selected cloud-agent surfaces support it, while many Copilot Chat, code-review, and CLI surfaces do not.",
+          "CLAUDE.md vs Copilot Instructions is a surface question, not a universal filename rule. Use AGENTS.md for Codex, CLAUDE.md for Claude Code, .github/copilot-instructions.md for broad GitHub Copilot repository guidance, and .cursor/rules/*.mdc for current Cursor project rules. GitHub Copilot support for CLAUDE.md depends on the Copilot surface: selected cloud-agent surfaces support it, while many Copilot Chat, code-review, and CLI surfaces do not list it, so Copilot instructions remain the safer baseline.",
         ],
       },
       {
@@ -289,10 +289,10 @@ const coreGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
-    updatedAt: "2026-06-18",
-    metaTitle: "AGENTS.md vs CLAUDE.md vs Copilot Instructions",
+    updatedAt: "2026-06-25",
+    metaTitle: "CLAUDE.md vs Copilot Instructions vs AGENTS.md: Support Matrix",
     metaDescription:
-      "Choose AGENTS.md, CLAUDE.md, Copilot instructions, or Cursor rules by tool support, scope, canonical policy, and repository coverage.",
+      "CLAUDE.md vs Copilot Instructions vs AGENTS.md support matrix: choose the right repo file by tool surface, scope, and safe shared policy.",
     resourceIds: ["instruction-files"],
   },
   {
@@ -607,7 +607,7 @@ const coreGuides: Guide[] = [
     title: "MCP security checklist for AI coding agents",
     slug: MCP_SECURITY_GUIDE_SLUG,
     summary:
-      "Use this MCP server security review to map threats, authentication, permissions, secrets, network reach, approvals, logs, and revocation before launch.",
+      "Use this MCP server security checklist to review authentication, permissions, secrets, network reach, logs, revocation, and launch gates before an AI coding agent gets tool access.",
     intent:
       "Answer how to secure an MCP server with source-backed protocol checks and clearly labeled operational controls.",
     audience: "Engineering leaders, security reviewers, platform teams, and developer tooling owners.",
@@ -623,7 +623,7 @@ const coreGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Use an MCP security checklist before connecting any server: verify MCP authentication and token audience, grant the narrowest permissions, protect secrets, start with read-only capabilities, restrict network reach, and test revocation. Human approval and attributable audit logs are KyenAI operational recommendations for destructive or production actions, not requirements imposed by the MCP specification.",
+          "Start MCP server security with auth, permissions, logs, and revocation before the agent can act. Validate token audience, avoid token passthrough, grant read-only access first, block secrets and undeclared network destinations, log high-impact calls without sensitive payloads, and prove the server can be disabled. Human approval and attributable audit logs are KyenAI operational recommendations for destructive or production actions, not requirements imposed by the MCP specification.",
         ],
       },
       {
@@ -813,10 +813,10 @@ const coreGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["github-copilot-cloud-local-sandboxes-preview", "visual-studio-agent-mode-mcp-general-availability"],
-    updatedAt: "2026-06-18",
-    metaTitle: "MCP Security Checklist for AI Coding Agents",
+    updatedAt: "2026-06-25",
+    metaTitle: "MCP Server Security Checklist: Auth, Permissions, Logs, Revocation",
     metaDescription:
-      "Review MCP server security with checks for authentication, permissions, secrets, network reach, approvals, audit logs, and revocation.",
+      "MCP server security checklist for AI agents: review auth, permissions, secrets, logs, network limits, approvals, and revocation before launch.",
     resourceIds: ["mcp-security"],
   },
   {

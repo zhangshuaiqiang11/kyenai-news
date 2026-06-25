@@ -153,17 +153,17 @@ describe("contextual internal links", () => {
     }
   });
 
-  it("renders the four guide topic centers with crawlable links and reading order", () => {
+  it("renders the four GSC opportunity hubs with crawlable links and reading order", () => {
     const { guides, validHrefs } = getGuideRouteData();
     render(<GuidesPage guides={guides} />);
 
-    const centers = screen.getByRole("heading", { name: "Topic centers" }).closest("section");
+    const centers = screen.getByRole("heading", { name: "GSC Opportunity Hubs" }).closest("section");
     expect(centers).not.toBeNull();
 
-    expect(within(centers!).getByRole("heading", { name: "Repository Instructions" })).toBeTruthy();
-    expect(within(centers!).getByRole("heading", { name: "Agent Workflows" })).toBeTruthy();
-    expect(within(centers!).getByRole("heading", { name: "MCP and Security" })).toBeTruthy();
-    expect(within(centers!).getByRole("heading", { name: "Tool Comparisons" })).toBeTruthy();
+    expect(within(centers!).getByRole("heading", { name: "Instruction File Opportunity" })).toBeTruthy();
+    expect(within(centers!).getByRole("heading", { name: "Loop Engineering Opportunity" })).toBeTruthy();
+    expect(within(centers!).getByRole("heading", { name: "MCP and Security Opportunity" })).toBeTruthy();
+    expect(within(centers!).getByRole("heading", { name: "Comparison and Event Opportunity" })).toBeTruthy();
     expect(within(centers!).getAllByText("Recommended reading order")).toHaveLength(4);
     expect(centers!.textContent).toMatch(/Beginner entry:/);
     expect(centers!.textContent).toMatch(/Advanced page:/);

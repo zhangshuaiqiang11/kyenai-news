@@ -24,6 +24,34 @@ type GuidePageProps = {
   relatedArticles: Article[];
 };
 
+const bestNextStepsByGuideSlug: Record<string, { href: string; label: string; note: string }> = {
+  "agents-md-vs-claude-md-cursorrules-copilot-instructions": {
+    href: "/guides/agents-md-template-for-ai-coding-agents",
+    label: "Copy the AGENTS.md template for Codex, Node.js, Python, and monorepos",
+    note: "After choosing the instruction-file surface, turn it into a repo policy the agent can follow.",
+  },
+  "agents-md-template-for-ai-coding-agents": {
+    href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
+    label: "Check the CLAUDE.md vs Copilot Instructions support matrix",
+    note: "Use the template only after you know which file each coding tool actually reads.",
+  },
+  "loop-engineering-ai-coding-agents": {
+    href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
+    label: "Write loop stop rules into AGENTS.md, CLAUDE.md, or Copilot instructions",
+    note: "Agent loops need repository instructions that name verification commands and human checkpoints.",
+  },
+  "codex-vs-claude-code": {
+    href: "/guides/loop-engineering-ai-coding-agents",
+    label: "Use loop engineering to compare Codex and Claude Code on the same repo task",
+    note: "Measure behavior with a plan-act-observe-verify loop instead of generic feature lists.",
+  },
+  "secure-mcp-servers-ai-coding-agents": {
+    href: "/guides/loop-engineering-ai-coding-agents",
+    label: "Scope MCP tools before running unattended agent loops",
+    note: "MCP access inside loops needs auth, permissions, logs, revocation, and stop rules.",
+  },
+};
+
 export const loadInstructionResources = () =>
   import("../../components/InstructionGuideResources").then(
     ({ InstructionGuideResources }) => InstructionGuideResources,
@@ -127,6 +155,7 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
   const guideJsonLd = buildGuideJsonLd(guide);
   const faqs = buildGuideFaqs(guide);
   const faqJsonLd = buildFaqPageJsonLd(faqs);
+  const bestNextStep = bestNextStepsByGuideSlug[guide.slug];
 
   return (
     <Layout>
@@ -171,6 +200,14 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
           <h2 id="guide-answer-heading">Quick Answer</h2>
           <p>{quickAnswer}</p>
         </section>
+        {bestNextStep ? (
+          <section className="answer-panel" aria-labelledby="guide-best-next-step-heading">
+            <h2 id="guide-best-next-step-heading">Best next step</h2>
+            <p>
+              <Link href={bestNextStep.href}>{bestNextStep.label}</Link>. {bestNextStep.note}
+            </p>
+          </section>
+        ) : null}
         <GuideResources guide={guide} />
         <div className="article-content-grid">
           <div className="article-body">

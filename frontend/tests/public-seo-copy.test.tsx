@@ -23,6 +23,8 @@ const privateGuideFields = [
   "attackabilityScore",
   "fitScore",
   "gscWatchQueries",
+  "gscBaseline",
+  "emergencyPriority",
 ] as const;
 
 const privateScoringLabels = [
@@ -325,7 +327,8 @@ describe("public guide SEO copy", () => {
 
     const answerPanel = screen.getByRole("heading", { name: /^quick answer$/i }).closest("section");
     expect(answerPanel?.textContent).toMatch(/act → observe → reason/i);
-    expect(answerPanel?.textContent).toMatch(/stop rule/i);
+    expect(answerPanel?.textContent).toMatch(/token or cost caps/i);
+    expect(answerPanel?.textContent).toMatch(/human checkpoint/i);
   });
 
   it("keeps static resource downloads as ordinary links and out of guide JSON-LD", async () => {

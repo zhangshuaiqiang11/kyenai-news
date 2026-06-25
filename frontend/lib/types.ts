@@ -163,4 +163,11 @@ export type GuideEditorialSignals = {
   attackabilityScore: number;
   fitScore: number;
   gscWatchQueries: string[];
+  gscBaseline?: {
+    clicks: number;
+    impressions: number;
+    ctr: number;
+    averagePosition: number;
+  };
+  emergencyPriority?: number;
 };

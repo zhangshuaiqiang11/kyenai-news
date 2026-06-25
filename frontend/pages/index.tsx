@@ -25,6 +25,34 @@ type HomeProps = {
   guides: Guide[];
 };
 
+const highImpressionEntries = [
+  {
+    href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
+    label: "CLAUDE.md vs Copilot Instructions support matrix",
+    note: "Highest-impression guide: choose the right repo instruction file by tool surface.",
+  },
+  {
+    href: "/guides/loop-engineering-ai-coding-agents",
+    label: "Loop Engineering: Addy Osmani, examples, stop rules",
+    note: "Zero-click page-one opportunity: learn the workflow, caps, and human checkpoints.",
+  },
+  {
+    href: "/guides/agents-md-template-for-ai-coding-agents",
+    label: "AGENTS.md template for Codex, Node.js, Python",
+    note: "Copy practical repo instructions after choosing the right file.",
+  },
+  {
+    href: "/articles/spacex-cursor-acquisition-2026",
+    label: "SpaceX Cursor acquisition deal status and timeline",
+    note: "Event page with deal status, Q3 2026 closing window, and developer impact.",
+  },
+  {
+    href: "/guides/secure-mcp-servers-ai-coding-agents",
+    label: "MCP server security checklist",
+    note: "Move the security page toward top-20 queries with auth, permissions, logs, and revocation.",
+  },
+];
+
 export default function Home({ articles, guides }: HomeProps) {
   const websiteJsonLd = buildWebsiteJsonLd();
   const organizationJsonLd = buildOrganizationJsonLd();
@@ -55,7 +83,14 @@ export default function Home({ articles, guides }: HomeProps) {
           <section className="guide-strip" aria-labelledby="priority-guides-heading">
             <div>
               <h2 id="priority-guides-heading">Practical playbooks</h2>
-              <p>Complete comparison, setup, security, and migration tasks with clear, source-backed guidance.</p>
+              <p>Start with the pages that already have Google impressions, then continue into setup and security.</p>
+            </div>
+            <div className="guide-strip-next-steps" aria-label="High-impression pages to read first">
+              {highImpressionEntries.map((entry) => (
+                <p key={entry.href}>
+                  <Link href={entry.href}>{entry.label}</Link> {entry.note}
+                </p>
+              ))}
             </div>
             <div className="guide-strip-grid">
               {guides.map((guide) => (

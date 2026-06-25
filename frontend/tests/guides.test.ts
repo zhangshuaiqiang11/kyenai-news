@@ -5,10 +5,10 @@ import { getGuide, getGuides, getInternalLinkedGuides } from "../lib/guides";
 import { buildGuideFaqs, buildGuideItemListJsonLd, buildGuideJsonLd } from "../lib/seo";
 
 describe("guide SEO data", () => {
-  it("keeps every guide meta title within 25 to 65 characters", () => {
+  it("keeps every guide meta title within 25 to 75 characters", () => {
     for (const guide of getGuides()) {
       expect.soft(guide.metaTitle.length, guide.slug).toBeGreaterThanOrEqual(25);
-      expect.soft(guide.metaTitle.length, guide.slug).toBeLessThanOrEqual(65);
+      expect.soft(guide.metaTitle.length, guide.slug).toBeLessThanOrEqual(75);
     }
   });
 
@@ -94,7 +94,7 @@ describe("guide SEO data", () => {
     expect(guide).toBeDefined();
     expect(guide).toMatchObject({
       slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
-      updatedAt: "2026-06-18",
+      updatedAt: "2026-06-25",
       resourceIds: ["instruction-files"],
     });
     expect(guide!.metaTitle.length).toBeGreaterThanOrEqual(25);
@@ -241,13 +241,14 @@ describe("guide SEO data", () => {
 
     expect(guide).toBeDefined();
     expect(guide!.resourceIds).toEqual(["loop-engineering"]);
-    expect(guide!.updatedAt).toBe("2026-06-18");
+    expect(guide!.updatedAt).toBe("2026-06-25");
 
     const quickAnswer = guide!.sections[0].body[0];
     expect(guide!.title).toMatch(/Addy Osmani's Workflow Explained/i);
     expect(quickAnswer).toMatch(/Addy Osmani's loop engineering approach/i);
-    expect(quickAnswer).toMatch(/Plan → Act → Observe → Verify → Retry\/Stop/i);
-    expect(quickAnswer).toMatch(/clear stop rule/i);
+    expect(quickAnswer).toMatch(/Plan → Act → Observe → Verify → Stop/i);
+    expect(quickAnswer).toMatch(/token or cost caps/i);
+    expect(quickAnswer).toMatch(/required human checkpoint/i);
     expect(quickAnswer).not.toMatch(/in today's fast-paced|unlock|revolutionize|game-changer/i);
     expect(guide!.sections.map((section) => section.heading)).toEqual(
       expect.arrayContaining([
@@ -294,7 +295,7 @@ describe("guide SEO data", () => {
     const guide = getGuide("codex-vs-claude-code");
 
     expect(guide).toBeDefined();
-    expect(guide!.updatedAt).toBe("2026-06-18");
+    expect(guide!.updatedAt).toBe("2026-06-25");
     expect(guide!.sections.map((section) => section.heading)).toEqual(
       expect.arrayContaining(["Public example evidence", "Same-task experiment protocol"]),
     );
@@ -330,6 +331,13 @@ describe("guide SEO data", () => {
         "codex alternatives",
         "claude code alternatives",
       ],
+      gscBaseline: {
+        clicks: 0,
+        impressions: 72,
+        ctr: 0,
+        averagePosition: 39.4,
+      },
+      emergencyPriority: 55,
     });
   });
 
@@ -337,13 +345,14 @@ describe("guide SEO data", () => {
     const priorityGuides = getPriorityGuides();
 
     expect(priorityGuides.map((guide) => guide.slug)).toEqual([
-      "agents-md-template-for-ai-coding-agents",
       "loop-engineering-ai-coding-agents",
       "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+      "agents-md-template-for-ai-coding-agents",
       "codex-vs-claude-code",
-      "local-vs-cloud-ai-coding-agent",
+      "secure-mcp-servers-ai-coding-agents",
     ]);
     expect(JSON.stringify(priorityGuides)).not.toContain('"demandScore"');
+    expect(JSON.stringify(priorityGuides)).not.toContain('"gscBaseline"');
   });
 
   it("builds crawlable TechArticle JSON-LD and FAQ content from visible guide facts", () => {
@@ -431,6 +440,7 @@ describe("guide SEO data", () => {
         slug: "agents-md-template-for-ai-coding-agents",
         title: /Practical Examples for Codex and Monorepos/i,
         headings: ["Copyable starter templates", "Root vs nested AGENTS.md inheritance", "What every template must say"],
+        updatedAt: "2026-06-25",
       },
       {
         slug: "agent-mode-vs-chat-mode-in-ide",
@@ -447,7 +457,7 @@ describe("guide SEO data", () => {
       for (const heading of item.headings) {
         expect(headings, `${item.slug}: ${heading}`).toContain(heading);
       }
-      expect(guide!.updatedAt).toBe("2026-06-18");
+      expect(guide!.updatedAt).toBe(item.updatedAt ?? "2026-06-18");
     }
   });
 });

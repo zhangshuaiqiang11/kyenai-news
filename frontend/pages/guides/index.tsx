@@ -29,11 +29,11 @@ type GuideTopicHub = {
 
 const guideTopicHubs: GuideTopicHub[] = [
   {
-    title: "Repository Instructions",
+    title: "Instruction File Opportunity",
     intro:
-      "Start here when the team needs one reliable way to tell AI coding agents how a repository works. This cluster separates the policy question from the file-format question: AGENTS.md for Codex, CLAUDE.md for Claude Code, .github/copilot-instructions.md for Copilot, and Cursor rules for Cursor. Use it before adding more automation because stale setup commands, unclear ownership, and mismatched instruction files are a common reason agents make noisy diffs. The goal is a small shared policy with tool-specific adapters that are easy to review.",
-    beginner: "AGENTS.md vs CLAUDE.md vs Copilot Instructions",
-    advanced: "Does GitHub Copilot Read CLAUDE.md?",
+      "This is the strongest current GSC cluster: the main instruction-file guide already receives impressions and clicks for CLAUDE.md, Copilot instructions, and AGENTS.md queries. Start with the support matrix, then move to templates and examples only after the reader knows which file each tool actually reads. The goal is to consolidate broad comparison queries on one strong page while supporting copyable AGENTS.md intent with narrower pages.",
+    beginner: "CLAUDE.md vs Copilot Instructions vs AGENTS.md",
+    advanced: "AGENTS.md Examples for Codex",
     readingOrder: [
       {
         href: INSTRUCTION_COMPARISON_GUIDE_HREF,
@@ -58,16 +58,16 @@ const guideTopicHubs: GuideTopicHub[] = [
     ],
   },
   {
-    title: "Agent Workflows",
+    title: "Loop Engineering Opportunity",
     intro:
-      "Use this path after repository instructions exist and the question becomes how agents should actually work. These guides cover the move from one prompt to controlled execution: chat mode versus agent mode, hooks for deterministic checks, subagents for delegated work, and loop engineering for repeated plan-act-observe-verify cycles. This is where teams define stop rules, verification commands, retry limits, and handoffs. It is also the cluster most likely to improve page usefulness because readers need practical operating patterns, not only definitions.",
-    beginner: "Agent Mode vs Chat Mode",
-    advanced: "Loop Engineering for AI Coding Agents",
+      "Loop Engineering is the clearest zero-click near-page-one opportunity. Readers are not only asking for a definition; they need Addy Osmani context, examples, stop rules, token and cost limits, and verification commands. This hub routes them from the high-impression Loop page into subagents, hooks, agent mode, and cloud execution so the topic looks like an operating system, not a one-off glossary entry.",
+    beginner: "Loop Engineering for AI Coding Agents",
+    advanced: "Claude Code Subagents Workflow Examples",
     readingOrder: [
       {
-        href: "/guides/agent-mode-vs-chat-mode-in-ide",
-        label: "Agent mode vs chat mode in IDE",
-        note: "Decide when the assistant should act instead of only answer.",
+        href: LOOP_ENGINEERING_GUIDE_HREF,
+        label: "Loop engineering for AI coding agents",
+        note: "Start with the high-impression workflow, examples, and stop rules.",
       },
       {
         href: "/guides/claude-code-hooks-mcp-setup",
@@ -80,16 +80,16 @@ const guideTopicHubs: GuideTopicHub[] = [
         note: "Split research, editing, and review into bounded roles.",
       },
       {
-        href: LOOP_ENGINEERING_GUIDE_HREF,
-        label: "Loop engineering for AI coding agents",
-        note: "Design durable cycles with stop rules and verification.",
+        href: "/guides/agent-mode-vs-chat-mode-in-ide",
+        label: "Agent mode vs chat mode in IDE",
+        note: "Decide when the assistant should act instead of only answer.",
       },
     ],
   },
   {
-    title: "MCP and Security",
+    title: "MCP and Security Opportunity",
     intro:
-      "Use this cluster before giving an agent network access, credentials, production tools, or write permissions. MCP makes agents more useful, but it also expands the blast radius: prompt injection can steer tool calls, servers can expose risky actions, and weak logging makes incident review difficult. These pages focus on least privilege, authentication, audit logs, approval boundaries, revocation, and governance. The practical aim is boring security: a team should know which tools are allowed, who approved them, how actions are logged, and when access is revoked.",
+      "MCP security and Cursor enterprise security queries are still lower-ranking, but they are commercially valuable and close to KyenAI's core authority. This hub makes the security promise concrete: authentication, permissions, secrets, network limits, audit logs, approvals, and revocation. It should help Secure MCP move from broad security wording toward a page that answers specific operational questions.",
     beginner: "AI Coding Agent Governance Checklist",
     advanced: "Secure MCP Servers for AI Coding Agents",
     readingOrder: [
@@ -106,9 +106,9 @@ const guideTopicHubs: GuideTopicHub[] = [
     ],
   },
   {
-    title: "Tool Comparisons",
+    title: "Comparison and Event Opportunity",
     intro:
-      "Use comparisons only after the task and risk boundary are clear. This cluster helps readers choose between agent surfaces, execution models, and migration paths without pretending one tool wins every situation. Codex versus Claude Code should be evaluated with the same repository task and measured review effort. Local versus cloud agents should be chosen by data sensitivity, latency, cost, and observability. Migration guides belong here when a tool switch changes commands, authentication, hooks, or team documentation.",
+      "Comparison and event pages can win clicks only when the search result promises a concrete answer. Codex vs Claude Code needs workflow fit, public examples, and a same-repo checklist rather than generic pros and cons. SpaceX/Cursor event traffic needs deal status, timeline, and developer impact. This hub keeps comparison pages connected to durable guides so short-lived impressions do not become isolated zero-click pages.",
     beginner: "Local vs Cloud AI Coding Agents",
     advanced: "Codex vs Claude Code",
     readingOrder: [
@@ -128,6 +128,29 @@ const guideTopicHubs: GuideTopicHub[] = [
         note: "Handle tool migration as commands, auth, and docs change.",
       },
     ],
+  },
+];
+
+const highImpressionPages = [
+  {
+    href: INSTRUCTION_COMPARISON_GUIDE_HREF,
+    label: "CLAUDE.md vs Copilot Instructions vs AGENTS.md",
+    note: "379 impressions, 7 clicks, average position around 9.6 in the supplied 28-day GSC snapshot.",
+  },
+  {
+    href: LOOP_ENGINEERING_GUIDE_HREF,
+    label: "Loop Engineering for AI Coding Agents",
+    note: "351 impressions, 0 clicks, average position around 9.5; the highest zero-click CTR opportunity.",
+  },
+  {
+    href: "/articles/spacex-cursor-acquisition-2026",
+    label: "SpaceX Cursor acquisition",
+    note: "95 impressions, 0 clicks, average position around 9.5; event traffic needs status and timeline clarity.",
+  },
+  {
+    href: "/guides/agents-md-template-for-ai-coding-agents",
+    label: "AGENTS.md template examples",
+    note: "61 impressions, 0 clicks, average position around 14; support page for copyable intent.",
   },
 ];
 
@@ -179,10 +202,24 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
             </Link>
           </div>
         </section>
+        <section className="featured-guide-paths" aria-labelledby="high-impression-pages-heading">
+          <div>
+            <h2 id="high-impression-pages-heading">High-impression pages to read first</h2>
+            <p>These pages already have Google visibility, so they receive the strongest internal links.</p>
+          </div>
+          <div className="featured-guide-path-grid">
+            {highImpressionPages.map((page) => (
+              <Link href={page.href} key={page.href}>
+                <strong>{page.label}</strong>
+                <span>{page.note}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
         <section className="guide-topic-clusters" aria-labelledby="guide-topic-clusters-heading">
           <div>
-            <h2 id="guide-topic-clusters-heading">Topic centers</h2>
-            <p>Follow one center when you want Google and readers to understand the site architecture.</p>
+            <h2 id="guide-topic-clusters-heading">GSC Opportunity Hubs</h2>
+            <p>Follow one hub when you want readers and Google to see which page owns each active query cluster.</p>
           </div>
           <div className="guide-topic-cluster-grid">
             {guideTopicHubs.map((hub) => (

@@ -4,16 +4,24 @@ import type { Guide, GuideEditorialSignals } from "./types";
 const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
   "agents-md-vs-claude-md-cursorrules-copilot-instructions": {
     priority: "P0",
-    primaryKeyword: "AGENTS.md vs CLAUDE.md vs .cursorrules",
+    primaryKeyword: "CLAUDE.md vs Copilot Instructions",
     demandScore: 9,
     attackabilityScore: 9,
     fitScore: 9.2,
     gscWatchQueries: [
+      "claude md vs copilot instructions",
       "agents.md vs claude.md",
       "claude.md vs cursorrules",
       "copilot instructions vs cursor rules",
       "ai coding agent instructions",
     ],
+    gscBaseline: {
+      clicks: 7,
+      impressions: 379,
+      ctr: 0.018,
+      averagePosition: 9.6,
+    },
+    emergencyPriority: 100,
   },
   "claude-code-subagents-examples": {
     priority: "P0",
@@ -43,7 +51,7 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
   },
   "secure-mcp-servers-ai-coding-agents": {
     priority: "P0",
-    primaryKeyword: "MCP security checklist",
+    primaryKeyword: "MCP server security checklist",
     demandScore: 8,
     attackabilityScore: 7.5,
     fitScore: 9.4,
@@ -55,6 +63,13 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
       "mcp permissions",
       "ai agent tool security",
     ],
+    gscBaseline: {
+      clicks: 0,
+      impressions: 64,
+      ctr: 0,
+      averagePosition: 31.4,
+    },
+    emergencyPriority: 50,
   },
   "antigravity-cli-gemini-cli-migration": {
     priority: "P1",
@@ -81,10 +96,17 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
       "codex alternatives",
       "claude code alternatives",
     ],
+    gscBaseline: {
+      clicks: 0,
+      impressions: 72,
+      ctr: 0,
+      averagePosition: 39.4,
+    },
+    emergencyPriority: 55,
   },
   "agents-md-template-for-ai-coding-agents": {
     priority: "P0",
-    primaryKeyword: "AGENTS.md template for AI coding agents",
+    primaryKeyword: "AGENTS.md template",
     demandScore: 8.8,
     attackabilityScore: 9.2,
     fitScore: 9.5,
@@ -94,6 +116,13 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
       "codex agents.md example",
       "ai coding agent instructions template",
     ],
+    gscBaseline: {
+      clicks: 0,
+      impressions: 61,
+      ctr: 0,
+      averagePosition: 14,
+    },
+    emergencyPriority: 80,
   },
   "does-github-copilot-read-claude-md-support-matrix": {
     priority: "P1",
@@ -163,7 +192,7 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
   },
   "loop-engineering-ai-coding-agents": {
     priority: "P0",
-    primaryKeyword: "loop engineering",
+    primaryKeyword: "loop engineering for AI coding agents",
     demandScore: 8.7,
     attackabilityScore: 9.1,
     fitScore: 9.6,
@@ -175,6 +204,13 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
       "loop engineering vs prompt engineering",
       "how to design agent loops",
     ],
+    gscBaseline: {
+      clicks: 0,
+      impressions: 351,
+      ctr: 0,
+      averagePosition: 9.5,
+    },
+    emergencyPriority: 95,
   },
 };
 
@@ -195,5 +231,20 @@ function guideRank(slug: string): number {
   }
 
   const priorityBoost = signals.priority === "P0" ? 2 : signals.priority === "P1" ? 1 : 0;
-  return signals.demandScore + signals.attackabilityScore + signals.fitScore + priorityBoost;
+  const baseline = signals.gscBaseline;
+  const impressionScore = baseline ? Math.min(baseline.impressions / 25, 20) : 0;
+  const nearPageOneScore = baseline ? Math.max(0, 20 - Math.abs(baseline.averagePosition - 10)) : 0;
+  const zeroClickBoost = baseline && baseline.clicks === 0 && baseline.impressions > 40 ? 8 : 0;
+  const emergencyBoost = signals.emergencyPriority ? signals.emergencyPriority / 5 : 0;
+
+  return (
+    signals.demandScore +
+    signals.attackabilityScore +
+    signals.fitScore +
+    priorityBoost +
+    impressionScore +
+    nearPageOneScore +
+    zeroClickBoost +
+    emergencyBoost
+  );
 }

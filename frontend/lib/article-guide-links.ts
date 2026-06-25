@@ -4,7 +4,8 @@ import type { Article, Guide } from "./types";
 const ARTICLE_GUIDE_OVERRIDES: Record<string, string[]> = {
   "spacex-cursor-acquisition-2026": [
     "codex-vs-claude-code",
-    "agent-governance-checklist-for-software-teams",
+    "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+    "loop-engineering-ai-coding-agents",
   ],
 };
 

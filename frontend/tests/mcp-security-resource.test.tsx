@@ -194,10 +194,10 @@ describe("MCP security guide integration", () => {
 
     expect(guide).toMatchObject({
       resourceIds: ["mcp-security"],
-      updatedAt: "2026-06-18",
+      updatedAt: "2026-06-25",
     });
     expect(guide!.title).toMatch(/MCP security checklist/i);
-    expect(guide!.metaTitle).toMatch(/MCP security checklist/i);
+    expect(guide!.metaTitle).toMatch(/MCP Server Security Checklist/i);
     expect(guide!.summary).toMatch(/MCP server security/i);
     expect(JSON.stringify(guide)).toMatch(/how to secure an MCP server/i);
     expect(JSON.stringify(guide)).toMatch(/MCP authentication/i);
@@ -206,7 +206,7 @@ describe("MCP security guide integration", () => {
     expect(JSON.stringify(guide)).toMatch(/security config example/i);
     expect(JSON.stringify(guide)).toMatch(/AI agent tool security/i);
     expect(editorial).toMatchObject({
-      primaryKeyword: "MCP security checklist",
+      primaryKeyword: "MCP server security checklist",
       gscWatchQueries: [
         "mcp security",
         "mcp server security",
