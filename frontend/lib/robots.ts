@@ -1,5 +1,6 @@
 import { buildCanonicalUrl } from "./seo";
 
+const publicAllowRules = ["/api/og"];
 const publicDisallowRules = ["/api/"];
 
 const verifiedSearchAndAiCrawlers = [
@@ -21,7 +22,13 @@ const verifiedSearchAndAiCrawlers = [
 ];
 
 function buildCrawlerGroup(userAgent: string): string[] {
-  return [`User-agent: ${userAgent}`, "Allow: /", ...publicDisallowRules.map((rule) => `Disallow: ${rule}`), ""];
+  return [
+    `User-agent: ${userAgent}`,
+    "Allow: /",
+    ...publicAllowRules.map((rule) => `Allow: ${rule}`),
+    ...publicDisallowRules.map((rule) => `Disallow: ${rule}`),
+    "",
+  ];
 }
 
 export function buildRobotsTxt(): string {
@@ -32,6 +39,7 @@ export function buildRobotsTxt(): string {
     "",
     "User-agent: *",
     "Allow: /",
+    ...publicAllowRules.map((rule) => `Allow: ${rule}`),
     ...publicDisallowRules.map((rule) => `Disallow: ${rule}`),
     "",
     ...verifiedSearchAndAiCrawlers.flatMap(buildCrawlerGroup),

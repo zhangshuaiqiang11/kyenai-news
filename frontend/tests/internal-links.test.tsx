@@ -4,7 +4,7 @@ import { cleanup, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import Home from "../pages";
-import GuidesPage from "../pages/guides";
+import GuidesPage, { guidesPageSeo } from "../pages/guides";
 import {
   INSTRUCTION_COMPARISON_GUIDE_SLUG,
   LOOP_ENGINEERING_GUIDE_SLUG,
@@ -121,6 +121,15 @@ describe("contextual internal links", () => {
   it("renders compact featured paths above the guide grid with contextual reasons", () => {
     const { guides, validHrefs } = getGuideRouteData();
     render(<GuidesPage guides={guides} />);
+
+    expect(guidesPageSeo.title).toBe("AI Coding Agent Guides: AGENTS.md, Claude Code, MCP");
+    expect(guidesPageSeo.description).toContain("AGENTS.md vs CLAUDE.md");
+    expect(
+      screen.getByRole("heading", {
+        name: "AI Coding Agent Guides for AGENTS.md, Claude Code, and MCP",
+        level: 1,
+      }),
+    ).toBeTruthy();
 
     const featuredPaths = screen.getByRole("heading", { name: "Featured starting paths" }).closest("section");
     expect(featuredPaths).not.toBeNull();

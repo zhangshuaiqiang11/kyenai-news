@@ -3,11 +3,12 @@ import { describe, expect, it } from "vitest";
 import { buildRobotsTxt } from "../lib/robots";
 
 describe("robots helpers", () => {
-  it("allows public pages, excludes api routes, and points to the canonical sitemap", () => {
+  it("allows public pages and the public OG image endpoint while excluding private api routes", () => {
     const robots = buildRobotsTxt();
 
     expect(robots).toContain("User-agent: *");
     expect(robots).toContain("Allow: /");
+    expect(robots).toContain("Allow: /api/og");
     expect(robots).toContain("Disallow: /api/");
     expect(robots).not.toContain("Disallow: /tags");
     expect(robots).toContain("Sitemap: https://www.kyenai.com/sitemap.xml");
@@ -35,7 +36,7 @@ describe("robots helpers", () => {
 
     for (const agent of allowedAgents) {
       expect(robots).toContain(
-        [`User-agent: ${agent}`, "Allow: /", "Disallow: /api/"].join("\n"),
+        [`User-agent: ${agent}`, "Allow: /", "Allow: /api/og", "Disallow: /api/"].join("\n"),
       );
     }
   });

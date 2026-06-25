@@ -154,6 +154,12 @@ const highImpressionPages = [
   },
 ];
 
+export const guidesPageSeo = {
+  title: "AI Coding Agent Guides: AGENTS.md, Claude Code, MCP",
+  description:
+    "Start with KyenAI guides for AGENTS.md vs CLAUDE.md, Copilot instructions, loop engineering, MCP security, Codex vs Claude Code, and governance.",
+} as const;
+
 export default function GuidesPage({ guides }: GuidesPageProps) {
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: "Home", path: "/" },
@@ -164,8 +170,8 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
   return (
     <Layout>
       <SeoHead
-        title="AI Coding Agent Guides"
-        description="Evidence-led AI coding agent playbooks for configuration, migration, security, governance, and tool comparisons."
+        title={guidesPageSeo.title}
+        description={guidesPageSeo.description}
         path="/guides"
       >
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
@@ -177,10 +183,10 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
           <span aria-hidden="true">/</span>
           <span>Guides</span>
         </nav>
-        <h1>AI Coding Agent Guides</h1>
+        <h1>AI Coding Agent Guides for AGENTS.md, Claude Code, and MCP</h1>
         <p>
-          Source-backed, task-oriented playbooks for comparing, configuring, migrating, governing, and securing AI
-          coding agents.
+          Source-backed, task-oriented playbooks for choosing repository instruction files, comparing Codex and Claude
+          Code, designing loop engineering workflows, and securing MCP access.
         </p>
         <section className="featured-guide-paths" aria-labelledby="featured-guide-paths-heading">
           <div>
