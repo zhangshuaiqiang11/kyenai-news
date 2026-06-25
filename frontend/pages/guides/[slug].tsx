@@ -5,13 +5,13 @@ import Link from "next/link";
 import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import { getArticles } from "../../lib/api";
+import { getVisibleGuideFaqs } from "../../lib/guide-faqs";
 import { getGuide, getGuides, getInternalLinkedGuides, getRelatedArticlesForGuide } from "../../lib/guides";
 import { EDITORIAL_AUTHOR_NAME, EDITORIAL_AUTHOR_PATH } from "../../lib/editorial";
 import { resolveIndexableGuideTopicHref } from "../../lib/guide-topic-links";
 import {
   buildBreadcrumbJsonLd,
   buildFaqPageJsonLd,
-  buildGuideFaqs,
   buildGuideJsonLd,
   buildOgImageUrl,
   formatDate,
@@ -153,7 +153,7 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
     { name: guide.title, path: guidePath },
   ]);
   const guideJsonLd = buildGuideJsonLd(guide);
-  const faqs = buildGuideFaqs(guide);
+  const faqs = getVisibleGuideFaqs(guide);
   const faqJsonLd = buildFaqPageJsonLd(faqs);
   const bestNextStep = bestNextStepsByGuideSlug[guide.slug];
 
@@ -396,5 +396,6 @@ export const getStaticProps: GetStaticProps<GuidePageProps> = async ({ params })
       relatedGuides: getInternalLinkedGuides(guide),
       relatedArticles: getRelatedArticlesForGuide(guide, await getArticles()),
     },
+    revalidate: 300,
   };
 };

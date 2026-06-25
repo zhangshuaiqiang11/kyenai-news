@@ -321,6 +321,9 @@ export function buildWebsiteJsonLd() {
     "@type": "WebSite",
     name: SITE_NAME,
     url: buildCanonicalUrl("/"),
+    inLanguage: "en",
+    description:
+      "Evidence-led AI coding agent playbooks for instruction files, loop engineering, MCP security, and tool comparisons.",
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,

@@ -275,6 +275,8 @@ describe("SEO helpers", () => {
     expect(guideListJsonLd.itemListElement[0].url).toContain("https://www.kyenai.com/guides/");
     expect(websiteJsonLd["@type"]).toBe("WebSite");
     expect(websiteJsonLd.name).toBe("KyenAI");
+    expect(websiteJsonLd.inLanguage).toBe("en");
+    expect(websiteJsonLd.description).toContain("loop engineering");
     expect(websiteJsonLd.publisher.name).toBe("KyenAI");
   });
 

@@ -281,5 +281,6 @@ export function getStaticProps() {
     props: {
       guides: getGuides(),
     },
+    revalidate: 300,
   };
 }

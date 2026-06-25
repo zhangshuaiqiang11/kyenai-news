@@ -477,6 +477,14 @@ const coreGuides: Guide[] = [
           "Common failures are stale credentials, missing local binaries, slow hooks, incorrect working directories, over-broad MCP permissions, and unclear error handling. Write the expected failure behavior before a team depends on the workflow.",
         ],
       },
+      {
+        heading: "Claude Code hooks not working: common fixes",
+        body: [
+          "If a hook never runs, confirm the trigger event, working directory, and that the local binary exists on PATH for the Claude Code session. If a hook runs but the task still proceeds, verify whether the hook is configured to block or only notify.",
+          "If MCP calls fail after a hook fires, check credential freshness, server startup order, and whether the hook assumes a tool that is not yet connected. Slow hooks often look like failures when the real issue is timeout or missing progress output.",
+          "Fix order: reproduce with one hook and one MCP server, log exit codes, test read-only access first, then widen permissions only after the owner reviews the failure log.",
+        ],
+      },
     ],
     recommendedPlay: [
       "Start with the control map before installing anything: hooks for deterministic events, MCP for external capability, skills for reusable process.",
@@ -596,7 +604,7 @@ const coreGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["claude-code-dynamic-workflows-parallel-subagents"],
-    updatedAt: "2026-06-18",
+    updatedAt: "2026-06-26",
     metaTitle: "Claude Code Hooks vs MCP Setup",
     metaDescription:
       "Compare Claude Code hooks, skills, and MCP with setup examples, hook-to-MCP boundaries, logs, troubleshooting, and security checks.",
@@ -638,6 +646,14 @@ const coreGuides: Guide[] = [
         body: [
           "For HTTP transports, follow the MCP authorization flow, publish protected resource metadata, validate access-token audience, reject tokens not issued for the MCP server, and avoid token passthrough. Request minimal initial scopes and elevate only when a specific method needs more access. Keep credentials in managed storage, out of prompts and ordinary logs, and document rotation and revocation.",
           "Use the official MCP Inspector during validation to enumerate resources, prompts, tools, notifications, and protocol exchanges. Exercise both allowed and denied calls so the review covers behavior rather than configuration alone.",
+        ],
+      },
+      {
+        heading: "MCP tool permissions boundaries",
+        body: [
+          "Define MCP tool boundaries at the tool level, not only at the server level. Decide which tools are visible to the agent, which are callable, which are read-only, and which require explicit approval before write, delete, network, secret, or production access.",
+          "Use a policy matrix for read-only, write-limited, and admin tools. Map each enabled tool to a declared workflow, owner, and rollback path. Separate repository read, write, and delete capabilities instead of granting one broad server profile to every agent session.",
+          "When vendors use different vocabulary such as permissions boundaries, deny policies, or read-write tool use, translate them into the same review questions: who can invoke the tool, on what target, with what evidence, and under what stop condition.",
         ],
       },
       {
@@ -813,7 +829,7 @@ const coreGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["github-copilot-cloud-local-sandboxes-preview", "visual-studio-agent-mode-mcp-general-availability"],
-    updatedAt: "2026-06-25",
+    updatedAt: "2026-06-26",
     metaTitle: "MCP Server Security Checklist: Auth, Permissions, Logs, Revocation",
     metaDescription:
       "MCP server security checklist for AI agents: review auth, permissions, secrets, logs, network limits, approvals, and revocation before launch.",

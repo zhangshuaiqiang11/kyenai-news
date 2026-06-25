@@ -61,7 +61,7 @@ export default function Home({ articles, guides }: HomeProps) {
   const entities = getEntityCoverage(articles);
   const pageTitle = `${SITE_NAME} | AI coding agent guides and evidence watch`;
   const description =
-    "Compare Codex, Claude Code, Copilot, Cursor, and other AI coding agents with source-backed setup, security, migration, and workflow guides.";
+    "Source-backed guides for CLAUDE.md vs Copilot Instructions, loop engineering, MCP security, Codex vs Claude Code, and AI coding agent setup.";
 
   return (
     <Layout>

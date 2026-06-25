@@ -47,6 +47,13 @@ export const expansionGuides: Guide[] = [
           "If a metric is not captured, write Not measured instead of guessing. Public examples can seed hypotheses, but your decision should come from review effort, reproducibility, safety behavior, and whether the final diff is easy for the team to own.",
         ],
       },
+      {
+        heading: "Same-repo scoring rubric",
+        body: [
+          "Score each run on five dimensions: verification outcome, review effort, safety behavior, instruction-file compliance, and diff clarity. Use pass, partial, or fail for verification; low, medium, or high for review effort; and note any permission widening, secret exposure, or unapproved writes.",
+          "Prefer the tool that passes verification with the smallest diff and the fewest human interventions, not the tool that finishes fastest with noisy edits. Tie-break with team workflow fit: terminal-first teams may accept more local setup if review effort drops; OpenAI-native teams may accept cloud handoff if artifacts are easier to share.",
+        ],
+      },
     ],
     recommendedPlay: [
       "Run the same small bug fix in both tools before deciding.",
@@ -190,7 +197,7 @@ export const expansionGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "claude-code-dynamic-workflows-parallel-subagents"],
-    updatedAt: "2026-06-25",
+    updatedAt: "2026-06-26",
     metaTitle: "Codex vs Claude Code: Workflow, Public Tests, Repo Checklist",
     metaDescription:
       "Codex vs Claude Code comparison: use workflow fit, public tests, repo instructions, review effort, and a same-task checklist before rollout.",
@@ -356,10 +363,10 @@ export const expansionGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
-    updatedAt: "2026-06-25",
+    updatedAt: "2026-06-26",
     metaTitle: "AGENTS.md Template: Copyable Examples for Codex, Node.js, Python",
     metaDescription:
-      "AGENTS.md template examples for Codex, Node.js, Python, and monorepos with test commands, safe edit boundaries, forbidden files, and review rules.",
+      "AGENTS.md template for Codex: copy Node.js, Python, and monorepo examples with test commands, forbidden files, safe edit boundaries, and review rules.",
     resourceIds: ["agents-md-template"],
   },
   {
@@ -1317,6 +1324,14 @@ export const expansionGuides: Guide[] = [
         ],
       },
       {
+        heading: "AI coding agent workflow checklist",
+        body: [
+          "Before scaling Automations, /loop schedules, or cloud agents, confirm the workflow has a named owner, a bounded goal, a verification command, a retry cap, a human checkpoint for risky actions, and a log that avoids secrets.",
+          "The checklist should answer five questions: what done looks like, what evidence the loop reads, what tools it may call, when it must stop, and who approves escalation. If any answer is missing, the workflow is still a prompt, not loop engineering.",
+          "Pilot on one repository task first. Record review time, token use, and human interventions actually observed. Add parallel agents or schedules only after a single-threaded loop is trustworthy.",
+        ],
+      },
+      {
         heading: "Common Patterns and When to Use Them",
         body: [
           "Plan-execute-verify fits bounded repo tasks with a clear pass command. Retry-with-cap helps flaky setup steps but needs a hard attempt limit per item. Evaluator-optimizer pairs work well for reviews and docs when criteria are explicit. Explore-narrow prevents premature edits in unfamiliar code. Scheduled wake-up loops handle recurring triage. Human-in-the-loop checkpoints belong before production, permission widening, or destructive operations.",
@@ -1504,7 +1519,7 @@ export const expansionGuides: Guide[] = [
       "cursor-enterprise-organizations-governance",
       "github-copilot-cloud-local-sandboxes-preview",
     ],
-    updatedAt: "2026-06-25",
+    updatedAt: "2026-06-26",
     metaTitle: "Loop Engineering for AI Coding Agents: Addy Osmani, Examples, Stop Rules",
     metaDescription:
       "Loop engineering for AI coding agents: Addy Osmani's workflow, examples, stop rules, token caps, verification commands, and human checkpoints.",

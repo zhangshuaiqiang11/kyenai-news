@@ -241,7 +241,7 @@ describe("guide SEO data", () => {
 
     expect(guide).toBeDefined();
     expect(guide!.resourceIds).toEqual(["loop-engineering"]);
-    expect(guide!.updatedAt).toBe("2026-06-25");
+    expect(guide!.updatedAt).toBe("2026-06-26");
 
     const quickAnswer = guide!.sections[0].body[0];
     expect(guide!.title).toMatch(/Addy Osmani's Workflow Explained/i);
@@ -257,6 +257,7 @@ describe("guide SEO data", () => {
         "Loop Engineering vs Prompt Engineering",
         "A Practical Loop Engineering Example",
         "When Should an AI Agent Stop the Loop?",
+        "AI coding agent workflow checklist",
       ]),
     );
 
@@ -295,9 +296,9 @@ describe("guide SEO data", () => {
     const guide = getGuide("codex-vs-claude-code");
 
     expect(guide).toBeDefined();
-    expect(guide!.updatedAt).toBe("2026-06-25");
+    expect(guide!.updatedAt).toBe("2026-06-26");
     expect(guide!.sections.map((section) => section.heading)).toEqual(
-      expect.arrayContaining(["Public example evidence", "Same-task experiment protocol"]),
+      expect.arrayContaining(["Public example evidence", "Same-task experiment protocol", "Same-repo scoring rubric"]),
     );
 
     const guideCopy = JSON.stringify(guide);
@@ -429,7 +430,8 @@ describe("guide SEO data", () => {
       {
         slug: "claude-code-hooks-mcp-setup",
         title: /Hooks vs MCP/i,
-        headings: ["Hooks vs Skills vs MCP", "Logging and troubleshooting"],
+        headings: ["Hooks vs Skills vs MCP", "Logging and troubleshooting", "Claude Code hooks not working: common fixes"],
+        updatedAt: "2026-06-26",
       },
       {
         slug: "agent-governance-checklist-for-software-teams",
@@ -440,7 +442,7 @@ describe("guide SEO data", () => {
         slug: "agents-md-template-for-ai-coding-agents",
         title: /Practical Examples for Codex and Monorepos/i,
         headings: ["Copyable starter templates", "Root vs nested AGENTS.md inheritance", "What every template must say"],
-        updatedAt: "2026-06-25",
+        updatedAt: "2026-06-26",
       },
       {
         slug: "agent-mode-vs-chat-mode-in-ide",
