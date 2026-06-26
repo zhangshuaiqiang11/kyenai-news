@@ -29,12 +29,12 @@ const highImpressionEntries = [
   {
     href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
     label: "CLAUDE.md vs Copilot Instructions support matrix",
-    note: "Highest-impression guide: choose the right repo instruction file by tool surface.",
+    note: "Choose the right repo instruction file by tool surface.",
   },
   {
     href: "/guides/loop-engineering-ai-coding-agents",
     label: "Loop Engineering: Addy Osmani, examples, stop rules",
-    note: "Zero-click page-one opportunity: learn the workflow, caps, and human checkpoints.",
+    note: "Learn the workflow, caps, and human checkpoints before scaling agent work.",
   },
   {
     href: "/guides/agents-md-template-for-ai-coding-agents",
@@ -49,7 +49,7 @@ const highImpressionEntries = [
   {
     href: "/guides/secure-mcp-servers-ai-coding-agents",
     label: "MCP server security checklist",
-    note: "Move the security page toward top-20 queries with auth, permissions, logs, and revocation.",
+    note: "Secure MCP connections with authentication, permissions, logs, and revocation.",
   },
 ];
 
@@ -83,9 +83,9 @@ export default function Home({ articles, guides }: HomeProps) {
           <section className="guide-strip" aria-labelledby="priority-guides-heading">
             <div>
               <h2 id="priority-guides-heading">Practical playbooks</h2>
-              <p>Start with the pages that already have Google impressions, then continue into setup and security.</p>
+              <p>Start with the guide that matches the decision in front of your team, then continue into setup and security.</p>
             </div>
-            <div className="guide-strip-next-steps" aria-label="High-impression pages to read first">
+            <div className="guide-strip-next-steps" aria-label="Guides to read first">
               {highImpressionEntries.map((entry) => (
                 <p key={entry.href}>
                   <Link href={entry.href}>{entry.label}</Link> {entry.note}

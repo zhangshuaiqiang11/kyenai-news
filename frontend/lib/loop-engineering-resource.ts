@@ -102,7 +102,7 @@ export const loopWorkflowSteps = [
   {
     id: "observe",
     label: "Observe",
-    detail: "Read tests, logs, diffs, screenshots, GSC exports, or tool output before choosing the next action.",
+    detail: "Read tests, logs, diffs, screenshots, telemetry, or tool output before choosing the next action.",
   },
   {
     id: "verify",

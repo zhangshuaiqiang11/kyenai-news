@@ -198,9 +198,9 @@ export const expansionGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "claude-code-dynamic-workflows-parallel-subagents"],
     updatedAt: "2026-06-26",
-    metaTitle: "Codex vs Claude Code: Workflow Fit and Repo Checklist",
+    metaTitle: "Codex vs Claude Code: Workflow Fit and Same-Repo Test Checklist",
     metaDescription:
-      "Compare Codex vs Claude Code by workflow fit, public examples, repo instructions, review effort, and a same-task rollout checklist.",
+      "Compare Codex and Claude Code by repo workflow, instruction files, review effort, MCP/hooks, and a same-task protocol before standardizing.",
   },
   {
     id: "guide-agents-md-template",
@@ -1527,9 +1527,9 @@ export const expansionGuides: Guide[] = [
       "github-copilot-cloud-local-sandboxes-preview",
     ],
     updatedAt: "2026-06-26",
-    metaTitle: "What Is Loop Engineering? Addy Osmani Examples, Stop Rules",
+    metaTitle: "What Is Loop Engineering? AI Agent Loops, Examples, Stop Rules",
     metaDescription:
-      "What is loop engineering? Learn Addy Osmani's AI agent workflow with coding examples, stop rules, verification commands, and token caps.",
+      "Loop engineering designs repeatable AI agent loops around goals, tools, verification, retries, stop rules, and cost caps instead of one better prompt.",
     resourceIds: ["loop-engineering"],
   },
 ];

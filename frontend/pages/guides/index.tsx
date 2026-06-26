@@ -203,9 +203,9 @@ const guideOverview =
   "KyenAI guides help software teams make practical decisions about AI coding agents. Start with the instruction-file support matrix when the problem is repository guidance. Use the loop engineering guide when agent work needs verification commands, retry limits, and stop rules. Use the MCP security and governance guides before adding tool access, secrets, logs, approvals, or revocation. Use the comparison guides when the team is choosing between Codex and Claude Code, local and cloud agents, agent mode and chat mode, or hooks and MCP. Each guide gives the answer first, then adds source notes, decision tables, checklists, and next steps for implementation.";
 
 export const guidesPageSeo = {
-  title: "AI Coding Agent Guides: AGENTS.md, Loop Engineering, MCP",
+  title: "AI Coding Agent Decision Guides: AGENTS.md, Codex, MCP",
   description:
-    "Find KyenAI guides for AGENTS.md vs CLAUDE.md, Copilot instructions, AGENTS.md templates, loop engineering, MCP security, and Codex vs Claude Code.",
+    "Choose instruction files, compare Codex and Claude Code, design agent loops, and secure MCP access with decision matrices and launch checklists.",
 } as const;
 
 export default function GuidesPage({ guides }: GuidesPageProps) {
@@ -231,10 +231,10 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
           <span aria-hidden="true">/</span>
           <span>Guides</span>
         </nav>
-        <h1>AI Coding Agent Guides for AGENTS.md, Loop Engineering, and MCP</h1>
+        <h1>AI Coding Agent Decision Guides for Engineering Teams</h1>
         <p>
-          Source-backed playbooks for choosing repository instruction files, understanding loop engineering, comparing
-          Codex and Claude Code, and securing MCP access.
+          Use these guides to choose repository instruction files, compare Codex and Claude Code, design repeatable
+          agent loops, and secure MCP access before giving agents more autonomy.
         </p>
         <section className="answer-panel citation-panel" aria-labelledby="guides-overview-heading">
           <h2 id="guides-overview-heading">Guide overview</h2>
@@ -249,6 +249,10 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
             <Link href={INSTRUCTION_COMPARISON_GUIDE_HREF}>
               <strong>Choose repository instruction files</strong>
               <span>Compare AGENTS.md, CLAUDE.md, Cursor rules, and Copilot support before standardizing guidance.</span>
+            </Link>
+            <Link href="/guides/codex-vs-claude-code">
+              <strong>Compare Codex and Claude Code</strong>
+              <span>Choose by repo workflow, instruction files, review effort, and a same-task test protocol.</span>
             </Link>
             <Link href={MCP_SECURITY_GUIDE_HREF}>
               <strong>Set boundaries for MCP access</strong>

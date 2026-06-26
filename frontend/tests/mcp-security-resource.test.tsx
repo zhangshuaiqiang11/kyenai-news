@@ -197,7 +197,7 @@ describe("MCP security guide integration", () => {
       updatedAt: "2026-06-26",
     });
     expect(guide!.title).toMatch(/MCP security checklist/i);
-    expect(guide!.metaTitle).toMatch(/MCP Server Security Checklist/i);
+    expect(guide!.metaTitle).toMatch(/Secure MCP Server Connections/i);
     expect(guide!.summary).toMatch(/MCP server security/i);
     expect(JSON.stringify(guide)).toMatch(/how to secure an MCP server/i);
     expect(JSON.stringify(guide)).toMatch(/MCP authentication/i);

@@ -290,9 +290,9 @@ const coreGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
     updatedAt: "2026-06-25",
-    metaTitle: "CLAUDE.md vs Copilot Instructions: AGENTS.md Support Matrix",
+    metaTitle: "CLAUDE.md vs Copilot Instructions: Which File Copilot Reads",
     metaDescription:
-      "Compare CLAUDE.md, Copilot instructions, AGENTS.md, and Cursor rules by supported surface, scope, and safe repo policy.",
+      "Compare CLAUDE.md, .github/copilot-instructions.md, AGENTS.md, and Cursor rules by tool surface, scope, and safe sync policy.",
     resourceIds: ["instruction-files"],
   },
   {
@@ -830,9 +830,9 @@ const coreGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["github-copilot-cloud-local-sandboxes-preview", "visual-studio-agent-mode-mcp-general-availability"],
     updatedAt: "2026-06-26",
-    metaTitle: "MCP Server Security Checklist for AI Agents",
+    metaTitle: "Secure MCP Server Connections to AI Agents: Auth, Scopes, Logs",
     metaDescription:
-      "Secure MCP servers for AI agents with a checklist for auth, permissions, secrets, logs, network limits, approvals, and revocation.",
+      "Review token audience, least privilege, secrets, network limits, approval gates, audit logs, and revocation before connecting AI agents to MCP servers.",
     resourceIds: ["mcp-security"],
   },
   {

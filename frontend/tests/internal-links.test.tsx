@@ -122,11 +122,11 @@ describe("contextual internal links", () => {
     const { guides, validHrefs } = getGuideRouteData();
     render(<GuidesPage guides={guides} />);
 
-    expect(guidesPageSeo.title).toBe("AI Coding Agent Guides: AGENTS.md, Loop Engineering, MCP");
-    expect(guidesPageSeo.description).toContain("AGENTS.md vs CLAUDE.md");
+    expect(guidesPageSeo.title).toBe("AI Coding Agent Decision Guides: AGENTS.md, Codex, MCP");
+    expect(guidesPageSeo.description).toContain("compare Codex and Claude Code");
     expect(
       screen.getByRole("heading", {
-        name: "AI Coding Agent Guides for AGENTS.md, Loop Engineering, and MCP",
+        name: "AI Coding Agent Decision Guides for Engineering Teams",
         level: 1,
       }),
     ).toBeTruthy();
@@ -136,6 +136,9 @@ describe("contextual internal links", () => {
 
     const instructionLink = within(featuredPaths!).getByRole("link", {
       name: /Choose repository instruction files/i,
+    });
+    const codexLink = within(featuredPaths!).getByRole("link", {
+      name: /Compare Codex and Claude Code/i,
     });
     const securityLink = within(featuredPaths!).getByRole("link", {
       name: /Set boundaries for MCP access/i,
@@ -148,9 +151,11 @@ describe("contextual internal links", () => {
     // Featured paths and the full grid have different navigation roles, so cross-block repeats are intentional.
     expectValidUniqueGuideLinks(featuredPaths!, "guides-index", validHrefs);
     expect(instructionLink.getAttribute("href")).toBe(`/guides/${INSTRUCTION_COMPARISON_GUIDE_SLUG}`);
+    expect(codexLink.getAttribute("href")).toBe("/guides/codex-vs-claude-code");
     expect(securityLink.getAttribute("href")).toBe(`/guides/${MCP_SECURITY_GUIDE_SLUG}`);
     expect(loopLink.getAttribute("href")).toBe(`/guides/${LOOP_ENGINEERING_GUIDE_SLUG}`);
     expect(instructionLink.textContent).toMatch(/before standardizing guidance/i);
+    expect(codexLink.textContent).toMatch(/same-task test protocol/i);
     expect(securityLink.textContent).toMatch(/before enabling an MCP server/i);
     expect(loopLink.textContent).toMatch(/what is loop engineering/i);
     expect(loopLink.textContent).toMatch(/act-observe-reason cycles/i);
@@ -163,17 +168,17 @@ describe("contextual internal links", () => {
     }
   });
 
-  it("renders the four GSC opportunity hubs with crawlable links and reading order", () => {
+  it("renders the four guide tracks with crawlable links and reading order", () => {
     const { guides, validHrefs } = getGuideRouteData();
     render(<GuidesPage guides={guides} />);
 
-    const centers = screen.getByRole("heading", { name: "GSC Opportunity Hubs" }).closest("section");
+    const centers = screen.getByRole("heading", { name: "Guide tracks" }).closest("section");
     expect(centers).not.toBeNull();
 
-    expect(within(centers!).getByRole("heading", { name: "Instruction File Opportunity" })).toBeTruthy();
-    expect(within(centers!).getByRole("heading", { name: "Loop Engineering Opportunity" })).toBeTruthy();
-    expect(within(centers!).getByRole("heading", { name: "MCP and Security Opportunity" })).toBeTruthy();
-    expect(within(centers!).getByRole("heading", { name: "Comparison and Event Opportunity" })).toBeTruthy();
+    expect(within(centers!).getByRole("heading", { name: "Instruction files" })).toBeTruthy();
+    expect(within(centers!).getByRole("heading", { name: "Agent loops" })).toBeTruthy();
+    expect(within(centers!).getByRole("heading", { name: "MCP and security" })).toBeTruthy();
+    expect(within(centers!).getByRole("heading", { name: "Comparisons and migrations" })).toBeTruthy();
     expect(within(centers!).getAllByText("Recommended reading order")).toHaveLength(4);
     expect(centers!.textContent).toMatch(/Beginner entry:/);
     expect(centers!.textContent).toMatch(/Advanced page:/);
@@ -240,7 +245,7 @@ describe("contextual internal links", () => {
       ...homepagePlacements,
       ...guidesIndexPlacements,
     ];
-    expect(actualRequiredPlacements).toHaveLength(approvedGuidePlacements.length + 6);
+    expect(actualRequiredPlacements).toHaveLength(approvedGuidePlacements.length + 7);
     expect(new Set(actualRequiredPlacements).size).toBe(actualRequiredPlacements.length);
 
     for (const guide of guides) {

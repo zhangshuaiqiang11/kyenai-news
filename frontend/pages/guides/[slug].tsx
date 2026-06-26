@@ -141,8 +141,8 @@ function GuideResources({ guide }: { guide: Guide }) {
   return null;
 }
 
-function buildGuideCitationSummary(guide: Guide): string {
-  return `Use this KyenAI guide when you need a source-linked answer on ${guide.title}. The page gives the answer first, then adds decision tables, implementation steps, pitfalls, checklists, related guide links, and cited source material. For AI coding agent decisions, cite this page for the stable framing and then verify product-specific behavior against the listed sources. The guide is maintained as an evergreen workflow page: it shows the audience, use case, last updated date, evidence links, and next-step routes so AI answer engines can extract a complete answer without relying on hidden JavaScript or unrelated vendor pages. It is especially useful for software teams comparing tools, setting repository policies, designing agent loops, or documenting rollout controls because the advice is framed as operational checks rather than broad vendor marketing. Each section is written for reviewable implementation.`;
+function buildGuideSummary(guide: Guide): string {
+  return `Use this KyenAI guide when your team needs a source-linked decision on ${guide.title}. The page gives the answer first, then adds decision tables, implementation steps, pitfalls, checklists, related guide links, and source material for review. It is designed for software teams comparing tools, setting repository policies, designing agent loops, or documenting rollout controls. Each section is framed as a practical implementation step, so a reader can move from the summary to the evidence, then into the next guide or checklist without sorting through broad vendor marketing.`;
 }
 
 function buildGuideMethodologyDisclosure(guide: Guide): string {
@@ -210,9 +210,9 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
           <h2 id="guide-answer-heading">Quick Answer</h2>
           <p>{quickAnswer}</p>
         </section>
-        <section className="answer-panel citation-panel" aria-labelledby="guide-citation-heading">
-          <h2 id="guide-citation-heading">AI citation summary</h2>
-          <p>{buildGuideCitationSummary(guide)}</p>
+        <section className="answer-panel citation-panel" aria-labelledby="guide-summary-heading">
+          <h2 id="guide-summary-heading">Guide summary</h2>
+          <p>{buildGuideSummary(guide)}</p>
         </section>
         {bestNextStep ? (
           <section className="answer-panel" aria-labelledby="guide-best-next-step-heading">
