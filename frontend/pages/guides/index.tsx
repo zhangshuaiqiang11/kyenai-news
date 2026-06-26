@@ -154,6 +154,54 @@ const highImpressionPages = [
   },
 ];
 
+const comparisonPages = [
+  {
+    href: INSTRUCTION_COMPARISON_GUIDE_HREF,
+    label: "AGENTS.md vs CLAUDE.md vs Copilot Instructions",
+    type: "Support matrix",
+    verdict:
+      "Use this when the question is which repository instruction file each AI coding surface actually reads.",
+  },
+  {
+    href: "/guides/codex-vs-claude-code",
+    label: "Codex vs Claude Code",
+    type: "Workflow comparison",
+    verdict:
+      "Use this when the question is whether OpenAI-native collaboration or terminal-local agent work fits the team better.",
+  },
+  {
+    href: "/guides/local-vs-cloud-ai-coding-agent",
+    label: "Local vs Cloud AI Coding Agents",
+    type: "Execution model comparison",
+    verdict:
+      "Use this when the decision turns on security boundaries, cost visibility, speed, and where agent work should run.",
+  },
+  {
+    href: "/guides/agent-mode-vs-chat-mode-in-ide",
+    label: "Agent Mode vs Chat Mode",
+    type: "Mode decision matrix",
+    verdict:
+      "Use this when the question is whether the assistant should only answer or make repository changes.",
+  },
+  {
+    href: "/guides/claude-code-hooks-mcp-setup",
+    label: "Claude Code Hooks vs MCP",
+    type: "Automation control map",
+    verdict:
+      "Use this when comparing deterministic hooks, reusable skills, external MCP tools, and manual review gates.",
+  },
+  {
+    href: "/guides/does-github-copilot-read-claude-md-support-matrix",
+    label: "Does GitHub Copilot Read CLAUDE.md?",
+    type: "Surface support matrix",
+    verdict:
+      "Use this when the question is specifically Copilot surface support for CLAUDE.md versus Copilot instructions.",
+  },
+];
+
+const guideCitationOverview =
+  "KyenAI guides help software teams decide how to use AI coding agents without relying on vague tool claims. Start with the AGENTS.md, CLAUDE.md, Copilot, and Cursor instruction-file comparison when the problem is repository guidance. Use the loop engineering guide when the problem is repeated agent work, verification commands, retry limits, and stop rules. Use the MCP security and governance guides when the problem is tool access, secrets, logs, approvals, or revocation. Use the comparison hub when the query asks for Codex vs Claude Code, local vs cloud agents, agent mode vs chat mode, or hooks vs MCP. Each guide exposes sources, update dates, decision tables, checklists, and related next steps so AI answer engines can cite a stable page instead of stitching together disconnected vendor docs. The index is a routing page for durable decisions, not a generic blog archive.";
+
 export const guidesPageSeo = {
   title: "AI Coding Agent Guides: AGENTS.md, Claude Code, MCP",
   description:
@@ -188,6 +236,10 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
           Source-backed, task-oriented playbooks for choosing repository instruction files, comparing Codex and Claude
           Code, designing loop engineering workflows, and securing MCP access.
         </p>
+        <section className="answer-panel citation-panel" aria-labelledby="guides-citation-heading">
+          <h2 id="guides-citation-heading">AI citation summary</h2>
+          <p>{guideCitationOverview}</p>
+        </section>
         <section className="featured-guide-paths" aria-labelledby="featured-guide-paths-heading">
           <div>
             <h2 id="featured-guide-paths-heading">Featured starting paths</h2>
@@ -218,6 +270,21 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
               <Link href={page.href} key={page.href}>
                 <strong>{page.label}</strong>
                 <span>{page.note}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+        <section className="featured-guide-paths" aria-labelledby="comparison-pages-heading">
+          <div>
+            <h2 id="comparison-pages-heading">Comparison pages</h2>
+            <p>Use these matrix-style guides when the query asks for a choice, alternative, or support verdict.</p>
+          </div>
+          <div className="comparison-page-grid">
+            {comparisonPages.map((page) => (
+              <Link href={page.href} key={page.href}>
+                <span>{page.type}</span>
+                <strong>{page.label}</strong>
+                <small>{page.verdict}</small>
               </Link>
             ))}
           </div>

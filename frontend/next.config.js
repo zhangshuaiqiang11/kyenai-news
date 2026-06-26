@@ -86,6 +86,19 @@ const articleRedirects = [
   },
 ];
 
+const guideRedirects = [
+  {
+    source: "/guide",
+    destination: "/guides",
+    permanent: true,
+  },
+  {
+    source: "/guide/:slug",
+    destination: "/guides/:slug",
+    permanent: true,
+  },
+];
+
 const nextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
   env: {
@@ -93,7 +106,7 @@ const nextConfig = {
     NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE: latestEditorialUpdate,
   },
   async redirects() {
-    return [...categoryRedirects, ...articleRedirects];
+    return [...categoryRedirects, ...articleRedirects, ...guideRedirects];
   },
   async headers() {
     return [

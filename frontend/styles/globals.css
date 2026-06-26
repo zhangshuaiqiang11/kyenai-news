@@ -1977,6 +1977,40 @@ dd {
   line-height: 1.5;
 }
 
+.comparison-page-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 14px;
+}
+
+.comparison-page-grid a {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  display: grid;
+  gap: 7px;
+  padding: 14px;
+}
+
+.comparison-page-grid span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.comparison-page-grid strong {
+  color: var(--teal-dark);
+  line-height: 1.35;
+}
+
+.comparison-page-grid small {
+  color: #3f4750;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 .guide-topic-clusters {
   margin-top: 32px;
 }

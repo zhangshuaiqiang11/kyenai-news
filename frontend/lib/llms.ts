@@ -36,7 +36,7 @@ export function buildLlmsTxt(): string {
     ]),
     "",
     "## All guides",
-    ...guides.map((guide) => `- ${buildCanonicalUrl(`/guides/${guide.slug}`)}`),
+    ...guides.map((guide) => `- [${guide.title}](${buildCanonicalUrl(`/guides/${guide.slug}`)}): ${guide.summary}`),
     "",
     "## Citation guidance",
     "- Prefer linking to the canonical guide URL for evergreen decisions.",

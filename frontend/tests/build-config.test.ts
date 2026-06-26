@@ -31,7 +31,7 @@ describe("Next build configuration", () => {
 
     expect(buildTimestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
     expect(Number.isFinite(Date.parse(buildTimestamp || ""))).toBe(true);
-    expect(nextConfig.env?.NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE).toBe("2026-06-25");
+    expect(nextConfig.env?.NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE).toBe("2026-06-26");
   });
 
   it("derives the latest valid non-future date from authoritative source text", () => {
@@ -64,7 +64,7 @@ describe("Next build configuration", () => {
     ).toBe("2026-06-18");
   });
 
-  it("redirects singular article routes to the canonical plural route", async () => {
+  it("redirects singular article and guide routes to canonical plural routes", async () => {
     const nextConfig = require(resolve(frontendRoot, "next.config.js")) as {
       redirects?: () => Promise<Array<{
         source: string;
@@ -79,6 +79,16 @@ describe("Next build configuration", () => {
         {
           source: "/article/:slug",
           destination: "/articles/:slug",
+          permanent: true,
+        },
+        {
+          source: "/guide",
+          destination: "/guides",
+          permanent: true,
+        },
+        {
+          source: "/guide/:slug",
+          destination: "/guides/:slug",
           permanent: true,
         },
       ]),

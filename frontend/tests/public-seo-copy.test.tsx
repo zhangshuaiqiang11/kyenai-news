@@ -331,6 +331,21 @@ describe("public guide SEO copy", () => {
     expect(answerPanel?.textContent).toMatch(/human checkpoint/i);
   });
 
+  it("renders GEO citation and methodology blocks on guide pages", () => {
+    const guide = getGuide("codex-vs-claude-code");
+
+    expect(guide).toBeDefined();
+    render(<GuidePage guide={guide!} relatedGuides={getInternalLinkedGuides(guide!)} relatedArticles={[]} />);
+
+    const citationPanel = screen.getByRole("heading", { name: /AI citation summary/i }).closest("section");
+    const methodologyPanel = screen.getByRole("heading", { name: /Methodology and disclosure/i }).closest("section");
+
+    expect(citationPanel?.textContent).toMatch(/source-linked answer/i);
+    expect(citationPanel?.textContent).toMatch(/without relying on hidden JavaScript/i);
+    expect(methodologyPanel?.textContent).toMatch(/independent editorial reference/i);
+    expect(methodologyPanel?.textContent).toMatch(/rechecked against the linked sources/i);
+  });
+
   it("keeps static resource downloads as ordinary links and out of guide JSON-LD", async () => {
     const instructionGuide = getGuide("agents-md-vs-claude-md-cursorrules-copilot-instructions");
     const mcpGuide = getGuide("secure-mcp-servers-ai-coding-agents");
@@ -381,5 +396,11 @@ describe("public guide SEO copy", () => {
     for (const guideCard of guideCards) {
       expect.soft(within(guideCard).queryAllByText(/^Who it helps:$/i)).toHaveLength(1);
     }
+
+    expect(screen.getByRole("heading", { name: /AI citation summary/i })).toBeTruthy();
+    expect(screen.getByText(/without relying on vague tool claims/i)).toBeTruthy();
+    expect(screen.getByRole("heading", { name: /Comparison pages/i })).toBeTruthy();
+    expect(screen.getAllByText(/Support matrix/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Workflow comparison/i)).toBeTruthy();
   });
 });
