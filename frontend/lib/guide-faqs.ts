@@ -31,6 +31,11 @@ const guideFaqsBySlug: Record<string, FaqItem[]> = {
         "Stop when verification passes, when an iteration cap is reached, when the same failure repeats, when the next action needs wider permissions, when cost crosses the budget, or when the agent can no longer tie its next action to observed evidence. Document stop rules in AGENTS.md, CLAUDE.md, Copilot instructions, or the workflow file that launches the loop.",
     },
     {
+      question: "How is loop engineering different from prompt engineering?",
+      answer:
+        "Prompt engineering improves a single instruction. Loop engineering designs the repeated system around that instruction: context loading, tool access, action, observation, verification, retry limits, and stop conditions. A strong prompt can still fail inside a weak loop if the agent cannot read test output or does not know when to stop.",
+    },
+    {
       question: "What belongs on an AI coding agent workflow checklist?",
       answer:
         "Name the goal and done signal, pick plan-execute-verify as the default pattern, attach tests or linters as observation, cap iterations, add human checkpoints before production or destructive actions, budget tokens before unattended runs, and assign a loop owner who reviews logs without secrets.",

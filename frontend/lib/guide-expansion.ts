@@ -1260,7 +1260,7 @@ export const expansionGuides: Guide[] = [
     title: "Loop Engineering for AI Coding Agents: Addy Osmani's Workflow Explained",
     slug: "loop-engineering-ai-coding-agents",
     summary:
-      "Learn Addy Osmani's loop engineering workflow for AI coding agents with examples, stop rules, token and cost caps, verification commands, and human checkpoints.",
+      "Learn what loop engineering means for AI coding agents: Addy Osmani's workflow, examples, stop rules, token and cost caps, verification commands, and checkpoints.",
     intent:
       "Developers want to move from prompting agents task-by-task to designing durable loops that plan, change code, verify results, and stop safely.",
     audience: "Developers, staff engineers, and platform teams adopting agentic coding workflows in Cursor, Claude Code, Codex, or custom CI agents.",
@@ -1278,7 +1278,14 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Addy Osmani's loop engineering approach means designing the operating loop around the agent, not writing one better prompt. For coding agents, the practical loop is Plan → Act → Observe → Verify → Stop, a stricter version of the act → observe → reason cycle: give the agent a bounded goal, inspect evidence such as tests or diffs, retry only with a changed strategy, and stop on token or cost caps, repeated failure, risky permission changes, or a required human checkpoint.",
+          "Addy Osmani's loop engineering approach means designing the operating loop around the agent, not writing one better prompt. For AI coding agents, the practical loop is Plan → Act → Observe → Verify → Stop, a stricter version of the act → observe → reason cycle: give the agent a bounded repo goal, inspect evidence such as tests or diffs, retry only with a changed strategy, and stop on token or cost caps, repeated failure, risky permission changes, or a required human checkpoint.",
+        ],
+      },
+      {
+        heading: "What Is Loop Engineering?",
+        body: [
+          "Loop engineering is the practice of designing the repeatable control system around an AI agent: goal, context, tool access, observation, verification, retry policy, and stop rules. In coding work, that system should read repository evidence such as test output, compiler errors, diffs, logs, screenshots, or review comments before deciding the next step.",
+          "The reason it matters for software teams is simple: a coding agent can sound confident while still looping on the wrong file, rerunning the same failing command, or expanding scope without proof. A loop-engineered workflow makes the agent show evidence, change strategy after failure, and stop before cost, risk, or permissions drift out of bounds.",
         ],
       },
       {
@@ -1520,9 +1527,9 @@ export const expansionGuides: Guide[] = [
       "github-copilot-cloud-local-sandboxes-preview",
     ],
     updatedAt: "2026-06-26",
-    metaTitle: "Loop Engineering for AI Coding Agents: Addy Osmani, Examples, Stop Rules",
+    metaTitle: "What Is Loop Engineering? Addy Osmani Agent Examples",
     metaDescription:
-      "Loop engineering for AI coding agents: Addy Osmani's workflow, examples, stop rules, token caps, verification commands, and human checkpoints.",
+      "What is loop engineering? Learn Addy Osmani's AI agent workflow with coding-agent examples, stop rules, verification commands, and token caps.",
     resourceIds: ["loop-engineering"],
   },
 ];
