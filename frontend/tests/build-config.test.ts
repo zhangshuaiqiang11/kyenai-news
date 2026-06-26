@@ -179,7 +179,12 @@ describe("Next build configuration", () => {
     expect(deployScript).toContain('COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-kyenai}"');
     expect(deployScript).toContain("report_port_bindings");
     expect(deployScript).toContain("assert_edge_ports_available");
+    expect(deployScript).toContain("assert_caddy_ports_published");
+    expect(deployScript).toContain("smoke_frontend_container");
     expect(deployScript).toContain("down --remove-orphans");
+    expect(deployScript).toContain("up -d --build --force-recreate");
     expect(deployScript).toContain("ports 80 or 443 are still allocated");
+    expect(deployScript).toContain("test -f /app/public/llms.txt");
+    expect(deployScript).not.toContain("llms.txt HTTP %{http_code}\\n\" http://127.0.0.1/llms.txt || true");
   });
 });

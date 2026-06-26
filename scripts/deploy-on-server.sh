@@ -90,17 +90,46 @@ assert_edge_ports_available() {
   fi
 }
 
+assert_caddy_ports_published() {
+  local http_port https_port
+  http_port="$("${compose_cmd[@]}" port caddy 80 2>/dev/null || true)"
+  https_port="$("${compose_cmd[@]}" port caddy 443 2>/dev/null || true)"
+
+  if [ -z "$http_port" ] || [ -z "$https_port" ]; then
+    echo "ERROR: caddy is running but its 80/443 ports are not published by Docker Compose." >&2
+    echo "caddy port 80: ${http_port:-missing}" >&2
+    echo "caddy port 443: ${https_port:-missing}" >&2
+    "${compose_cmd[@]}" ps caddy >&2 || true
+    return 1
+  fi
+}
+
+curl_service() {
+  local label="$1"
+  local url="$2"
+
+  curl -fsS -o /dev/null -w "${label} HTTP %{http_code}\n" "$url"
+}
+
+smoke_frontend_container() {
+  echo "==> Frontend container smoke checks"
+  "${compose_cmd[@]}" exec -T frontend sh -lc 'test -f /app/public/llms.txt'
+  "${compose_cmd[@]}" exec -T frontend node -e 'fetch("http://127.0.0.1:3000/llms.txt").then(async (response) => { console.log(`frontend llms.txt HTTP ${response.status}`); process.exit(response.ok ? 0 : 1); }).catch((error) => { console.error(error); process.exit(1); })'
+}
+
 echo "==> Rebuilding and restarting containers"
 echo "==> Compose project: $COMPOSE_PROJECT_NAME"
 report_port_bindings
 "${compose_cmd[@]}" down --remove-orphans
 report_port_bindings
 assert_edge_ports_available
-"${compose_cmd[@]}" up -d --build
+"${compose_cmd[@]}" up -d --build --force-recreate
 "${compose_cmd[@]}" ps
+assert_caddy_ports_published
 
 echo "==> Smoke checks"
-curl -fsS -o /dev/null -w "homepage HTTP %{http_code}\n" http://127.0.0.1/ || true
-curl -fsS -o /dev/null -w "llms.txt HTTP %{http_code}\n" http://127.0.0.1/llms.txt || true
+smoke_frontend_container
+curl_service "homepage" http://127.0.0.1/
+curl_service "llms.txt" http://127.0.0.1/llms.txt
 
 echo "==> Deploy finished"
