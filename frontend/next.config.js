@@ -99,6 +99,14 @@ const guideRedirects = [
   },
 ];
 
+const llmsRedirects = [
+  {
+    source: "/llm.txt",
+    destination: "/llms.txt",
+    permanent: true,
+  },
+];
+
 const nextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
   env: {
@@ -106,7 +114,7 @@ const nextConfig = {
     NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE: latestEditorialUpdate,
   },
   async redirects() {
-    return [...categoryRedirects, ...articleRedirects, ...guideRedirects];
+    return [...categoryRedirects, ...articleRedirects, ...guideRedirects, ...llmsRedirects];
   },
   async headers() {
     return [

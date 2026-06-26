@@ -91,6 +91,11 @@ describe("Next build configuration", () => {
           destination: "/guides/:slug",
           permanent: true,
         },
+        {
+          source: "/llm.txt",
+          destination: "/llms.txt",
+          permanent: true,
+        },
       ]),
     );
   });
