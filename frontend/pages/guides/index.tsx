@@ -29,16 +29,16 @@ type GuideTopicHub = {
 
 const guideTopicHubs: GuideTopicHub[] = [
   {
-    title: "Instruction File Opportunity",
+    title: "Instruction files",
     intro:
-      "This is the strongest current CTR cluster: the main instruction-file guide already receives impressions and clicks for CLAUDE.md, Copilot instructions, and AGENTS.md queries. Start with the support matrix, then move to templates and examples only after the reader knows which file each tool actually reads. The goal is to make the result promise concrete: compare files, choose the supported surface, then copy the right adapter.",
+      "Start here when your team needs one clear policy for AGENTS.md, CLAUDE.md, Copilot instructions, and Cursor rules. The support matrix explains which file each tool surface reads, then the template and examples turn that decision into repo-ready guidance.",
     beginner: "CLAUDE.md vs Copilot Instructions vs AGENTS.md",
     advanced: "AGENTS.md Examples for Codex",
     readingOrder: [
       {
         href: INSTRUCTION_COMPARISON_GUIDE_HREF,
         label: "CLAUDE.md vs Copilot Instructions support matrix",
-        note: "Answer the exact comparison query before asking readers to write more rules.",
+        note: "Decide which instruction file belongs to each tool before writing more rules.",
       },
       {
         href: "/guides/agents-md-template-for-ai-coding-agents",
@@ -58,9 +58,9 @@ const guideTopicHubs: GuideTopicHub[] = [
     ],
   },
   {
-    title: "Loop Engineering Opportunity",
+    title: "Agent loops",
     intro:
-      "Loop Engineering is the clearest zero-click near-page-one CTR opportunity. Readers are not only asking for a definition; they need Addy Osmani context, examples, stop rules, token and cost limits, and verification commands. This hub routes them from the high-impression what-is page into subagents, hooks, agent mode, and cloud execution so the result promises an operating system, not a one-off glossary entry.",
+      "Use this track when a one-shot prompt is no longer enough. The loop engineering guide defines the operating loop, then related guides show how subagents, hooks, agent mode, and cloud execution fit into a controlled workflow.",
     beginner: "Loop Engineering for AI Coding Agents",
     advanced: "Claude Code Subagents Workflow Examples",
     readingOrder: [
@@ -87,9 +87,9 @@ const guideTopicHubs: GuideTopicHub[] = [
     ],
   },
   {
-    title: "MCP and Security Opportunity",
+    title: "MCP and security",
     intro:
-      "MCP security and Cursor enterprise security queries are still lower-ranking, but they are commercially valuable and close to KyenAI's core authority. This hub makes the search-result promise concrete: authentication, permissions, secrets, network limits, audit logs, approvals, and revocation. It should help Secure MCP move from broad security wording toward a page that answers specific operational questions.",
+      "Use this track before giving an AI coding agent access to tools, credentials, repositories, or production-adjacent systems. Start with MCP security, then connect it to governance rules for permissions, approvals, logs, and revocation.",
     beginner: "AI Coding Agent Governance Checklist",
     advanced: "Secure MCP Servers for AI Coding Agents",
     readingOrder: [
@@ -106,9 +106,9 @@ const guideTopicHubs: GuideTopicHub[] = [
     ],
   },
   {
-    title: "Comparison and Event Opportunity",
+    title: "Comparisons and migrations",
     intro:
-      "Comparison and event pages can win clicks only when the search result promises a concrete answer. Codex vs Claude Code needs workflow fit, public examples, and a same-repo checklist rather than generic pros and cons. SpaceX/Cursor event traffic needs deal status, timeline, and developer impact. This hub keeps comparison pages connected to durable guides so short-lived impressions do not become isolated zero-click pages.",
+      "Use this track when the team needs to choose a tool, execution model, or migration path. The comparison guides focus on workflow fit, security boundaries, review effort, and same-repo evaluation rather than generic pros and cons.",
     beginner: "Local vs Cloud AI Coding Agents",
     advanced: "Codex vs Claude Code",
     readingOrder: [
@@ -131,26 +131,26 @@ const guideTopicHubs: GuideTopicHub[] = [
   },
 ];
 
-const highImpressionPages = [
+const startingGuides = [
   {
     href: INSTRUCTION_COMPARISON_GUIDE_HREF,
     label: "CLAUDE.md vs Copilot Instructions support matrix",
-    note: "379 impressions, 7 clicks, average position around 9.6; keep the exact comparison query at the front of the result.",
+    note: "Use this when the team is deciding where shared repository instructions should live.",
   },
   {
     href: LOOP_ENGINEERING_GUIDE_HREF,
     label: "What is loop engineering? Addy Osmani examples and stop rules",
-    note: "351 impressions, 0 clicks, average position around 9.5; lead with the definition and concrete loop controls.",
+    note: "Use this when agents need verification commands, retry limits, stop rules, and human checkpoints.",
   },
   {
     href: "/articles/spacex-cursor-acquisition-2026",
     label: "SpaceX Cursor acquisition",
-    note: "95 impressions, 0 clicks, average position around 9.5; event traffic needs status and timeline clarity.",
+    note: "Use this when you need deal status, timeline, and developer-tool impact in one place.",
   },
   {
     href: "/guides/agents-md-template-for-ai-coding-agents",
     label: "AGENTS.md template: copyable Codex examples",
-    note: "61 impressions, 0 clicks, average position around 14; support the comparison page with copyable intent.",
+    note: "Use this after choosing AGENTS.md and before writing repo-specific agent instructions.",
   },
 ];
 
@@ -160,14 +160,14 @@ const comparisonPages = [
     label: "AGENTS.md vs CLAUDE.md vs Copilot Instructions",
     type: "Support matrix",
     verdict:
-      "Use this when the question is which repository instruction file each AI coding surface actually reads.",
+      "Use this when the team needs to know which repository instruction file each AI coding surface actually reads.",
   },
   {
     href: "/guides/codex-vs-claude-code",
     label: "Codex vs Claude Code",
     type: "Workflow comparison",
     verdict:
-      "Use this when the question is whether OpenAI-native collaboration or terminal-local agent work fits the team better.",
+      "Use this when the team is choosing between OpenAI-native collaboration and terminal-local agent work.",
   },
   {
     href: "/guides/local-vs-cloud-ai-coding-agent",
@@ -195,12 +195,12 @@ const comparisonPages = [
     label: "Does GitHub Copilot Read CLAUDE.md?",
     type: "Surface support matrix",
     verdict:
-      "Use this when the question is specifically Copilot surface support for CLAUDE.md versus Copilot instructions.",
+      "Use this when the team needs the Copilot surface support answer for CLAUDE.md versus Copilot instructions.",
   },
 ];
 
-const guideCitationOverview =
-  "KyenAI guides help software teams decide how to use AI coding agents without relying on vague tool claims. Start with the AGENTS.md, CLAUDE.md, Copilot, and Cursor instruction-file comparison when the problem is repository guidance. Use the loop engineering guide when the problem is repeated agent work, verification commands, retry limits, and stop rules. Use the MCP security and governance guides when the problem is tool access, secrets, logs, approvals, or revocation. Use the comparison hub when the query asks for Codex vs Claude Code, local vs cloud agents, agent mode vs chat mode, or hooks vs MCP. Each guide exposes sources, update dates, decision tables, checklists, and related next steps so AI answer engines can cite a stable page instead of stitching together disconnected vendor docs. The index is a routing page for durable decisions, not a generic blog archive.";
+const guideOverview =
+  "KyenAI guides help software teams make practical decisions about AI coding agents. Start with the instruction-file support matrix when the problem is repository guidance. Use the loop engineering guide when agent work needs verification commands, retry limits, and stop rules. Use the MCP security and governance guides before adding tool access, secrets, logs, approvals, or revocation. Use the comparison guides when the team is choosing between Codex and Claude Code, local and cloud agents, agent mode and chat mode, or hooks and MCP. Each guide gives the answer first, then adds source notes, decision tables, checklists, and next steps for implementation.";
 
 export const guidesPageSeo = {
   title: "AI Coding Agent Guides: AGENTS.md, Loop Engineering, MCP",
@@ -236,9 +236,9 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
           Source-backed playbooks for choosing repository instruction files, understanding loop engineering, comparing
           Codex and Claude Code, and securing MCP access.
         </p>
-        <section className="answer-panel citation-panel" aria-labelledby="guides-citation-heading">
-          <h2 id="guides-citation-heading">AI citation summary</h2>
-          <p>{guideCitationOverview}</p>
+        <section className="answer-panel citation-panel" aria-labelledby="guides-overview-heading">
+          <h2 id="guides-overview-heading">Guide overview</h2>
+          <p>{guideOverview}</p>
         </section>
         <section className="featured-guide-paths" aria-labelledby="featured-guide-paths-heading">
           <div>
@@ -260,13 +260,13 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
             </Link>
           </div>
         </section>
-        <section className="featured-guide-paths" aria-labelledby="high-impression-pages-heading">
+        <section className="featured-guide-paths" aria-labelledby="starting-guides-heading">
           <div>
-            <h2 id="high-impression-pages-heading">High-impression pages to read first</h2>
-            <p>These pages already have Google visibility, so they receive the strongest internal links.</p>
+            <h2 id="starting-guides-heading">Start with these guides</h2>
+            <p>These entries answer the most common setup, workflow, and security decisions.</p>
           </div>
           <div className="featured-guide-path-grid">
-            {highImpressionPages.map((page) => (
+            {startingGuides.map((page) => (
               <Link href={page.href} key={page.href}>
                 <strong>{page.label}</strong>
                 <span>{page.note}</span>
@@ -277,7 +277,7 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
         <section className="featured-guide-paths" aria-labelledby="comparison-pages-heading">
           <div>
             <h2 id="comparison-pages-heading">Comparison pages</h2>
-            <p>Use these matrix-style guides when the query asks for a choice, alternative, or support verdict.</p>
+            <p>Use these matrix-style guides when the team needs a choice, alternative, or support verdict.</p>
           </div>
           <div className="comparison-page-grid">
             {comparisonPages.map((page) => (
@@ -291,8 +291,8 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
         </section>
         <section className="guide-topic-clusters" aria-labelledby="guide-topic-clusters-heading">
           <div>
-            <h2 id="guide-topic-clusters-heading">GSC Opportunity Hubs</h2>
-            <p>Follow one hub when you want readers and Google to see which page owns each active query cluster.</p>
+            <h2 id="guide-topic-clusters-heading">Guide tracks</h2>
+            <p>Follow one track when you want a focused reading path from first decision to implementation details.</p>
           </div>
           <div className="guide-topic-cluster-grid">
             {guideTopicHubs.map((hub) => (
