@@ -11,7 +11,7 @@ const coreGuides: Guide[] = [
     title: "AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?",
     slug: INSTRUCTION_COMPARISON_GUIDE_SLUG,
     summary:
-      "Use this support matrix to decide when CLAUDE.md, Copilot instructions, AGENTS.md, or Cursor rules should carry repository guidance, then keep shared policy text synchronized.",
+      "Use this support matrix to decide whether CLAUDE.md, Copilot instructions, AGENTS.md, or Cursor rules should carry repository guidance for each tool surface.",
     intent:
       "Choose compatible instruction files, migrate Cursor rules carefully, and test AI coding tools without unsupported benchmark claims.",
     audience: "Developer tools teams, staff engineers, platform teams, and AI coding adopters.",
@@ -290,9 +290,9 @@ const coreGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
     updatedAt: "2026-06-25",
-    metaTitle: "CLAUDE.md vs Copilot Instructions vs AGENTS.md: Support Matrix",
+    metaTitle: "CLAUDE.md vs Copilot Instructions: AGENTS.md Support Matrix",
     metaDescription:
-      "CLAUDE.md vs Copilot Instructions vs AGENTS.md support matrix: choose the right repo file by tool surface, scope, and safe shared policy.",
+      "Compare CLAUDE.md, Copilot instructions, AGENTS.md, and Cursor rules by supported surface, scope, and safe repo policy.",
     resourceIds: ["instruction-files"],
   },
   {
@@ -830,9 +830,9 @@ const coreGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["github-copilot-cloud-local-sandboxes-preview", "visual-studio-agent-mode-mcp-general-availability"],
     updatedAt: "2026-06-26",
-    metaTitle: "MCP Server Security Checklist: Auth, Permissions, Logs, Revocation",
+    metaTitle: "MCP Server Security Checklist for AI Agents",
     metaDescription:
-      "MCP server security checklist for AI agents: review auth, permissions, secrets, logs, network limits, approvals, and revocation before launch.",
+      "Secure MCP servers for AI agents with a checklist for auth, permissions, secrets, logs, network limits, approvals, and revocation.",
     resourceIds: ["mcp-security"],
   },
   {

@@ -198,9 +198,9 @@ export const expansionGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "claude-code-dynamic-workflows-parallel-subagents"],
     updatedAt: "2026-06-26",
-    metaTitle: "Codex vs Claude Code: Workflow, Public Tests, Repo Checklist",
+    metaTitle: "Codex vs Claude Code: Workflow Fit and Repo Checklist",
     metaDescription:
-      "Codex vs Claude Code comparison: use workflow fit, public tests, repo instructions, review effort, and a same-task checklist before rollout.",
+      "Compare Codex vs Claude Code by workflow fit, public examples, repo instructions, review effort, and a same-task rollout checklist.",
   },
   {
     id: "guide-agents-md-template",
@@ -550,9 +550,9 @@ export const expansionGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["github-copilot-sdk-general-availability"],
     updatedAt: "2026-06-18",
-    metaTitle: "Does GitHub Copilot Read CLAUDE.md?",
+    metaTitle: "Does GitHub Copilot Read CLAUDE.md? Surface Matrix",
     metaDescription:
-      "Check whether GitHub Copilot reads CLAUDE.md by surface, when to use copilot-instructions.md, and how to keep adapters aligned.",
+      "Check when GitHub Copilot reads CLAUDE.md, when to use copilot-instructions.md, and which Copilot surfaces need each file.",
   },
   {
     id: "guide-agents-md-examples-codex",
@@ -730,9 +730,9 @@ export const expansionGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations"],
     updatedAt: "2026-06-18",
-    metaTitle: "AGENTS.md Examples for Codex",
+    metaTitle: "AGENTS.md Examples for Codex, Node.js, Python",
     metaDescription:
-      "Copy AGENTS.md examples for Codex projects, including Node.js, Python services, monorepos, nested files, commands, and review rules.",
+      "Copy AGENTS.md examples for Codex projects, including Node.js apps, Python services, monorepos, nested files, commands, and review rules.",
   },
   {
     id: "guide-agent-mode-vs-chat-mode",
@@ -1527,9 +1527,9 @@ export const expansionGuides: Guide[] = [
       "github-copilot-cloud-local-sandboxes-preview",
     ],
     updatedAt: "2026-06-26",
-    metaTitle: "What Is Loop Engineering? Addy Osmani Agent Examples",
+    metaTitle: "What Is Loop Engineering? Addy Osmani Examples, Stop Rules",
     metaDescription:
-      "What is loop engineering? Learn Addy Osmani's AI agent workflow with coding-agent examples, stop rules, verification commands, and token caps.",
+      "What is loop engineering? Learn Addy Osmani's AI agent workflow with coding examples, stop rules, verification commands, and token caps.",
     resourceIds: ["loop-engineering"],
   },
 ];

@@ -10,8 +10,11 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
     fitScore: 9.2,
     gscWatchQueries: [
       "claude md vs copilot instructions",
+      "claude.md vs copilot-instructions.md",
+      "agents md vs claude md vs copilot instructions md",
       "agents.md vs claude.md",
       "claude.md vs cursorrules",
+      "\".cursor/rules\" \".mdc\" \"agents.md\" priority precedence behavior",
       "copilot instructions vs cursor rules",
       "ai coding agent instructions",
     ],
@@ -59,6 +62,8 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
       "mcp security",
       "mcp server security",
       "how to secure an mcp server",
+      "secure mcp server connection to ai agent",
+      "securing connection between ai agents and mcp servers",
       "mcp authentication",
       "mcp permissions",
       "ai agent tool security",
@@ -92,6 +97,7 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
     fitScore: 9.4,
     gscWatchQueries: [
       "codex vs claude code",
+      "claude code vs codex",
       "openai codex vs claude code",
       "codex alternatives",
       "claude code alternatives",
@@ -192,12 +198,13 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
   },
   "loop-engineering-ai-coding-agents": {
     priority: "P0",
-    primaryKeyword: "loop engineering for AI coding agents",
+    primaryKeyword: "What is loop engineering",
     demandScore: 8.7,
     attackabilityScore: 9.1,
     fitScore: 9.6,
     gscWatchQueries: [
       "what is loop engineering",
+      "what is loop engineering addy osmani",
       "loop engineering ai coding agents",
       "cursor loop automation",
       "claude code loop command",

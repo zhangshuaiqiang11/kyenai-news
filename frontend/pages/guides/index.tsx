@@ -31,14 +31,14 @@ const guideTopicHubs: GuideTopicHub[] = [
   {
     title: "Instruction File Opportunity",
     intro:
-      "This is the strongest current GSC cluster: the main instruction-file guide already receives impressions and clicks for CLAUDE.md, Copilot instructions, and AGENTS.md queries. Start with the support matrix, then move to templates and examples only after the reader knows which file each tool actually reads. The goal is to consolidate broad comparison queries on one strong page while supporting copyable AGENTS.md intent with narrower pages.",
+      "This is the strongest current CTR cluster: the main instruction-file guide already receives impressions and clicks for CLAUDE.md, Copilot instructions, and AGENTS.md queries. Start with the support matrix, then move to templates and examples only after the reader knows which file each tool actually reads. The goal is to make the result promise concrete: compare files, choose the supported surface, then copy the right adapter.",
     beginner: "CLAUDE.md vs Copilot Instructions vs AGENTS.md",
     advanced: "AGENTS.md Examples for Codex",
     readingOrder: [
       {
         href: INSTRUCTION_COMPARISON_GUIDE_HREF,
-        label: "AGENTS.md vs CLAUDE.md vs Copilot instructions",
-        note: "Choose the right file before writing more rules.",
+        label: "CLAUDE.md vs Copilot Instructions support matrix",
+        note: "Answer the exact comparison query before asking readers to write more rules.",
       },
       {
         href: "/guides/agents-md-template-for-ai-coding-agents",
@@ -60,14 +60,14 @@ const guideTopicHubs: GuideTopicHub[] = [
   {
     title: "Loop Engineering Opportunity",
     intro:
-      "Loop Engineering is the clearest zero-click near-page-one opportunity. Readers are not only asking for a definition; they need Addy Osmani context, examples, stop rules, token and cost limits, and verification commands. This hub routes them from the high-impression Loop page into subagents, hooks, agent mode, and cloud execution so the topic looks like an operating system, not a one-off glossary entry.",
+      "Loop Engineering is the clearest zero-click near-page-one CTR opportunity. Readers are not only asking for a definition; they need Addy Osmani context, examples, stop rules, token and cost limits, and verification commands. This hub routes them from the high-impression what-is page into subagents, hooks, agent mode, and cloud execution so the result promises an operating system, not a one-off glossary entry.",
     beginner: "Loop Engineering for AI Coding Agents",
     advanced: "Claude Code Subagents Workflow Examples",
     readingOrder: [
       {
         href: LOOP_ENGINEERING_GUIDE_HREF,
-        label: "Loop engineering for AI coding agents",
-        note: "Start with the high-impression workflow, examples, and stop rules.",
+        label: "What is loop engineering?",
+        note: "Start with Addy Osmani context, coding-agent examples, stop rules, and token caps.",
       },
       {
         href: "/guides/claude-code-hooks-mcp-setup",
@@ -89,7 +89,7 @@ const guideTopicHubs: GuideTopicHub[] = [
   {
     title: "MCP and Security Opportunity",
     intro:
-      "MCP security and Cursor enterprise security queries are still lower-ranking, but they are commercially valuable and close to KyenAI's core authority. This hub makes the security promise concrete: authentication, permissions, secrets, network limits, audit logs, approvals, and revocation. It should help Secure MCP move from broad security wording toward a page that answers specific operational questions.",
+      "MCP security and Cursor enterprise security queries are still lower-ranking, but they are commercially valuable and close to KyenAI's core authority. This hub makes the search-result promise concrete: authentication, permissions, secrets, network limits, audit logs, approvals, and revocation. It should help Secure MCP move from broad security wording toward a page that answers specific operational questions.",
     beginner: "AI Coding Agent Governance Checklist",
     advanced: "Secure MCP Servers for AI Coding Agents",
     readingOrder: [
@@ -134,13 +134,13 @@ const guideTopicHubs: GuideTopicHub[] = [
 const highImpressionPages = [
   {
     href: INSTRUCTION_COMPARISON_GUIDE_HREF,
-    label: "CLAUDE.md vs Copilot Instructions vs AGENTS.md",
-    note: "379 impressions, 7 clicks, average position around 9.6 in the supplied 28-day GSC snapshot.",
+    label: "CLAUDE.md vs Copilot Instructions support matrix",
+    note: "379 impressions, 7 clicks, average position around 9.6; keep the exact comparison query at the front of the result.",
   },
   {
     href: LOOP_ENGINEERING_GUIDE_HREF,
-    label: "Loop Engineering for AI Coding Agents",
-    note: "351 impressions, 0 clicks, average position around 9.5; the highest zero-click CTR opportunity.",
+    label: "What is loop engineering? Addy Osmani examples and stop rules",
+    note: "351 impressions, 0 clicks, average position around 9.5; lead with the definition and concrete loop controls.",
   },
   {
     href: "/articles/spacex-cursor-acquisition-2026",
@@ -149,8 +149,8 @@ const highImpressionPages = [
   },
   {
     href: "/guides/agents-md-template-for-ai-coding-agents",
-    label: "AGENTS.md template examples",
-    note: "61 impressions, 0 clicks, average position around 14; support page for copyable intent.",
+    label: "AGENTS.md template: copyable Codex examples",
+    note: "61 impressions, 0 clicks, average position around 14; support the comparison page with copyable intent.",
   },
 ];
 
@@ -203,9 +203,9 @@ const guideCitationOverview =
   "KyenAI guides help software teams decide how to use AI coding agents without relying on vague tool claims. Start with the AGENTS.md, CLAUDE.md, Copilot, and Cursor instruction-file comparison when the problem is repository guidance. Use the loop engineering guide when the problem is repeated agent work, verification commands, retry limits, and stop rules. Use the MCP security and governance guides when the problem is tool access, secrets, logs, approvals, or revocation. Use the comparison hub when the query asks for Codex vs Claude Code, local vs cloud agents, agent mode vs chat mode, or hooks vs MCP. Each guide exposes sources, update dates, decision tables, checklists, and related next steps so AI answer engines can cite a stable page instead of stitching together disconnected vendor docs. The index is a routing page for durable decisions, not a generic blog archive.";
 
 export const guidesPageSeo = {
-  title: "AI Coding Agent Guides: AGENTS.md, Claude Code, MCP",
+  title: "AI Coding Agent Guides: AGENTS.md, Loop Engineering, MCP",
   description:
-    "Start with KyenAI guides for AGENTS.md vs CLAUDE.md, Copilot instructions, loop engineering, MCP security, Codex vs Claude Code, and governance.",
+    "Find KyenAI guides for AGENTS.md vs CLAUDE.md, Copilot instructions, AGENTS.md templates, loop engineering, MCP security, and Codex vs Claude Code.",
 } as const;
 
 export default function GuidesPage({ guides }: GuidesPageProps) {
@@ -231,10 +231,10 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
           <span aria-hidden="true">/</span>
           <span>Guides</span>
         </nav>
-        <h1>AI Coding Agent Guides for AGENTS.md, Claude Code, and MCP</h1>
+        <h1>AI Coding Agent Guides for AGENTS.md, Loop Engineering, and MCP</h1>
         <p>
-          Source-backed, task-oriented playbooks for choosing repository instruction files, comparing Codex and Claude
-          Code, designing loop engineering workflows, and securing MCP access.
+          Source-backed playbooks for choosing repository instruction files, understanding loop engineering, comparing
+          Codex and Claude Code, and securing MCP access.
         </p>
         <section className="answer-panel citation-panel" aria-labelledby="guides-citation-heading">
           <h2 id="guides-citation-heading">AI citation summary</h2>
@@ -255,7 +255,7 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
               <span>Review permissions, secrets, authentication, logs, and revocation before enabling an MCP server.</span>
             </Link>
             <Link href={LOOP_ENGINEERING_GUIDE_HREF}>
-              <strong>Design durable agent loops</strong>
+              <strong>Design durable agent loops: what is loop engineering?</strong>
               <span>Move from one-shot prompts to act-observe-reason cycles with verification commands, stop rules, and cost limits.</span>
             </Link>
           </div>

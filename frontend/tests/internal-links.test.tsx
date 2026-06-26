@@ -122,11 +122,11 @@ describe("contextual internal links", () => {
     const { guides, validHrefs } = getGuideRouteData();
     render(<GuidesPage guides={guides} />);
 
-    expect(guidesPageSeo.title).toBe("AI Coding Agent Guides: AGENTS.md, Claude Code, MCP");
+    expect(guidesPageSeo.title).toBe("AI Coding Agent Guides: AGENTS.md, Loop Engineering, MCP");
     expect(guidesPageSeo.description).toContain("AGENTS.md vs CLAUDE.md");
     expect(
       screen.getByRole("heading", {
-        name: "AI Coding Agent Guides for AGENTS.md, Claude Code, and MCP",
+        name: "AI Coding Agent Guides for AGENTS.md, Loop Engineering, and MCP",
         level: 1,
       }),
     ).toBeTruthy();
@@ -152,6 +152,7 @@ describe("contextual internal links", () => {
     expect(loopLink.getAttribute("href")).toBe(`/guides/${LOOP_ENGINEERING_GUIDE_SLUG}`);
     expect(instructionLink.textContent).toMatch(/before standardizing guidance/i);
     expect(securityLink.textContent).toMatch(/before enabling an MCP server/i);
+    expect(loopLink.textContent).toMatch(/what is loop engineering/i);
     expect(loopLink.textContent).toMatch(/act-observe-reason cycles/i);
     expect(
       featuredPaths!.compareDocumentPosition(guideGrid!) & Node.DOCUMENT_POSITION_FOLLOWING,

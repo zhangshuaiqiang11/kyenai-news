@@ -328,6 +328,7 @@ describe("guide SEO data", () => {
       fitScore: 9.4,
       gscWatchQueries: [
         "codex vs claude code",
+        "claude code vs codex",
         "openai codex vs claude code",
         "codex alternatives",
         "claude code alternatives",
