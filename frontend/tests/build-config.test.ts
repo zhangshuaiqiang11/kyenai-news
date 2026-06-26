@@ -193,6 +193,10 @@ describe("Next build configuration", () => {
     expect(deployScript).toContain("up -d --build --force-recreate");
     expect(deployScript).toContain("ports 80 or 443 are still allocated");
     expect(deployScript).toContain("test -f /app/public/llms.txt");
+    expect(deployScript).toContain("const attempts = 30");
+    expect(deployScript).toContain("frontend llms.txt not ready");
+    expect(deployScript).toContain("readiness timeout");
+    expect(deployScript).toContain("logs --tail=120 frontend");
     expect(deployScript).not.toContain("llms.txt HTTP %{http_code}\\n\" http://127.0.0.1/llms.txt || true");
   });
 });

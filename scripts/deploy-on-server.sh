@@ -164,7 +164,31 @@ curl_service() {
 smoke_frontend_container() {
   echo "==> Frontend container smoke checks"
   "${compose_cmd[@]}" exec -T frontend sh -lc 'test -f /app/public/llms.txt'
-  "${compose_cmd[@]}" exec -T frontend node -e 'fetch("http://127.0.0.1:3000/llms.txt").then(async (response) => { console.log(`frontend llms.txt HTTP ${response.status}`); process.exit(response.ok ? 0 : 1); }).catch((error) => { console.error(error); process.exit(1); })'
+  "${compose_cmd[@]}" exec -T frontend node -e '
+    const url = "http://127.0.0.1:3000/llms.txt";
+    const attempts = 30;
+    const delayMs = 2000;
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    for (let attempt = 1; attempt <= attempts; attempt += 1) {
+      try {
+        const response = await fetch(url);
+        console.log(`frontend llms.txt HTTP ${response.status} (attempt ${attempt}/${attempts})`);
+        if (response.ok) {
+          process.exit(0);
+        }
+      } catch (error) {
+        console.log(`frontend llms.txt not ready (${error.cause?.code || error.code || error.message}) attempt ${attempt}/${attempts}`);
+      }
+      await sleep(delayMs);
+    }
+
+    process.exit(1);
+  ' || {
+    echo "ERROR: frontend did not serve /llms.txt before the readiness timeout." >&2
+    "${compose_cmd[@]}" logs --tail=120 frontend >&2 || true
+    return 1
+  }
 }
 
 echo "==> Rebuilding and restarting containers"
