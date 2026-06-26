@@ -178,6 +178,9 @@ describe("Next build configuration", () => {
 
     expect(deployScript).toContain('COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-kyenai}"');
     expect(deployScript).toContain('STALE_EDGE_CONTAINERS="${STALE_EDGE_CONTAINERS:-app-caddy-1}"');
+    expect(deployScript).toContain("reexec_updated_script");
+    expect(deployScript).toContain("DEPLOY_SCRIPT_REEXECUTED");
+    expect(deployScript).toContain('exec bash "$updated_script"');
     expect(deployScript).toContain("report_port_bindings");
     expect(deployScript).toContain("assert_edge_ports_available");
     expect(deployScript).toContain("clear_allowed_stale_edge_containers");

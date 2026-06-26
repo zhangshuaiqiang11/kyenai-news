@@ -50,10 +50,24 @@ clone_or_update() {
   fi
 }
 
+reexec_updated_script() {
+  if [ "${DEPLOY_SCRIPT_REEXECUTED:-}" = "1" ]; then
+    return
+  fi
+
+  local updated_script="$DEPLOY_PATH/scripts/deploy-on-server.sh"
+  if [ -f "$updated_script" ]; then
+    echo "==> Re-executing updated deploy script"
+    export DEPLOY_SCRIPT_REEXECUTED=1
+    exec bash "$updated_script"
+  fi
+}
+
 echo "==> Deploy path: $DEPLOY_PATH"
 echo "==> Deploy branch: $DEPLOY_BRANCH"
 
 clone_or_update
+reexec_updated_script
 cd "$DEPLOY_PATH"
 
 if [ ! -f .env.production ]; then
