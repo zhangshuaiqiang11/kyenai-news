@@ -61,9 +61,43 @@ if [ ! -f .env.production ]; then
   echo "WARNING: created .env.production from example. Edit secrets on the server."
 fi
 
+export COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-kyenai}"
+compose_cmd=(docker compose --env-file .env.production -f docker-compose.prod.yml)
+
+report_port_bindings() {
+  echo "==> Current listeners for ports 80 and 443"
+  docker ps --format 'table {{.Names}}\t{{.Ports}}' | awk 'NR == 1 || /0\.0\.0\.0:(80|443)->|:::(80|443)->/'
+
+  if command -v ss >/dev/null 2>&1; then
+    ss -ltnp '( sport = :80 or sport = :443 )' || true
+  elif command -v lsof >/dev/null 2>&1; then
+    lsof -nP -iTCP:80 -iTCP:443 -sTCP:LISTEN || true
+  fi
+}
+
+assert_edge_ports_available() {
+  local occupied
+  occupied="$(
+    docker ps --format '{{.Names}}\t{{.Ports}}' |
+      awk '/0\.0\.0\.0:(80|443)->|:::(80|443)->/ { print }'
+  )"
+
+  if [ -n "$occupied" ]; then
+    echo "ERROR: ports 80 or 443 are still allocated after stopping the current compose project." >&2
+    echo "$occupied" >&2
+    echo "Stop the stale container or host web server shown above, then rerun the deploy." >&2
+    return 1
+  fi
+}
+
 echo "==> Rebuilding and restarting containers"
-docker compose --env-file .env.production -f docker-compose.prod.yml up -d --build
-docker compose --env-file .env.production -f docker-compose.prod.yml ps
+echo "==> Compose project: $COMPOSE_PROJECT_NAME"
+report_port_bindings
+"${compose_cmd[@]}" down --remove-orphans
+report_port_bindings
+assert_edge_ports_available
+"${compose_cmd[@]}" up -d --build
+"${compose_cmd[@]}" ps
 
 echo "==> Smoke checks"
 curl -fsS -o /dev/null -w "homepage HTTP %{http_code}\n" http://127.0.0.1/ || true

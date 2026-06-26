@@ -172,4 +172,14 @@ describe("Next build configuration", () => {
 
     expect(duplicates).toEqual([]);
   });
+
+  it("diagnoses and clears stale edge containers before production compose up", () => {
+    const deployScript = readFileSync(resolve(repoRoot, "scripts/deploy-on-server.sh"), "utf8");
+
+    expect(deployScript).toContain('COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-kyenai}"');
+    expect(deployScript).toContain("report_port_bindings");
+    expect(deployScript).toContain("assert_edge_ports_available");
+    expect(deployScript).toContain("down --remove-orphans");
+    expect(deployScript).toContain("ports 80 or 443 are still allocated");
+  });
 });
