@@ -21,16 +21,33 @@ else
 fi
 
 clone_or_update() {
-  if [ ! -d "$DEPLOY_PATH/.git" ]; then
-    mkdir -p "$(dirname "$DEPLOY_PATH")"
-    git clone --branch "$DEPLOY_BRANCH" "$DEPLOY_REPO_URL" "$DEPLOY_PATH"
+  if [ -d "$DEPLOY_PATH/.git" ]; then
+    cd "$DEPLOY_PATH"
+    git fetch origin "$DEPLOY_BRANCH"
+    git checkout "$DEPLOY_BRANCH"
+    git pull --ff-only origin "$DEPLOY_BRANCH"
     return
   fi
 
-  cd "$DEPLOY_PATH"
-  git fetch origin "$DEPLOY_BRANCH"
-  git checkout "$DEPLOY_BRANCH"
-  git pull --ff-only origin "$DEPLOY_BRANCH"
+  local env_backup=""
+  if [ -f "$DEPLOY_PATH/.env.production" ]; then
+    env_backup="$(mktemp)"
+    cp "$DEPLOY_PATH/.env.production" "$env_backup"
+    echo "==> Preserved existing .env.production"
+  fi
+
+  if [ -d "$DEPLOY_PATH" ]; then
+    echo "==> Replacing non-git deploy directory at $DEPLOY_PATH"
+    rm -rf "$DEPLOY_PATH"
+  fi
+
+  mkdir -p "$(dirname "$DEPLOY_PATH")"
+  git clone --branch "$DEPLOY_BRANCH" "$DEPLOY_REPO_URL" "$DEPLOY_PATH"
+
+  if [ -n "$env_backup" ] && [ -f "$env_backup" ]; then
+    cp "$env_backup" "$DEPLOY_PATH/.env.production"
+    rm -f "$env_backup"
+  fi
 }
 
 echo "==> Deploy path: $DEPLOY_PATH"
