@@ -177,11 +177,16 @@ describe("Next build configuration", () => {
     const deployScript = readFileSync(resolve(repoRoot, "scripts/deploy-on-server.sh"), "utf8");
 
     expect(deployScript).toContain('COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-kyenai}"');
+    expect(deployScript).toContain('STALE_EDGE_CONTAINERS="${STALE_EDGE_CONTAINERS:-app-caddy-1}"');
     expect(deployScript).toContain("report_port_bindings");
     expect(deployScript).toContain("assert_edge_ports_available");
+    expect(deployScript).toContain("clear_allowed_stale_edge_containers");
+    expect(deployScript).toContain("is_allowed_stale_edge_container");
     expect(deployScript).toContain("assert_caddy_ports_published");
     expect(deployScript).toContain("smoke_frontend_container");
     expect(deployScript).toContain("down --remove-orphans");
+    expect(deployScript).toContain('docker rm -f "$name"');
+    expect(deployScript).toContain("Leaving non-whitelisted edge container running");
     expect(deployScript).toContain("up -d --build --force-recreate");
     expect(deployScript).toContain("ports 80 or 443 are still allocated");
     expect(deployScript).toContain("test -f /app/public/llms.txt");

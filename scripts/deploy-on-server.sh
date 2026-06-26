@@ -62,6 +62,7 @@ if [ ! -f .env.production ]; then
 fi
 
 export COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-kyenai}"
+STALE_EDGE_CONTAINERS="${STALE_EDGE_CONTAINERS:-app-caddy-1}"
 compose_cmd=(docker compose --env-file .env.production -f docker-compose.prod.yml)
 
 report_port_bindings() {
@@ -88,6 +89,41 @@ assert_edge_ports_available() {
     echo "Stop the stale container or host web server shown above, then rerun the deploy." >&2
     return 1
   fi
+}
+
+is_allowed_stale_edge_container() {
+  local name="$1"
+  local allowed
+
+  for allowed in $STALE_EDGE_CONTAINERS; do
+    if [ "$name" = "$allowed" ]; then
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+clear_allowed_stale_edge_containers() {
+  local occupied_names
+  occupied_names="$(
+    docker ps --format '{{.Names}}\t{{.Ports}}' |
+      awk '/0\.0\.0\.0:(80|443)->|:::(80|443)->/ { print $1 }'
+  )"
+
+  if [ -z "$occupied_names" ]; then
+    return 0
+  fi
+
+  local name
+  for name in $occupied_names; do
+    if is_allowed_stale_edge_container "$name"; then
+      echo "==> Removing stale edge container: $name"
+      docker rm -f "$name"
+    else
+      echo "==> Leaving non-whitelisted edge container running: $name"
+    fi
+  done
 }
 
 assert_caddy_ports_published() {
@@ -121,6 +157,7 @@ echo "==> Rebuilding and restarting containers"
 echo "==> Compose project: $COMPOSE_PROJECT_NAME"
 report_port_bindings
 "${compose_cmd[@]}" down --remove-orphans
+clear_allowed_stale_edge_containers
 report_port_bindings
 assert_edge_ports_available
 "${compose_cmd[@]}" up -d --build --force-recreate
