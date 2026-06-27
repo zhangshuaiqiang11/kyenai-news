@@ -372,8 +372,20 @@ export function buildWebsiteJsonLd(includeContext = true) {
   };
 }
 
+const PLACEHOLDER_EMAIL_PATTERNS = ["your-production-domain", "example.com", "example.org", "localhost"];
+
+function isPlaceholderEmail(email: string): boolean {
+  const normalized = email.trim().toLowerCase();
+  if (!normalized) {
+    return true;
+  }
+  const domain = normalized.split("@")[1] || "";
+  return PLACEHOLDER_EMAIL_PATTERNS.some((pattern) => domain.includes(pattern));
+}
+
 export function buildOrganizationJsonLd(includeContext = true) {
-  const editorialEmail = process.env.NEXT_PUBLIC_EDITORIAL_EMAIL;
+  const rawEmail = process.env.NEXT_PUBLIC_EDITORIAL_EMAIL || "";
+  const editorialEmail = isPlaceholderEmail(rawEmail) ? "" : rawEmail.trim();
 
   return {
     ...(includeContext ? { "@context": "https://schema.org" } : {}),

@@ -1,5 +1,6 @@
 import { getIndexableCategoryNames } from "./category-hubs";
 import { buildCategoryPath } from "./categories";
+import { getGlossaryTerms } from "./glossary";
 import { getGuides } from "./guides";
 import { buildCanonicalUrl } from "./seo";
 import type { Article } from "./types";
@@ -51,6 +52,11 @@ export function buildSitemapEntries(articles: Article[]): SitemapEntry[] {
     ...guides.map((guide) => ({
       loc: buildCanonicalUrl(`/guides/${guide.slug}`),
       lastmod: toDateOnly(guide.updatedAt),
+    })),
+    { loc: buildCanonicalUrl("/glossary"), lastmod: latestDate(getGlossaryTerms().map((term) => term.updatedAt)) },
+    ...getGlossaryTerms().map((term) => ({
+      loc: buildCanonicalUrl(`/glossary/${term.slug}`),
+      lastmod: toDateOnly(term.updatedAt),
     })),
     ...publishedArticles.map((article) => ({
       loc: buildCanonicalUrl(`/articles/${article.slug}`),

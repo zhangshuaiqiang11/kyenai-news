@@ -10,6 +10,7 @@ import { getGuide, getGuides, getInternalLinkedGuides, getRelatedArticlesForGuid
 import { EDITORIAL_AUTHOR_NAME, EDITORIAL_AUTHOR_PATH } from "../../lib/editorial";
 import { resolveIndexableGuideTopicHref } from "../../lib/guide-topic-links";
 import {
+  buildCanonicalUrl,
   buildGuideGraphJsonLd,
   buildOgImageUrl,
   formatDate,
@@ -173,6 +174,7 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
         ogImage={buildOgImageUrl(guide.metaTitle || guide.title)}
       >
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(guideGraphJsonLd) }} />
+        <link rel="alternate" type="text/markdown" href={`${buildCanonicalUrl(guidePath)}.md`} />
       </SeoHead>
       <article className="article-page guide-page">
         <div className="article-header">

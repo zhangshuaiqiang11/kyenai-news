@@ -75,8 +75,8 @@ export default function Home({ articles, guides }: HomeProps) {
         <section className="feed-panel" aria-labelledby="latest-heading">
           <div className="section-heading">
             <div>
-              <h1 id="latest-heading">AI Coding Agent Playbooks</h1>
-              <p>Source-backed guides for configuring, migrating, comparing, and securing AI coding agents.</p>
+              <h1 id="latest-heading">KyenAI: Evidence-led playbooks for AI coding agents</h1>
+              <p>KyenAI is an evidence-led publication of playbooks for AI coding agents — source-backed guides for configuring, migrating, comparing, and securing tools like Codex, Claude Code, Copilot, and Cursor.</p>
             </div>
             <Link href="/guides">All guides</Link>
           </div>

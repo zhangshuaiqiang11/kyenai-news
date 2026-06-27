@@ -116,6 +116,14 @@ const nextConfig = {
   async redirects() {
     return [...categoryRedirects, ...articleRedirects, ...guideRedirects, ...llmsRedirects];
   },
+  async rewrites() {
+    return [
+      {
+        source: "/guides/:slug.md",
+        destination: "/api/guide-md?slug=:slug",
+      },
+    ];
+  },
   async headers() {
     return [
       {
