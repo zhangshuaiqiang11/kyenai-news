@@ -20,6 +20,8 @@ type BreadcrumbItem = {
   path: string;
 };
 
+type JsonLdNode = Record<string, unknown>;
+
 export type FaqItem = {
   question: string;
   answer: string;
@@ -95,16 +97,7 @@ export function buildArticleJsonLd(article: Article) {
     datePublished: article.publishedAt,
     dateModified: article.updatedAt,
     author: buildAuthorJsonLd(article.authorName, false),
-    publisher: {
-      "@type": "Organization",
-      "@id": ORGANIZATION_ID,
-      name: SITE_NAME,
-      url: buildCanonicalUrl("/"),
-      logo: {
-        "@type": "ImageObject",
-        url: OG_IMAGE_URL,
-      },
-    },
+    publisher: buildPublisherJsonLd(),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonical,
@@ -149,18 +142,10 @@ export function buildGuideJsonLd(guide: Guide) {
       url: buildOgImageUrl(guide.metaTitle || guide.title),
     },
     inLanguage: "en",
+    datePublished: guide.updatedAt,
     dateModified: guide.updatedAt,
     author: buildAuthorJsonLd(EDITORIAL_AUTHOR_NAME, false),
-    publisher: {
-      "@type": "Organization",
-      "@id": ORGANIZATION_ID,
-      name: SITE_NAME,
-      url: buildCanonicalUrl("/"),
-      logo: {
-        "@type": "ImageObject",
-        url: OG_IMAGE_URL,
-      },
-    },
+    publisher: buildPublisherJsonLd(),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonical,
@@ -184,6 +169,26 @@ export function buildGuideJsonLd(guide: Guide) {
       },
     })),
   };
+}
+
+export function buildGuideGraphJsonLd(guide: Guide, breadcrumbItems: BreadcrumbItem[], faqs: FaqItem[]) {
+  return buildJsonLdGraph([
+    buildOrganizationJsonLd(false),
+    buildWebsiteJsonLd(false),
+    buildGuideJsonLd(guide),
+    buildBreadcrumbJsonLd(breadcrumbItems, false),
+    buildFaqPageJsonLd(faqs, false),
+  ]);
+}
+
+export function buildArticleGraphJsonLd(article: Article, breadcrumbItems: BreadcrumbItem[], faqs: FaqItem[]) {
+  return buildJsonLdGraph([
+    buildOrganizationJsonLd(false),
+    buildWebsiteJsonLd(false),
+    buildArticleJsonLd(article),
+    buildBreadcrumbJsonLd(breadcrumbItems, false),
+    buildFaqPageJsonLd(faqs, false),
+  ]);
 }
 
 export function buildGuideFaqs(guide: Guide): FaqItem[] {
@@ -249,9 +254,9 @@ function getArticleTeamLabel(category: string): string {
   return labels[category] ?? category.toLowerCase();
 }
 
-export function buildFaqPageJsonLd(faqs: FaqItem[]) {
+export function buildFaqPageJsonLd(faqs: FaqItem[], includeContext = true) {
   return {
-    "@context": "https://schema.org",
+    ...(includeContext ? { "@context": "https://schema.org" } : {}),
     "@type": "FAQPage",
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
@@ -280,9 +285,9 @@ export function buildAuthorJsonLd(name: string, includeContext = true) {
   };
 }
 
-export function buildBreadcrumbJsonLd(items: BreadcrumbItem[]) {
+export function buildBreadcrumbJsonLd(items: BreadcrumbItem[], includeContext = true) {
   return {
-    "@context": "https://schema.org",
+    ...(includeContext ? { "@context": "https://schema.org" } : {}),
     "@type": "BreadcrumbList",
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
@@ -348,9 +353,9 @@ export function buildCollectionPageJsonLd({ title, description, path }: PageSeoI
   };
 }
 
-export function buildWebsiteJsonLd() {
+export function buildWebsiteJsonLd(includeContext = true) {
   return {
-    "@context": "https://schema.org",
+    ...(includeContext ? { "@context": "https://schema.org" } : {}),
     "@type": "WebSite",
     "@id": WEBSITE_ID,
     name: SITE_NAME,
@@ -367,11 +372,11 @@ export function buildWebsiteJsonLd() {
   };
 }
 
-export function buildOrganizationJsonLd() {
+export function buildOrganizationJsonLd(includeContext = true) {
   const editorialEmail = process.env.NEXT_PUBLIC_EDITORIAL_EMAIL;
 
   return {
-    "@context": "https://schema.org",
+    ...(includeContext ? { "@context": "https://schema.org" } : {}),
     "@type": "Organization",
     "@id": ORGANIZATION_ID,
     name: SITE_NAME,
@@ -380,6 +385,12 @@ export function buildOrganizationJsonLd() {
       "@type": "ImageObject",
       url: OG_IMAGE_URL,
     },
+    sameAs: [
+      buildCanonicalUrl("/about"),
+      buildCanonicalUrl("/editorial-policy"),
+      buildCanonicalUrl("/sources"),
+      buildCanonicalUrl("/entities"),
+    ],
     ...(editorialEmail
       ? {
           contactPoint: {
@@ -389,6 +400,26 @@ export function buildOrganizationJsonLd() {
           },
         }
       : {}),
+  };
+}
+
+function buildJsonLdGraph(nodes: JsonLdNode[]) {
+  return {
+    "@context": "https://schema.org",
+    "@graph": nodes.map(({ "@context": _context, ...node }) => node),
+  };
+}
+
+function buildPublisherJsonLd() {
+  return {
+    "@type": "Organization",
+    "@id": ORGANIZATION_ID,
+    name: SITE_NAME,
+    url: buildCanonicalUrl("/"),
+    logo: {
+      "@type": "ImageObject",
+      url: OG_IMAGE_URL,
+    },
   };
 }
 

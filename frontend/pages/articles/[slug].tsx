@@ -12,9 +12,7 @@ import { getArticleEntities } from "../../lib/entities";
 import { resolveIndexableGuideTopicHref } from "../../lib/guide-topic-links";
 import { getPublishedArticles, isPublishedArticle } from "../../lib/publication";
 import {
-  buildArticleJsonLd,
-  buildBreadcrumbJsonLd,
-  buildFaqPageJsonLd,
+  buildArticleGraphJsonLd,
   buildMetaDescription,
   formatDate,
   slugify,
@@ -30,16 +28,15 @@ type ArticlePageProps = {
 
 export default function ArticlePage({ article, relatedArticles, relatedGuides }: ArticlePageProps) {
   const metaDescription = buildMetaDescription(article);
-  const articleJsonLd = buildArticleJsonLd(article);
   const categoryPath = buildCategoryPath(article.category);
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+  const breadcrumbItems = [
     { name: "Home", path: "/" },
     { name: article.category, path: categoryPath },
     { name: article.title, path: `/articles/${article.slug}` },
-  ]);
+  ];
   const primarySource = article.sources[0];
   const faqs = getVisibleArticleFaqs(article);
-  const faqJsonLd = buildFaqPageJsonLd(faqs);
+  const articleGraphJsonLd = buildArticleGraphJsonLd(article, breadcrumbItems, faqs);
   const entities = getArticleEntities(article);
 
   return (
@@ -51,9 +48,7 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
         {article.tags.slice(0, 5).map((tag) => (
           <meta property="article:tag" content={tag} key={tag} />
         ))}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleGraphJsonLd) }} />
       </SeoHead>
       <article className="article-page">
         <div className="article-header">

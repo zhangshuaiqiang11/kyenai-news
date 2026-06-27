@@ -3,7 +3,7 @@ import { buildCanonicalUrl } from "./seo";
 const publicAllowRules = ["/api/og"];
 const publicDisallowRules = ["/api/"];
 
-const verifiedSearchAndAiCrawlers = [
+const publicSearchAndAnswerCrawlers = [
   "Googlebot",
   "Googlebot-Image",
   "Googlebot-Video",
@@ -11,17 +11,20 @@ const verifiedSearchAndAiCrawlers = [
   "GoogleOther-Image",
   "GoogleOther-Video",
   "Google-CloudVertexBot",
-  "Google-Extended",
   "Bingbot",
   "BingPreview",
   "OAI-SearchBot",
   "ChatGPT-User",
-  "GPTBot",
   "PerplexityBot",
   "Perplexity-User",
-  "ClaudeBot",
   "Claude-SearchBot",
   "Claude-User",
+];
+
+const trainingOrResearchCrawlers = [
+  "GPTBot",
+  "ClaudeBot",
+  "Google-Extended",
   "Bytespider",
 ];
 
@@ -38,6 +41,7 @@ function buildCrawlerGroup(userAgent: string): string[] {
 export function buildRobotsTxt(): string {
   return [
     "# KyenAI is open to search engines and AI answer crawlers that respect robots.txt.",
+    "# Search, answer, and user-triggered agents may crawl public guides; training/research crawlers are named separately for explicit policy review.",
     "# Unknown or unpublished AI crawlers are covered by the open default group, including Tencent Yuanbao, xAI Grok, Zhipu GLM, MiniMax, and Doubao-specific crawlers.",
     "# Verified crawler groups repeat operational exclusions because specific user-agent groups do not inherit User-agent: * rules.",
     "",
@@ -46,7 +50,10 @@ export function buildRobotsTxt(): string {
     ...publicAllowRules.map((rule) => `Allow: ${rule}`),
     ...publicDisallowRules.map((rule) => `Disallow: ${rule}`),
     "",
-    ...verifiedSearchAndAiCrawlers.flatMap(buildCrawlerGroup),
+    "# Search and answer retrieval crawlers",
+    ...publicSearchAndAnswerCrawlers.flatMap(buildCrawlerGroup),
+    "# Training or research crawlers currently allowed for public content discovery",
+    ...trainingOrResearchCrawlers.flatMap(buildCrawlerGroup),
     `Sitemap: ${buildCanonicalUrl("/sitemap.xml")}`,
     "",
   ].join("\n");

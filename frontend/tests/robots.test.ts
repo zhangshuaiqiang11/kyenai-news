@@ -14,7 +14,7 @@ describe("robots helpers", () => {
     expect(robots).toContain("Sitemap: https://www.kyenai.com/sitemap.xml");
   });
 
-  it("explicitly allows verified search and AI answer crawlers without exposing api routes", () => {
+  it("explicitly allows search, answer, and named training crawlers without exposing api routes", () => {
     const robots = buildRobotsTxt();
     const allowedAgents = [
       "Googlebot",
@@ -37,6 +37,9 @@ describe("robots helpers", () => {
       "Claude-User",
       "Bytespider",
     ];
+
+    expect(robots).toContain("# Search and answer retrieval crawlers");
+    expect(robots).toContain("# Training or research crawlers currently allowed for public content discovery");
 
     for (const agent of allowedAgents) {
       expect(robots).toContain(

@@ -30,8 +30,6 @@ describe("page indexing metadata", () => {
   it("noindexes utility and archive pages while keeping their links crawlable", () => {
     const pages = [
       <ContactPage key="contact" />,
-      <SourcesPage key="sources" sources={[]} />,
-      <AuthorPage key="author" articles={[]} />,
       <CategoryPage
         key="category"
         category="AI Coding Agents"
@@ -50,10 +48,16 @@ describe("page indexing metadata", () => {
     }
   });
 
-  it("keeps the public entity ledger indexable", () => {
-    render(<EntitiesPage articles={[]} entities={[]} />);
-
-    expectRobots(null);
+  it("keeps public trust ledgers indexable", () => {
+    for (const page of [
+      <EntitiesPage key="entities" articles={[]} entities={[]} />,
+      <SourcesPage key="sources" sources={[]} />,
+      <AuthorPage key="author" articles={[]} />,
+    ]) {
+      const view = render(page);
+      expectRobots(null);
+      view.unmount();
+    }
   });
 
   it("removes the noindex directive when a category hub passes its gate", () => {

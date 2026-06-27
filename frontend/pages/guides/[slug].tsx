@@ -10,9 +10,7 @@ import { getGuide, getGuides, getInternalLinkedGuides, getRelatedArticlesForGuid
 import { EDITORIAL_AUTHOR_NAME, EDITORIAL_AUTHOR_PATH } from "../../lib/editorial";
 import { resolveIndexableGuideTopicHref } from "../../lib/guide-topic-links";
 import {
-  buildBreadcrumbJsonLd,
-  buildFaqPageJsonLd,
-  buildGuideJsonLd,
+  buildGuideGraphJsonLd,
   buildOgImageUrl,
   formatDate,
 } from "../../lib/seo";
@@ -157,14 +155,13 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
   const isQuickAnswerSection = (heading: string) => heading.trim().toLowerCase() === "quick answer";
   const quickAnswer = guide.sections.find((section) => isQuickAnswerSection(section.heading))?.body[0] || guide.summary;
   const bodySections = guide.sections.filter((section) => !isQuickAnswerSection(section.heading));
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+  const breadcrumbItems = [
     { name: "Home", path: "/" },
     { name: "Guides", path: "/guides" },
     { name: guide.title, path: guidePath },
-  ]);
-  const guideJsonLd = buildGuideJsonLd(guide);
+  ];
   const faqs = getVisibleGuideFaqs(guide);
-  const faqJsonLd = buildFaqPageJsonLd(faqs);
+  const guideGraphJsonLd = buildGuideGraphJsonLd(guide, breadcrumbItems, faqs);
   const bestNextStep = bestNextStepsByGuideSlug[guide.slug];
 
   return (
@@ -175,9 +172,7 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
         path={guidePath}
         ogImage={buildOgImageUrl(guide.metaTitle || guide.title)}
       >
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(guideJsonLd) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(guideGraphJsonLd) }} />
       </SeoHead>
       <article className="article-page guide-page">
         <div className="article-header">

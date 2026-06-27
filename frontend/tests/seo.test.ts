@@ -4,6 +4,7 @@ import { buildCategoryPath } from "../lib/categories";
 import { getGuides } from "../lib/guides";
 import {
   buildArticleFaqs,
+  buildArticleGraphJsonLd,
   buildArticleJsonLd,
   buildAuthorJsonLd,
   buildBreadcrumbJsonLd,
@@ -11,6 +12,7 @@ import {
   buildCollectionPageJsonLd,
   buildFaqPageJsonLd,
   buildGuideFaqs,
+  buildGuideGraphJsonLd,
   buildGuideItemListJsonLd,
   buildGuideJsonLd,
   buildItemListJsonLd,
@@ -128,6 +130,7 @@ describe("SEO helpers", () => {
     expect(jsonLd["@id"]).toBe(`https://www.kyenai.com/guides/${slug}#techarticle`);
     expect(jsonLd.headline).toBe(guide!.title);
     expect(jsonLd.url).toBe(`https://www.kyenai.com/guides/${slug}`);
+    expect(jsonLd.datePublished).toBe(guide!.updatedAt);
     expect(jsonLd.dateModified).toBe(guide!.updatedAt);
     expect(jsonLd.author).toEqual(editorialOrganization());
     expect(jsonLd.publisher["@id"]).toBe("https://www.kyenai.com#organization");
@@ -247,6 +250,37 @@ describe("SEO helpers", () => {
     expect(buildAuthorJsonLd(seedArticles[0].authorName)).toEqual(editorialOrganization(true));
   });
 
+  it("combines guide page schema into one graph for easier extraction", () => {
+    const guide = getGuides()[0];
+    const faqs = buildGuideFaqs(guide);
+    const graph = buildGuideGraphJsonLd(guide, [
+      { name: "Home", path: "/" },
+      { name: "Guides", path: "/guides" },
+      { name: guide.title, path: `/guides/${guide.slug}` },
+    ], faqs);
+
+    expect(graph["@context"]).toBe("https://schema.org");
+    expect(graph["@graph"].map((node) => node["@type"])).toEqual(
+      expect.arrayContaining(["Organization", "WebSite", "TechArticle", "BreadcrumbList", "FAQPage"]),
+    );
+    expect(JSON.stringify(graph)).toContain("#organization");
+    expect(JSON.stringify(graph)).toContain("#website");
+  });
+
+  it("combines article page schema into one graph for easier extraction", () => {
+    const article = seedArticles[0];
+    const faqs = buildArticleFaqs(article);
+    const graph = buildArticleGraphJsonLd(article, [
+      { name: "Home", path: "/" },
+      { name: article.category, path: buildCategoryPath(article.category) },
+      { name: article.title, path: `/articles/${article.slug}` },
+    ], faqs);
+
+    expect(graph["@graph"].map((node) => node["@type"])).toEqual(
+      expect.arrayContaining(["Organization", "WebSite", "NewsArticle", "BreadcrumbList", "FAQPage"]),
+    );
+  });
+
   it("keeps every article deep enough for snippet and AI answer extraction", () => {
     const bannedPhrases = ["in today's digital era", "comprehensive guide", "unlock the power", "game-changing"];
     for (const article of seedArticles) {
@@ -306,6 +340,12 @@ describe("SEO helpers", () => {
     expect(organizationJsonLd.name).toBe("KyenAI");
     expect(organizationJsonLd.url).toBe("https://www.kyenai.com");
     expect(organizationJsonLd.logo).toEqual({ "@type": "ImageObject", url: expect.stringContaining("og-image") });
+    expect(organizationJsonLd.sameAs).toEqual([
+      "https://www.kyenai.com/about",
+      "https://www.kyenai.com/editorial-policy",
+      "https://www.kyenai.com/sources",
+      "https://www.kyenai.com/entities",
+    ]);
   });
 
   it("formats page titles as one plain string for Next head rendering", () => {

@@ -33,13 +33,17 @@ export default function SourcesPage({ sources }: SourcesPageProps) {
 
   return (
     <Layout>
-      <SeoHead title="Source Ledger" description={description} path="/sources" robots="noindex,follow">
+      <SeoHead title="Source Ledger" description={description} path="/sources">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       </SeoHead>
       <section className="listing-page sources-page">
         <h1>Source Ledger</h1>
-        <p>Official and high-confidence sources used by the portal's content automation guardrails.</p>
+        <p>
+          Official and high-confidence sources used by the portal's content automation guardrails. This page is
+          indexable so readers, search crawlers, and AI answer systems can verify the evidence trail behind KyenAI
+          guides and updates.
+        </p>
         <div className="source-card-grid">
           {sources.map((source) => (
             <article className="source-card" key={source.url}>
