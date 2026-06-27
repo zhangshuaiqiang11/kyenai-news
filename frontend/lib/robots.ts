@@ -6,7 +6,11 @@ const publicDisallowRules = ["/api/"];
 const verifiedSearchAndAiCrawlers = [
   "Googlebot",
   "Googlebot-Image",
+  "Googlebot-Video",
   "GoogleOther",
+  "GoogleOther-Image",
+  "GoogleOther-Video",
+  "Google-CloudVertexBot",
   "Google-Extended",
   "Bingbot",
   "BingPreview",

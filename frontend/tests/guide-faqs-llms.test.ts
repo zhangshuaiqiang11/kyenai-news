@@ -45,7 +45,7 @@ describe("llms.txt", () => {
 
     expect(publicBody).toContain("# KyenAI");
     expect(publicBody).toContain("## All guides");
-    expect(publicBody).toContain("[Loop Engineering for AI Coding Agents");
+    expect(publicBody).toContain("[What Is Loop Engineering for AI Coding Agents?");
     expect(publicBody).toContain("[Codex vs Claude Code](https://www.kyenai.com/guides/codex-vs-claude-code):");
     expect(publicBody).toContain("Citation guidance");
     expect(publicBody).not.toContain("<!DOCTYPE html>");

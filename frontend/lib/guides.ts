@@ -506,7 +506,7 @@ const coreGuides: Guide[] = [
         },
         {
           label: "Skills",
-          values: ["Reusable procedural knowledge", "SEO SOP, code review workflow, release checklist", "Outdated references or overly broad instructions"],
+          values: ["Reusable procedural knowledge", "incident review workflow, code review workflow, release checklist", "Outdated references or overly broad instructions"],
         },
         {
           label: "Manual approval",
@@ -612,10 +612,10 @@ const coreGuides: Guide[] = [
   },
   {
     id: "guide-secure-mcp-servers",
-    title: "MCP security checklist for AI coding agents",
+    title: "Secure MCP Server Connections to AI Agents",
     slug: MCP_SECURITY_GUIDE_SLUG,
     summary:
-      "Use this MCP server security checklist to review authentication, permissions, secrets, network reach, logs, revocation, and launch gates before an AI coding agent gets tool access.",
+      "Review MCP server security before connecting AI agents: authentication, token audience, least privilege, network limits, logs, revocation, and launch gates.",
     intent:
       "Answer how to secure an MCP server with source-backed protocol checks and clearly labeled operational controls.",
     audience: "Engineering leaders, security reviewers, platform teams, and developer tooling owners.",
@@ -631,7 +631,7 @@ const coreGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Start MCP server security with auth, permissions, logs, and revocation before the agent can act. Validate token audience, avoid token passthrough, grant read-only access first, block secrets and undeclared network destinations, log high-impact calls without sensitive payloads, and prove the server can be disabled. Human approval and attributable audit logs are KyenAI operational recommendations for destructive or production actions, not requirements imposed by the MCP specification.",
+          "Secure MCP server connections to AI agents before any tool can act. Validate authentication and token audience, avoid token passthrough, grant least-privilege read-only access first, block secrets and undeclared network destinations, log high-impact calls without sensitive payloads, and prove revocation works. Human approval and attributable audit logs are KyenAI operational recommendations for destructive or production actions, not requirements imposed by the MCP specification.",
         ],
       },
       {

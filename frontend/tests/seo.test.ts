@@ -8,6 +8,7 @@ import {
   buildAuthorJsonLd,
   buildBreadcrumbJsonLd,
   buildCanonicalUrl,
+  buildCollectionPageJsonLd,
   buildFaqPageJsonLd,
   buildGuideFaqs,
   buildGuideItemListJsonLd,
@@ -27,10 +28,12 @@ import { seedArticles } from "../lib/seed";
 const editorialOrganization = (includeContext = false) => ({
   ...(includeContext ? { "@context": "https://schema.org" } : {}),
   "@type": "Organization",
+  "@id": "https://www.kyenai.com/authors/editorial-automation-desk#organization",
   name: "Editorial Automation Desk",
   url: "https://www.kyenai.com/authors/editorial-automation-desk",
   parentOrganization: {
     "@type": "Organization",
+    "@id": "https://www.kyenai.com#organization",
     name: "KyenAI",
     url: "https://www.kyenai.com",
   },
@@ -90,6 +93,7 @@ describe("SEO helpers", () => {
     expect(jsonLd.author).toEqual(editorialOrganization());
     expect(jsonLd.publisher).toEqual({
       "@type": "Organization",
+      "@id": "https://www.kyenai.com#organization",
       name: "KyenAI",
       url: "https://www.kyenai.com",
       logo: { "@type": "ImageObject", url: expect.stringContaining("og-image") },
@@ -121,10 +125,13 @@ describe("SEO helpers", () => {
     const serializedJsonLd = JSON.stringify(jsonLd);
 
     expect(jsonLd["@type"]).toBe("TechArticle");
+    expect(jsonLd["@id"]).toBe(`https://www.kyenai.com/guides/${slug}#techarticle`);
     expect(jsonLd.headline).toBe(guide!.title);
     expect(jsonLd.url).toBe(`https://www.kyenai.com/guides/${slug}`);
     expect(jsonLd.dateModified).toBe(guide!.updatedAt);
     expect(jsonLd.author).toEqual(editorialOrganization());
+    expect(jsonLd.publisher["@id"]).toBe("https://www.kyenai.com#organization");
+    expect(jsonLd.isPartOf).toEqual({ "@id": "https://www.kyenai.com#website" });
     expect(jsonLd.citation).toEqual(guide!.evidence.map((source) => source.url));
     expect(jsonLd.isBasedOn.map((source) => source.url)).toEqual(guide!.evidence.map((source) => source.url));
     expect(jsonLd).not.toHaveProperty("aggregateRating");
@@ -273,16 +280,29 @@ describe("SEO helpers", () => {
     expect(listJsonLd.numberOfItems).toBe(3);
     expect(listJsonLd.itemListElement[0].url).toBe(`https://www.kyenai.com/articles/${seedArticles[0].slug}`);
     expect(guideListJsonLd.itemListElement[0].url).toContain("https://www.kyenai.com/guides/");
+    const collectionPageJsonLd = buildCollectionPageJsonLd({
+      title: "AI Coding Agent Decision Guides: AGENTS.md, Codex, MCP",
+      description:
+        "Choose instruction files, compare Codex and Claude Code, design agent loops, and secure MCP access with decision matrices and launch checklists.",
+      path: "/guides",
+    });
+    expect(collectionPageJsonLd["@type"]).toBe("CollectionPage");
+    expect(collectionPageJsonLd["@id"]).toBe("https://www.kyenai.com/guides");
+    expect(collectionPageJsonLd.isPartOf).toEqual({ "@id": "https://www.kyenai.com#website" });
+    expect(collectionPageJsonLd.publisher["@id"]).toBe("https://www.kyenai.com#organization");
     expect(websiteJsonLd["@type"]).toBe("WebSite");
+    expect(websiteJsonLd["@id"]).toBe("https://www.kyenai.com#website");
     expect(websiteJsonLd.name).toBe("KyenAI");
     expect(websiteJsonLd.inLanguage).toBe("en");
     expect(websiteJsonLd.description).toContain("loop engineering");
     expect(websiteJsonLd.publisher.name).toBe("KyenAI");
+    expect(websiteJsonLd.publisher["@id"]).toBe("https://www.kyenai.com#organization");
   });
 
   it("builds top-level organization JSON-LD for brand identity", () => {
     const organizationJsonLd = buildOrganizationJsonLd();
     expect(organizationJsonLd["@type"]).toBe("Organization");
+    expect(organizationJsonLd["@id"]).toBe("https://www.kyenai.com#organization");
     expect(organizationJsonLd.name).toBe("KyenAI");
     expect(organizationJsonLd.url).toBe("https://www.kyenai.com");
     expect(organizationJsonLd.logo).toEqual({ "@type": "ImageObject", url: expect.stringContaining("og-image") });

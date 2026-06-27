@@ -8,7 +8,7 @@ import {
   MCP_SECURITY_GUIDE_HREF,
 } from "../../lib/guide-routes";
 import { getGuides } from "../../lib/guides";
-import { buildBreadcrumbJsonLd, buildGuideItemListJsonLd } from "../../lib/seo";
+import { buildBreadcrumbJsonLd, buildCollectionPageJsonLd, buildGuideItemListJsonLd } from "../../lib/seo";
 import type { Guide } from "../../lib/types";
 
 type GuidesPageProps = {
@@ -214,6 +214,11 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
     { name: "Guides", path: "/guides" },
   ]);
   const itemListJsonLd = buildGuideItemListJsonLd(guides, "AI coding agent guides", "/guides");
+  const collectionPageJsonLd = buildCollectionPageJsonLd({
+    title: guidesPageSeo.title,
+    description: guidesPageSeo.description,
+    path: "/guides",
+  });
 
   return (
     <Layout>
@@ -223,6 +228,7 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
         path="/guides"
       >
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       </SeoHead>
       <section className="listing-page guide-listing">
@@ -231,15 +237,11 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
           <span aria-hidden="true">/</span>
           <span>Guides</span>
         </nav>
-        <h1>AI Coding Agent Decision Guides for Engineering Teams</h1>
+        <h1>AI Coding Agent Guides</h1>
         <p>
           Use these guides to choose repository instruction files, compare Codex and Claude Code, design repeatable
           agent loops, and secure MCP access before giving agents more autonomy.
         </p>
-        <section className="answer-panel citation-panel" aria-labelledby="guides-overview-heading">
-          <h2 id="guides-overview-heading">Guide overview</h2>
-          <p>{guideOverview}</p>
-        </section>
         <section className="featured-guide-paths" aria-labelledby="featured-guide-paths-heading">
           <div>
             <h2 id="featured-guide-paths-heading">Featured starting paths</h2>
@@ -263,6 +265,10 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
               <span>Move from one-shot prompts to act-observe-reason cycles with verification commands, stop rules, and cost limits.</span>
             </Link>
           </div>
+        </section>
+        <section className="answer-panel citation-panel" aria-labelledby="guides-overview-heading">
+          <h2 id="guides-overview-heading">Guide overview</h2>
+          <p>{guideOverview}</p>
         </section>
         <section className="featured-guide-paths" aria-labelledby="starting-guides-heading">
           <div>

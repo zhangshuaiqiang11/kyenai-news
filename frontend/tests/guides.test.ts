@@ -244,7 +244,9 @@ describe("guide SEO data", () => {
     expect(guide!.updatedAt).toBe("2026-06-26");
 
     const quickAnswer = guide!.sections[0].body[0];
-    expect(guide!.title).toMatch(/Addy Osmani's Workflow Explained/i);
+    expect(guide!.title).toMatch(/What Is Loop Engineering for AI Coding Agents/i);
+    expect(guide!.summary).toMatch(/Addy Osmani's workflow context/i);
+    expect(quickAnswer).toMatch(/Loop engineering for AI coding agents means/i);
     expect(quickAnswer).toMatch(/Addy Osmani's loop engineering approach/i);
     expect(quickAnswer).toMatch(/Plan → Act → Observe → Verify → Stop/i);
     expect(quickAnswer).toMatch(/token or cost caps/i);

@@ -5,6 +5,8 @@ import { getArticleEntities } from "./entities";
 export const SITE_NAME = "KyenAI";
 export const SITE_URL = normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL || "https://www.kyenai.com");
 export const OG_IMAGE_URL = `${SITE_URL}/og-image.svg`;
+export const ORGANIZATION_ID = `${SITE_URL}#organization`;
+export const WEBSITE_ID = `${SITE_URL}#website`;
 
 type PageSeoInput = {
   title: string;
@@ -95,6 +97,7 @@ export function buildArticleJsonLd(article: Article) {
     author: buildAuthorJsonLd(article.authorName, false),
     publisher: {
       "@type": "Organization",
+      "@id": ORGANIZATION_ID,
       name: SITE_NAME,
       url: buildCanonicalUrl("/"),
       logo: {
@@ -137,6 +140,7 @@ export function buildGuideJsonLd(guide: Guide) {
   return {
     "@context": "https://schema.org",
     "@type": "TechArticle",
+    "@id": `${canonical}#techarticle`,
     headline: guide.title,
     description: guide.metaDescription,
     url: canonical,
@@ -149,6 +153,7 @@ export function buildGuideJsonLd(guide: Guide) {
     author: buildAuthorJsonLd(EDITORIAL_AUTHOR_NAME, false),
     publisher: {
       "@type": "Organization",
+      "@id": ORGANIZATION_ID,
       name: SITE_NAME,
       url: buildCanonicalUrl("/"),
       logo: {
@@ -159,6 +164,9 @@ export function buildGuideJsonLd(guide: Guide) {
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonical,
+    },
+    isPartOf: {
+      "@id": WEBSITE_ID,
     },
     keywords: topics,
     about: topics.map((keyword) => ({
@@ -260,10 +268,12 @@ export function buildAuthorJsonLd(name: string, includeContext = true) {
   return {
     ...(includeContext ? { "@context": "https://schema.org" } : {}),
     "@type": "Organization",
+    "@id": `${buildCanonicalUrl("/authors/editorial-automation-desk")}#organization`,
     name,
     url: buildCanonicalUrl("/authors/editorial-automation-desk"),
     parentOrganization: {
       "@type": "Organization",
+      "@id": ORGANIZATION_ID,
       name: SITE_NAME,
       url: buildCanonicalUrl("/"),
     },
@@ -315,10 +325,34 @@ export function buildGuideItemListJsonLd(guides: Guide[], name: string, path: st
   };
 }
 
+export function buildCollectionPageJsonLd({ title, description, path }: PageSeoInput) {
+  const canonical = buildCanonicalUrl(path);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": canonical,
+    url: canonical,
+    name: title,
+    description,
+    inLanguage: "en",
+    isPartOf: {
+      "@id": WEBSITE_ID,
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": ORGANIZATION_ID,
+      name: SITE_NAME,
+      url: buildCanonicalUrl("/"),
+    },
+  };
+}
+
 export function buildWebsiteJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": WEBSITE_ID,
     name: SITE_NAME,
     url: buildCanonicalUrl("/"),
     inLanguage: "en",
@@ -326,6 +360,7 @@ export function buildWebsiteJsonLd() {
       "Evidence-led AI coding agent playbooks for instruction files, loop engineering, MCP security, and tool comparisons.",
     publisher: {
       "@type": "Organization",
+      "@id": ORGANIZATION_ID,
       name: SITE_NAME,
       url: buildCanonicalUrl("/"),
     },
@@ -338,6 +373,7 @@ export function buildOrganizationJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": ORGANIZATION_ID,
     name: SITE_NAME,
     url: buildCanonicalUrl("/"),
     logo: {

@@ -126,7 +126,7 @@ describe("contextual internal links", () => {
     expect(guidesPageSeo.description).toContain("compare Codex and Claude Code");
     expect(
       screen.getByRole("heading", {
-        name: "AI Coding Agent Decision Guides for Engineering Teams",
+        name: "AI Coding Agent Guides",
         level: 1,
       }),
     ).toBeTruthy();

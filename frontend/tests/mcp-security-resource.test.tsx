@@ -196,9 +196,11 @@ describe("MCP security guide integration", () => {
       resourceIds: ["mcp-security"],
       updatedAt: "2026-06-26",
     });
-    expect(guide!.title).toMatch(/MCP security checklist/i);
+    expect(guide!.title).toMatch(/Secure MCP Server Connections/i);
     expect(guide!.metaTitle).toMatch(/Secure MCP Server Connections/i);
     expect(guide!.summary).toMatch(/MCP server security/i);
+    expect(guide!.sections[0].body[0]).toMatch(/token audience/i);
+    expect(guide!.sections[0].body[0]).toMatch(/least-privilege/i);
     expect(JSON.stringify(guide)).toMatch(/how to secure an MCP server/i);
     expect(JSON.stringify(guide)).toMatch(/MCP authentication/i);
     expect(JSON.stringify(guide)).toMatch(/MCP permissions/i);

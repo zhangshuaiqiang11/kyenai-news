@@ -1257,10 +1257,10 @@ export const expansionGuides: Guide[] = [
   },
   {
     id: "guide-loop-engineering",
-    title: "Loop Engineering for AI Coding Agents: Addy Osmani's Workflow Explained",
+    title: "What Is Loop Engineering for AI Coding Agents?",
     slug: "loop-engineering-ai-coding-agents",
     summary:
-      "Learn what loop engineering means for AI coding agents: Addy Osmani's workflow, examples, stop rules, token and cost caps, verification commands, and checkpoints.",
+      "Learn what loop engineering means for AI coding agents: the control loop, examples, stop rules, token and cost caps, verification commands, and Addy Osmani's workflow context.",
     intent:
       "Developers want to move from prompting agents task-by-task to designing durable loops that plan, change code, verify results, and stop safely.",
     audience: "Developers, staff engineers, and platform teams adopting agentic coding workflows in Cursor, Claude Code, Codex, or custom CI agents.",
@@ -1278,7 +1278,7 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Addy Osmani's loop engineering approach means designing the operating loop around the agent, not writing one better prompt. For AI coding agents, the practical loop is Plan → Act → Observe → Verify → Stop, a stricter version of the act → observe → reason cycle: give the agent a bounded repo goal, inspect evidence such as tests or diffs, retry only with a changed strategy, and stop on token or cost caps, repeated failure, risky permission changes, or a required human checkpoint.",
+          "Loop engineering for AI coding agents means designing the repeatable control loop around the agent, not writing one better prompt. Addy Osmani's loop engineering approach is useful context, but the practical repo loop is Plan → Act → Observe → Verify → Stop, a stricter version of the act → observe → reason cycle: give the agent a bounded goal, inspect tests or diffs, retry only with a changed strategy, and stop on token or cost caps, repeated failure, risky permission changes, or a required human checkpoint.",
         ],
       },
       {
