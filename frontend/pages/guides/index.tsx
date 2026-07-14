@@ -148,6 +148,11 @@ const startingGuides = [
     note: "Use this when you need deal status, timeline, and developer-tool impact in one place.",
   },
   {
+    href: "/articles/cursor-enterprise-organizations-governance",
+    label: "Cursor Enterprise security checklist",
+    note: "Use this when enterprise buyers ask about Privacy Mode, retention caveats, and agent permissions.",
+  },
+  {
     href: "/guides/agents-md-template-for-ai-coding-agents",
     label: "AGENTS.md template: copyable Codex examples",
     note: "Use this after choosing AGENTS.md and before writing repo-specific agent instructions.",

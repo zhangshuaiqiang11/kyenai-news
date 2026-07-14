@@ -215,6 +215,7 @@ describe("MCP security guide integration", () => {
         "how to secure an mcp server",
         "secure mcp server connection to ai agent",
         "securing connection between ai agents and mcp servers",
+        "ai coding agent credentials",
         "mcp authentication",
         "mcp permissions",
         "ai agent tool security",

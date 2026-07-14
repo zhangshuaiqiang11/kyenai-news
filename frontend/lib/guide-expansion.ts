@@ -1526,8 +1526,8 @@ export const expansionGuides: Guide[] = [
       "cursor-enterprise-organizations-governance",
       "github-copilot-cloud-local-sandboxes-preview",
     ],
-    updatedAt: "2026-06-26",
-    metaTitle: "What Is Loop Engineering? AI Agent Loops, Examples, Stop Rules",
+    updatedAt: "2026-07-14",
+    metaTitle: "What Is Loop Engineering? Addy Osmani, AI Agent Loops, Stop Rules",
     metaDescription:
       "Loop engineering designs repeatable AI agent loops around goals, tools, verification, retries, stop rules, and cost caps instead of one better prompt.",
     resourceIds: ["loop-engineering"],

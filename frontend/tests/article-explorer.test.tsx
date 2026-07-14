@@ -28,6 +28,6 @@ describe("ArticleExplorer", () => {
     const summary = screen.getByText(`of ${seedArticles.length} articles visible`).parentElement;
     expect(summary).not.toBeNull();
     expect(within(summary as HTMLElement).getByText("2")).toBeTruthy();
-    expect(screen.getByText("Cursor Enterprise Adds Organization-Level Governance")).toBeTruthy();
+    expect(screen.getByText("Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions")).toBeTruthy();
   });
 });

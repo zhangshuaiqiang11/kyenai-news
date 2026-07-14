@@ -7,6 +7,11 @@ const ARTICLE_GUIDE_OVERRIDES: Record<string, string[]> = {
     "agents-md-vs-claude-md-cursorrules-copilot-instructions",
     "loop-engineering-ai-coding-agents",
   ],
+  "cursor-enterprise-organizations-governance": [
+    "agent-governance-checklist-for-software-teams",
+    "secure-mcp-servers-ai-coding-agents",
+    "local-vs-cloud-ai-coding-agent",
+  ],
 };
 
 export function getRelatedGuidesForArticle(article: Article, limit = 3): Guide[] {

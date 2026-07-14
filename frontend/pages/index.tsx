@@ -47,6 +47,11 @@ const highImpressionEntries = [
     note: "Event page with deal status, Q3 2026 closing window, and developer impact.",
   },
   {
+    href: "/articles/cursor-enterprise-organizations-governance",
+    label: "Cursor Enterprise security and Privacy Mode checklist",
+    note: "Verify retention caveats, repo controls, MCP allowlists, and agent permissions.",
+  },
+  {
     href: "/guides/secure-mcp-servers-ai-coding-agents",
     label: "MCP server security checklist",
     note: "Secure MCP connections with authentication, permissions, logs, and revocation.",

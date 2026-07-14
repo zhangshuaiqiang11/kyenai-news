@@ -234,9 +234,9 @@ export const spacexCursorAcquisitionArticle: Article = {
   publishedAt: "2026-06-16T10:35:00Z",
   updatedAt: "2026-06-25",
   version: 3,
-  metaTitle: "SpaceX Cursor Acquisition: Deal Status, Timeline, Developer Impact",
+  metaTitle: "SpaceX Cursor Acquisition Status: Is the Anysphere Deal Closed?",
   metaDescription:
-    "SpaceX Cursor acquisition explained: signed $60B all-stock deal, Q3 2026 closing status, timeline, and what Cursor users should watch.",
+    "SpaceX Cursor acquisition status: signed $60B all-stock Anysphere deal, not closed yet, Q3 2026 timeline, and what Cursor users should watch.",
 };
 
 export const featuredArticles: Article[] = [spacexCursorAcquisitionArticle];

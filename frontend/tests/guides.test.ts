@@ -241,7 +241,7 @@ describe("guide SEO data", () => {
 
     expect(guide).toBeDefined();
     expect(guide!.resourceIds).toEqual(["loop-engineering"]);
-    expect(guide!.updatedAt).toBe("2026-06-26");
+    expect(guide!.updatedAt).toBe("2026-07-14");
 
     const quickAnswer = guide!.sections[0].body[0];
     expect(guide!.title).toMatch(/What Is Loop Engineering for AI Coding Agents/i);
@@ -336,12 +336,12 @@ describe("guide SEO data", () => {
         "claude code alternatives",
       ],
       gscBaseline: {
-        clicks: 0,
-        impressions: 72,
-        ctr: 0,
-        averagePosition: 39.4,
+        clicks: 1,
+        impressions: 109,
+        ctr: 0.0092,
+        averagePosition: 36.8,
       },
-      emergencyPriority: 55,
+      emergencyPriority: 100,
     });
   });
 
@@ -352,8 +352,8 @@ describe("guide SEO data", () => {
       "loop-engineering-ai-coding-agents",
       "agents-md-vs-claude-md-cursorrules-copilot-instructions",
       "agents-md-template-for-ai-coding-agents",
-      "codex-vs-claude-code",
       "secure-mcp-servers-ai-coding-agents",
+      "codex-vs-claude-code",
     ]);
     expect(JSON.stringify(priorityGuides)).not.toContain('"demandScore"');
     expect(JSON.stringify(priorityGuides)).not.toContain('"gscBaseline"');

@@ -33,6 +33,15 @@ describe("guide topic links", () => {
     );
   });
 
+  it("routes Cursor Enterprise security topics to the governance guide", () => {
+    expect(resolveIndexableGuideTopicHref("Cursor Enterprise security")).toBe(
+      "/guides/agent-governance-checklist-for-software-teams",
+    );
+    expect(resolveIndexableGuideTopicHref("Cursor data retention")).toBe(
+      "/guides/agent-governance-checklist-for-software-teams",
+    );
+  });
+
   it("routes P2 AGENTS.md support topics to the narrow support pages", () => {
     expect(resolveIndexableGuideTopicHref("github copilot claude.md support")).toBe(
       "/guides/does-github-copilot-read-claude-md-support-matrix",
