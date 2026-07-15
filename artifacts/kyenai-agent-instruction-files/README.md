@@ -2,7 +2,7 @@
 
 Reusable, source-backed instruction templates and compatibility data for common AI coding tools.
 
-Verified: 2026-06-14
+Verified: 2026-07-14
 
 ## Included files
 
@@ -17,15 +17,21 @@ The package also includes JSON and CSV compatibility data, a benchmark protocol,
 
 ## Compatibility sources
 
-| Tool | Instruction path | Status | Source |
-| --- | --- | --- | --- |
-| OpenAI Codex | `AGENTS.override.md → AGENTS.md → configured fallback filename` | documented | [OpenAI](https://developers.openai.com/codex/guides/agents-md) |
-| Claude Code | `CLAUDE.md` | documented | [Anthropic](https://docs.anthropic.com/en/docs/claude-code/memory) |
-| GitHub Copilot | `.github/copilot-instructions.md` | documented | [GitHub](https://docs.github.com/en/copilot/reference/custom-instructions-support) |
-| GitHub Copilot | `CLAUDE.md` | documented | [GitHub](https://docs.github.com/en/copilot/reference/custom-instructions-support) |
-| GitHub Copilot | `CLAUDE.md` | unsupported | [GitHub](https://docs.github.com/en/copilot/reference/custom-instructions-support) |
-| Cursor | `.cursor/rules/*.mdc` | documented | [Cursor](https://cursor.com/docs/rules) |
-| Cursor | `.cursorrules` | unknown | [Cursor](https://cursor.com/docs/rules) |
+| Tool | Instruction path | Surfaces | Status | Source |
+| --- | --- | --- | --- | --- |
+| OpenAI Codex | `AGENTS.override.md → AGENTS.md → configured fallback filename` | Codex app; Codex CLI; Codex IDE extension; Codex web | documented | [OpenAI](https://learn.chatgpt.com/docs/agent-configuration/agents-md) |
+| Claude Code | `CLAUDE.md` | Claude Code | documented | [Anthropic](https://code.claude.com/docs/en/memory) |
+| Claude Code | `CLAUDE.md containing @AGENTS.md` | Claude Code | documented | [Anthropic](https://code.claude.com/docs/en/memory) |
+| GitHub Copilot | `.github/copilot-instructions.md` | GitHub.com Copilot Chat; GitHub.com Copilot cloud agent; GitHub.com Copilot code review; VS Code Copilot Chat; VS Code Copilot cloud agent; VS Code Copilot code review; Visual Studio Copilot Chat; Visual Studio Copilot code review; JetBrains Copilot Chat; JetBrains Copilot cloud agent; JetBrains Copilot code review; Eclipse Copilot Chat; Eclipse Copilot cloud agent; Xcode Copilot Chat; Xcode Copilot cloud agent; Xcode Copilot code review; Copilot CLI | documented | [GitHub](https://docs.github.com/en/copilot/reference/custom-instructions-support) |
+| GitHub Copilot | `.github/instructions/**/*.instructions.md` | GitHub.com Copilot cloud agent; GitHub.com Copilot code review; VS Code Copilot Chat; VS Code Copilot cloud agent; Visual Studio Copilot Chat; JetBrains Copilot Chat; JetBrains Copilot cloud agent; JetBrains Copilot code review; Eclipse Copilot cloud agent; Xcode Copilot Chat; Xcode Copilot cloud agent; Xcode Copilot code review; Copilot CLI | documented | [GitHub](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions) |
+| GitHub Copilot | `AGENTS.md` | GitHub.com Copilot cloud agent; GitHub.com Copilot code review; VS Code Copilot Chat; VS Code Copilot cloud agent; JetBrains Copilot cloud agent; Eclipse Copilot cloud agent; Xcode Copilot cloud agent; Copilot CLI | documented | [GitHub](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions) |
+| GitHub Copilot | `CLAUDE.md` | GitHub.com Copilot cloud agent; VS Code Copilot cloud agent; JetBrains Copilot cloud agent; Eclipse Copilot cloud agent; Xcode Copilot cloud agent; Copilot CLI | documented | [GitHub](https://docs.github.com/en/copilot/reference/custom-instructions-support) |
+| GitHub Copilot | `CLAUDE.md` | GitHub.com Copilot Chat; GitHub.com Copilot code review; VS Code Copilot Chat; VS Code Copilot code review; Visual Studio Copilot Chat; Visual Studio Copilot code review; JetBrains Copilot Chat; JetBrains Copilot code review; Eclipse Copilot Chat; Eclipse Copilot code review; Xcode Copilot Chat; Xcode Copilot code review | unsupported | [GitHub](https://docs.github.com/en/copilot/reference/custom-instructions-support) |
+| Cursor | `.cursor/rules/*.mdc` | Cursor IDE; Cursor CLI | documented | [Cursor](https://docs.cursor.com/context/rules-for-ai) |
+| Cursor | `AGENTS.md (project root)` | Cursor IDE | documented | [Cursor](https://docs.cursor.com/context/rules-for-ai) |
+| Cursor | `AGENTS.md (project root)` | Cursor CLI | documented | [Cursor](https://docs.cursor.com/en/cli/using) |
+| Cursor | `CLAUDE.md (project root)` | Cursor CLI | documented | [Cursor](https://docs.cursor.com/en/cli/using) |
+| Cursor | `.cursorrules` | Cursor IDE | legacy | [Cursor](https://docs.cursor.com/context/rules-for-ai) |
 
 Compatibility claims are limited to the linked publisher documentation and the verified date above.
 

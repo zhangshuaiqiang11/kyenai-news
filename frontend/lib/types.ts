@@ -34,6 +34,11 @@ export type Article = {
   metaDescription?: string;
 };
 
+export type ArticleSummary = Pick<
+  Article,
+  "id" | "title" | "slug" | "summary" | "category" | "tags" | "keywords" | "sources" | "updatedAt"
+>;
+
 export type SearchSignal = {
   label: string;
   value: string;
@@ -127,6 +132,7 @@ export type BenchmarkRun = {
 
 export type GuideResourceId =
   | "instruction-files"
+  | "copilot-surface-matrix"
   | "mcp-security"
   | "agents-md-template"
   | "claude-code-setup"
@@ -150,6 +156,7 @@ export type Guide = {
   checklist: string[];
   evidence: GuideEvidence[];
   relatedArticleSlugs: string[];
+  publishedAt: string;
   updatedAt: string;
   metaTitle: string;
   metaDescription: string;

@@ -64,6 +64,14 @@ const InstructionResources = dynamic(
   { ssr: true },
 );
 
+const CopilotSurfaceMatrix = dynamic(
+  () =>
+    import("../../components/InstructionCompatibilityMatrix").then(
+      ({ CopilotClaudeSurfaceMatrix }) => CopilotClaudeSurfaceMatrix,
+    ),
+  { ssr: true },
+);
+
 export const loadAgentsMdTemplateResource = () =>
   import("../../components/AgentsMdTemplateResource").then(
     ({ AgentsMdTemplateResource }) => AgentsMdTemplateResource,
@@ -121,6 +129,10 @@ function GuideResources({ guide }: { guide: Guide }) {
     return <InstructionResources />;
   }
 
+  if (guide.resourceIds?.includes("copilot-surface-matrix")) {
+    return <CopilotSurfaceMatrix />;
+  }
+
   if (guide.resourceIds?.includes("agents-md-template")) {
     return <AgentsMdTemplateResources />;
   }
@@ -141,7 +153,8 @@ function GuideResources({ guide }: { guide: Guide }) {
 }
 
 function buildGuideSummary(guide: Guide): string {
-  return `Use this KyenAI guide when your team needs a source-linked decision on ${guide.title}. The page gives the answer first, then adds decision tables, implementation steps, pitfalls, checklists, related guide links, and source material for review. It is designed for software teams comparing tools, setting repository policies, designing agent loops, or documenting rollout controls. Each section is framed as a practical implementation step, so a reader can move from the summary to the evidence, then into the next guide or checklist without sorting through broad vendor marketing.`;
+  const evidenceTitles = guide.evidence.slice(0, 3).map((source) => source.title).join("; ");
+  return `${guide.summary} Evidence reviewed for this ${guide.pageType.toLowerCase()}: ${evidenceTitles || "the linked source ledger"}. Decision scope: ${guide.intent} Product behavior after ${formatDate(guide.updatedAt)} and any benchmark result not shown on this page remain unverified.`;
 }
 
 function buildGuideMethodologyDisclosure(guide: Guide): string {
@@ -207,8 +220,9 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
           <h2 id="guide-answer-heading">Quick Answer</h2>
           <p>{quickAnswer}</p>
         </section>
+        <GuideResources guide={guide} />
         <section className="answer-panel citation-panel" aria-labelledby="guide-summary-heading">
-          <h2 id="guide-summary-heading">Guide summary</h2>
+          <h2 id="guide-summary-heading">Evidence reviewed</h2>
           <p>{buildGuideSummary(guide)}</p>
         </section>
         {bestNextStep ? (
@@ -223,7 +237,6 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
           <h2 id="guide-methodology-heading">Methodology and disclosure</h2>
           <p>{buildGuideMethodologyDisclosure(guide)}</p>
         </section>
-        <GuideResources guide={guide} />
         <div className="article-content-grid">
           <div className="article-body">
             {bodySections.map((section) => (

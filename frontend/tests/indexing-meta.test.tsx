@@ -1,6 +1,6 @@
 /** @vitest-environment jsdom */
 import React from "react";
-import { cleanup, render } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import AuthorPage from "../pages/authors/[slug]";
@@ -72,5 +72,13 @@ describe("page indexing metadata", () => {
     );
 
     expectRobots(null);
+  });
+
+  it("publishes a KyenAI correction address instead of a placeholder domain", () => {
+    render(<ContactPage />);
+
+    const correctionLink = screen.getByRole("link", { name: "editorial@kyenai.com" });
+    expect(correctionLink.getAttribute("href")).toBe("mailto:editorial@kyenai.com");
+    expect(document.body.textContent).not.toContain("your-production-domain.com");
   });
 });

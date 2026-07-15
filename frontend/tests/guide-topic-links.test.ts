@@ -33,13 +33,14 @@ describe("guide topic links", () => {
     );
   });
 
-  it("routes Cursor Enterprise security topics to the governance guide", () => {
+  it("routes Cursor Enterprise security topics to the canonical evidence article", () => {
     expect(resolveIndexableGuideTopicHref("Cursor Enterprise security")).toBe(
-      "/guides/agent-governance-checklist-for-software-teams",
+      "/articles/cursor-enterprise-organizations-governance",
     );
     expect(resolveIndexableGuideTopicHref("Cursor data retention")).toBe(
-      "/guides/agent-governance-checklist-for-software-teams",
+      "/articles/cursor-enterprise-organizations-governance",
     );
+    expect(resolveIndexableGuideTopicHref("Cursor data retention", "cursor-enterprise-organizations-governance")).toBeNull();
   });
 
   it("routes P2 AGENTS.md support topics to the narrow support pages", () => {

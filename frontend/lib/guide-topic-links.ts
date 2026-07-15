@@ -6,10 +6,6 @@ const TOPIC_GUIDE_OVERRIDES: Record<string, string> = {
   "codex alternatives": "codex-vs-claude-code",
   "claude code alternatives": "codex-vs-claude-code",
   "ai coding agent comparison": "codex-vs-claude-code",
-  "cursor enterprise security": "agent-governance-checklist-for-software-teams",
-  "cursor privacy mode": "agent-governance-checklist-for-software-teams",
-  "cursor data retention": "agent-governance-checklist-for-software-teams",
-  "cursor agent permissions": "agent-governance-checklist-for-software-teams",
   "agents.md vs claude.md": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
   "claude md vs copilot instructions": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
   "claude.md vs copilot instructions": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
@@ -54,10 +50,22 @@ const TOPIC_GUIDE_OVERRIDES: Record<string, string> = {
   "google coding agent cli": "antigravity-cli-gemini-cli-migration",
 };
 
+const TOPIC_PATH_OVERRIDES: Record<string, string> = {
+  "cursor enterprise security": "/articles/cursor-enterprise-organizations-governance",
+  "cursor privacy mode": "/articles/cursor-enterprise-organizations-governance",
+  "cursor data retention": "/articles/cursor-enterprise-organizations-governance",
+  "cursor agent permissions": "/articles/cursor-enterprise-organizations-governance",
+};
+
 export function resolveIndexableGuideTopicHref(keyword: string, currentGuideSlug?: string): string | null {
   const normalized = keyword.trim().toLowerCase();
   const guides = getGuides();
+  const overridePath = TOPIC_PATH_OVERRIDES[normalized];
   const overrideSlug = TOPIC_GUIDE_OVERRIDES[normalized];
+
+  if (overridePath) {
+    return overridePath.endsWith(`/${currentGuideSlug}`) ? null : overridePath;
+  }
 
   if (overrideSlug) {
     return overrideSlug === currentGuideSlug ? null : `/guides/${overrideSlug}`;

@@ -27,7 +27,7 @@ const coreGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "CLAUDE.md vs Copilot Instructions is a surface question, not a universal filename rule. Use AGENTS.md for Codex, CLAUDE.md for Claude Code, .github/copilot-instructions.md for broad GitHub Copilot repository guidance, and .cursor/rules/*.mdc for current Cursor project rules. GitHub Copilot support for CLAUDE.md depends on the Copilot surface: selected cloud-agent surfaces support it, while many Copilot Chat, code-review, and CLI surfaces do not list it, so Copilot instructions remain the safer baseline.",
+          "CLAUDE.md vs Copilot Instructions is a surface question, not a universal filename rule. Use AGENTS.md for Codex, CLAUDE.md for Claude Code, .github/copilot-instructions.md for broad GitHub Copilot repository guidance, and .cursor/rules/*.mdc for current Cursor project rules. GitHub Copilot support for CLAUDE.md depends on the Copilot surface: selected cloud-agent surfaces and Copilot CLI support it, while many Copilot Chat and code-review surfaces do not, so Copilot instructions remain the safer baseline.",
         ],
       },
       {
@@ -38,10 +38,10 @@ const coreGuides: Guide[] = [
         ],
       },
       {
-        heading: "Does GitHub Copilot Read CLAUDE.md?",
+        heading: "Copilot compatibility varies by surface",
         body: [
-          "Sometimes, but not everywhere. GitHub's support matrix lists CLAUDE.md for selected cloud-agent surfaces, while many Copilot Chat, code-review, and CLI surfaces do not list it. That makes CLAUDE.md a surface-specific Copilot input, not a safe universal Copilot baseline.",
-          "If your question is practical repository coverage, use .github/copilot-instructions.md for Copilot and keep CLAUDE.md for Claude Code. If a Copilot surface also reads CLAUDE.md, treat that as extra support rather than the only place to put Copilot guidance.",
+          "GitHub's support matrix lists CLAUDE.md for selected cloud-agent surfaces and Copilot CLI, while many Copilot Chat and code-review surfaces do not list it. That makes CLAUDE.md a surface-specific Copilot input, not a safe universal Copilot baseline.",
+          "Use the dedicated Copilot surface matrix linked on this page for the exact environment-by-environment answer. For broad repository coverage, keep .github/copilot-instructions.md for Copilot and CLAUDE.md for Claude Code.",
         ],
       },
       {
@@ -54,8 +54,8 @@ const coreGuides: Guide[] = [
       {
         heading: "Does Cursor Support AGENTS.md?",
         body: [
-          "Current Cursor documentation centers project rules under .cursor/rules/*.mdc. Do not assume Cursor reads AGENTS.md as its native project-rule file unless the specific Cursor surface you use documents that behavior. If your team uses Cursor, keep Cursor-specific rules in .cursor/rules/*.mdc and keep AGENTS.md for Codex.",
-          "Recommended practice: synchronize shared policy language, but preserve each tool's documented adapter. Cursor gets scoped .mdc rules with descriptions and globs; Codex gets AGENTS.md; Claude Code gets CLAUDE.md; Copilot gets .github/copilot-instructions.md.",
+          "Yes. Cursor documents a root-level AGENTS.md as a simple project-wide alternative to .cursor/rules, and Cursor CLI documents reading both root AGENTS.md and CLAUDE.md alongside Cursor project rules. This support is surface-specific: the cited IDE page limits AGENTS.md to the project root, while the CLI page explicitly names both root files.",
+          "Use .cursor/rules/*.mdc when you need metadata, path scoping, or several focused rules. Use root AGENTS.md when one readable shared policy is enough, and reuse root CLAUDE.md in Cursor CLI only when that cross-tool policy is intentional.",
         ],
       },
       {
@@ -89,8 +89,8 @@ const coreGuides: Guide[] = [
       {
         heading: "Compatibility is a surface policy",
         body: [
-          "Do not reduce compatibility to a single yes-or-no claim per vendor. OpenAI documents AGENTS.md discovery and nested precedence for Codex. Anthropic documents CLAUDE.md memory and scoped project guidance for Claude Code. GitHub publishes a support matrix because instruction-file support differs across Copilot surfaces. Cursor documents project rules under .cursor/rules with rule metadata controlling application.",
-          "For Copilot specifically, GitHub's matrix lists CLAUDE.md for selected cloud-agent surfaces but not for many Chat, code-review, or CLI surfaces. A repository that needs broad Copilot coverage should therefore maintain .github/copilot-instructions.md even when CLAUDE.md is also present.",
+          "Do not reduce compatibility to a single yes-or-no claim per vendor. OpenAI documents AGENTS.md discovery and nested precedence for Codex. Anthropic documents CLAUDE.md memory and scoped project guidance for Claude Code. GitHub publishes a support matrix because instruction-file support differs across Copilot surfaces. Cursor documents project rules, a root AGENTS.md alternative, and extra root-file support in Cursor CLI.",
+          "For Copilot specifically, GitHub's matrix lists CLAUDE.md for selected cloud-agent surfaces and Copilot CLI, but not for many Chat and code-review surfaces. A repository that needs broad Copilot coverage should therefore maintain .github/copilot-instructions.md even when CLAUDE.md is also present.",
         ],
       },
       {
@@ -101,10 +101,10 @@ const coreGuides: Guide[] = [
         ],
       },
       {
-        heading: "Migrate .cursorrules without inventing a deprecation",
+        heading: "Migrate the legacy .cursorrules file safely",
         body: [
           "For maintained Cursor guidance, move rules toward the currently documented .cursor/rules/*.mdc format. Split a large .cursorrules file into focused rules, add descriptions and globs where scope matters, compare behavior, and remove the old file only after repository testing.",
-          "The cited current Cursor rules page does not establish an official legacy or deprecation status for .cursorrules. Treat its status as unknown in current documentation rather than claiming Cursor has formally deprecated it.",
+          "Cursor's current rules documentation labels .cursorrules as legacy and deprecated while stating that it remains supported. Preserve it during comparison if an existing workflow still depends on it, then remove it after the maintained .cursor/rules version passes repository checks.",
         ],
       },
       {
@@ -130,16 +130,16 @@ const coreGuides: Guide[] = [
         {
           label: "AGENTS.md",
           values: [
-            "Codex repository instructions",
-            "Root-to-working-directory discovery with nearer guidance taking precedence",
-            "Put shared Codex setup, change, and verification rules at the repository root; use nested files for narrower scope",
+            "Codex repository instructions; root project instructions in Cursor IDE and CLI",
+            "Codex supports nested precedence; cited Cursor support is root-level and does not inherit Codex nesting behavior",
+            "Use it as a readable shared root policy, but keep tool-specific scope rules where behavior differs",
           ],
         },
         {
           label: "CLAUDE.md",
           values: [
             "Claude Code project memory and instructions",
-            "Copilot support exists on selected cloud-agent surfaces, not broadly across Chat, code review, and CLI",
+            "Copilot support exists on selected cloud-agent surfaces and Copilot CLI, not broadly across Chat and code review",
             "Keep it for Claude Code; also use .github/copilot-instructions.md when broad Copilot coverage matters",
           ],
         },
@@ -162,9 +162,9 @@ const coreGuides: Guide[] = [
         {
           label: ".cursorrules",
           values: [
-            "Existing Cursor repository instruction file",
-            "Legacy or deprecation status is unknown in the cited current documentation",
-            "Test migration to .cursor/rules/*.mdc before removing the existing file",
+            "Legacy Cursor repository instruction file that remains supported",
+            "Cursor documents it as deprecated in favor of Project Rules",
+            "Test migration to .cursor/rules/*.mdc before removing the legacy file",
           ],
         },
       ],
@@ -184,7 +184,7 @@ const coreGuides: Guide[] = [
       },
       {
         title: "Migrate Cursor rules safely",
-        body: "Translate .cursorrules into scoped .mdc rules, preserve the old file during comparison, and remove it only after observed behavior and repository checks support the change. Do not label it officially deprecated without a source.",
+        body: "Translate the deprecated .cursorrules file into scoped .mdc rules, preserve it during comparison, and remove it only after observed behavior and repository checks support the change.",
       },
       {
         title: "Run a controlled comparison",
@@ -197,8 +197,8 @@ const coreGuides: Guide[] = [
         fix: "Check the GitHub support matrix by surface and use .github/copilot-instructions.md for broad repository-wide compatibility.",
       },
       {
-        title: "Calling .cursorrules officially deprecated",
-        fix: "State that its status is unknown in the cited current documentation, migrate toward .cursor/rules/*.mdc, and verify behavior before removal.",
+        title: "Deleting .cursorrules without a migration check",
+        fix: "Cursor still supports the deprecated legacy file. Migrate toward .cursor/rules/*.mdc and verify behavior before removal.",
       },
       {
         title: "Copying a shared policy until adapters drift",
@@ -252,22 +252,22 @@ const coreGuides: Guide[] = [
       "Use .github/copilot-instructions.md for broad Copilot repository coverage.",
       "Keep one canonical shared policy and identify every adapter.",
       "Put current Cursor project rules in .cursor/rules/*.mdc.",
-      "Do not claim an official .cursorrules deprecation without evidence.",
+      "Treat .cursorrules as supported legacy input and verify its .cursor/rules replacement before removal.",
       "Run the same task against the same repository state and criteria.",
       "Publish only measured success, elapsed time, cost, and human interventions.",
     ],
     evidence: [
       {
         title: "Use AGENTS.md with Codex",
-        url: "https://developers.openai.com/codex/guides/agents-md",
+        url: "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
         publisher: "OpenAI",
         note: "Documents Codex instruction discovery, precedence, scope, and fallback filenames.",
       },
       {
         title: "Claude Code memory documentation",
-        url: "https://docs.anthropic.com/en/docs/claude-code/memory",
+        url: "https://code.claude.com/docs/en/memory",
         publisher: "Anthropic",
-        note: "Documents CLAUDE.md loading and scoped project memory behavior.",
+        note: "Documents CLAUDE.md loading, scoped project memory, imports such as @AGENTS.md, and symlink options.",
       },
       {
         title: "GitHub Copilot custom instructions support matrix",
@@ -277,20 +277,27 @@ const coreGuides: Guide[] = [
       },
       {
         title: "Adding custom instructions for GitHub Copilot",
-        url: "https://docs.github.com/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot",
+        url: "https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions",
         publisher: "GitHub",
         note: "Documents repository-wide and path-specific Copilot instruction files.",
       },
       {
         title: "Cursor rules documentation",
-        url: "https://cursor.com/docs/rules",
+        url: "https://docs.cursor.com/context/rules-for-ai",
         publisher: "Cursor",
-        note: "Documents current project rules under .cursor/rules and their application metadata.",
+        note: "Documents project rules, root AGENTS.md support, and the legacy/deprecated .cursorrules status.",
+      },
+      {
+        title: "Cursor CLI instruction-file support",
+        url: "https://docs.cursor.com/en/cli/using",
+        publisher: "Cursor",
+        note: "Documents Cursor CLI loading root AGENTS.md and CLAUDE.md alongside .cursor/rules.",
       },
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
-    updatedAt: "2026-06-25",
-    metaTitle: "CLAUDE.md vs Copilot Instructions: Which File Copilot Reads",
+    publishedAt: "2026-06-14",
+    updatedAt: "2026-07-14",
+    metaTitle: "AGENTS.md vs CLAUDE.md vs Copilot Instructions",
     metaDescription:
       "Compare CLAUDE.md, .github/copilot-instructions.md, AGENTS.md, and Cursor rules by tool surface, scope, and safe sync policy.",
     resourceIds: ["instruction-files"],
@@ -426,7 +433,8 @@ const coreGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["claude-code-dynamic-workflows-parallel-subagents"],
-    updatedAt: "2026-06-06",
+    publishedAt: "2026-06-14",
+    updatedAt: "2026-06-14",
     metaTitle: "Claude Code Subagents Workflow Examples",
     metaDescription:
       "Examples and checklists for using Claude Code subagents in research, implementation, review, and verification workflows.",
@@ -604,6 +612,7 @@ const coreGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["claude-code-dynamic-workflows-parallel-subagents"],
+    publishedAt: "2026-06-14",
     updatedAt: "2026-06-26",
     metaTitle: "Claude Code Hooks vs MCP Setup",
     metaDescription:
@@ -829,6 +838,7 @@ const coreGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["github-copilot-cloud-local-sandboxes-preview", "visual-studio-agent-mode-mcp-general-availability"],
+    publishedAt: "2026-06-14",
     updatedAt: "2026-06-26",
     metaTitle: "Secure MCP Server Connections to AI Agents: Auth, Scopes, Logs",
     metaDescription:
@@ -977,7 +987,8 @@ const coreGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["google-antigravity-cli-gemini-cli-transition"],
-    updatedAt: "2026-06-06",
+    publishedAt: "2026-06-14",
+    updatedAt: "2026-06-14",
     metaTitle: "Antigravity CLI Migration from Gemini CLI",
     metaDescription:
       "Checklist for migrating from Gemini CLI to Antigravity CLI, including commands, auth, hooks, extensions, and team docs.",

@@ -90,19 +90,36 @@ describe("SEO helpers", () => {
     expect(jsonLd.citation[0]).toBe(article.sources[0].url);
     expect(jsonLd.isBasedOn[0].url).toBe(article.sources[0].url);
     expect(jsonLd.wordCount).toBe(countArticleWords(article));
+    expect(jsonLd["@id"]).toBe(`https://www.kyenai.com/articles/${article.slug}#article`);
     expect(jsonLd.about).toEqual(expect.arrayContaining([{ "@type": "Thing", name: article.keywords[0] }]));
-    expect(jsonLd.image).toEqual({ "@type": "ImageObject", url: expect.stringContaining("og-image") });
+    expect(jsonLd.image).toEqual({
+      "@type": "ImageObject",
+      url: expect.stringContaining("/api/og?title="),
+      width: 1200,
+      height: 630,
+    });
     expect(jsonLd.author).toEqual(editorialOrganization());
     expect(jsonLd.publisher).toEqual({
       "@type": "Organization",
       "@id": "https://www.kyenai.com#organization",
       name: "KyenAI",
       url: "https://www.kyenai.com",
-      logo: { "@type": "ImageObject", url: expect.stringContaining("og-image") },
+      logo: {
+        "@type": "ImageObject",
+        "@id": "https://www.kyenai.com#logo",
+        url: "https://www.kyenai.com/icon.png",
+        width: 512,
+        height: 512,
+      },
     });
     expect(jsonLd).not.toHaveProperty("aggregateRating");
     expect(jsonLd).not.toHaveProperty("review");
     expect(jsonLd).not.toHaveProperty("speakable");
+  });
+
+  it("uses TechArticle for the evergreen Cursor Enterprise security checklist", () => {
+    const article = seedArticles.find((item) => item.slug === "cursor-enterprise-organizations-governance")!;
+    expect(buildArticleJsonLd(article)["@type"]).toBe("TechArticle");
   });
 
   it("builds guide topics from the public title and deduplicated related topics", () => {
@@ -130,8 +147,9 @@ describe("SEO helpers", () => {
     expect(jsonLd["@id"]).toBe(`https://www.kyenai.com/guides/${slug}#techarticle`);
     expect(jsonLd.headline).toBe(guide!.title);
     expect(jsonLd.url).toBe(`https://www.kyenai.com/guides/${slug}`);
-    expect(jsonLd.datePublished).toBe(guide!.updatedAt);
+    expect(jsonLd.datePublished).toBe(guide!.publishedAt);
     expect(jsonLd.dateModified).toBe(guide!.updatedAt);
+    expect(new Date(guide!.publishedAt).getTime()).toBeLessThanOrEqual(new Date(guide!.updatedAt).getTime());
     expect(jsonLd.author).toEqual(editorialOrganization());
     expect(jsonLd.publisher["@id"]).toBe("https://www.kyenai.com#organization");
     expect(jsonLd.isPartOf).toEqual({ "@id": "https://www.kyenai.com#website" });
@@ -327,6 +345,7 @@ describe("SEO helpers", () => {
     expect(websiteJsonLd["@type"]).toBe("WebSite");
     expect(websiteJsonLd["@id"]).toBe("https://www.kyenai.com#website");
     expect(websiteJsonLd.name).toBe("KyenAI");
+    expect(websiteJsonLd.alternateName).toBe("kyenai.com");
     expect(websiteJsonLd.inLanguage).toBe("en");
     expect(websiteJsonLd.description).toContain("loop engineering");
     expect(websiteJsonLd.publisher.name).toBe("KyenAI");
@@ -339,13 +358,24 @@ describe("SEO helpers", () => {
     expect(organizationJsonLd["@id"]).toBe("https://www.kyenai.com#organization");
     expect(organizationJsonLd.name).toBe("KyenAI");
     expect(organizationJsonLd.url).toBe("https://www.kyenai.com");
-    expect(organizationJsonLd.logo).toEqual({ "@type": "ImageObject", url: expect.stringContaining("og-image") });
-    expect(organizationJsonLd.sameAs).toEqual([
-      "https://www.kyenai.com/about",
-      "https://www.kyenai.com/editorial-policy",
-      "https://www.kyenai.com/sources",
-      "https://www.kyenai.com/entities",
-    ]);
+    expect(organizationJsonLd.logo).toEqual({
+      "@type": "ImageObject",
+      "@id": "https://www.kyenai.com#logo",
+      url: "https://www.kyenai.com/icon.png",
+      width: 512,
+      height: 512,
+    });
+    expect(organizationJsonLd).not.toHaveProperty("sameAs");
+    expect(organizationJsonLd.contactPoint).toEqual(expect.objectContaining({
+      email: "editorial@kyenai.com",
+      contactType: "editorial corrections",
+    }));
+    expect(organizationJsonLd.subjectOf).toEqual(
+      expect.arrayContaining([
+        { "@type": "WebPage", url: "https://www.kyenai.com/about" },
+        { "@type": "WebPage", url: "https://www.kyenai.com/editorial-policy" },
+      ]),
+    );
   });
 
   it("formats page titles as one plain string for Next head rendering", () => {

@@ -9,9 +9,9 @@ const guideFaqsBySlug: Record<string, FaqItem[]> = {
         "Use AGENTS.md for Codex, CLAUDE.md for Claude Code, .github/copilot-instructions.md for broad GitHub Copilot repository guidance, and .cursor/rules/*.mdc for Cursor project rules. GitHub Copilot support for CLAUDE.md is surface-specific, so Copilot instructions remain the safer baseline for repository-wide Copilot coverage.",
     },
     {
-      question: "Does GitHub Copilot read CLAUDE.md?",
+      question: "Does Cursor support AGENTS.md and CLAUDE.md?",
       answer:
-        "Sometimes, but not on every Copilot surface. GitHub documents instruction-file support by surface, so CLAUDE.md should be treated as a surface-specific Copilot input rather than a universal Copilot baseline. Keep .github/copilot-instructions.md for broad Copilot coverage and CLAUDE.md for Claude Code.",
+        "Cursor documents root AGENTS.md as a simple project-wide alternative to .cursor/rules. Cursor CLI also documents loading root AGENTS.md and CLAUDE.md alongside Cursor rules. Use .cursor/rules when you need metadata or path scoping, and do not assume Codex or Claude Code nesting behavior carries over.",
     },
     {
       question: "Can one repository use AGENTS.md, CLAUDE.md, Copilot instructions, and Cursor rules together?",

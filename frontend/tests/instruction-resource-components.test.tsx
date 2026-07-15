@@ -42,8 +42,8 @@ describe("instruction resource components", () => {
     expect(legacyCursorRow).not.toBeNull();
     expect(currentCursorRow).not.toBe(legacyCursorRow);
     expect(currentCursorRow?.textContent).toMatch(/documented|current/i);
-    expect(legacyCursorRow?.textContent).toMatch(/unknown/i);
-    expect(legacyCursorRow?.textContent).toMatch(/current documentation/i);
+    expect(legacyCursorRow?.textContent).toMatch(/legacy/i);
+    expect(legacyCursorRow?.textContent).toMatch(/deprecated/i);
   });
 
   it("explains canonical source, priority, and tool-specific scope from the records", () => {

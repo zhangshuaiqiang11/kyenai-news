@@ -7,6 +7,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { ArticleExplorer } from "../components/ArticleExplorer";
 import { BenchmarkPanel } from "../components/BenchmarkPanel";
 import { InstructionCompatibilityMatrix } from "../components/InstructionCompatibilityMatrix";
+import { InstructionFileChecker } from "../components/InstructionFileChecker";
 import { Layout } from "../components/Layout";
 import { LoopPatternMatrix } from "../components/LoopPatternMatrix";
 import { McpSecurityControls } from "../components/McpSecurityControls";
@@ -66,6 +67,12 @@ describe("accessibility", () => {
         <BenchmarkPanel />
       </>,
     );
+
+    await expectNoAxeViolations(container);
+  });
+
+  it("keeps the browser-only instruction checker free of axe violations", async () => {
+    const { container } = render(<InstructionFileChecker />);
 
     await expectNoAxeViolations(container);
   });

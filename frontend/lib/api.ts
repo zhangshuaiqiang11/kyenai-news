@@ -38,35 +38,60 @@ export async function getArticles(): Promise<Article[]> {
       return mergeFeaturedArticles(seedArticles);
     }
     const data = (await response.json()) as BackendArticle[];
-    return mergeFeaturedArticles(data.map(fromBackendArticle));
+    return mergeFeaturedArticles(mergeCanonicalArticles(data.map(fromBackendArticle), seedArticles));
   } catch {
     return mergeFeaturedArticles(seedArticles);
   }
 }
 
 export async function getArticle(slug: string): Promise<Article | undefined> {
-  const featuredArticle = featuredArticles.find((article) => article.slug === slug);
-  if (featuredArticle) {
-    return featuredArticle;
-  }
+  const curatedArticle = mergeFeaturedArticles(seedArticles).find((article) => article.slug === slug);
 
   try {
     const response = await fetch(`${API_BASE_URL}/api/articles/${slug}`, { next: { revalidate: 300 } as never });
     if (response.ok) {
-      return fromBackendArticle((await response.json()) as BackendArticle);
+      return selectCanonicalArticle(
+        fromBackendArticle((await response.json()) as BackendArticle),
+        curatedArticle,
+      );
     }
   } catch {
-    return seedArticles.find((article) => article.slug === slug);
+    return curatedArticle;
   }
-  return seedArticles.find((article) => article.slug === slug);
+  return curatedArticle;
+}
+
+export function selectCanonicalArticle(
+  backendArticle: Article | undefined,
+  curatedArticle: Article | undefined,
+): Article | undefined {
+  if (!backendArticle) return curatedArticle;
+  if (!curatedArticle) return backendArticle;
+  return backendArticle.version > curatedArticle.version ? backendArticle : curatedArticle;
+}
+
+export function mergeCanonicalArticles(
+  backendArticles: Article[],
+  curatedArticles: Article[] = seedArticles,
+): Article[] {
+  const curatedBySlug = new Map(curatedArticles.map((article) => [article.slug, article]));
+  const merged = backendArticles.map((backendArticle) => {
+    const curatedArticle = curatedBySlug.get(backendArticle.slug);
+    if (curatedArticle) curatedBySlug.delete(backendArticle.slug);
+    return selectCanonicalArticle(backendArticle, curatedArticle)!;
+  });
+
+  return [...merged, ...Array.from(curatedBySlug.values())];
 }
 
 export function mergeFeaturedArticles(articles: Article[]): Article[] {
-  const featuredSlugs = new Set(featuredArticles.map((article) => article.slug));
-  return [
-    ...featuredArticles,
-    ...articles.filter((article) => !featuredSlugs.has(article.slug)),
-  ];
+  const articleBySlug = new Map(articles.map((article) => [article.slug, article]));
+  const mergedFeatured = featuredArticles.map((featuredArticle) => {
+    const existingArticle = articleBySlug.get(featuredArticle.slug);
+    articleBySlug.delete(featuredArticle.slug);
+    return selectCanonicalArticle(existingArticle, featuredArticle)!;
+  });
+  return [...mergedFeatured, ...articles.filter((article) => articleBySlug.has(article.slug))];
 }
 
 export function fromBackendArticle(article: BackendArticle): Article {

@@ -6,6 +6,7 @@ import { SeoHead } from "../components/SeoHead";
 import { SignalPanel } from "../components/SignalPanel";
 import { getArticles } from "../lib/api";
 import { getEntityCoverage } from "../lib/entities";
+import { toArticleSummary } from "../lib/catalog";
 import {
   INSTRUCTION_COMPARISON_GUIDE_HREF,
   LOOP_ENGINEERING_GUIDE_HREF,
@@ -18,14 +19,21 @@ import {
   buildWebsiteJsonLd,
   SITE_NAME,
 } from "../lib/seo";
-import type { Article, Guide } from "../lib/types";
+import type { ArticleSummary, Guide } from "../lib/types";
+import type { BrandEntity } from "../lib/entities";
 
 type HomeProps = {
-  articles: Article[];
+  articles: ArticleSummary[];
   guides: Guide[];
+  entities?: BrandEntity[];
 };
 
 const highImpressionEntries = [
+  {
+    href: "/tools/instruction-file-checker",
+    label: "Audit AGENTS.md, CLAUDE.md, Copilot, or Cursor rules",
+    note: "Run deterministic browser-only checks for setup, tests, scope, safety, and file-path compatibility.",
+  },
   {
     href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
     label: "CLAUDE.md vs Copilot Instructions support matrix",
@@ -58,12 +66,11 @@ const highImpressionEntries = [
   },
 ];
 
-export default function Home({ articles, guides }: HomeProps) {
+export default function Home({ articles, guides, entities = [] }: HomeProps) {
   const websiteJsonLd = buildWebsiteJsonLd();
   const organizationJsonLd = buildOrganizationJsonLd();
   const itemListJsonLd = buildItemListJsonLd(articles.slice(0, 12), "Latest AI coding agent articles", "/");
   const guideItemListJsonLd = buildGuideItemListJsonLd(guides, "AI coding agent playbooks", "/guides");
-  const entities = getEntityCoverage(articles);
   const pageTitle = `${SITE_NAME} | AI coding agent guides and evidence watch`;
   const description =
     "Source-backed guides for CLAUDE.md vs Copilot Instructions, loop engineering, MCP security, Codex vs Claude Code, and AI coding agent setup.";
@@ -191,11 +198,13 @@ export default function Home({ articles, guides }: HomeProps) {
 
 export async function getStaticProps() {
   const { getPriorityGuides } = await import("../lib/guide-editorial");
+  const fullArticles = await getArticles();
 
   return {
     props: {
-      articles: await getArticles(),
+      articles: fullArticles.map(toArticleSummary),
       guides: getPriorityGuides(),
+      entities: getEntityCoverage(fullArticles),
     },
     revalidate: 300,
   };

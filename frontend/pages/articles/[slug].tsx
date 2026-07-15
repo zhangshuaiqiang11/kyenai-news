@@ -18,7 +18,7 @@ import {
   slugify,
 } from "../../lib/seo";
 import { EDITORIAL_AUTHOR_PATH } from "../../lib/editorial";
-import type { Article, ArticleBlock, Guide } from "../../lib/types";
+import type { Article, ArticleBlock, EvidenceSource, Guide } from "../../lib/types";
 
 type ArticlePageProps = {
   article: Article;
@@ -71,18 +71,21 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
           <p>{article.summary}</p>
           <dl>
             <div><dt>Topic</dt><dd>{article.category}</dd></div>
-            <div><dt>Primary Source</dt><dd>{primarySource ? primarySource.publisher : "Source listed below"}</dd></div>
+            <div><dt>Primary Source</dt><dd>{primarySource ? <a href={primarySource.url} rel="noreferrer" target="_blank">{primarySource.publisher}</a> : "Source listed below"}</dd></div>
             <div><dt>Source Date</dt><dd>{primarySource ? formatDate(primarySource.publishedAt) : "Not available"}</dd></div>
           </dl>
         </section>
         <div className="article-content-grid">
           <div className="article-body">
-            {article.blocks.map((block) => <ArticleBlockView block={block} key={block.id} />)}
+            {article.blocks.map((block) => (
+              <ArticleBlockView block={block} key={block.id} sources={article.sources} />
+            ))}
             <section className="article-faqs" aria-labelledby="article-faq-heading">
               <h2 id="article-faq-heading">Questions This Update Answers</h2>
               {faqs.map((faq) => (
                 <section className="faq-block" key={faq.question}>
                   <h3>{faq.question}</h3><p>{faq.answer}</p>
+                  <SourceCitations sourceIds={faq.sourceIds} sources={article.sources} label="Sources for this answer" />
                 </section>
               ))}
             </section>
@@ -96,7 +99,7 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
               <h2>Topics</h2>
               <div className="keyword-list">
                 {article.keywords.map((keyword) => {
-                  const href = resolveIndexableGuideTopicHref(keyword);
+                  const href = resolveIndexableGuideTopicHref(keyword, article.slug);
                   return href ? <Link href={href} key={keyword}>{keyword}</Link> : <span key={keyword}>{keyword}</span>;
                 })}
               </div>
@@ -165,30 +168,71 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
   );
 }
 
-function ArticleBlockView({ block }: { block: ArticleBlock }) {
+function ArticleBlockView({ block, sources }: { block: ArticleBlock; sources: EvidenceSource[] }) {
   if (block.type === "faq") return null;
+  if (block.type === "heading") return <h2>{block.content}</h2>;
+
+  const citations = <BlockCitations block={block} sources={sources} />;
   if (block.type === "fact_table") {
     const [header, ...rows] = block.content.split("\n").map((row) => row.split("|").map((cell) => cell.trim()));
     return (
-      <table className="fact-table">
-        <thead><tr>{header.map((cell) => <th key={cell} scope="col">{cell}</th>)}</tr></thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.join("-")}>
-              {row.map((cell, index) => index === 0 ? (
-                <th key={`${row.join("-")}-${header[index]}`} scope="row" data-label={header[index]}>{cell}</th>
-              ) : (
-                <td key={`${row.join("-")}-${header[index]}`} data-label={header[index]}>{cell}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="article-block-with-citations">
+        <table className="fact-table">
+          <thead><tr>{header.map((cell) => <th key={cell} scope="col">{cell}</th>)}</tr></thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.join("-")}>
+                {row.map((cell, index) => index === 0 ? (
+                  <th key={`${row.join("-")}-${header[index]}`} scope="row" data-label={header[index]}>{cell}</th>
+                ) : (
+                  <td key={`${row.join("-")}-${header[index]}`} data-label={header[index]}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {citations}
+      </div>
     );
   }
-  if (block.type === "source_note") return <p className="source-note-block">{block.content}</p>;
-  if (block.type === "heading") return <h2>{block.content}</h2>;
-  return <p>{block.content}</p>;
+  return (
+    <div className="article-block-with-citations">
+      <p className={block.type === "source_note" ? "source-note-block" : undefined}>{block.content}</p>
+      {citations}
+    </div>
+  );
+}
+
+function BlockCitations({ block, sources }: { block: ArticleBlock; sources: EvidenceSource[] }) {
+  return <SourceCitations sourceIds={block.sourceIds} sources={sources} label="Sources for this passage" />;
+}
+
+function SourceCitations({
+  sourceIds,
+  sources,
+  label,
+}: {
+  sourceIds: string[];
+  sources: EvidenceSource[];
+  label: string;
+}) {
+  const sourceById = new Map(sources.map((source) => [source.id, source]));
+  const citedSources = Array.from(new Set(sourceIds))
+    .map((sourceId) => sourceById.get(sourceId))
+    .filter((source): source is EvidenceSource => Boolean(source));
+
+  if (citedSources.length === 0) return null;
+
+  return (
+    <span aria-label={label} className="passage-citations">
+      <span>Sources:</span>{" "}
+      {citedSources.map((source, index) => (
+        <a href={source.url} key={source.id} rel="noreferrer" target="_blank">
+          [{index + 1}] {source.publisher}
+        </a>
+      ))}
+    </span>
+  );
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

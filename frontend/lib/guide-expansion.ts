@@ -173,7 +173,7 @@ export const expansionGuides: Guide[] = [
     evidence: [
       {
         title: "OpenAI Codex AGENTS.md documentation",
-        url: "https://developers.openai.com/codex/guides/agents-md",
+        url: "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
         publisher: "OpenAI",
         note: "Official repository guidance for AGENTS.md behavior.",
       },
@@ -197,7 +197,8 @@ export const expansionGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "claude-code-dynamic-workflows-parallel-subagents"],
-    updatedAt: "2026-06-26",
+    publishedAt: "2026-06-14",
+    updatedAt: "2026-07-14",
     metaTitle: "Codex vs Claude Code: Workflow Fit and Same-Repo Test Checklist",
     metaDescription:
       "Compare Codex and Claude Code by repo workflow, instruction files, review effort, MCP/hooks, and a same-task protocol before standardizing.",
@@ -351,7 +352,7 @@ export const expansionGuides: Guide[] = [
     evidence: [
       {
         title: "OpenAI Codex AGENTS.md documentation",
-        url: "https://github.com/openai/codex/blob/main/docs/agents_md.md",
+        url: "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
         publisher: "OpenAI",
         note: "Official AGENTS.md behavior and precedence reference.",
       },
@@ -363,6 +364,7 @@ export const expansionGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
+    publishedAt: "2026-06-14",
     updatedAt: "2026-06-26",
     metaTitle: "AGENTS.md Template: Copyable Examples for Codex, Node.js, Python",
     metaDescription:
@@ -543,16 +545,18 @@ export const expansionGuides: Guide[] = [
       },
       {
         title: "Claude Code memory",
-        url: "https://docs.anthropic.com/en/docs/claude-code/memory",
+        url: "https://code.claude.com/docs/en/memory",
         publisher: "Anthropic",
         note: "Official CLAUDE.md project memory behavior for Claude Code.",
       },
     ],
     relatedArticleSlugs: ["github-copilot-sdk-general-availability"],
-    updatedAt: "2026-06-18",
+    publishedAt: "2026-06-18",
+    updatedAt: "2026-07-14",
     metaTitle: "Does GitHub Copilot Read CLAUDE.md? Surface Matrix",
     metaDescription:
       "Check when GitHub Copilot reads CLAUDE.md, when to use copilot-instructions.md, and which Copilot surfaces need each file.",
+    resourceIds: ["copilot-surface-matrix"],
   },
   {
     id: "guide-agents-md-examples-codex",
@@ -717,7 +721,7 @@ export const expansionGuides: Guide[] = [
     evidence: [
       {
         title: "Use AGENTS.md with Codex",
-        url: "https://developers.openai.com/codex/guides/agents-md",
+        url: "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
         publisher: "OpenAI",
         note: "Official Codex guidance for AGENTS.md scope, precedence, and repository instructions.",
       },
@@ -729,7 +733,8 @@ export const expansionGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations"],
-    updatedAt: "2026-06-18",
+    publishedAt: "2026-06-18",
+    updatedAt: "2026-07-14",
     metaTitle: "AGENTS.md Examples for Codex, Node.js, Python",
     metaDescription:
       "Copy AGENTS.md examples for Codex projects, including Node.js apps, Python services, monorepos, nested files, commands, and review rules.",
@@ -893,6 +898,7 @@ export const expansionGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["github-copilot-vscode-agents-window-may-2026", "visual-studio-agent-mode-mcp-general-availability"],
+    publishedAt: "2026-06-14",
     updatedAt: "2026-06-18",
     metaTitle: "Agent Mode vs Chat Mode: Risks and Use Cases",
     metaDescription:
@@ -1063,6 +1069,7 @@ export const expansionGuides: Guide[] = [
       },
     ],
     relatedArticleSlugs: ["github-copilot-cloud-local-sandboxes-preview", "github-copilot-vscode-agents-window-may-2026"],
+    publishedAt: "2026-06-14",
     updatedAt: "2026-06-18",
     metaTitle: "Local vs Cloud AI Coding Agents",
     metaDescription:
@@ -1250,6 +1257,7 @@ export const expansionGuides: Guide[] = [
       "cursor-enterprise-organizations-governance",
       "visual-studio-agent-mode-mcp-general-availability",
     ],
+    publishedAt: "2026-06-14",
     updatedAt: "2026-06-18",
     metaTitle: "AI Coding Agent Governance Checklist",
     metaDescription:
@@ -1526,6 +1534,7 @@ export const expansionGuides: Guide[] = [
       "cursor-enterprise-organizations-governance",
       "github-copilot-cloud-local-sandboxes-preview",
     ],
+    publishedAt: "2026-06-15",
     updatedAt: "2026-07-14",
     metaTitle: "What Is Loop Engineering? Addy Osmani, AI Agent Loops, Stop Rules",
     metaDescription:

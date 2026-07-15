@@ -1,10 +1,11 @@
 import { EDITORIAL_AUTHOR_NAME } from "./editorial";
-import type { Article, Guide } from "./types";
+import type { Article, ArticleSummary, Guide } from "./types";
 import { getArticleEntities } from "./entities";
 
 export const SITE_NAME = "KyenAI";
 export const SITE_URL = normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL || "https://www.kyenai.com");
 export const OG_IMAGE_URL = `${SITE_URL}/og-image.svg`;
+export const ORGANIZATION_LOGO_URL = `${SITE_URL}/icon.png`;
 export const ORGANIZATION_ID = `${SITE_URL}#organization`;
 export const WEBSITE_ID = `${SITE_URL}#website`;
 
@@ -83,13 +84,16 @@ export function buildArticleJsonLd(article: Article) {
   const canonical = buildCanonicalUrl(`/articles/${article.slug}`);
   return {
     "@context": "https://schema.org",
-    "@type": "NewsArticle",
+    "@type": article.category === "Security & Governance" ? "TechArticle" : "NewsArticle",
+    "@id": `${canonical}#article`,
     headline: article.title,
     description: buildMetaDescription(article),
     url: canonical,
     image: {
       "@type": "ImageObject",
-      url: OG_IMAGE_URL,
+      url: buildOgImageUrl(article.metaTitle || article.title),
+      width: 1200,
+      height: 630,
     },
     inLanguage: "en",
     articleSection: article.category,
@@ -142,7 +146,7 @@ export function buildGuideJsonLd(guide: Guide) {
       url: buildOgImageUrl(guide.metaTitle || guide.title),
     },
     inLanguage: "en",
-    datePublished: guide.updatedAt,
+    datePublished: guide.publishedAt,
     dateModified: guide.updatedAt,
     author: buildAuthorJsonLd(EDITORIAL_AUTHOR_NAME, false),
     publisher: buildPublisherJsonLd(),
@@ -298,7 +302,7 @@ export function buildBreadcrumbJsonLd(items: BreadcrumbItem[], includeContext = 
   };
 }
 
-export function buildItemListJsonLd(articles: Article[], name: string, path: string) {
+export function buildItemListJsonLd(articles: Array<Pick<ArticleSummary, "title" | "slug">>, name: string, path: string) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -353,12 +357,41 @@ export function buildCollectionPageJsonLd({ title, description, path }: PageSeoI
   };
 }
 
+export function buildWebApplicationJsonLd({ title: name, description, path }: PageSeoInput) {
+  const canonical = buildCanonicalUrl(path);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "@id": `${canonical}#webapplication`,
+    name,
+    description,
+    url: canonical,
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript; all analysis runs locally in the browser.",
+    isAccessibleForFree: true,
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": ORGANIZATION_ID,
+      name: SITE_NAME,
+      url: buildCanonicalUrl("/"),
+    },
+  };
+}
+
 export function buildWebsiteJsonLd(includeContext = true) {
   return {
     ...(includeContext ? { "@context": "https://schema.org" } : {}),
     "@type": "WebSite",
     "@id": WEBSITE_ID,
     name: SITE_NAME,
+    alternateName: "kyenai.com",
     url: buildCanonicalUrl("/"),
     inLanguage: "en",
     description:
@@ -384,7 +417,7 @@ function isPlaceholderEmail(email: string): boolean {
 }
 
 export function buildOrganizationJsonLd(includeContext = true) {
-  const rawEmail = process.env.NEXT_PUBLIC_EDITORIAL_EMAIL || "";
+  const rawEmail = process.env.NEXT_PUBLIC_EDITORIAL_EMAIL || "editorial@kyenai.com";
   const editorialEmail = isPlaceholderEmail(rawEmail) ? "" : rawEmail.trim();
 
   return {
@@ -395,13 +428,16 @@ export function buildOrganizationJsonLd(includeContext = true) {
     url: buildCanonicalUrl("/"),
     logo: {
       "@type": "ImageObject",
-      url: OG_IMAGE_URL,
+      "@id": `${SITE_URL}#logo`,
+      url: ORGANIZATION_LOGO_URL,
+      width: 512,
+      height: 512,
     },
-    sameAs: [
-      buildCanonicalUrl("/about"),
-      buildCanonicalUrl("/editorial-policy"),
-      buildCanonicalUrl("/sources"),
-      buildCanonicalUrl("/entities"),
+    subjectOf: [
+      { "@type": "WebPage", url: buildCanonicalUrl("/about") },
+      { "@type": "WebPage", url: buildCanonicalUrl("/editorial-policy") },
+      { "@type": "WebPage", url: buildCanonicalUrl("/sources") },
+      { "@type": "WebPage", url: buildCanonicalUrl("/entities") },
     ],
     ...(editorialEmail
       ? {
@@ -430,7 +466,10 @@ function buildPublisherJsonLd() {
     url: buildCanonicalUrl("/"),
     logo: {
       "@type": "ImageObject",
-      url: OG_IMAGE_URL,
+      "@id": `${SITE_URL}#logo`,
+      url: ORGANIZATION_LOGO_URL,
+      width: 512,
+      height: 512,
     },
   };
 }

@@ -1,4 +1,6 @@
+import { featuredArticles } from "./articles/spacex-cursor-acquisition";
 import { getGuides } from "./guides";
+import { seedArticles } from "./seed";
 import { buildCanonicalUrl, SITE_NAME } from "./seo";
 
 const featuredGuideSlugs = [
@@ -10,11 +12,23 @@ const featuredGuideSlugs = [
   "claude-code-hooks-mcp-setup",
 ] as const;
 
+const featuredArticleSlugs = [
+  "spacex-cursor-acquisition-2026",
+  "cursor-enterprise-organizations-governance",
+] as const;
+
 export function buildLlmsTxt(): string {
   const guides = getGuides();
   const featuredGuides = featuredGuideSlugs.flatMap((slug) => {
     const guide = guides.find((item) => item.slug === slug);
     return guide ? [guide] : [];
+  });
+  const articles = [...featuredArticles, ...seedArticles].filter(
+    (article, index, items) => items.findIndex((item) => item.slug === article.slug) === index,
+  );
+  const featuredArticlesForLlms = featuredArticleSlugs.flatMap((slug) => {
+    const article = articles.find((item) => item.slug === slug);
+    return article ? [article] : [];
   });
 
   const lines = [
@@ -25,14 +39,24 @@ export function buildLlmsTxt(): string {
     "## Site",
     `- Canonical: ${buildCanonicalUrl("/")}`,
     `- Guides index: ${buildCanonicalUrl("/guides")}`,
+    `- Instruction file checker: ${buildCanonicalUrl("/tools/instruction-file-checker")} (deterministic, browser-only audit; no instruction text is uploaded)`,
     `- Editorial policy: ${buildCanonicalUrl("/editorial-policy")}`,
+    `- Editorial author: ${buildCanonicalUrl("/authors/editorial-automation-desk")}`,
+    `- Source ledger: ${buildCanonicalUrl("/sources")}`,
     `- Entity ledger: ${buildCanonicalUrl("/entities")}`,
     `- RSS feed: ${buildCanonicalUrl("/feed.xml")}`,
     "",
     "## Featured guides",
     ...featuredGuides.flatMap((guide) => [
       `- [${guide.title}](${buildCanonicalUrl(`/guides/${guide.slug}`)})`,
-      `  ${guide.summary}`,
+      `  ${guide.summary} Last substantively updated: ${guide.updatedAt}.`,
+      `  Markdown: ${buildCanonicalUrl(`/guides/${guide.slug}.md`)}`,
+    ]),
+    "",
+    "## Priority evidence articles",
+    ...featuredArticlesForLlms.flatMap((article) => [
+      `- [${article.title}](${buildCanonicalUrl(`/articles/${article.slug}`)})`,
+      `  ${article.summary} Last substantively updated: ${article.updatedAt}.`,
     ]),
     "",
     "## All guides",

@@ -4,7 +4,7 @@ import type { Guide, GuideEditorialSignals } from "./types";
 const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
   "agents-md-vs-claude-md-cursorrules-copilot-instructions": {
     priority: "P0",
-    primaryKeyword: "CLAUDE.md vs Copilot Instructions",
+    primaryKeyword: "AGENTS.md vs CLAUDE.md",
     demandScore: 9,
     attackabilityScore: 9,
     fitScore: 9.2,

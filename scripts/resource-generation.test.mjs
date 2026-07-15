@@ -176,7 +176,7 @@ describe("generated instruction resources", () => {
 
       const readme = readFileSync(join(packageRoot, "README.md"), "utf8");
       assert.match(readme, /Not measured/);
-      assert.match(readme, /Verified: 2026-06-14/);
+      assert.match(readme, /Verified: 2026-07-14/);
       assert.match(readme, /https:\/\//);
 
       for (const pathname of [

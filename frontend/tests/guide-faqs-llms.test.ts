@@ -24,7 +24,7 @@ describe("guide FAQ overrides", () => {
     expect(loopFaqs[0].question).toMatch(/loop engineering/i);
     expect(loopFaqs.some((faq) => faq.question.includes("workflow checklist"))).toBe(true);
     expect(instructionFaqs[0].question).toMatch(/CLAUDE\.md, Copilot Instructions, or AGENTS\.md/i);
-    expect(instructionFaqs.some((faq) => faq.question.includes("Copilot read CLAUDE.md"))).toBe(true);
+    expect(instructionFaqs.some((faq) => faq.question.includes("Cursor support AGENTS.md"))).toBe(true);
   });
 });
 
@@ -35,7 +35,13 @@ describe("llms.txt", () => {
     expect(body).toContain("# KyenAI");
     expect(body).toContain("https://www.kyenai.com/guides/loop-engineering-ai-coding-agents");
     expect(body).toContain("https://www.kyenai.com/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions");
+    expect(body).toContain("https://www.kyenai.com/tools/instruction-file-checker");
     expect(body).toContain("[Codex vs Claude Code](https://www.kyenai.com/guides/codex-vs-claude-code):");
+    expect(body).toContain("https://www.kyenai.com/articles/spacex-cursor-acquisition-2026");
+    expect(body).toContain("https://www.kyenai.com/articles/cursor-enterprise-organizations-governance");
+    expect(body).toContain("https://www.kyenai.com/authors/editorial-automation-desk");
+    expect(body).toContain("https://www.kyenai.com/sources");
+    expect(body).toContain("https://www.kyenai.com/guides/loop-engineering-ai-coding-agents.md");
     expect(body).toContain("Citation guidance");
     expect(body).not.toContain("gscBaseline");
   });
@@ -43,10 +49,16 @@ describe("llms.txt", () => {
   it("ships a static public llms.txt fallback for production crawlers", () => {
     const publicBody = readFileSync(resolve(testDirectory, "../public/llms.txt"), "utf8");
 
+    expect(publicBody).toBe(buildLlmsTxt());
     expect(publicBody).toContain("# KyenAI");
     expect(publicBody).toContain("## All guides");
+    expect(publicBody).toContain("https://www.kyenai.com/tools/instruction-file-checker");
     expect(publicBody).toContain("[What Is Loop Engineering for AI Coding Agents?");
     expect(publicBody).toContain("[Codex vs Claude Code](https://www.kyenai.com/guides/codex-vs-claude-code):");
+    expect(publicBody).toContain("https://www.kyenai.com/articles/spacex-cursor-acquisition-2026");
+    expect(publicBody).toContain("https://www.kyenai.com/articles/cursor-enterprise-organizations-governance");
+    expect(publicBody).toContain("https://www.kyenai.com/authors/editorial-automation-desk");
+    expect(publicBody).toContain("https://www.kyenai.com/sources");
     expect(publicBody).toContain("Citation guidance");
     expect(publicBody).not.toContain("<!DOCTYPE html>");
   });

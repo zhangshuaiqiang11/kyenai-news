@@ -1,6 +1,8 @@
 {
   "scripts": {
     "dev": "next dev -p 3000",
+    "generate:llms": "vite-node scripts/generate-llms.ts",
+    "prebuild": "npm run generate:llms",
     "build": "NEXT_DIST_DIR=.next-build next build",
     "start": "NEXT_DIST_DIR=.next-build next start -p 3000",
     "test": "vitest run"

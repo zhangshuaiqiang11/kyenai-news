@@ -6,9 +6,9 @@ import { getPublishedArticles } from "../lib/publication";
 import { buildBreadcrumbJsonLd, buildCanonicalUrl, formatDate } from "../lib/seo";
 import type { EvidenceSource } from "../lib/types";
 
-type SourcesPageProps = {
-  sources: EvidenceSource[];
-};
+type SourceUsage = EvidenceSource & { usedBy: Array<{ slug: string; title: string; passages: number }> };
+
+type SourcesPageProps = { sources: SourceUsage[] };
 
 export default function SourcesPage({ sources }: SourcesPageProps) {
   const description =
@@ -53,6 +53,19 @@ export default function SourcesPage({ sources }: SourcesPageProps) {
                 <div><dt>Published</dt><dd>{formatDate(source.publishedAt)}</dd></div>
                 <div><dt>Credibility</dt><dd>{source.credibility}/5</dd></div>
               </dl>
+              {source.usedBy.length > 0 ? (
+                <div>
+                  <strong>Used by</strong>
+                  <ul>
+                    {source.usedBy.map((article) => (
+                      <li key={article.slug}>
+                        <Link href={`/articles/${article.slug}`}>{article.title}</Link>{" "}
+                        <small>({article.passages} cited passage{article.passages === 1 ? "" : "s"})</small>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
             </article>
           ))}
         </div>
@@ -65,8 +78,17 @@ export async function getStaticProps() {
   const articles = getPublishedArticles(await getArticles());
   return {
     props: {
-      sources: getAllSources(articles),
+      sources: getAllSources(articles).map((source) => ({
+        ...source,
+        usedBy: articles.flatMap((article) => {
+          const passages = article.blocks.filter((block) => block.sourceIds.includes(source.id)).length;
+          return article.sources.some((candidate) => candidate.id === source.id || candidate.url === source.url)
+            ? [{ slug: article.slug, title: article.title, passages }]
+            : [];
+        }),
+      })),
     },
     revalidate: 300,
   };
 }
+import Link from "next/link";

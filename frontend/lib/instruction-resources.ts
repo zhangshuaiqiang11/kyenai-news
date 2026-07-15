@@ -1,15 +1,18 @@
 import type { BenchmarkRun, InstructionTemplate, ToolInstructionSupport } from "./types";
 
-export const instructionResourceVerifiedAt = "2026-06-14";
+export const instructionResourceVerifiedAt = "2026-07-14";
 
-const sources = {
-  codex: "https://developers.openai.com/codex/guides/agents-md",
-  claude: "https://docs.anthropic.com/en/docs/claude-code/memory",
+export const instructionDocumentationSources = {
+  codex: "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+  claude: "https://code.claude.com/docs/en/memory",
   copilotSupport: "https://docs.github.com/en/copilot/reference/custom-instructions-support",
   copilotInstructions:
-    "https://docs.github.com/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot",
-  cursor: "https://cursor.com/docs/rules",
+    "https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions",
+  cursor: "https://docs.cursor.com/context/rules-for-ai",
+  cursorCli: "https://docs.cursor.com/en/cli/using",
 } as const;
+
+const sources = instructionDocumentationSources;
 
 export const toolInstructionSupport: ToolInstructionSupport[] = [
   {
@@ -47,6 +50,24 @@ export const toolInstructionSupport: ToolInstructionSupport[] = [
     verifiedAt: instructionResourceVerifiedAt,
   },
   {
+    id: "claude-code-agents-md-import",
+    toolId: "claude-code",
+    toolName: "Claude Code",
+    path: "CLAUDE.md containing @AGENTS.md",
+    status: "documented",
+    scopes: ["repository"],
+    surfaces: ["Claude Code"],
+    priority:
+      "Claude Code does not read AGENTS.md directly. Its documented bridge is a CLAUDE.md file that imports @AGENTS.md, followed by any Claude-specific guidance.",
+    nesting:
+      "The imported path resolves relative to the CLAUDE.md file. Imports can recurse to a maximum depth of four hops; a symlink is another documented option where supported.",
+    recommendation:
+      "Use @AGENTS.md from CLAUDE.md when Codex, Copilot, and Claude Code should share a single shared baseline without duplicating repository rules.",
+    sourceUrl: sources.claude,
+    publisher: "Anthropic",
+    verifiedAt: instructionResourceVerifiedAt,
+  },
+  {
     id: "copilot-repository-instructions",
     toolId: "github-copilot",
     toolName: "GitHub Copilot",
@@ -55,25 +76,92 @@ export const toolInstructionSupport: ToolInstructionSupport[] = [
     scopes: ["repository"],
     surfaces: [
       "GitHub.com Copilot Chat",
-      "Copilot cloud agent",
-      "Copilot code review",
+      "GitHub.com Copilot cloud agent",
+      "GitHub.com Copilot code review",
       "VS Code Copilot Chat",
+      "VS Code Copilot cloud agent",
+      "VS Code Copilot code review",
       "Visual Studio Copilot Chat",
+      "Visual Studio Copilot code review",
       "JetBrains Copilot Chat",
+      "JetBrains Copilot cloud agent",
+      "JetBrains Copilot code review",
       "Eclipse Copilot Chat",
+      "Eclipse Copilot cloud agent",
       "Xcode Copilot Chat",
+      "Xcode Copilot cloud agent",
+      "Xcode Copilot code review",
       "Copilot CLI",
     ],
     priority: "Repository-wide instructions are combined with applicable path-specific instructions where supported.",
     nesting: "This file has one fixed repository-wide location; use .github/instructions/*.instructions.md for paths.",
     recommendation:
-      "Use .github/copilot-instructions.md as the broad-compatibility Copilot baseline, even when agent-specific files also exist.",
+      "Use .github/copilot-instructions.md as the most portable Copilot baseline, even when AGENTS.md or CLAUDE.md also exists for agent-specific surfaces.",
     sourceUrl: sources.copilotSupport,
     publisher: "GitHub",
     verifiedAt: instructionResourceVerifiedAt,
   },
   {
-    id: "copilot-claude-md-cloud-agent",
+    id: "copilot-path-specific-instructions",
+    toolId: "github-copilot",
+    toolName: "GitHub Copilot",
+    path: ".github/instructions/**/*.instructions.md",
+    status: "documented",
+    scopes: ["path-specific"],
+    surfaces: [
+      "GitHub.com Copilot cloud agent",
+      "GitHub.com Copilot code review",
+      "VS Code Copilot Chat",
+      "VS Code Copilot cloud agent",
+      "Visual Studio Copilot Chat",
+      "JetBrains Copilot Chat",
+      "JetBrains Copilot cloud agent",
+      "JetBrains Copilot code review",
+      "Eclipse Copilot cloud agent",
+      "Xcode Copilot Chat",
+      "Xcode Copilot cloud agent",
+      "Xcode Copilot code review",
+      "Copilot CLI",
+    ],
+    priority:
+      "When a file path matches and repository-wide instructions also exist, GitHub documents that both instruction sets are used.",
+    nesting:
+      "Path-specific files live under .github/instructions and are combined with .github/copilot-instructions.md where the selected surface supports them.",
+    recommendation:
+      "Use path-specific files for language, package, or directory rules, but keep cross-repository commands and guardrails in the repository-wide Copilot file.",
+    sourceUrl: sources.copilotInstructions,
+    publisher: "GitHub",
+    verifiedAt: instructionResourceVerifiedAt,
+  },
+  {
+    id: "copilot-agents-md",
+    toolId: "github-copilot",
+    toolName: "GitHub Copilot",
+    path: "AGENTS.md",
+    status: "documented",
+    scopes: ["repository", "nested-directory"],
+    surfaces: [
+      "GitHub.com Copilot cloud agent",
+      "GitHub.com Copilot code review",
+      "VS Code Copilot Chat",
+      "VS Code Copilot cloud agent",
+      "JetBrains Copilot cloud agent",
+      "Eclipse Copilot cloud agent",
+      "Xcode Copilot cloud agent",
+      "Copilot CLI",
+    ],
+    priority:
+      "GitHub documents that the nearest AGENTS.md file in the directory tree takes precedence when Copilot is working.",
+    nesting:
+      "One or more AGENTS.md files may be stored throughout the repository; surface support still varies according to GitHub's current matrix.",
+    recommendation:
+      "Use AGENTS.md for nested agent guidance shared with Codex and supported Copilot surfaces, plus .github/copilot-instructions.md when broad Copilot coverage matters.",
+    sourceUrl: sources.copilotInstructions,
+    publisher: "GitHub",
+    verifiedAt: instructionResourceVerifiedAt,
+  },
+  {
+    id: "copilot-claude-md-documented-surfaces",
     toolId: "github-copilot",
     toolName: "GitHub Copilot",
     path: "CLAUDE.md",
@@ -81,22 +169,23 @@ export const toolInstructionSupport: ToolInstructionSupport[] = [
     scopes: ["repository"],
     surfaces: [
       "GitHub.com Copilot cloud agent",
-      "Visual Studio Code Copilot cloud agent",
-      "JetBrains IDEs Copilot cloud agent",
+      "VS Code Copilot cloud agent",
+      "JetBrains Copilot cloud agent",
       "Eclipse Copilot cloud agent",
       "Xcode Copilot cloud agent",
+      "Copilot CLI",
     ],
     priority:
-      "GitHub's support matrix lists CLAUDE.md agent instructions for these cloud agent surfaces, separately from Copilot Chat in the same IDE.",
+      "GitHub's support matrix lists CLAUDE.md as agent instructions on these cloud-agent surfaces and in Copilot CLI.",
     nesting: "The support matrix establishes file-type support by surface; no broader CLAUDE.md scope behavior is inferred here.",
     recommendation:
-      "Keep CLAUDE.md when Claude Code is part of the workflow, but add .github/copilot-instructions.md for Copilot surfaces beyond the cloud agent.",
+      "Keep CLAUDE.md when Claude Code is part of the workflow or Copilot CLI should reuse it, but add .github/copilot-instructions.md for Copilot surfaces beyond agent instructions.",
     sourceUrl: sources.copilotSupport,
     publisher: "GitHub",
     verifiedAt: instructionResourceVerifiedAt,
   },
   {
-    id: "copilot-claude-md-other-surfaces",
+    id: "copilot-claude-md-unlisted-surfaces",
     toolId: "github-copilot",
     toolName: "GitHub Copilot",
     path: "CLAUDE.md",
@@ -105,21 +194,20 @@ export const toolInstructionSupport: ToolInstructionSupport[] = [
     surfaces: [
       "GitHub.com Copilot Chat",
       "GitHub.com Copilot code review",
-      "Visual Studio Code Copilot Chat",
-      "Visual Studio Code Copilot code review",
+      "VS Code Copilot Chat",
+      "VS Code Copilot code review",
       "Visual Studio Copilot Chat",
       "Visual Studio Copilot code review",
-      "JetBrains IDEs Copilot Chat",
-      "JetBrains IDEs Copilot code review",
+      "JetBrains Copilot Chat",
+      "JetBrains Copilot code review",
       "Eclipse Copilot Chat",
       "Eclipse Copilot code review",
       "Xcode Copilot Chat",
       "Xcode Copilot code review",
-      "Copilot CLI",
     ],
-    priority: "GitHub's support matrix does not list CLAUDE.md for these surfaces.",
-    nesting: "Do not rely on CLAUDE.md to provide instructions on these surfaces.",
-    recommendation: "Mirror shared Copilot guidance in .github/copilot-instructions.md.",
+    priority: "GitHub's current support matrix does not list CLAUDE.md agent instructions for these surfaces.",
+    nesting: "Do not rely on CLAUDE.md to provide Copilot instructions on a surface where the matrix does not list it.",
+    recommendation: "Mirror shared guidance in .github/copilot-instructions.md and use AGENTS.md only where its surface is documented.",
     sourceUrl: sources.copilotSupport,
     publisher: "GitHub",
     verifiedAt: instructionResourceVerifiedAt,
@@ -131,7 +219,7 @@ export const toolInstructionSupport: ToolInstructionSupport[] = [
     path: ".cursor/rules/*.mdc",
     status: "documented",
     scopes: ["repository", "path-specific"],
-    surfaces: ["Cursor"],
+    surfaces: ["Cursor IDE", "Cursor CLI"],
     priority: "Rule metadata controls whether a rule is always applied, matched to files, requested, or selected manually.",
     nesting: "Store focused project rules under .cursor/rules and use matching metadata to limit their scope.",
     recommendation: "Prefer small .mdc rules with explicit descriptions and globs over one large repository prompt.",
@@ -140,19 +228,67 @@ export const toolInstructionSupport: ToolInstructionSupport[] = [
     verifiedAt: instructionResourceVerifiedAt,
   },
   {
-    id: "cursor-cursorrules-status-unknown",
+    id: "cursor-agents-md-ide",
+    toolId: "cursor",
+    toolName: "Cursor",
+    path: "AGENTS.md (project root)",
+    status: "documented",
+    scopes: ["repository"],
+    surfaces: ["Cursor IDE"],
+    priority:
+      "Cursor documents root-level AGENTS.md as a plain Markdown alternative to .cursor/rules for straightforward project-wide instructions.",
+    nesting:
+      "The cited Cursor IDE documentation limits AGENTS.md to the project root and global scope; it does not document nested AGENTS.md support on this surface.",
+    recommendation:
+      "Use root AGENTS.md when one readable project-wide file is sufficient; use .cursor/rules when metadata, path scoping, or multiple focused rules are needed.",
+    sourceUrl: sources.cursor,
+    publisher: "Cursor",
+    verifiedAt: instructionResourceVerifiedAt,
+  },
+  {
+    id: "cursor-agents-md-cli",
+    toolId: "cursor",
+    toolName: "Cursor",
+    path: "AGENTS.md (project root)",
+    status: "documented",
+    scopes: ["repository"],
+    surfaces: ["Cursor CLI"],
+    priority: "Cursor CLI reads AGENTS.md at the project root and applies it alongside .cursor/rules.",
+    nesting: "The cited CLI page documents the project-root file and does not establish nested AGENTS.md discovery.",
+    recommendation: "Use AGENTS.md to share a simple root policy with Codex and Cursor CLI; keep Cursor-specific scoped rules in .cursor/rules.",
+    sourceUrl: sources.cursorCli,
+    publisher: "Cursor",
+    verifiedAt: instructionResourceVerifiedAt,
+  },
+  {
+    id: "cursor-claude-md-cli",
+    toolId: "cursor",
+    toolName: "Cursor",
+    path: "CLAUDE.md (project root)",
+    status: "documented",
+    scopes: ["repository"],
+    surfaces: ["Cursor CLI"],
+    priority: "Cursor CLI reads CLAUDE.md at the project root and applies it alongside .cursor/rules.",
+    nesting: "The cited CLI page documents the project-root file and does not establish Claude Code's broader memory precedence inside Cursor.",
+    recommendation: "Reuse CLAUDE.md in Cursor CLI when the shared root policy is intentional; use .cursor/rules for Cursor-specific scope and metadata.",
+    sourceUrl: sources.cursorCli,
+    publisher: "Cursor",
+    verifiedAt: instructionResourceVerifiedAt,
+  },
+  {
+    id: "cursor-cursorrules-legacy",
     toolId: "cursor",
     toolName: "Cursor",
     path: ".cursorrules",
-    status: "unknown",
+    status: "legacy",
     scopes: ["repository"],
-    surfaces: ["Cursor"],
+    surfaces: ["Cursor IDE"],
     priority:
-      "The current Cursor rules documentation prescribes project rules under .cursor/rules; it does not, on the cited page, establish an official legacy or deprecation status for .cursorrules.",
+      "Cursor documents .cursorrules as a legacy root file that remains supported but is deprecated in favor of Project Rules.",
     nesting:
-      "No nesting or precedence behavior for .cursorrules is asserted here because the cited current documentation does not establish it.",
+      "The legacy file is repository-wide and does not provide the metadata or nested rule organization available under .cursor/rules.",
     recommendation:
-      "For new maintained guidance, follow the currently documented .cursor/rules project-rule format. Review existing .cursorrules behavior separately before removing it.",
+      "Migrate this deprecated legacy format to .cursor/rules, compare behavior before removal, and keep the old file only while an older workflow still depends on it.",
     sourceUrl: sources.cursor,
     publisher: "Cursor",
     verifiedAt: instructionResourceVerifiedAt,
@@ -278,16 +414,27 @@ alwaysApply: true
 
 # Project guidance
 
+## Scope
+- These instructions apply to the entire repository.
+
+## Setup
+- Install dependencies with \`npm ci\`.
+
+## Change and safety rules
 - Read nearby implementation and tests before editing.
 - Follow existing architecture, naming, and formatting.
-- Prefer focused changes over broad refactors.
-- Do not edit generated files unless generation is part of the task.
+- Do not edit generated files or expose secrets.
+- Ask before destructive database or dependency changes.
+
+## Verification
 - Run \`npm run lint\` and \`npm test\` after code changes.
 - Run \`npm run build\` for production-facing changes.
+
+## Completion
 - Report changed files, test results, and unresolved risks.`,
     cautions: [
       "Set alwaysApply to false and add globs when a rule should cover only selected files.",
-      "If the repository already has .cursorrules, review its behavior before transferring guidance; this template does not assert an official deprecation status.",
+      "If the repository still has the deprecated .cursorrules file, compare behavior before removing it during migration.",
     ],
   },
 ];

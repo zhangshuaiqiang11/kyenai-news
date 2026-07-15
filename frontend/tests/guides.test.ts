@@ -5,6 +5,13 @@ import { getGuide, getGuides, getInternalLinkedGuides } from "../lib/guides";
 import { buildGuideFaqs, buildGuideItemListJsonLd, buildGuideJsonLd } from "../lib/seo";
 
 describe("guide SEO data", () => {
+  it("keeps immutable publication dates at or before substantive updates", () => {
+    for (const guide of getGuides()) {
+      expect(new Date(guide.publishedAt).getTime(), guide.slug).toBeLessThanOrEqual(
+        new Date(guide.updatedAt).getTime(),
+      );
+    }
+  });
   it("keeps every guide meta title within 25 to 75 characters", () => {
     for (const guide of getGuides()) {
       expect.soft(guide.metaTitle.length, guide.slug).toBeGreaterThanOrEqual(25);
@@ -94,7 +101,7 @@ describe("guide SEO data", () => {
     expect(guide).toBeDefined();
     expect(guide).toMatchObject({
       slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
-      updatedAt: "2026-06-25",
+      updatedAt: "2026-07-14",
       resourceIds: ["instruction-files"],
     });
     expect(guide!.metaTitle.length).toBeGreaterThanOrEqual(25);
@@ -109,13 +116,13 @@ describe("guide SEO data", () => {
     expect(quickAnswer).toMatch(/\.github\/copilot-instructions\.md for broad GitHub Copilot/i);
     expect(quickAnswer).toMatch(/\.cursor\/rules\/\*\.mdc for current Cursor/i);
     expect(quickAnswer).toMatch(/Copilot support for CLAUDE\.md depends on the Copilot surface/i);
-    expect(quickAnswer).toMatch(/selected cloud-agent surfaces support it/i);
-    expect(quickAnswer).toMatch(/many Copilot Chat, code-review, and CLI surfaces do not/i);
+    expect(quickAnswer).toMatch(/selected cloud-agent surfaces and Copilot CLI support it/i);
+    expect(quickAnswer).toMatch(/many Copilot Chat and code-review surfaces do not/i);
     expect(quickAnswer).toContain(".github/copilot-instructions.md");
     expect(quickAnswer).not.toMatch(/Copilot (always|never) (reads|supports) CLAUDE\.md/i);
     expect(guide!.sections.map((section) => section.heading)).toEqual(
       expect.arrayContaining([
-        "Does GitHub Copilot Read CLAUDE.md?",
+        "Copilot compatibility varies by surface",
         "CLAUDE.md vs AGENTS.md: What Is the Difference?",
         "Does Cursor Support AGENTS.md?",
         "CLAUDE.md vs copilot-instructions.md",
@@ -127,20 +134,21 @@ describe("guide SEO data", () => {
 
     const guideCopy = JSON.stringify(guide);
     expect(guideCopy).toContain(".cursor/rules/*.mdc");
-    expect(guideCopy).toMatch(/status is unknown in the cited current documentation/i);
+    expect(guideCopy).toMatch(/legacy|deprecated/i);
     expect(guideCopy).toMatch(/same task/i);
     expect(guideCopy).toMatch(/same repository/i);
     expect(guideCopy).toMatch(/measured success/i);
     expect(guideCopy).toMatch(/elapsed time/i);
     expect(guideCopy).toMatch(/human interventions/i);
-    expect(guideCopy).not.toMatch(/\.cursorrules (is|was|has been) (officially )?deprecated/i);
+    expect(guideCopy).toMatch(/\.cursorrules as legacy and deprecated/i);
 
     expect(guide!.evidence.map((source) => source.url)).toEqual([
-      "https://developers.openai.com/codex/guides/agents-md",
-      "https://docs.anthropic.com/en/docs/claude-code/memory",
+      "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+      "https://code.claude.com/docs/en/memory",
       "https://docs.github.com/en/copilot/reference/custom-instructions-support",
-      "https://docs.github.com/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot",
-      "https://cursor.com/docs/rules",
+      "https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions",
+      "https://docs.cursor.com/context/rules-for-ai",
+      "https://docs.cursor.com/en/cli/using",
     ]);
 
     const internalSlugs = guide!.internalLinks.map((link) => link.slug);
@@ -298,7 +306,7 @@ describe("guide SEO data", () => {
     const guide = getGuide("codex-vs-claude-code");
 
     expect(guide).toBeDefined();
-    expect(guide!.updatedAt).toBe("2026-06-26");
+    expect(guide!.updatedAt).toBe("2026-07-14");
     expect(guide!.sections.map((section) => section.heading)).toEqual(
       expect.arrayContaining(["Public example evidence", "Same-task experiment protocol", "Same-repo scoring rubric"]),
     );

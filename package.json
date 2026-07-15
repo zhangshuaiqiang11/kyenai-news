@@ -9,6 +9,7 @@
     "audit:pagespeed": "bash scripts/run-node-script.sh scripts/pagespeed-audit.mjs",
     "audit:gsc": "bash scripts/run-node-script.sh scripts/gsc-probe.mjs",
     "generate:resources": "bash scripts/run-node-script.sh --experimental-strip-types scripts/generate-instruction-resources.mjs",
+    "generate:llms": "npm run generate:llms --prefix frontend",
     "audit:resources": "bash scripts/run-node-script.sh --experimental-strip-types --test scripts/resource-generation.test.mjs",
     "test:scripts": "bash scripts/run-node-script.sh --test scripts/*.test.mjs",
     "dev": "npm run dev:web"

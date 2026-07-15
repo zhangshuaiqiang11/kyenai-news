@@ -133,4 +133,17 @@ describe("SpaceX Cursor acquisition article", () => {
       "https://www.kyenai.com/articles/spacex-cursor-acquisition-2026",
     );
   });
+
+  it("renders passage-level source links from each block's source IDs", () => {
+    const cursorArticle = seedArticles.find(
+      (article) => article.slug === "cursor-enterprise-organizations-governance",
+    )!;
+    render(<ArticlePage article={cursorArticle} relatedArticles={[]} relatedGuides={[]} />);
+
+    const citationGroups = screen.getAllByLabelText("Sources for this passage");
+    expect(citationGroups.length).toBeGreaterThanOrEqual(4);
+    expect(
+      within(citationGroups[0]).getAllByRole("link").map((link) => link.getAttribute("href")),
+    ).toEqual(cursorArticle.sources.map((source) => source.url));
+  });
 });
