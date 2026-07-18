@@ -346,6 +346,8 @@ describe("public guide SEO copy", () => {
 
     expect(resourceMarkup).toContain("Loop engineering pattern matrix");
     expect(resourceMarkup).toContain("Five loop building blocks");
+    expect(resourceMarkup).toContain("Evidence gate for an AI coding agent loop");
+    expect(resourceMarkup).toContain("/resources/loop-engineering/proof-of-done-contract.json");
     expect(resourceMarkup).toContain("Plan → execute → verify");
     expect(resourceMarkup).not.toContain('type="application/ld+json"');
 

@@ -45,6 +45,11 @@ const guideFaqsBySlug: Record<string, FaqItem[]> = {
       answer:
         "Name the goal and done signal, pick plan-execute-verify as the default pattern, attach tests or linters as observation, cap iterations, add human checkpoints before production or destructive actions, budget tokens before unattended runs, and assign a loop owner who reviews logs without secrets.",
     },
+    {
+      question: "What counts as proof that an AI coding agent loop is done?",
+      answer:
+        "An agent's DONE message is a claim, not proof. Require fresh evidence tied to the exact source revision: passing commands, required artifacts, an independently checked diff, and any named human approval. Record an explicit terminal state such as verified, review-required, blocked, or stopped-by-budget. A passed gate proves the named check under its trust model, not semantic correctness of the whole program.",
+    },
   ],
   "agents-md-template-for-ai-coding-agents": [
     {

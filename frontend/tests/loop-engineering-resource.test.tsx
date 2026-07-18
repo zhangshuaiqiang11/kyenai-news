@@ -1,12 +1,22 @@
 /** @vitest-environment jsdom */
 import React from "react";
+import fs from "node:fs";
+import path from "node:path";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { LoopEngineeringResources } from "../components/LoopEngineeringResources";
 import { LoopBudgetCalculator } from "../components/LoopBudgetCalculator";
 import { LoopPatternMatrix } from "../components/LoopPatternMatrix";
-import { calculateLoopBudget, loopBuildingBlocks, loopPatterns, loopStopRules, loopWorkflowSteps } from "../lib/loop-engineering-resource";
+import {
+  calculateLoopBudget,
+  loopBuildingBlocks,
+  loopPatterns,
+  loopProofContractDownload,
+  loopProofGateChecks,
+  loopStopRules,
+  loopWorkflowSteps,
+} from "../lib/loop-engineering-resource";
 
 (globalThis as typeof globalThis & { React: typeof React }).React = React;
 
@@ -34,6 +44,7 @@ describe("loop engineering resource components", () => {
     expect(screen.getByRole("heading", { name: /plan, act, observe, verify, retry or stop/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /loop engineering pattern matrix/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /agent loop budget calculator/i })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: /evidence gate for an ai coding agent loop/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /bounded agent loop/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /when should an ai agent stop the loop/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /five loop building blocks/i })).toBeTruthy();
@@ -52,6 +63,34 @@ describe("loop engineering resource components", () => {
     for (const block of loopBuildingBlocks) {
       expect(screen.getByRole("heading", { name: block.title })).toBeTruthy();
     }
+
+    for (const gate of loopProofGateChecks) {
+      expect(screen.getByRole("heading", { name: gate.title })).toBeTruthy();
+    }
+
+    const download = screen.getByRole("link", { name: /download proof-of-done-contract\.json/i });
+    expect(download.getAttribute("href")).toBe(loopProofContractDownload);
+    expect(download.hasAttribute("download")).toBe(true);
+  });
+
+  it("ships a valid proof-of-done contract with bounded gates and explicit terminal states", () => {
+    const contractPath = path.join(process.cwd(), "public/resources/loop-engineering/proof-of-done-contract.json");
+    const contract = JSON.parse(fs.readFileSync(contractPath, "utf8"));
+
+    expect(contract.templateVersion).toBe("1.0.0");
+    expect(contract.trustBoundary).toMatch(/does not prove semantic program correctness/i);
+    expect(contract.task.sourceRevision).toMatch(/git-sha/i);
+    expect(contract.budgets.maxIterations).toBeGreaterThan(0);
+    expect(contract.requiredGates).toHaveLength(3);
+    expect(contract.requiredGates.every((gate: { mustMatchSourceRevision: boolean; mustBeFresh: boolean }) =>
+      gate.mustMatchSourceRevision && gate.mustBeFresh,
+    )).toBe(true);
+    expect(contract.allowedTerminalStates).toEqual(expect.arrayContaining([
+      "verified",
+      "review-required",
+      "blocked",
+      "stopped-by-budget",
+    ]));
   });
 
   it("calculates token, tool-call, cost, and risk ceilings deterministically", () => {

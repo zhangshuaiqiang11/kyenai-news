@@ -1,4 +1,41 @@
-export const loopEngineeringVerifiedAt = "June 15, 2026";
+export const loopEngineeringVerifiedAt = "July 19, 2026";
+
+export const loopProofContractDownload = "/resources/loop-engineering/proof-of-done-contract.json";
+
+export const loopProofGateChecks = [
+  {
+    id: "source-state",
+    title: "Bind evidence to source state",
+    detail: "Record the commit SHA or immutable revision that every receipt was generated against.",
+  },
+  {
+    id: "freshness",
+    title: "Require fresh receipts",
+    detail: "Reject test, build, review, or screenshot evidence produced before the current source revision.",
+  },
+  {
+    id: "independence",
+    title: "Separate claim from verdict",
+    detail: "Treat the agent summary as a claim; use commands, policies, or a named reviewer to decide the state transition.",
+  },
+  {
+    id: "terminal-state",
+    title: "Name every terminal state",
+    detail: "End as verified, review-required, blocked, or stopped-by-budget instead of an ambiguous DONE message.",
+  },
+] as const;
+
+export const loopProofContractPreview = `{
+  "sourceRevision": "<git-sha>",
+  "claimedState": "ready-for-review",
+  "requiredGates": [
+    { "id": "focused-tests", "command": "npm test", "fresh": true },
+    { "id": "diff-review", "reviewer": "not-the-authoring-agent" }
+  ],
+  "allowedTerminalStates": [
+    "verified", "review-required", "blocked", "stopped-by-budget"
+  ]
+}`;
 
 export type LoopPatternRecord = {
   id: string;

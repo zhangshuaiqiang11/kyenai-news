@@ -4,6 +4,9 @@ import {
   loopBuildingBlocks,
   loopEngineeringExample,
   loopEngineeringPseudoCode,
+  loopProofContractDownload,
+  loopProofContractPreview,
+  loopProofGateChecks,
   loopStopRules,
   loopWorkflowSteps,
 } from "../lib/loop-engineering-resource";
@@ -35,6 +38,41 @@ export function LoopEngineeringResources() {
       <LoopPatternMatrix />
 
       <LoopBudgetCalculator />
+
+      <section className="instruction-resource-section" aria-labelledby="loop-proof-heading">
+        <div className="instruction-resource-heading">
+          <div>
+            <p className="instruction-resource-eyebrow">Proof of done</p>
+            <h2 id="loop-proof-heading">Evidence gate for an AI coding agent loop</h2>
+          </div>
+          <p>
+            Use this KyenAI template to turn an agent&apos;s completion claim into an auditable state transition.
+          </p>
+        </div>
+
+        <div className="guide-action-list">
+          {loopProofGateChecks.map((gate) => (
+            <article key={gate.id}>
+              <h3>{gate.title}</h3>
+              <p>{gate.detail}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="instruction-template-grid instruction-template-grid-single">
+          <CodeExampleCard
+            title="Proof-of-done contract"
+            purpose="Copy the JSON template into your runner, replace the placeholders, and allow a terminal-state transition only after every required receipt is current and independently checked."
+            body={loopProofContractPreview}
+            downloadHref={loopProofContractDownload}
+            downloadName="proof-of-done-contract.json"
+            cautions={[
+              "This is a KyenAI starter contract, not the Proof-or-Stop reference implementation.",
+              "A passed gate proves only the named check under its stated trust model; it does not prove semantic program correctness.",
+            ]}
+          />
+        </div>
+      </section>
 
       <section className="instruction-resource-section" aria-labelledby="loop-example-heading">
         <div className="instruction-resource-heading">

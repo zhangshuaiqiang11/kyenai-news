@@ -1368,7 +1368,7 @@ export const expansionGuides: Guide[] = [
     title: "What Is Loop Engineering for AI Coding Agents?",
     slug: "loop-engineering-ai-coding-agents",
     summary:
-      "Learn what loop engineering means for AI coding agents with a browser-based budget calculator, control-loop examples, stop rules, token and cost caps, verification commands, and Addy Osmani's workflow context.",
+      "Learn loop engineering for AI coding agents through Addy Osmani's workflow context, a budget calculator, stop rules, and a downloadable proof-of-done JSON contract.",
     intent:
       "Developers want to move from prompting agents task-by-task to designing durable loops that plan, change code, verify results, and stop safely.",
     audience: "Developers, staff engineers, and platform teams adopting agentic coding workflows in Cursor, Claude Code, Codex, or custom CI agents.",
@@ -1436,6 +1436,13 @@ export const expansionGuides: Guide[] = [
         body: [
           "Stop rules are not administrative decoration; they are the safety feature. Stop when verification passes, when an iteration cap is reached, when the same failure repeats, when the next action requires wider permissions, when cost crosses the budget, or when the agent can no longer tie its next action to observed evidence.",
           "For team use, make the stop rule visible in AGENTS.md, CLAUDE.md, a Copilot instructions file, or the workflow configuration that starts the loop. The safest loops are boring to audit: every retry has a reason, every escalation has an owner, and every successful run leaves a concise artifact.",
+        ],
+      },
+      {
+        heading: "What counts as proof that an AI coding loop is done?",
+        body: [
+          "Treat DONE, tested, reviewed, and ready-to-merge as claims until current evidence supports the transition. Bind every test result, build receipt, diff review, or screenshot to the exact source revision it checked; reject stale receipts after the code changes; and record whether the run ended verified, review-required, blocked, or stopped by budget.",
+          "A July 2026 Proof-or-Stop preprint formalizes this as evidence-gated lifecycle control: fresh, source-state-bound, mechanically verifiable evidence must satisfy a gate before state can advance. The paper is a preprint with an evaluation limited to one model family, 24 ablation tasks, and a self-hosted corpus. Its operational proof means evidence admissible under a stated trust model, not a guarantee of semantic program correctness. The downloadable KyenAI contract below is an independent starter template, not the paper's reference implementation.",
         ],
       },
       {
@@ -1627,6 +1634,20 @@ export const expansionGuides: Guide[] = [
         url: "https://docs.anthropic.com/en/docs/claude-code/overview",
         publisher: "Anthropic",
         note: "Places scheduling, hooks, subagents, and headless runs in the Claude Code workflow.",
+      },
+      {
+        title: "Proof-or-Stop: Don't Trust the Agent, Trust the Evidence",
+        url: "https://arxiv.org/abs/2607.14890",
+        publisher: "arXiv",
+        note: "July 2026 preprint proposing fresh, source-state-bound evidence gates for lifecycle transitions; proof is operational rather than semantic correctness, and the evaluation states material limits.",
+        verifiedAt: "2026-07-19",
+      },
+      {
+        title: "Stop Hand-Holding Your Coding Agent: Engineering the Loops that Replace Step-by-Step Prompting",
+        url: "https://arxiv.org/abs/2607.00038",
+        publisher: "arXiv",
+        note: "June 2026 preprint defining bounded loop specifications with verification, stopping rules, memory, and named terminal states, based partly on a descriptive 50-loop corpus.",
+        verifiedAt: "2026-07-19",
       },
     ],
     relatedArticleSlugs: [
