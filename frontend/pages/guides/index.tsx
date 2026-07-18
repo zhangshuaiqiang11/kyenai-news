@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import {
+  CODEX_COPILOT_GUIDE_HREF,
+  CODING_AGENT_COMPARISON_GUIDE_HREF,
   INSTRUCTION_COMPARISON_GUIDE_HREF,
   LOOP_ENGINEERING_GUIDE_HREF,
   MCP_SECURITY_GUIDE_HREF,
@@ -111,8 +113,13 @@ const guideTopicHubs: GuideTopicHub[] = [
     intro:
       "Use this track when the team needs to choose a tool, execution model, or migration path. The comparison guides focus on workflow fit, security boundaries, review effort, and same-repo evaluation rather than generic pros and cons.",
     beginner: "Local vs Cloud AI Coding Agents",
-    advanced: "Codex vs Claude Code",
+    advanced: "AI Coding Agents Comparison",
     readingOrder: [
+      {
+        href: CODING_AGENT_COMPARISON_GUIDE_HREF,
+        label: "AI coding agents comparison",
+        note: "Build a Codex, Claude Code, GitHub Copilot, or Cursor shortlist by operating model.",
+      },
       {
         href: "/guides/local-vs-cloud-ai-coding-agent",
         label: "Local vs cloud AI coding agent",
@@ -122,6 +129,11 @@ const guideTopicHubs: GuideTopicHub[] = [
         href: "/guides/codex-vs-claude-code",
         label: "Codex vs Claude Code",
         note: "Compare workflows with a controlled same-task protocol.",
+      },
+      {
+        href: CODEX_COPILOT_GUIDE_HREF,
+        label: "Codex vs GitHub Copilot",
+        note: "Compare OpenAI-native delegation with the GitHub control plane.",
       },
       {
         href: "/guides/antigravity-cli-gemini-cli-migration",
@@ -162,6 +174,13 @@ const startingGuides = [
 
 const comparisonPages = [
   {
+    href: CODING_AGENT_COMPARISON_GUIDE_HREF,
+    label: "Codex vs Claude Code vs Cursor vs GitHub Copilot",
+    type: "Four-tool comparison hub",
+    verdict:
+      "Start here to choose an operating model and route the shortlist into a focused pairwise or execution guide.",
+  },
+  {
     href: INSTRUCTION_COMPARISON_GUIDE_HREF,
     label: "AGENTS.md vs CLAUDE.md vs Copilot Instructions",
     type: "Support matrix",
@@ -174,6 +193,13 @@ const comparisonPages = [
     type: "Workflow comparison",
     verdict:
       "Use this when the team is choosing between OpenAI-native collaboration and terminal-local agent work.",
+  },
+  {
+    href: CODEX_COPILOT_GUIDE_HREF,
+    label: "Codex vs GitHub Copilot",
+    type: "Agent ecosystem comparison",
+    verdict:
+      "Use this when choosing between an OpenAI-native agent workspace and GitHub-native policy, IDE, and pull-request workflows.",
   },
   {
     href: "/guides/local-vs-cloud-ai-coding-agent",
@@ -206,12 +232,12 @@ const comparisonPages = [
 ];
 
 const guideOverview =
-  "KyenAI guides help software teams make practical decisions about AI coding agents. Start with the instruction-file support matrix when the problem is repository guidance. Use the loop engineering guide when agent work needs verification commands, retry limits, and stop rules. Use the MCP security and governance guides before adding tool access, secrets, logs, approvals, or revocation. Use the comparison guides when the team is choosing between Codex and Claude Code, local and cloud agents, agent mode and chat mode, or hooks and MCP. Each guide gives the answer first, then adds source notes, decision tables, checklists, and next steps for implementation.";
+  "KyenAI guides help software teams make practical decisions about AI coding agents. Start with the four-tool comparison hub when choosing among Codex, Claude Code, Cursor, and GitHub Copilot. Use the instruction-file support matrix when the problem is repository guidance. Use the loop engineering guide when agent work needs verification commands, retry limits, and stop rules. Use the MCP security and governance guides before adding tool access, secrets, logs, approvals, or revocation. Each guide gives the answer first, then adds source notes, decision tables, checklists, and next steps for implementation.";
 
 export const guidesPageSeo = {
-  title: "AI Coding Agent Decision Guides: AGENTS.md, Codex, MCP",
+  title: "AI Coding Agent Guides: Templates, Security & Workflows",
   description:
-    "Choose instruction files, compare Codex and Claude Code, design agent loops, and secure MCP access with decision matrices and launch checklists.",
+    "Browse AGENTS.md templates, MCP security checklists, agent-loop workflows, governance guidance, and evidence-led implementation resources.",
 } as const;
 
 export default function GuidesPage({ guides }: GuidesPageProps) {
@@ -245,8 +271,8 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
         </nav>
         <h1>AI Coding Agent Guides</h1>
         <p>
-          Use these guides to choose repository instruction files, compare Codex and Claude Code, design repeatable
-          agent loops, and secure MCP access before giving agents more autonomy.
+          Use these guides to compare Codex, Claude Code, Cursor, and GitHub Copilot; choose repository instruction
+          files; design repeatable agent loops; and secure MCP access before giving agents more autonomy.
         </p>
         <section className="featured-guide-paths" aria-labelledby="featured-guide-paths-heading">
           <div>
@@ -254,6 +280,10 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
             <p>Choose the next guide by the decision your team needs to make.</p>
           </div>
           <div className="featured-guide-path-grid">
+            <Link href={CODING_AGENT_COMPARISON_GUIDE_HREF}>
+              <strong>Compare AI coding agents by operating model</strong>
+              <span>Build a four-tool shortlist, then verify it with focused pairwise guides and the same repository task.</span>
+            </Link>
             <Link href={INSTRUCTION_COMPARISON_GUIDE_HREF}>
               <strong>Choose repository instruction files</strong>
               <span>Compare AGENTS.md, CLAUDE.md, Cursor rules, and Copilot support before standardizing guidance.</span>

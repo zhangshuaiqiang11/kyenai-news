@@ -126,6 +126,21 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
       "github copilot alternative codex",
     ],
   },
+  "ai-coding-agents-comparison": {
+    priority: "P0",
+    primaryKeyword: "AI coding agents comparison",
+    demandScore: 9.1,
+    attackabilityScore: 8.4,
+    fitScore: 9.8,
+    gscWatchQueries: [
+      "ai coding agents comparison",
+      "ai coding agent comparison",
+      "codex vs claude code vs cursor vs copilot",
+      "coding agents comparison 2026",
+      "ai coding tools for teams",
+      "enterprise ai coding agent comparison",
+    ],
+  },
   "agents-md-template-for-ai-coding-agents": {
     priority: "P0",
     primaryKeyword: "AGENTS.md template",

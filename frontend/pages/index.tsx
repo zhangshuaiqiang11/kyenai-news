@@ -10,6 +10,7 @@ import { toArticleSummary } from "../lib/catalog";
 import { toGuideSummary } from "../lib/guide-summary";
 import {
   CODEX_COPILOT_GUIDE_HREF,
+  CODING_AGENT_COMPARISON_GUIDE_HREF,
   INSTRUCTION_ADOPTION_REPORT_HREF,
   INSTRUCTION_COMPARISON_GUIDE_HREF,
   LOOP_ENGINEERING_GUIDE_HREF,
@@ -32,6 +33,11 @@ type HomeProps = {
 };
 
 const highImpressionEntries = [
+  {
+    href: CODING_AGENT_COMPARISON_GUIDE_HREF,
+    label: "AI coding agents comparison: Codex, Claude, Cursor, and Copilot",
+    note: "Build an evidence-led shortlist by operating surface, instructions, parallel work, model boundary, permissions, and governance.",
+  },
   {
     href: "/tools/instruction-file-checker",
     label: "Audit AGENTS.md, CLAUDE.md, Copilot, or Cursor rules",

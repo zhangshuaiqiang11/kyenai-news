@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import Home from "../pages";
 import GuidesPage, { guidesPageSeo } from "../pages/guides";
 import {
+  CODING_AGENT_COMPARISON_GUIDE_SLUG,
   INSTRUCTION_COMPARISON_GUIDE_SLUG,
   LOOP_ENGINEERING_GUIDE_SLUG,
   MCP_SECURITY_GUIDE_SLUG,
@@ -21,6 +22,11 @@ vi.mock("next/router", () => ({
 }));
 
 const approvedGuidePlacements = [
+  [CODING_AGENT_COMPARISON_GUIDE_SLUG, "codex-vs-claude-code"],
+  [CODING_AGENT_COMPARISON_GUIDE_SLUG, "codex-vs-github-copilot"],
+  ["codex-vs-claude-code", CODING_AGENT_COMPARISON_GUIDE_SLUG],
+  ["codex-vs-github-copilot", CODING_AGENT_COMPARISON_GUIDE_SLUG],
+  [INSTRUCTION_COMPARISON_GUIDE_SLUG, CODING_AGENT_COMPARISON_GUIDE_SLUG],
   [INSTRUCTION_COMPARISON_GUIDE_SLUG, "agents-md-template-for-ai-coding-agents"],
   [INSTRUCTION_COMPARISON_GUIDE_SLUG, "does-github-copilot-read-claude-md-support-matrix"],
   [INSTRUCTION_COMPARISON_GUIDE_SLUG, "agents-md-examples-codex-node-python-monorepos"],
@@ -122,8 +128,8 @@ describe("contextual internal links", () => {
     const { guides, validHrefs } = getGuideRouteData();
     render(<GuidesPage guides={guides} />);
 
-    expect(guidesPageSeo.title).toBe("AI Coding Agent Decision Guides: AGENTS.md, Codex, MCP");
-    expect(guidesPageSeo.description).toContain("compare Codex and Claude Code");
+    expect(guidesPageSeo.title).toBe("AI Coding Agent Guides: Templates, Security & Workflows");
+    expect(guidesPageSeo.description).toContain("AGENTS.md templates");
     expect(
       screen.getByRole("heading", {
         name: "AI Coding Agent Guides",
@@ -136,6 +142,9 @@ describe("contextual internal links", () => {
 
     const instructionLink = within(featuredPaths!).getByRole("link", {
       name: /Choose repository instruction files/i,
+    });
+    const comparisonHubLink = within(featuredPaths!).getByRole("link", {
+      name: /Compare AI coding agents by operating model/i,
     });
     const codexLink = within(featuredPaths!).getByRole("link", {
       name: /Compare Codex and Claude Code/i,
@@ -150,6 +159,7 @@ describe("contextual internal links", () => {
 
     // Featured paths and the full grid have different navigation roles, so cross-block repeats are intentional.
     expectValidUniqueGuideLinks(featuredPaths!, "guides-index", validHrefs);
+    expect(comparisonHubLink.getAttribute("href")).toBe(`/guides/${CODING_AGENT_COMPARISON_GUIDE_SLUG}`);
     expect(instructionLink.getAttribute("href")).toBe(`/guides/${INSTRUCTION_COMPARISON_GUIDE_SLUG}`);
     expect(codexLink.getAttribute("href")).toBe("/guides/codex-vs-claude-code");
     expect(securityLink.getAttribute("href")).toBe(`/guides/${MCP_SECURITY_GUIDE_SLUG}`);
@@ -184,7 +194,7 @@ describe("contextual internal links", () => {
     expect(centers!.textContent).toMatch(/Advanced page:/);
 
     const hrefs = expectValidUniqueGuideLinks(centers!, "guides-index", validHrefs);
-    expect(hrefs).toHaveLength(13);
+    expect(hrefs).toHaveLength(15);
     expect(hrefs).toEqual(
       expect.arrayContaining([
         `guides-index::${INSTRUCTION_COMPARISON_GUIDE_SLUG}`,
@@ -200,6 +210,8 @@ describe("contextual internal links", () => {
         "guides-index::codex-vs-claude-code",
         "guides-index::local-vs-cloud-ai-coding-agent",
         "guides-index::antigravity-cli-gemini-cli-migration",
+        `guides-index::${CODING_AGENT_COMPARISON_GUIDE_SLUG}`,
+        "guides-index::codex-vs-github-copilot",
       ]),
     );
   });
@@ -245,7 +257,7 @@ describe("contextual internal links", () => {
       ...homepagePlacements,
       ...guidesIndexPlacements,
     ];
-    expect(actualRequiredPlacements).toHaveLength(approvedGuidePlacements.length + 7);
+    expect(actualRequiredPlacements).toHaveLength(approvedGuidePlacements.length + 8);
     expect(new Set(actualRequiredPlacements).size).toBe(actualRequiredPlacements.length);
 
     for (const guide of guides) {

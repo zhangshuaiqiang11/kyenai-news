@@ -56,7 +56,7 @@ describe("guide SEO data", () => {
     const guides = getGuides();
     const slugs = guides.map((guide) => guide.slug);
 
-    expect(guides).toHaveLength(15);
+    expect(guides).toHaveLength(16);
     expect(slugs).toContain("agents-md-vs-claude-md-cursorrules-copilot-instructions");
     expect(slugs).toContain("claude-code-subagents-examples");
     expect(slugs).toContain("claude-code-hooks-mcp-setup");
@@ -72,6 +72,7 @@ describe("guide SEO data", () => {
     expect(slugs).toContain("loop-engineering-ai-coding-agents");
     expect(slugs).toContain("ai-coding-agent-instruction-file-adoption-report-2026");
     expect(slugs).toContain("codex-vs-github-copilot");
+    expect(slugs).toContain("ai-coding-agents-comparison");
     expect(guides.every((guide) => guide.evidence.length >= 2)).toBe(true);
     expect(guides.every((guide) => guide.checklist.length >= 5)).toBe(true);
   });
@@ -84,7 +85,7 @@ describe("guide SEO data", () => {
     );
 
     expect(new Set(slugs).size).toBe(slugs.length);
-    expect(primaryKeywords).toHaveLength(15);
+    expect(primaryKeywords).toHaveLength(16);
     expect(primaryKeywords.every(Boolean)).toBe(true);
     expect(new Set(primaryKeywords).size).toBe(primaryKeywords.length);
   });
@@ -356,6 +357,22 @@ describe("guide SEO data", () => {
       ]),
     );
     expect(guide!.evidence.map((source) => source.publisher)).toEqual(expect.arrayContaining(["OpenAI", "GitHub"]));
+    expect(JSON.stringify(guide)).toMatch(/Not measured/i);
+    expect(JSON.stringify(guide)).not.toMatch(/KyenAI (tested|measured|found)/i);
+  });
+
+  it("publishes the four-tool AI coding agents comparison pillar", () => {
+    const guide = getGuide("ai-coding-agents-comparison");
+
+    expect(guide).toBeDefined();
+    expect(guide!.resourceIds).toEqual(["coding-agent-comparison"]);
+    expect(guide!.updatedAt).toBe("2026-07-19");
+    expect(guide!.decisionTable.columns).toEqual(["Codex", "Claude Code", "GitHub Copilot", "Cursor"]);
+    expect(guide!.decisionTable.rows).toHaveLength(12);
+    expect(guide!.sections[0].body[0]).toMatch(/There is no universal winner/i);
+    expect(guide!.evidence.map((source) => source.publisher)).toEqual(
+      expect.arrayContaining(["OpenAI", "Anthropic", "GitHub", "Cursor"]),
+    );
     expect(JSON.stringify(guide)).toMatch(/Not measured/i);
     expect(JSON.stringify(guide)).not.toMatch(/KyenAI (tested|measured|found)/i);
   });

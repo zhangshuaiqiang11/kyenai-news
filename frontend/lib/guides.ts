@@ -226,6 +226,11 @@ const coreGuides: Guide[] = [
         reason: "Use the template to turn the shared policy into a concise Codex repository adapter.",
       },
       {
+        slug: "ai-coding-agents-comparison",
+        anchor: "AI coding agents comparison",
+        reason: "Build a four-tool operating-model shortlist before choosing the repository instruction policy.",
+      },
+      {
         slug: "codex-vs-claude-code",
         anchor: "Codex vs Claude Code",
         reason: "Compare the tool workflows after instruction-file compatibility and scope are controlled.",

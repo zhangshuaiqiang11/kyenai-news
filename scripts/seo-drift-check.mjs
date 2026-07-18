@@ -33,6 +33,11 @@ const pageContracts = [
     h1Includes: "Codex vs GitHub Copilot",
   },
   {
+    path: "/guides/ai-coding-agents-comparison",
+    titleIncludes: "AI Coding Agent Comparison",
+    h1Includes: "AI Coding Agents Comparison",
+  },
+  {
     path: "/guides/loop-engineering-ai-coding-agents",
     titleIncludes: "What Is Loop Engineering?",
     h1Includes: "What Is Loop Engineering for AI Coding Agents?",

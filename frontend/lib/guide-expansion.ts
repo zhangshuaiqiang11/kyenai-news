@@ -214,6 +214,11 @@ export const expansionGuides: Guide[] = [
     ],
     internalLinks: [
       {
+        slug: "ai-coding-agents-comparison",
+        anchor: "compare Codex, Claude Code, Cursor, and GitHub Copilot",
+        reason: "Start with the four-tool operating-model map before narrowing to the OpenAI-versus-Anthropic decision.",
+      },
+      {
         slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
         anchor: "AI coding agent instruction files",
         reason: "Tool choice is easier when repository instructions are already clean.",
@@ -1632,6 +1637,186 @@ export const expansionGuides: Guide[] = [
     resourceIds: ["loop-engineering"],
   },
   {
+    id: "guide-ai-coding-agents-comparison",
+    title: "AI Coding Agents Comparison: Codex, Claude Code, Cursor, and Copilot",
+    slug: "ai-coding-agents-comparison",
+    summary:
+      "Compare Codex, Claude Code, Cursor, and GitHub Copilot by starting surface, repository instructions, parallel work, model boundary, permissions, review path, and team governance.",
+    intent: "Developers and engineering leaders want one evidence-led comparison of the four major coding-agent operating models before opening pairwise product guides.",
+    audience: "Developers, platform teams, engineering managers, security reviewers, and buyers choosing an AI coding-agent operating model.",
+    pageType: "AI coding agents comparison hub",
+    secondaryKeywords: [
+      "AI coding agent comparison",
+      "Codex vs Claude Code vs Cursor vs Copilot",
+      "coding agents comparison 2026",
+      "AI coding tools for teams",
+      "CLI vs IDE coding agent",
+      "coding agent decision matrix",
+      "enterprise AI coding agent comparison",
+    ],
+    sections: [
+      {
+        heading: "Quick answer",
+        body: [
+          "Choose Codex when an OpenAI-native agent workspace, separate threads, worktrees, and cross-surface handoff fit the team. Choose Claude Code when terminal-first repository work and Anthropic-native tooling fit. Choose GitHub Copilot when GitHub policy, existing IDEs, pull requests, and its instruction ecosystem should remain the control plane. Choose Cursor when the team wants an AI-first editor plus foreground and remote cloud agents. There is no universal winner: use the five-question selector, then run the same bounded repository task with the leading two tools.",
+        ],
+      },
+      {
+        heading: "Compare operating models, not old product labels",
+        body: [
+          "The autocomplete-versus-agent framing is obsolete. All four products now cover more than inline completion on at least one surface. Codex combines app, CLI, IDE, cloud, GitHub-oriented review, and mobile handoff. Claude Code centers repository work in the terminal and supports hooks, subagents, skills, MCP, and automation paths. GitHub Copilot spans supported editors, GitHub, CLI, cloud coding agent, code review, custom agents, skills, hooks, and MCP. Cursor combines an AI-first editor with rules, agents, cloud agents, web, mobile, and source-control integrations.",
+          "The useful comparison is operational: where a task begins, which identity and policy system owns it, which files supply instructions, whether work runs locally or remotely, how permissions are widened, where the diff is reviewed, and who can revoke access. Feature counts without those constraints produce a misleading shortlist.",
+        ],
+      },
+      {
+        heading: "Four product shapes at a glance",
+        body: [
+          "Codex is an OpenAI coding-agent environment whose app makes multiple delegated tasks and isolated worktrees visible. Claude Code is a terminal-centered agent that stays close to the shell, repository, and Anthropic model family. GitHub Copilot is a GitHub and editor ecosystem whose agent surfaces share organization policy and repository workflows. Cursor is a dedicated AI code editor whose agent experience extends into remote Cloud Agents.",
+          "These descriptions are starting shapes, not capability ceilings. Each vendor keeps adding adjacent surfaces, and availability can vary by plan, organization policy, operating system, editor, region, or preview status. This page was checked against official documentation on July 19, 2026; procurement decisions should recheck the linked sources.",
+        ],
+      },
+      {
+        heading: "Where should agent work begin?",
+        body: [
+          "Start with Codex if the desired command center is a dedicated OpenAI app that can supervise separate local or cloud tasks. Start with Claude Code if developers want the terminal to remain the primary interface and the repository shell is the natural review context. Start with Copilot if issues, pull requests, GitHub identity, and a mixed editor estate must stay central. Start with Cursor if the organization is comfortable adopting an AI-first editor as the daily development surface.",
+          "Do not choose only from a product demo. Inventory the surfaces the organization will actually enable: desktop app, terminal, VS Code, JetBrains, GitHub.com, cloud agents, mobile steering, code review, CI, and scheduled automation. A feature that cannot be approved or supported in the real environment should not influence the decision.",
+        ],
+      },
+      {
+        heading: "Repository instructions and durable context",
+        body: [
+          "Codex uses root and nested AGENTS.md files for durable repository guidance. Claude Code uses CLAUDE.md memory files and supports scoped project guidance alongside commands, hooks, skills, and subagents. GitHub Copilot supports repository-wide and path-specific instruction files plus personal, organization, and agent instructions on documented surfaces. Cursor supports versioned .mdc project rules in .cursor/rules, user and team rules, and AGENTS.md.",
+          "If more than one product is approved, do not maintain contradictory policy copies. Put shared build commands, test commands, safe edit scope, generated-file rules, security boundaries, and completion criteria in one canonical source. Generate or audit product adapters and verify which files each enabled surface actually reads.",
+        ],
+      },
+      {
+        heading: "Local, cloud, and parallel execution",
+        body: [
+          "Codex app threads can use isolated worktrees so independent tasks do not collide in one checkout. Claude Code supports subagents and headless or automation patterns around terminal work. GitHub Copilot can delegate through its cloud coding agent and split CLI work through /fleet. Cursor Cloud Agents run asynchronously in isolated virtual machines connected to approved source-control repositories.",
+          "Parallel capability increases coordination risk. Assign disjoint ownership, start from named commits, cap continuation or retry steps, share verification commands, and require a human to resolve integration conflicts. Remote agents also need explicit rules for network access, repository credentials, retained data, package installation, secrets, and cleanup.",
+        ],
+      },
+      {
+        heading: "Model choice and vendor boundary",
+        body: [
+          "Codex provides an OpenAI-native model and workspace relationship. Claude Code centers Anthropic models. GitHub Copilot documents a multi-provider model catalog administered through GitHub plans and policy. Cursor exposes model choice inside its editor and agent environment. A broader catalog can help procurement and task matching, while a narrower vendor boundary can simplify approval, support, and evaluation.",
+          "Do not turn model names into permanent product verdicts. Availability, routing, context limits, token rates, and preview status change. Evaluate the exact approved model and product version, and record automatic model selection when the product chooses on the user's behalf.",
+        ],
+      },
+      {
+        heading: "Permissions, security, and governance",
+        body: [
+          "Compare the narrowest configuration the team can operate. For every product, document allowed repositories and directories, tool and command permissions, network access, MCP servers, hooks, plugins or extensions, secret boundaries, remote-environment identity, audit evidence, approval gates, cost caps, and revocation. A sandbox option is one control, not a complete security program.",
+          "The strongest operational fit is often the product whose administration boundary already has an accountable owner. OpenAI workspace owners may govern Codex more consistently; Anthropic administrators may already own Claude access; GitHub organization owners may control Copilot seats and repository policy; Cursor administrators may own editor rollout and privacy settings. Ownership is a decision criterion because unowned controls drift.",
+        ],
+      },
+      {
+        heading: "Pricing and usage need a workload model",
+        body: [
+          "Monthly plan labels do not capture coding-agent cost. Estimate active developers, completion use, agent sessions, long context, cloud tasks, parallel agents, code review, premium or credit-based model usage, overages, and administrative overhead. Use current vendor plan and billing pages rather than copying one dated price table.",
+          "Keep procurement evidence reproducible: record the plan URL, access date, currency, tax treatment, included allowances, model multiplier or credit rule, overage behavior, and whether enterprise controls require a different tier. If a product does not expose task-level cost or tokens, mark the metric Not measured.",
+        ],
+      },
+      {
+        heading: "How to run a fair four-tool pilot",
+        body: [
+          "Begin with the same clean commit and one bounded task. Give every tool the same prompt, readable instruction files, allowed directories, tools, network policy, timebox, and verification command. Record product version, selected model, elapsed time, changed files, human interventions, permission grants, verification result, review findings, and only the cost data the product exposes.",
+          "A useful first cohort includes a failing-test repair, a small API or UI change, and a behavior-preserving refactor. Preserve failures and raw outputs. Do not declare a faster run the winner when tests fail, the diff is unsafe, or reviewer time rises. Repeat the task when a transient service or setup error would otherwise distort the comparison.",
+        ],
+      },
+      {
+        heading: "Can a team use more than one coding agent?",
+        body: [
+          "Yes, if responsibilities are explicit. A team might keep Copilot or Cursor for editor-native assistance, use Codex or Claude Code for separately delegated repository work, and route cloud tasks through the control plane already approved for that repository. The combination should solve distinct workflow needs rather than duplicate subscriptions by habit.",
+          "Assign one primary tool per task or branch, keep shared repository policy synchronized, apply the same CI and review gates, and designate a human owner for the final merge. Reassess the tool set when usage evidence shows overlap, instruction drift, unclear audit ownership, or costs that cannot be attributed.",
+        ],
+      },
+    ],
+    recommendedPlay: [
+      "Choose the operating surface and administrative owner before comparing model claims.",
+      "Use the five-question selector to create a shortlist, then run the same repository task with the leading two products.",
+      "Keep one canonical repository policy and audit every product-specific instruction adapter.",
+      "Score verification, permissions, interventions, review effort, and measurable cost instead of output speed alone.",
+      "Recheck official feature, model, plan, and data-policy pages before procurement or renewal.",
+    ],
+    decisionTable: {
+      title: "Codex vs Claude Code vs GitHub Copilot vs Cursor",
+      intro: "This workflow matrix uses official documentation reviewed July 19, 2026. It does not claim a quality winner or replace a controlled repository pilot.",
+      columns: ["Codex", "Claude Code", "GitHub Copilot", "Cursor"],
+      rows: [
+        { label: "Primary shape", values: ["OpenAI agent across app, CLI, IDE, cloud, and mobile handoff", "Terminal-first Anthropic coding agent", "GitHub and editor ecosystem with CLI and cloud agent", "AI-first editor with foreground and Cloud Agents"] },
+        { label: "Natural starting point", values: ["Dedicated app thread or CLI", "Repository terminal", "GitHub issue, pull request, IDE, or CLI", "Cursor editor, web, or mobile agent"] },
+        { label: "Repository guidance", values: ["Root and nested AGENTS.md", "CLAUDE.md and scoped project memory", "Copilot instructions plus agent files by surface", ".cursor/rules and AGENTS.md"] },
+        { label: "Parallel pattern", values: ["Separate threads and isolated worktrees", "Subagents coordinated from the terminal", "Cloud agent and CLI /fleet", "Parallel Cloud Agents in isolated VMs"] },
+        { label: "Remote execution", values: ["Cloud tasks and remote environments", "Headless and automation workflows depend on configuration", "GitHub cloud coding agent and cloud-backed sessions", "Background agents in remote environments"] },
+        { label: "Model boundary", values: ["OpenAI-native", "Anthropic-native", "GitHub-administered multi-provider catalog", "Cursor-administered model selection"] },
+        { label: "Extensions", values: ["Skills, plugins, hooks, MCP, automations", "Skills, hooks, subagents, MCP, SDK", "Custom agents, skills, plugins, hooks, MCP", "Rules, extensions, MCP, background-agent API"] },
+        { label: "Permission focus", values: ["Sandbox and approval configuration", "Tool permissions, hooks, and environment policy", "Tool, path, URL, repository, and organization policy", "Editor approvals plus remote-agent repository and network access"] },
+        { label: "Review path", values: ["App diff review, editor handoff, or pull request", "Terminal diff and normal Git review", "GitHub-native pull request and code-review workflow", "Editor review or source-control-connected Cloud Agent output"] },
+        { label: "Administration", values: ["OpenAI workspace and Codex controls", "Anthropic access and team controls", "GitHub organization and enterprise policy", "Cursor team dashboard and privacy controls"] },
+        { label: "Strong starting fit", values: ["OpenAI-standardized teams supervising delegated tasks", "Terminal-oriented teams standardized on Claude", "GitHub-standardized teams with mixed IDEs", "Teams adopting an AI-first editor"] },
+        { label: "Required proof", values: ["Same-task verification and permission log", "Same-task verification and permission log", "Same-task verification and permission log", "Same-task verification and permission log"] },
+      ],
+    },
+    actionSteps: [
+      { title: "Inventory approved surfaces", body: "List the app, CLI, IDE, GitHub, cloud, mobile, code-review, and automation surfaces the team can actually support." },
+      { title: "Name the control owner", body: "Assign identity, repository access, models, instructions, tools, logs, billing, limits, and revocation to accountable teams." },
+      { title: "Freeze a pilot task", body: "Use one clean commit, prompt, instruction set, permission boundary, timebox, and verification command." },
+      { title: "Record reviewable evidence", body: "Capture versions, models, changed files, interventions, grants, test output, review findings, and only measurable cost." },
+      { title: "Choose and re-evaluate", body: "Standardize the smallest useful tool set, then revisit it when product support, policy, workload, or usage evidence changes." },
+    ],
+    pitfalls: [
+      { title: "Calling one product only autocomplete", fix: "Evaluate the exact app, CLI, IDE, cloud-agent, code-review, and automation surfaces available today." },
+      { title: "Choosing from feature counts", fix: "Map every feature to an approved task, owner, permission boundary, proof command, and review path." },
+      { title: "Treating model scores as product scores", fix: "Pilot the complete product configuration, including instructions, tools, permissions, context, and review effort." },
+      { title: "Publishing a stale price winner", fix: "Use current vendor pages and a workload model; label unavailable task-level usage Not measured." },
+      { title: "Running every tool with full access", fix: "Start with narrow repository, directory, tool, network, and secret permissions and record every exception." },
+    ],
+    internalLinks: [
+      { slug: "codex-vs-claude-code", anchor: "compare Codex with Claude Code", reason: "Open the OpenAI-versus-Anthropic workflow decision after building a shortlist." },
+      { slug: "codex-vs-github-copilot", anchor: "compare Codex with GitHub Copilot", reason: "Separate the OpenAI agent-workspace decision from the GitHub control-plane decision." },
+      { slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions", anchor: "compare repository instruction files", reason: "Verify which policy file each approved surface reads." },
+      { slug: "local-vs-cloud-ai-coding-agent", anchor: "choose local or cloud execution", reason: "Decide the execution boundary before selecting a vendor surface." },
+      { slug: "agent-mode-vs-chat-mode-in-ide", anchor: "choose agent mode or chat mode", reason: "Define when the assistant may act instead of only answer." },
+      { slug: "agent-governance-checklist-for-software-teams", anchor: "apply the coding-agent governance checklist", reason: "Turn product selection into owned permissions, logs, approvals, limits, and revocation." },
+      { slug: "secure-mcp-servers-ai-coding-agents", anchor: "secure MCP tool access", reason: "Apply least privilege when any shortlisted product can call external tools." },
+      { slug: "loop-engineering-ai-coding-agents", anchor: "design bounded verification loops", reason: "Use shared stop rules and proof commands in every product pilot." },
+    ],
+    checklist: [
+      "Inventory the exact product surfaces and repositories in scope.",
+      "Name the identity, policy, billing, log, and revocation owners.",
+      "Verify instruction-file support on every enabled surface.",
+      "Use the same clean commit and bounded task for pilots.",
+      "Start with least-privilege tools, paths, URLs, network, and secrets.",
+      "Record product versions, selected models, prompts, grants, and verification output.",
+      "Measure human interventions and review findings.",
+      "Use current vendor plan pages for any cost comparison.",
+    ],
+    evidence: [
+      { title: "Introducing the Codex app", url: "https://openai.com/index/introducing-the-codex-app/", publisher: "OpenAI", note: "Official Codex app description covering threads, worktrees, skills, automations, sandboxing, and cross-surface work." },
+      { title: "Use AGENTS.md with Codex", url: "https://learn.chatgpt.com/docs/agent-configuration/agents-md", publisher: "OpenAI", note: "Official root and nested repository-instruction discovery and precedence guidance." },
+      { title: "Claude Code overview", url: "https://code.claude.com/docs/en/overview", publisher: "Anthropic", note: "Official overview of Claude Code surfaces, repository work, integrations, and automation paths." },
+      { title: "How Claude remembers your project", url: "https://code.claude.com/docs/en/memory", publisher: "Anthropic", note: "Official CLAUDE.md memory locations, scope, and project instruction behavior." },
+      { title: "Create custom subagents", url: "https://code.claude.com/docs/en/sub-agents", publisher: "Anthropic", note: "Official subagent roles, tools, permissions, and delegation guidance." },
+      { title: "About GitHub Copilot CLI", url: "https://docs.github.com/en/copilot/concepts/agents/copilot-cli/about-copilot-cli", publisher: "GitHub", note: "Official CLI capabilities, permissions, plan mode, custom agents, skills, hooks, MCP, and instruction guidance." },
+      { title: "Support for different types of custom instructions", url: "https://docs.github.com/en/copilot/reference/custom-instructions-support", publisher: "GitHub", note: "Official instruction support matrix across GitHub, IDE, cloud-agent, code-review, and CLI surfaces." },
+      { title: "Cursor Cloud Agents", url: "https://cursor.com/docs/cloud-agent", publisher: "Cursor", note: "Official isolated-VM workflow, supported source-control providers, parallel agents, environments, network controls, MCP, hooks, and billing notes." },
+      { title: "Cursor rules", url: "https://cursor.com/docs/rules", publisher: "Cursor", note: "Official project, user, and team rules plus AGENTS.md and .cursor/rules guidance." },
+      { title: "Cursor for iOS", url: "https://cursor.com/docs/cloud-agent/mobile", publisher: "Cursor", note: "Official Cloud Agent handoff, supervision, review, and availability across mobile, web, and desktop surfaces." },
+    ],
+    relatedArticleSlugs: [
+      "openai-codex-plugins-sites-annotations",
+      "github-copilot-cloud-local-sandboxes-preview",
+      "cursor-enterprise-organizations-governance",
+    ],
+    publishedAt: "2026-07-19",
+    updatedAt: "2026-07-19",
+    metaTitle: "AI Coding Agent Comparison: Codex, Claude, Cursor & Copilot",
+    metaDescription:
+      "Compare Codex, Claude Code, Cursor, and GitHub Copilot across app, CLI, agents, instructions, models, permissions, review, and team governance.",
+    resourceIds: ["coding-agent-comparison"],
+  },
+  {
     id: "guide-codex-vs-github-copilot",
     title: "Codex vs GitHub Copilot: Which Coding Agent Fits Your Team?",
     slug: "codex-vs-github-copilot",
@@ -1777,6 +1962,7 @@ export const expansionGuides: Guide[] = [
       { title: "Calling an unverified output a benchmark win", fix: "Require tests or another observable completion criterion and publish failures alongside passes." },
     ],
     internalLinks: [
+      { slug: "ai-coding-agents-comparison", anchor: "compare four AI coding-agent operating models", reason: "Place the OpenAI-versus-GitHub decision inside the broader Codex, Claude Code, Cursor, and Copilot shortlist." },
       { slug: "codex-vs-claude-code", anchor: "compare Codex with Claude Code", reason: "Separate the OpenAI-vs-Anthropic decision from the GitHub control-plane decision." },
       { slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions", anchor: "compare Codex and Copilot instruction files", reason: "Verify which repository instruction surface each enabled product feature reads." },
       { slug: "agents-md-template-for-ai-coding-agents", anchor: "copy a tested AGENTS.md template", reason: "Give both agent pilots concrete setup, test, safety, and completion guidance." },

@@ -50,6 +50,11 @@ const bestNextStepsByGuideSlug: Record<string, { href: string; label: string; no
     label: "Use loop engineering to compare Codex and Claude Code on the same repo task",
     note: "Measure behavior with a plan-act-observe-verify loop instead of generic feature lists.",
   },
+  "ai-coding-agents-comparison": {
+    href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
+    label: "Verify which instruction file each shortlisted coding agent reads",
+    note: "After choosing the operating model, keep one canonical repository policy and audit every tool-specific adapter.",
+  },
   "codex-vs-github-copilot": {
     href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
     label: "Verify which instruction files each Codex and Copilot surface reads",
@@ -151,6 +156,14 @@ const CodexCopilotResourcePanel = dynamic(
   { ssr: true },
 );
 
+const AiCodingAgentComparisonResourcePanel = dynamic(
+  () =>
+    import("../../components/AiCodingAgentComparisonResources").then(
+      ({ AiCodingAgentComparisonResources }) => AiCodingAgentComparisonResources,
+    ),
+  { ssr: true },
+);
+
 const InstructionAdoptionReportPanel = dynamic(
   () =>
     import("../../components/InstructionAdoptionReport").then(
@@ -190,6 +203,10 @@ function GuideResources({ guide }: { guide: Guide }) {
 
   if (guide.resourceIds?.includes("codex-copilot-decision")) {
     return <CodexCopilotResourcePanel />;
+  }
+
+  if (guide.resourceIds?.includes("coding-agent-comparison")) {
+    return <AiCodingAgentComparisonResourcePanel />;
   }
 
   if (guide.resourceIds?.includes("instruction-adoption-report")) {

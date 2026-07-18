@@ -321,6 +321,18 @@ describe("SEO helpers", () => {
     expect(JSON.stringify(graph)).toContain("Codex vs GitHub Copilot Decision Tool");
   });
 
+  it("adds WebApplication schema for the four-tool comparison selector", () => {
+    const guide = getGuides().find((candidate) => candidate.slug === "ai-coding-agents-comparison")!;
+    const graph = buildGuideGraphJsonLd(guide, [
+      { name: "Home", path: "/" },
+      { name: "Guides", path: "/guides" },
+      { name: guide.title, path: `/guides/${guide.slug}` },
+    ], buildGuideFaqs(guide));
+
+    expect(graph["@graph"].map((node) => node["@type"])).toContain("WebApplication");
+    expect(JSON.stringify(graph)).toContain("AI Coding Agent Comparison Tool");
+  });
+
   it("adds Dataset schema and two downloads for the instruction adoption report", () => {
     const guide = getGuides().find((candidate) => candidate.slug === "ai-coding-agent-instruction-file-adoption-report-2026")!;
     const graph = buildGuideGraphJsonLd(guide, [
@@ -384,9 +396,9 @@ describe("SEO helpers", () => {
     expect(listJsonLd.itemListElement[0].url).toBe(`https://www.kyenai.com/articles/${seedArticles[0].slug}`);
     expect(guideListJsonLd.itemListElement[0].url).toContain("https://www.kyenai.com/guides/");
     const collectionPageJsonLd = buildCollectionPageJsonLd({
-      title: "AI Coding Agent Decision Guides: AGENTS.md, Codex, MCP",
+      title: "AI Coding Agent Guides: Templates, Security & Workflows",
       description:
-        "Choose instruction files, compare Codex and Claude Code, design agent loops, and secure MCP access with decision matrices and launch checklists.",
+        "Browse AGENTS.md templates, MCP security checklists, agent-loop workflows, governance guidance, and evidence-led implementation resources.",
       path: "/guides",
     });
     expect(collectionPageJsonLd["@type"]).toBe("CollectionPage");

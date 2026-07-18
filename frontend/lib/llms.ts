@@ -4,6 +4,7 @@ import { seedArticles } from "./seed";
 import { buildCanonicalUrl, SITE_NAME } from "./seo";
 
 const featuredGuideSlugs = [
+  "ai-coding-agents-comparison",
   "ai-coding-agent-instruction-file-adoption-report-2026",
   "agents-md-vs-claude-md-cursorrules-copilot-instructions",
   "loop-engineering-ai-coding-agents",

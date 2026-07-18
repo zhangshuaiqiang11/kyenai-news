@@ -214,6 +214,16 @@ export function buildGuideGraphJsonLd(guide: Guide, breadcrumbItems: BreadcrumbI
     );
   }
 
+  if (guide.resourceIds?.includes("coding-agent-comparison")) {
+    nodes.push(
+      buildWebApplicationJsonLd({
+        title: "AI Coding Agent Comparison Tool",
+        description: "Build a Codex, Claude Code, GitHub Copilot, or Cursor pilot shortlist from starting surface, instructions, parallel work, model boundary, and administration fit.",
+        path: `/guides/${guide.slug}`,
+      }),
+    );
+  }
+
   if (guide.resourceIds?.includes("instruction-adoption-report")) {
     nodes.push(buildInstructionAdoptionDatasetJsonLd(guide));
   }
