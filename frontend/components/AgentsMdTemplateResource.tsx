@@ -1,6 +1,6 @@
 import React from "react";
 
-import { instructionTemplates } from "../lib/instruction-resources";
+import { agentsMdVariantTemplates, instructionTemplates } from "../lib/instruction-resources";
 import type { InstructionTemplate } from "../lib/types";
 import { CodeExampleCard } from "./CodeExampleCard";
 
@@ -14,28 +14,26 @@ function getRootAgentsTemplate(): InstructionTemplate {
 
 const rootTemplate = getRootAgentsTemplate();
 
-const nestedAgentsMdExample = `# Web app instructions
+const githubExamplesUrl =
+  "https://github.com/zhangshuaiqiang11/kyenai-news/tree/codex/develop/artifacts/kyenai-agent-instruction-files";
 
-## Scope
-- These instructions apply to \`apps/web/\` only.
-- Follow root AGENTS.md unless this file overrides a command or boundary.
-
-## Setup
-- Install from repository root: \`npm ci\`
-- Start this package: \`npm run dev --workspace=apps/web\`
-
-## Change rules
-- Keep UI changes inside \`apps/web/src/\`.
-- Shared utilities live in \`packages/ui/\`; coordinate cross-package edits in one change.
-
-## Verification
-- Run \`npm run lint --workspace=apps/web\`.
-- Run \`npm test --workspace=apps/web\`.
-- Run \`npm run build --workspace=apps/web\` for production-facing UI changes.
-
-## Delivery
-- Summarize changed files and verification results.
-- Call out cross-package impact and any skipped checks.`;
+const loadingOrder = [
+  {
+    scope: "Global defaults",
+    files: "~/.codex/AGENTS.override.md → AGENTS.md",
+    note: "Codex uses the first non-empty file at the global level.",
+  },
+  {
+    scope: "Repository root",
+    files: "AGENTS.override.md → AGENTS.md → configured fallback",
+    note: "At most one instruction file is included for each directory.",
+  },
+  {
+    scope: "Nested directory",
+    files: "nearest AGENTS.override.md or AGENTS.md",
+    note: "Files closer to the working directory appear later and override earlier guidance.",
+  },
+] as const;
 
 export function AgentsMdTemplateResource() {
   return (
@@ -45,7 +43,7 @@ export function AgentsMdTemplateResource() {
           <p className="instruction-resource-eyebrow">Starter files</p>
           <h2 id="agents-md-template-heading">AGENTS.md template previews</h2>
         </div>
-        <p>Copy the root template first, then add nested files only where commands or ownership differ.</p>
+        <p>Copy the root template first, then choose the Node.js, Python, or monorepo edition that matches the repository.</p>
       </div>
 
       <div className="instruction-template-grid">
@@ -57,16 +55,52 @@ export function AgentsMdTemplateResource() {
           downloadHref={`/resources/instruction-files/${rootTemplate.downloadName}`}
           downloadName={rootTemplate.downloadName}
         />
-        <CodeExampleCard
-          title="Nested AGENTS.md for monorepo packages"
-          purpose="Scope setup, boundaries, and verification to one package without duplicating the whole repository policy."
-          body={nestedAgentsMdExample}
-          cautions={[
-            "Place this file at the package root, for example apps/web/AGENTS.md.",
-            "Keep shared security and review rules in the root file; override only what differs locally.",
-          ]}
-        />
+        {agentsMdVariantTemplates.map((template) => (
+          <CodeExampleCard
+            key={template.id}
+            title={template.title}
+            purpose={template.purpose}
+            body={template.body}
+            cautions={template.cautions}
+            downloadHref={`/resources/instruction-files/${template.downloadName}`}
+            downloadName={template.downloadName}
+          />
+        ))}
       </div>
+
+      <section className="agents-loading-order" aria-labelledby="agents-loading-order-heading">
+        <div className="instruction-resource-heading">
+          <div>
+            <p className="instruction-resource-eyebrow">Codex precedence</p>
+            <h3 id="agents-loading-order-heading">How AGENTS.md loading priority works</h3>
+          </div>
+          <p>Verified against OpenAI&apos;s AGENTS.md documentation on July 19, 2026.</p>
+        </div>
+        <ol>
+          {loadingOrder.map((step, index) => (
+            <li key={step.scope}>
+              <span>{index + 1}</span>
+              <div>
+                <strong>{step.scope}</strong>
+                <code>{step.files}</code>
+                <p>{step.note}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p className="agents-loading-limit">
+          Codex builds this chain once per run, skips empty files, and stops when the combined instruction size reaches the configured limit. Keep shared policy near the root and local exceptions near the code they govern.
+        </p>
+      </section>
+
+      <aside className="agents-github-asset">
+        <div>
+          <p className="instruction-resource-eyebrow">GitHub example package</p>
+          <h3>Review every template and generated resource in source control</h3>
+          <p>The repository package includes templates, compatibility data, a sample instruction tree, and a deterministic verifier.</p>
+        </div>
+        <a href={githubExamplesUrl} rel="noreferrer" target="_blank">Open the GitHub examples</a>
+      </aside>
     </section>
   );
 }

@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { AgentsMdTemplateResource } from "../components/AgentsMdTemplateResource";
 import { ClaudeCodeSetupResources } from "../components/ClaudeCodeSetupResources";
 import { claudeCodeSetupExamples } from "../lib/claude-code-setup-resources";
-import { instructionTemplates } from "../lib/instruction-resources";
+import { agentsMdVariantTemplates, instructionTemplates } from "../lib/instruction-resources";
 import { mcpSecurityReviewPreview } from "../lib/mcp-security-resource";
 
 (globalThis as typeof globalThis & { React: typeof React }).React = React;
@@ -22,9 +22,15 @@ describe("guide code example resources", () => {
 
     expect(screen.getByRole("heading", { name: /agents\.md template previews/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: rootTemplate!.title })).toBeTruthy();
-    expect(screen.getByRole("heading", { name: /nested agents\.md for monorepo packages/i })).toBeTruthy();
+    for (const template of agentsMdVariantTemplates) {
+      expect(screen.getByRole("heading", { name: template.title })).toBeTruthy();
+      expect(document.querySelector(`a[download="${template.downloadName}"]`)).not.toBeNull();
+    }
+    expect(screen.getByRole("heading", { name: /how agents\.md loading priority works/i })).toBeTruthy();
+    expect(screen.getByRole("link", { name: /open the github examples/i })).toBeTruthy();
     expect(document.body.textContent).toContain("## Verification");
-    expect(document.body.textContent).toContain("apps/web/");
+    expect(document.body.textContent).toContain("apps/");
+    expect(document.body.textContent).toContain("AGENTS.override.md");
   });
 
   it("renders complete Claude Code setup examples", () => {

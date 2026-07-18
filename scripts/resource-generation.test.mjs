@@ -19,6 +19,9 @@ const requiredPublicPaths = [
   "instruction-files/compatibility.csv",
   "instruction-files/benchmark-results.json",
   "instruction-files/AGENTS.md",
+  "instruction-files/AGENTS.monorepo.md",
+  "instruction-files/AGENTS.node.md",
+  "instruction-files/AGENTS.python.md",
   "instruction-files/CLAUDE.md",
   "instruction-files/copilot-instructions.md",
   "instruction-files/cursor-project-rule.mdc",
@@ -31,6 +34,9 @@ const requiredPackagePaths = [
   "compatibility.csv",
   "mcp-security-review.md",
   "templates/AGENTS.md",
+  "templates/AGENTS.monorepo.md",
+  "templates/AGENTS.node.md",
+  "templates/AGENTS.python.md",
   "templates/CLAUDE.md",
   "templates/copilot-instructions.md",
   "templates/cursor-project-rule.mdc",
@@ -43,6 +49,9 @@ const requiredPackagePaths = [
   "example-repository/.cursor/rules/project-guidance.mdc",
   "example-repository/apps/web/AGENTS.md",
   "example-repository/packages/api/README.md",
+  "examples/monorepo/AGENTS.md",
+  "examples/node/AGENTS.md",
+  "examples/python/AGENTS.md",
 ];
 
 function isInside(pathname, root) {

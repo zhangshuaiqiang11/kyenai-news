@@ -439,6 +439,133 @@ alwaysApply: true
   },
 ];
 
+export const agentsMdVariantTemplates: InstructionTemplate[] = [
+  {
+    id: "agents-md-node-template",
+    title: "Node.js AGENTS.md",
+    targetPath: "examples/node/AGENTS.md",
+    downloadName: "AGENTS.node.md",
+    purpose: "Give Codex concrete Node.js setup, lint, test, build, safety, and delivery rules.",
+    applicableToolIds: ["openai-codex", "github-copilot"],
+    body: `# Node.js repository instructions
+
+## Scope
+- These instructions apply to the whole Node.js repository.
+- Read a nearer AGENTS.md before editing a nested package.
+
+## Setup
+- Install the locked dependency graph with \`npm ci\`.
+- Start local development with \`npm run dev\`.
+
+## Project map
+- Application code: \`src/\`
+- Tests: \`tests/\` or colocated \`*.test.*\` files
+- Generated output: \`dist/\`, \`.next/\`, and coverage folders
+
+## Change rules
+- Reuse existing modules before adding a production dependency.
+- Do not edit generated output or dependency lockfiles unless the task requires it.
+- Keep public APIs backward compatible unless the request explicitly changes them.
+- Never expose secrets, tokens, or customer data in code, fixtures, logs, or output.
+
+## Verification
+- Run \`npm run lint\`.
+- Run \`npm test\`.
+- Run \`npm run build\` for production-facing changes.
+
+## Delivery
+- Summarize changed files and observable behavior.
+- Report exact verification results, skipped checks, and remaining risks.`,
+    cautions: [
+      "Keep only commands that exist in package.json and work from a clean checkout.",
+      "Replace paths and generated folders with the repository's real layout.",
+    ],
+  },
+  {
+    id: "agents-md-python-template",
+    title: "Python AGENTS.md",
+    targetPath: "examples/python/AGENTS.md",
+    downloadName: "AGENTS.python.md",
+    purpose: "Give Codex explicit Python environment, test, formatting, migration, and secret-handling rules.",
+    applicableToolIds: ["openai-codex", "github-copilot"],
+    body: `# Python repository instructions
+
+## Scope
+- These instructions apply to the Python service in this repository.
+- Follow a nearer AGENTS.md when a package has different commands or ownership.
+
+## Setup
+- Create a virtual environment with \`python -m venv .venv\`.
+- Install dependencies with \`.venv/bin/python -m pip install -r requirements.txt\`.
+
+## Project map
+- Application code: \`src/\` or the documented package directory
+- Tests: \`tests/\`
+- Migrations: the repository's migration directory
+
+## Change rules
+- Use the project virtual environment for commands and tests.
+- Do not edit migrations, lockfiles, generated clients, or production data without approval.
+- Keep secrets out of source, fixtures, snapshots, logs, and prompts.
+- Preserve public function and API behavior unless the request explicitly changes it.
+
+## Verification
+- Run \`.venv/bin/python -m pytest\`.
+- Run the repository's configured formatter and linter.
+- Run type checking when the project configures it.
+
+## Delivery
+- Summarize changed modules and behavior.
+- Report exact test results, skipped checks, migration impact, and remaining risks.`,
+    cautions: [
+      "Replace the virtual-environment, package, migration, lint, and type-check commands with project-specific values.",
+      "Do not add a new formatter or type checker merely because the template mentions those checks.",
+    ],
+  },
+  {
+    id: "agents-md-monorepo-template",
+    title: "Monorepo AGENTS.md",
+    targetPath: "examples/monorepo/AGENTS.md",
+    downloadName: "AGENTS.monorepo.md",
+    purpose: "Define root policy, workspace commands, nested overrides, and cross-package boundaries for a monorepo.",
+    applicableToolIds: ["openai-codex", "github-copilot"],
+    body: `# Monorepo instructions
+
+## Scope and precedence
+- This root AGENTS.md defines shared policy for every workspace.
+- Read the nearest nested AGENTS.md before editing a package.
+- A nested file should override only commands, paths, or ownership that differ locally.
+
+## Setup
+- Install the full workspace from the repository root with \`npm ci\`.
+- Do not run a second package manager inside a workspace.
+
+## Workspace map
+- Applications: \`apps/\`
+- Shared packages: \`packages/\`
+- Generated artifacts: \`generated/\`, \`dist/\`, and build-cache folders
+
+## Change rules
+- Keep package-specific edits inside the owning workspace when possible.
+- Coordinate public API changes with every consuming workspace and its tests.
+- Do not edit generated artifacts, deployment manifests, migrations, or lockfiles without task-specific justification.
+- Never expose repository, CI, or production credentials.
+
+## Verification
+- Run root lint and unit tests.
+- Run the affected workspace's focused tests and build.
+- Run cross-workspace integration checks when a shared package changes.
+
+## Delivery
+- List affected workspaces, changed public APIs, and generated outputs.
+- Report focused and root verification results, skipped checks, and rollout risks.`,
+    cautions: [
+      "Replace npm commands with the repository's actual workspace runner and package filters.",
+      "Create nested AGENTS.md files only where commands or ownership differ; avoid duplicating the root policy.",
+    ],
+  },
+];
+
 export const repositoryTree = `example-repository/
 ├── AGENTS.md
 ├── CLAUDE.md

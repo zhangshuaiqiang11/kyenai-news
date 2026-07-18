@@ -12,6 +12,9 @@ Verified: 2026-07-14
 | `CLAUDE.md` | `CLAUDE.md` | Provide Claude Code with durable repository context and working agreements. |
 | `copilot-instructions.md` | `.github/copilot-instructions.md` | Set a broadly compatible repository-wide baseline for GitHub Copilot. |
 | `cursor-project-rule.mdc` | `.cursor/rules/project-guidance.mdc` | Create a scoped Cursor project rule in the current .mdc format. |
+| `AGENTS.node.md` | `examples/node/AGENTS.md` | Give Codex concrete Node.js setup, lint, test, build, safety, and delivery rules. |
+| `AGENTS.python.md` | `examples/python/AGENTS.md` | Give Codex explicit Python environment, test, formatting, migration, and secret-handling rules. |
+| `AGENTS.monorepo.md` | `examples/monorepo/AGENTS.md` | Define root policy, workspace commands, nested overrides, and cross-package boundaries for a monorepo. |
 
 The package also includes JSON and CSV compatibility data, a benchmark protocol, unmeasured benchmark results, a verifier, and an example repository.
 

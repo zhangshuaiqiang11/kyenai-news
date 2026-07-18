@@ -205,6 +205,9 @@ describe("guide SEO data", () => {
 
     expect(guide).toBeDefined();
     expect(guide!.resourceIds).toEqual(["agents-md-template"]);
+    expect(guide!.title).toBe("AGENTS.md Template for Codex and Monorepos");
+    expect(guide!.metaTitle).toBe("AGENTS.md Template for Codex: Node.js, Python & Monorepos");
+    expect(guide!.updatedAt).toBe("2026-07-19");
   });
 
   it("publishes P2 AGENTS.md support pages as narrow, internally linked guides", () => {
@@ -452,9 +455,9 @@ describe("guide SEO data", () => {
       },
       {
         slug: "agents-md-template-for-ai-coding-agents",
-        title: /Practical Examples for Codex and Monorepos/i,
+        title: /AGENTS\.md Template for Codex and Monorepos/i,
         headings: ["Copyable starter templates", "Root vs nested AGENTS.md inheritance", "What every template must say"],
-        updatedAt: "2026-06-26",
+        updatedAt: "2026-07-19",
       },
       {
         slug: "agent-mode-vs-chat-mode-in-ide",

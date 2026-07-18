@@ -2007,6 +2007,97 @@ dd {
   margin-top: 20px;
 }
 
+.agents-loading-order {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.agents-loading-order ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 0;
+  margin: 1.25rem 0;
+  list-style: none;
+  counter-reset: agents-loading;
+}
+
+.agents-loading-order li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.85rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.agents-loading-order li > span {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: #e7f4f3;
+  color: var(--teal-dark);
+  font-weight: 800;
+}
+
+.agents-loading-order li div {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.agents-loading-order code {
+  overflow-wrap: anywhere;
+  color: var(--teal-dark);
+}
+
+.agents-loading-order p,
+.agents-loading-limit,
+.agents-github-asset p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.agents-github-asset {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface-soft);
+}
+
+.agents-github-asset h3 {
+  margin: 0.25rem 0 0.45rem;
+}
+
+.agents-github-asset a {
+  flex: 0 0 auto;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  background: var(--teal-dark);
+  color: #fff;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+@media (max-width: 760px) {
+  .agents-loading-order ol {
+    grid-template-columns: 1fr;
+  }
+
+  .agents-github-asset {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
 .instruction-template-grid-single {
   grid-template-columns: minmax(0, 1fr);
 }

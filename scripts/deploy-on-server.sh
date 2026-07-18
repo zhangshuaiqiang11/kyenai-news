@@ -207,4 +207,10 @@ smoke_frontend_container
 curl_service "homepage" http://127.0.0.1/
 curl_service "llms.txt" http://127.0.0.1/llms.txt
 
+echo "==> SEO drift checks"
+"${compose_cmd[@]}" exec -T frontend node --input-type=module - \
+  --base-url "${SEO_DRIFT_BASE_URL:-https://www.kyenai.com}" \
+  --canonical-origin "${SEO_DRIFT_CANONICAL_ORIGIN:-https://www.kyenai.com}" \
+  < "$DEPLOY_PATH/scripts/seo-drift-check.mjs"
+
 echo "==> Deploy finished"

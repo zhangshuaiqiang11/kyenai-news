@@ -10,6 +10,7 @@ import {
   renderTemplateFile,
 } from "../frontend/lib/resource-exports.ts";
 import {
+  agentsMdVariantTemplates,
   benchmarkProtocol,
   instructionResourceVerifiedAt,
   instructionTemplates,
@@ -110,12 +111,20 @@ export function main() {
     resolveGeneratedPath(packageRoot, template.downloadName);
     resolveGeneratedPath(packageRoot, template.targetPath);
   }
+  for (const template of agentsMdVariantTemplates) {
+    resolveGeneratedPath(publicInstructionRoot, template.downloadName);
+    resolveGeneratedPath(packageRoot, template.downloadName);
+    resolveGeneratedPath(packageRoot, template.targetPath);
+  }
 
   removeGeneratedPath(publicInstructionRoot, ".", { recursive: true, force: true });
   writeGeneratedFile(publicInstructionRoot, "compatibility.json", compatibilityJson);
   writeGeneratedFile(publicInstructionRoot, "compatibility.csv", compatibilityCsv);
   writeGeneratedFile(publicInstructionRoot, "benchmark-results.json", benchmarkResultsJson);
   for (const template of instructionTemplates) {
+    writeGeneratedFile(publicInstructionRoot, template.downloadName, renderTemplateFile(template));
+  }
+  for (const template of agentsMdVariantTemplates) {
     writeGeneratedFile(publicInstructionRoot, template.downloadName, renderTemplateFile(template));
   }
   const mcpSecurityReview = renderMcpSecurityReviewMarkdown();
@@ -127,7 +136,7 @@ export function main() {
     "README.md",
     renderGithubReadme({
       records: toolInstructionSupport,
-      templates: instructionTemplates,
+      templates: [...instructionTemplates, ...agentsMdVariantTemplates],
       repositoryTree,
       verifiedAt: instructionResourceVerifiedAt,
     }),
@@ -142,6 +151,11 @@ export function main() {
     if (template.targetPath === "AGENTS.md") {
       writeGeneratedFile(packageRoot, "example-repository/apps/web/AGENTS.md", rendered);
     }
+  }
+  for (const template of agentsMdVariantTemplates) {
+    const rendered = renderTemplateFile(template);
+    writeGeneratedFile(packageRoot, `templates/${template.downloadName}`, rendered);
+    writeGeneratedFile(packageRoot, template.targetPath, rendered);
   }
   writeGeneratedFile(
     packageRoot,

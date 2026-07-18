@@ -205,10 +205,10 @@ export const expansionGuides: Guide[] = [
   },
   {
     id: "guide-agents-md-template",
-    title: "AGENTS.md Template: Practical Examples for Codex and Monorepos",
+    title: "AGENTS.md Template for Codex and Monorepos",
     slug: "agents-md-template-for-ai-coding-agents",
     summary:
-      "Copy an AGENTS.md template for Codex, Node.js, Python, and monorepos, then add safe edit boundaries, test commands, forbidden files, and review expectations.",
+      "Copy tested AGENTS.md templates for Codex, Node.js, Python, and monorepos, with setup commands, test rules, safe edit boundaries, loading precedence, and review checks.",
     intent: "Developers want a copyable AGENTS.md template instead of another explanation of what instruction files are.",
     audience: "Developers setting up Codex-compatible agents, team leads standardizing repo instructions, and maintainers cleaning stale agent rules.",
     pageType: "Template and checklist",
@@ -365,10 +365,10 @@ export const expansionGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
     publishedAt: "2026-06-14",
-    updatedAt: "2026-06-26",
-    metaTitle: "AGENTS.md Template: Copyable Examples for Codex, Node.js, Python",
+    updatedAt: "2026-07-19",
+    metaTitle: "AGENTS.md Template for Codex: Node.js, Python & Monorepos",
     metaDescription:
-      "AGENTS.md template for Codex: copy Node.js, Python, and monorepo examples with test commands, forbidden files, safe edit boundaries, and review rules.",
+      "Copy tested AGENTS.md templates for Codex, Node.js, Python and monorepos. Includes setup commands, test rules, safe edit boundaries and review checks.",
     resourceIds: ["agents-md-template"],
   },
   {
