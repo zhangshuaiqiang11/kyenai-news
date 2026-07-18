@@ -20,6 +20,11 @@ describe("guide code example resources", () => {
     const rootTemplate = instructionTemplates.find((template) => template.id === "agents-md-template");
     expect(rootTemplate).toBeDefined();
 
+    expect(screen.getByRole("heading", { name: /build a concise agents\.md starter/i })).toBeTruthy();
+    expect(screen.getByRole("status").textContent).toMatch(/100\/100 · Strong/i);
+    expect(screen.getByRole("link", { name: /open the full instruction checker/i }).getAttribute("href")).toBe(
+      "/tools/instruction-file-checker",
+    );
     expect(screen.getByRole("heading", { name: /agents\.md template previews/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: rootTemplate!.title })).toBeTruthy();
     for (const template of agentsMdVariantTemplates) {

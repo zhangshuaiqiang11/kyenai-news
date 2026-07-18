@@ -308,7 +308,7 @@ export const expansionGuides: Guide[] = [
     title: "AGENTS.md Template for Codex and Monorepos",
     slug: "agents-md-template-for-ai-coding-agents",
     summary:
-      "Copy tested AGENTS.md templates for Codex, Node.js, Python, and monorepos, with setup commands, test rules, safe edit boundaries, loading precedence, and review checks.",
+      "Build, audit, copy, and download concise AGENTS.md starters for Codex, Node.js, Python, and monorepos with commands, boundaries, and review checks.",
     intent: "Developers want a copyable AGENTS.md template instead of another explanation of what instruction files are.",
     audience: "Developers setting up Codex-compatible agents, team leads standardizing repo instructions, and maintainers cleaning stale agent rules.",
     pageType: "Template and checklist",
@@ -326,6 +326,13 @@ export const expansionGuides: Guide[] = [
           "Use one root template for the shared policy: project purpose, package manager, install command, development command, test command, build command, formatting command, safe edit boundaries, files to avoid, review expectations, and known failure notes.",
           "For React or Vue apps, name the frontend package path, generated build folders, UI test command, and screenshot or accessibility check. For Python services, name the virtual environment command, test runner, migration boundary, and formatting command. For monorepos, keep root AGENTS.md short and place nested AGENTS.md files only where commands or ownership really differ.",
           "For teams, add one security section: no secrets in prompts, no production writes without approval, no migration edits without owner review, and no generated code merge without tests or human diff review.",
+        ],
+      },
+      {
+        heading: "Should you generate AGENTS.md automatically?",
+        body: [
+          "Use automation only to assemble repository facts you have verified: exact commands, scope, forbidden paths, and the definition of done. The browser builder on this page is deterministic and does not inspect your repository or ask a model to invent guidance. Replace every default, run each command, remove redundant rules, and review the result before committing it.",
+          "A 2026 AGENTS.md evaluation preprint found that context files generally increased steps and inference cost without a statistically significant accuracy gain; developer-written files performed better than model-generated files in its comparison. A separate repository-mining preprint found configuration smells in 91 of 100 sampled repositories, including redundant lint rules and conflicting instructions. These are bounded studies, not universal laws, but they support keeping the starter concise and repo-specific.",
         ],
       },
       {
@@ -455,12 +462,28 @@ export const expansionGuides: Guide[] = [
         url: "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
         publisher: "OpenAI",
         note: "Official AGENTS.md behavior and precedence reference.",
+        verifiedAt: "2026-07-19",
       },
       {
         title: "GitHub Copilot custom instructions",
         url: "https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions",
         publisher: "GitHub",
         note: "Official repository instruction reference for Copilot workflows.",
+        verifiedAt: "2026-07-19",
+      },
+      {
+        title: "Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?",
+        url: "https://arxiv.org/abs/2602.11988",
+        publisher: "arXiv",
+        note: "2026 preprint comparing no context, model-generated context, and developer-written context across coding-agent tasks; reports higher cost and recommends minimal repository-specific guidance.",
+        verifiedAt: "2026-07-19",
+      },
+      {
+        title: "Configuration Smells in AGENTS.md Files",
+        url: "https://arxiv.org/abs/2606.15828",
+        publisher: "arXiv",
+        note: "2026 repository-mining preprint cataloging six instruction-file smells across a sample of 100 AGENTS.md or CLAUDE.md repositories.",
+        verifiedAt: "2026-07-19",
       },
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],

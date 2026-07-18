@@ -194,6 +194,16 @@ export function buildGuideGraphJsonLd(guide: Guide, breadcrumbItems: BreadcrumbI
     );
   }
 
+  if (guide.resourceIds?.includes("agents-md-template")) {
+    nodes.push(
+      buildWebApplicationJsonLd({
+        title: "AGENTS.md Starter Builder",
+        description: "Build, copy, download, and rule-check a concise AGENTS.md starter for Node.js, Python, or monorepo projects in the browser.",
+        path: `/guides/${guide.slug}`,
+      }),
+    );
+  }
+
   if (guide.resourceIds?.includes("codex-claude-decision")) {
     nodes.push(
       buildWebApplicationJsonLd({

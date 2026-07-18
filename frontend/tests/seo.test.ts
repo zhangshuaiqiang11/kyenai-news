@@ -297,6 +297,18 @@ describe("SEO helpers", () => {
     expect(JSON.stringify(graph)).toContain("Agent Loop Budget Calculator");
   });
 
+  it("adds WebApplication schema when the AGENTS.md guide renders its starter builder", () => {
+    const guide = getGuides().find((candidate) => candidate.slug === "agents-md-template-for-ai-coding-agents")!;
+    const graph = buildGuideGraphJsonLd(guide, [
+      { name: "Home", path: "/" },
+      { name: "Guides", path: "/guides" },
+      { name: guide.title, path: `/guides/${guide.slug}` },
+    ], buildGuideFaqs(guide));
+
+    expect(graph["@graph"].map((node) => node["@type"])).toContain("WebApplication");
+    expect(JSON.stringify(graph)).toContain("AGENTS.md Starter Builder");
+  });
+
   it("adds WebApplication schema when the comparison guide renders its decision tool", () => {
     const guide = getGuides().find((candidate) => candidate.slug === "codex-vs-claude-code")!;
     const graph = buildGuideGraphJsonLd(guide, [

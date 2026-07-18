@@ -5,6 +5,7 @@ import { cleanup, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ArticleExplorer } from "../components/ArticleExplorer";
+import { AgentsMdStarterBuilder } from "../components/AgentsMdStarterBuilder";
 import { BenchmarkPanel } from "../components/BenchmarkPanel";
 import { InstructionCompatibilityMatrix } from "../components/InstructionCompatibilityMatrix";
 import { InstructionFileChecker } from "../components/InstructionFileChecker";
@@ -73,6 +74,12 @@ describe("accessibility", () => {
 
   it("keeps the browser-only instruction checker free of axe violations", async () => {
     const { container } = render(<InstructionFileChecker />);
+
+    await expectNoAxeViolations(container);
+  });
+
+  it("keeps the AGENTS.md starter builder free of axe violations", async () => {
+    const { container } = render(<AgentsMdStarterBuilder />);
 
     await expectNoAxeViolations(container);
   });

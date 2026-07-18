@@ -67,6 +67,11 @@ const guideFaqsBySlug: Record<string, FaqItem[]> = {
       answer:
         "Developers setting up Codex-compatible agents, team leads standardizing repo instructions, and maintainers cleaning stale agent rules across Node.js, Python, and monorepo layouts.",
     },
+    {
+      question: "Should you generate AGENTS.md automatically?",
+      answer:
+        "Use a generator only as a starter for repository facts you verify yourself: exact setup and test commands, scope, restricted paths, and completion rules. Do not let a model invent a long repository overview. Run every generated command, delete redundant guidance, and audit the final file before committing it.",
+    },
   ],
   "codex-vs-claude-code": [
     {
