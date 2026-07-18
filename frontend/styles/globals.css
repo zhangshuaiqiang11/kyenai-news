@@ -1347,13 +1347,90 @@ dd {
   padding: 18px;
 }
 
-.source-card > span,
+.ledger-summary {
+  align-items: start;
+  background: linear-gradient(135deg, #f3fbfa, #f7f8ff);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  margin-top: 28px;
+  padding: 22px;
+}
+
+.ledger-summary h2,
+.ledger-summary p {
+  margin: 0;
+}
+
+.ledger-summary h2 {
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.ledger-summary > div > p:last-child {
+  color: var(--muted);
+  line-height: 1.55;
+  margin-top: 10px;
+}
+
+.ledger-summary dl {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+}
+
+.ledger-summary dl div {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.ledger-summary dt {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.ledger-summary dd {
+  font-size: 22px;
+  font-weight: 850;
+  margin: 4px 0 0;
+}
+
+.source-card-labels {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.source-card-labels span,
 .entity-card > span {
   color: var(--teal-dark);
   font-size: 12px;
   font-weight: 850;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.source-card-labels span:last-child {
+  background: #e8f7f2;
+  border-radius: 999px;
+  padding: 5px 8px;
+}
+
+.source-card-labels span[data-status="review-due"] {
+  background: #fff1d6;
+  color: #7a4d00;
+}
+
+.source-card-labels span[data-status="superseded"] {
+  background: #f2e8f7;
+  color: #69327b;
 }
 
 .source-card h2,
@@ -1369,6 +1446,52 @@ dd {
   gap: 10px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin: 0;
+}
+
+.source-card dl div {
+  min-width: 0;
+}
+
+.source-card dt {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.source-card dd {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 3px 0 0;
+}
+
+.source-usage-list {
+  border-top: 1px solid var(--border);
+  margin-top: 18px;
+  padding-top: 16px;
+}
+
+.source-usage-list ul {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+}
+
+.source-usage-list li {
+  display: grid;
+  gap: 3px;
+}
+
+.source-usage-list a {
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.source-usage-list span,
+.source-usage-list small {
+  color: var(--muted);
+  line-height: 1.4;
 }
 
 .entity-ledger > section {
@@ -1495,11 +1618,16 @@ dd {
   .guide-page .article-header dl,
   .related-guides > div:last-child,
   .related-articles > div,
+  .ledger-summary,
   .source-card-grid,
   .entity-card-grid,
   .trust-grid,
   .policy-list {
     grid-template-columns: 1fr;
+  }
+
+  .ledger-summary dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .site-header {
@@ -1542,6 +1670,11 @@ dd {
 }
 
 @media (max-width: 560px) {
+  .ledger-summary dl,
+  .source-card dl {
+    grid-template-columns: 1fr;
+  }
+
   .site-header {
     align-items: center;
     gap: 12px;

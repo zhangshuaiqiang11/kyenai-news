@@ -8,7 +8,7 @@
 - Instruction file checker: https://www.kyenai.com/tools/instruction-file-checker (deterministic, browser-only audit; no instruction text is uploaded)
 - Editorial policy: https://www.kyenai.com/editorial-policy
 - Editorial author: https://www.kyenai.com/authors/editorial-automation-desk
-- Source ledger: https://www.kyenai.com/sources
+- Source and verification ledger: https://www.kyenai.com/sources
 - Entity ledger: https://www.kyenai.com/entities
 - RSS feed: https://www.kyenai.com/feed.xml
 

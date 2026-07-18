@@ -46,7 +46,7 @@ export function buildLlmsTxt(): string {
     `- Instruction file checker: ${buildCanonicalUrl("/tools/instruction-file-checker")} (deterministic, browser-only audit; no instruction text is uploaded)`,
     `- Editorial policy: ${buildCanonicalUrl("/editorial-policy")}`,
     `- Editorial author: ${buildCanonicalUrl("/authors/editorial-automation-desk")}`,
-    `- Source ledger: ${buildCanonicalUrl("/sources")}`,
+    `- Source and verification ledger: ${buildCanonicalUrl("/sources")}`,
     `- Entity ledger: ${buildCanonicalUrl("/entities")}`,
     `- RSS feed: ${buildCanonicalUrl("/feed.xml")}`,
     "",

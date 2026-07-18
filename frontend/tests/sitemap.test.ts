@@ -44,7 +44,11 @@ describe("sitemap helpers", () => {
     expect(locations).toContain("https://www.kyenai.com/guides");
     expect(entries.find((entry) => entry.loc.endsWith("/about"))?.lastmod).toBe("2026-06-06");
     expect(entries.find((entry) => entry.loc.endsWith("/editorial-policy"))?.lastmod).toBe("2026-06-06");
-    expect(entries.find((entry) => entry.loc.endsWith("/sources"))?.lastmod).toBe("2026-07-14");
+    const latestContentUpdate = [...publishedArticles, ...guides]
+      .map((item) => item.updatedAt.slice(0, 10))
+      .sort()
+      .at(-1);
+    expect(entries.find((entry) => entry.loc.endsWith("/sources"))?.lastmod).toBe(latestContentUpdate);
     expect(entries.find((entry) => entry.loc.endsWith("/entities"))?.lastmod).toBe("2026-07-14");
     expect(entries.find((entry) => entry.loc.endsWith("/authors/editorial-automation-desk"))?.lastmod).toBe("2026-06-27");
     expect(entries.find((entry) => entry.loc.endsWith("/tools/instruction-file-checker"))?.lastmod).toBe("2026-07-14");

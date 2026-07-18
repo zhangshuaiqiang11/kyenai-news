@@ -57,6 +57,11 @@ const pageContracts = [
     titleIncludes: "Instruction File Checker",
     h1Includes: "AI Coding Agent Instruction File Checker",
   },
+  {
+    path: "/sources",
+    titleIncludes: "Source & Verification Ledger",
+    h1Includes: "Source & Verification Ledger",
+  },
 ];
 
 function readOption(name, fallback) {
