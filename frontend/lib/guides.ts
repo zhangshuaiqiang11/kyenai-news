@@ -621,10 +621,10 @@ const coreGuides: Guide[] = [
   },
   {
     id: "guide-secure-mcp-servers",
-    title: "Secure MCP Server Connections to AI Agents",
+    title: "MCP Server Security Checklist: 25 Controls for AI Agents",
     slug: MCP_SECURITY_GUIDE_SLUG,
     summary:
-      "Review MCP server security before connecting AI agents: authentication, token audience, least privilege, network limits, logs, revocation, and launch gates.",
+      "Audit MCP server security with 25 source-backed controls covering authentication, permissions, prompt injection, secrets, sandboxing, logging, revocation, and allow-or-deny tests.",
     intent:
       "Answer how to secure an MCP server with source-backed protocol checks and clearly labeled operational controls.",
     audience: "Engineering leaders, security reviewers, platform teams, and developer tooling owners.",
@@ -839,10 +839,10 @@ const coreGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["github-copilot-cloud-local-sandboxes-preview", "visual-studio-agent-mode-mcp-general-availability"],
     publishedAt: "2026-06-14",
-    updatedAt: "2026-06-26",
-    metaTitle: "Secure MCP Server Connections to AI Agents: Auth, Scopes, Logs",
+    updatedAt: "2026-07-19",
+    metaTitle: "MCP Server Security Checklist: 25 Controls for AI Agents",
     metaDescription:
-      "Review token audience, least privilege, secrets, network limits, approval gates, audit logs, and revocation before connecting AI agents to MCP servers.",
+      "Audit MCP server security across authentication, permissions, prompt injection, secrets, logging, sandboxing, and revocation. Download PDF, CSV, or JSON.",
     resourceIds: ["mcp-security"],
   },
   {

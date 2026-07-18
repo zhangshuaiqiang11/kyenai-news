@@ -9,6 +9,7 @@ const EDITORIAL_SOURCE_FILES = [
 ];
 const EDITORIAL_DATE_PATTERN =
   /\b(?:updatedAt|publishedAt)\s*:\s*["'](\d{4}-\d{2}-\d{2})["']/g;
+const EDITORIAL_TIME_ZONE = process.env.EDITORIAL_TIME_ZONE || "Asia/Shanghai";
 
 function parseCalendarDate(value) {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
@@ -36,9 +37,25 @@ function extractEditorialDates(source) {
   );
 }
 
+function formatDateInTimeZone(value, timeZone = EDITORIAL_TIME_ZONE) {
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) {
+    return null;
+  }
+
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
 function selectLatestEditorialDate(values, buildTimestamp) {
-  const cutoff = Date.parse(buildTimestamp);
-  if (!Number.isFinite(cutoff)) {
+  const cutoffDate = formatDateInTimeZone(buildTimestamp);
+  if (!cutoffDate) {
     return null;
   }
 
@@ -47,7 +64,7 @@ function selectLatestEditorialDate(values, buildTimestamp) {
     const timestamp = parseCalendarDate(value);
     if (
       timestamp !== null &&
-      timestamp <= cutoff &&
+      value <= cutoffDate &&
       (latest === null || timestamp > latest.timestamp)
     ) {
       latest = { value, timestamp };
@@ -112,6 +129,7 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_BUILD_TIMESTAMP: buildTimestamp,
     NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE: latestEditorialUpdate,
+    NEXT_PUBLIC_EDITORIAL_TIME_ZONE: EDITORIAL_TIME_ZONE,
   },
   async redirects() {
     return [...categoryRedirects, ...articleRedirects, ...guideRedirects, ...llmsRedirects];

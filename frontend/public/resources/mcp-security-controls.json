@@ -1,0 +1,371 @@
+{
+  "title": "MCP Server Security Checklist: 25 Controls for AI Agents",
+  "verifiedAt": "2026-07-19",
+  "controlCount": 25,
+  "scope": "Official MCP requirements and guidance are labeled separately from KyenAI operational recommendations. Validate each control against the named server, client, version, and deployment context.",
+  "controls": [
+    {
+      "number": 1,
+      "id": "token-audience-validation",
+      "title": "Validate access-token audience",
+      "risk": "Critical",
+      "guidance": "For HTTP transports, accept only access tokens explicitly issued for the MCP server and validate their audience before every protected request.",
+      "verificationMethod": "Send valid, wrong-audience, expired, and unsigned tokens to each protected endpoint.",
+      "passCriteria": "Only the valid audience-bound token is accepted; every other token is rejected without reaching a tool.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization",
+        "https://modelcontextprotocol.io/specification/draft/basic/authorization/security-considerations"
+      ]
+    },
+    {
+      "number": 2,
+      "id": "per-client-consent",
+      "title": "Require per-client consent",
+      "risk": "Critical",
+      "guidance": "MCP proxy servers that reuse a third-party OAuth client must record consent per user and MCP client before forwarding authorization.",
+      "verificationMethod": "Authorize one client, then initiate the same flow from a new client ID while the original consent cookie remains present.",
+      "passCriteria": "The new client receives its own consent screen and cannot inherit the first client's approval.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+      ]
+    },
+    {
+      "number": 3,
+      "id": "redirect-state-csrf",
+      "title": "Validate redirect URIs, state, and CSRF",
+      "risk": "Critical",
+      "guidance": "Use exact redirect URI matching, single-use short-lived state values, CSRF protection, and secure consent cookies in OAuth flows.",
+      "verificationMethod": "Replay state values and try wildcard, changed, missing, and attacker-controlled redirect URIs.",
+      "passCriteria": "Every mismatch or replay is rejected and approved redirects use exact registered values.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+      ]
+    },
+    {
+      "number": 4,
+      "id": "reject-token-passthrough",
+      "title": "Reject token passthrough",
+      "risk": "Critical",
+      "guidance": "Do not accept an upstream token and forward it to another service without verifying that it was issued for the MCP server.",
+      "verificationMethod": "Present a token issued only for a downstream API and trace whether it can cross the MCP boundary.",
+      "passCriteria": "The MCP server rejects the token and never forwards it downstream.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization",
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+      ]
+    },
+    {
+      "number": 5,
+      "id": "scope-minimization",
+      "title": "Minimize scopes and elevate incrementally",
+      "risk": "High",
+      "guidance": "Request the smallest initial scope set and add access only when a specific operation requires it.",
+      "verificationMethod": "Map every requested scope to one enabled method and run the workflow with optional scopes removed.",
+      "passCriteria": "No unused wildcard or admin scope remains and elevation is explicit and operation-specific.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices",
+        "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization"
+      ]
+    },
+    {
+      "number": 6,
+      "id": "secret-storage-rotation",
+      "title": "Protect and rotate secrets and tokens",
+      "risk": "Critical",
+      "guidance": "Keep credentials out of prompts, source control, tool output, screenshots, and ordinary logs; use managed storage and short-lived credentials where practical.",
+      "verificationMethod": "Scan configuration, prompts, logs, errors, screenshots, and source history, then rotate a test credential.",
+      "passCriteria": "No plaintext credential appears and the old credential stops working after rotation.",
+      "claimBasis": "KyenAI operational recommendation",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices",
+        "https://modelcontextprotocol.io/specification/draft/basic/authorization/security-considerations"
+      ]
+    },
+    {
+      "number": 7,
+      "id": "session-auth-separation",
+      "title": "Never use sessions as authentication",
+      "risk": "Critical",
+      "guidance": "Authorize every inbound request independently; a session identifier must not substitute for an access token or user identity.",
+      "verificationMethod": "Reuse a captured session ID without valid authorization and attempt calls against another server instance.",
+      "passCriteria": "The request is rejected and the session ID alone grants no capability.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+      ]
+    },
+    {
+      "number": 8,
+      "id": "session-id-security",
+      "title": "Secure, bind, rotate, and expire session IDs",
+      "risk": "High",
+      "guidance": "Generate non-deterministic session IDs, bind them to authorized user context, and rotate or expire them to limit hijacking.",
+      "verificationMethod": "Test predictable IDs, cross-user reuse, cross-instance replay, and expired-session behavior.",
+      "passCriteria": "IDs are unguessable, user-bound, time-bounded, and rejected outside their authorized context.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+      ]
+    },
+    {
+      "number": 9,
+      "id": "authorization-url-schemes",
+      "title": "Allow only safe authorization URL schemes",
+      "risk": "Critical",
+      "guidance": "Accept HTTPS authorization URLs in production and reject javascript:, data:, file:, vbscript:, and other executable schemes.",
+      "verificationMethod": "Return authorization endpoints using unsafe schemes, encoded variants, and HTTP on non-loopback hosts.",
+      "passCriteria": "Only HTTPS production URLs and explicitly allowed loopback development URLs open.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+      ]
+    },
+    {
+      "number": 10,
+      "id": "safe-url-opening",
+      "title": "Open authorization URLs without a shell",
+      "risk": "Critical",
+      "guidance": "Use platform URL APIs rather than cmd, sh, PowerShell, or interpolated shell commands when opening authorization links.",
+      "verificationMethod": "Supply URLs containing shell metacharacters, quotes, spaces, and encoded command separators.",
+      "passCriteria": "The URL is parsed as data, no shell starts, and suspicious values are rejected and logged.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+      ]
+    },
+    {
+      "number": 11,
+      "id": "ssrf-private-ranges",
+      "title": "Block SSRF to private and metadata ranges",
+      "risk": "Critical",
+      "guidance": "Validate OAuth discovery URLs and block loopback, private, link-local, reserved, and cloud metadata destinations outside explicit development exceptions.",
+      "verificationMethod": "Try IPv4, IPv6, encoded, hostname, and cloud-metadata targets through every URL-fetching path.",
+      "passCriteria": "All private or reserved destinations are blocked before connection and responses are not reflected.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices",
+        "https://modelcontextprotocol.io/specification/draft/basic/authorization/security-considerations"
+      ]
+    },
+    {
+      "number": 12,
+      "id": "redirect-dns-validation",
+      "title": "Revalidate redirects and DNS results",
+      "risk": "High",
+      "guidance": "Apply URL and IP validation to every redirect hop and defend against DNS rebinding or time-of-check/time-of-use changes.",
+      "verificationMethod": "Use redirect chains and a test hostname that changes from a public to a private address.",
+      "passCriteria": "Every hop is revalidated and a destination change to a blocked address terminates the request.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+      ]
+    },
+    {
+      "number": 13,
+      "id": "egress-allowlist",
+      "title": "Enforce an outbound network allowlist",
+      "risk": "High",
+      "guidance": "Route server-side discovery and tool traffic through network policy or an egress proxy that permits only declared destinations.",
+      "verificationMethod": "Attempt direct IP, undeclared domain, private range, redirect, and DNS-rebinding egress from the runtime.",
+      "passCriteria": "Only reviewed destinations succeed and bypass paths cannot reach undeclared networks.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+      ]
+    },
+    {
+      "number": 14,
+      "id": "local-install-consent",
+      "title": "Require consent before local server installation",
+      "risk": "Critical",
+      "guidance": "Before one-click local setup, show the exact command and explain that it executes with the client's local privileges.",
+      "verificationMethod": "Start installation from a deep link or imported configuration and inspect the complete pre-execution consent flow.",
+      "passCriteria": "No command runs before explicit approval and the user can cancel without side effects.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+      ]
+    },
+    {
+      "number": 15,
+      "id": "command-visibility-warnings",
+      "title": "Display full commands and dangerous-pattern warnings",
+      "risk": "High",
+      "guidance": "Do not truncate local startup commands; highlight sudo, destructive deletion, network calls, and access to sensitive paths.",
+      "verificationMethod": "Test long, multiline, obfuscated, and destructive commands in the installation dialog.",
+      "passCriteria": "The entire command is visible and dangerous patterns produce a clear warning before approval.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+      ]
+    },
+    {
+      "number": 16,
+      "id": "local-server-sandbox",
+      "title": "Sandbox local MCP servers",
+      "risk": "Critical",
+      "guidance": "Run local servers with minimal filesystem, process, and network privileges and require explicit grants for additional access.",
+      "verificationMethod": "Attempt to read outside allowed roots, spawn child processes, reach the network, and access system credentials.",
+      "passCriteria": "Default-denied actions fail and each additional privilege requires a narrow explicit grant.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices",
+        "https://modelcontextprotocol.io/specification/draft/basic/authorization/security-considerations"
+      ]
+    },
+    {
+      "number": 17,
+      "id": "stdio-proxy-restrictions",
+      "title": "Restrict stdio proxy process spawning",
+      "risk": "Critical",
+      "guidance": "When a proxy can spawn stdio servers, isolate the proxy, authorize dangerous commands separately, and log process creation.",
+      "verificationMethod": "Use a compromised-client test to request an arbitrary executable, unexpected arguments, and access outside the sandbox.",
+      "passCriteria": "Unapproved commands and arguments are denied and allowed process creation is attributable and contained.",
+      "claimBasis": "Official MCP requirement or guidance",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+      ]
+    },
+    {
+      "number": 18,
+      "id": "tool-level-permissions",
+      "title": "Inventory and scope every exposed tool",
+      "risk": "High",
+      "guidance": "Decide visibility, callability, target scope, owner, rollback path, and approval policy for each tool rather than trusting one server-wide grant.",
+      "verificationMethod": "Enumerate tools with MCP Inspector and compare them with the approved capability inventory.",
+      "passCriteria": "Every exposed tool has a declared workflow and no undeclared or wildcard capability remains.",
+      "claimBasis": "KyenAI operational recommendation",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tools/inspector"
+      ]
+    },
+    {
+      "number": 19,
+      "id": "read-write-delete-separation",
+      "title": "Separate read, write, and delete capabilities",
+      "risk": "High",
+      "guidance": "Offer a useful read-only profile without bundling mutation, deletion, secret, network, or production permissions.",
+      "verificationMethod": "Run the read-only workflow and attempt every mutation and deletion method with the same identity.",
+      "passCriteria": "Reads work within declared roots while all write and delete attempts are denied.",
+      "claimBasis": "KyenAI operational recommendation",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tools/inspector"
+      ]
+    },
+    {
+      "number": 20,
+      "id": "prompt-injection-containment",
+      "title": "Contain prompt-injection-triggered tool calls",
+      "risk": "Critical",
+      "guidance": "Treat repository text, webpages, issues, and tool output as untrusted data that cannot widen tool permissions or bypass approval gates.",
+      "verificationMethod": "Place malicious instructions in each untrusted input source and observe requested tool calls and permission changes.",
+      "passCriteria": "Untrusted content cannot expand authority, reveal credentials, or execute a consequential call without policy approval.",
+      "claimBasis": "KyenAI operational recommendation",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+      ]
+    },
+    {
+      "number": 21,
+      "id": "human-approval",
+      "title": "Require human approval for consequential actions",
+      "risk": "Critical",
+      "guidance": "Pause immediately before destructive writes, secret use, production access, irreversible external messages, or permission expansion.",
+      "verificationMethod": "Simulate each consequential action and inspect the approval prompt, actor, target, rollback limits, and timeout behavior.",
+      "passCriteria": "The action cannot proceed without an informed, current, target-specific approval.",
+      "claimBasis": "KyenAI operational recommendation",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tools/inspector"
+      ]
+    },
+    {
+      "number": 22,
+      "id": "attributable-redacted-logs",
+      "title": "Keep attributable, secret-redacted audit logs",
+      "risk": "High",
+      "guidance": "Record actor, session, server version, method, target, approval, timestamp, and outcome while excluding tokens and unnecessary payloads.",
+      "verificationMethod": "Run allowed and denied calls, then reconstruct them from logs and scan the records for credential patterns.",
+      "passCriteria": "A reviewer can reconstruct consequential calls and no secret or sensitive payload is exposed.",
+      "claimBasis": "KyenAI operational recommendation",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices",
+        "https://modelcontextprotocol.io/docs/tools/inspector"
+      ]
+    },
+    {
+      "number": 23,
+      "id": "supply-chain-pinning",
+      "title": "Pin and review server supply-chain inputs",
+      "risk": "High",
+      "guidance": "Use trusted distribution sources, pin reviewed versions or integrity records, inventory dependencies, and avoid unattended latest-version execution.",
+      "verificationMethod": "Rebuild from a clean environment and compare resolved packages, checksums, publisher identity, and startup command with the review record.",
+      "passCriteria": "The reviewed artifact is reproducible and an unexpected publisher, version, or dependency blocks launch.",
+      "claimBasis": "KyenAI operational recommendation",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices",
+        "https://modelcontextprotocol.io/specification/draft/basic/authorization/security-considerations"
+      ]
+    },
+    {
+      "number": 24,
+      "id": "revocation-incident-response",
+      "title": "Test revocation and incident response",
+      "risk": "Critical",
+      "guidance": "Maintain a fast path to disable the server, revoke credentials and client access, preserve relevant records, and assess affected systems.",
+      "verificationMethod": "Run a tabletop incident, disable the server, revoke a test credential, and attempt the former workflow again.",
+      "passCriteria": "Old access fails immediately, owners receive evidence, and restoration requires a documented decision.",
+      "claimBasis": "KyenAI operational recommendation",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+      ]
+    },
+    {
+      "number": 25,
+      "id": "inspector-allow-deny-validation",
+      "title": "Validate allow and deny paths with MCP Inspector",
+      "risk": "Medium",
+      "guidance": "Enumerate resources, prompts, tools, notifications, and protocol exchanges, then test both expected success and expected failure behavior.",
+      "verificationMethod": "Run the Inspector against the exact reviewed server version and preserve results for every enabled capability.",
+      "passCriteria": "The exposed surface matches inventory, allow cases work, deny cases stay denied, and errors reveal no secrets.",
+      "claimBasis": "KyenAI operational recommendation",
+      "sourceUrls": [
+        "https://modelcontextprotocol.io/docs/tools/inspector"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "mcp-security-best-practices",
+      "title": "MCP security best practices",
+      "url": "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices",
+      "scope": "Official guidance for authorization, token handling, least-privilege scopes, session security, SSRF, and local MCP server compromise.",
+      "verifiedAt": "2026-07-19"
+    },
+    {
+      "id": "mcp-authorization",
+      "title": "MCP authorization specification",
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization",
+      "scope": "Official protocol requirements for HTTP-based authorization, protected resource metadata, access tokens, scopes, and audience validation.",
+      "verifiedAt": "2026-07-19"
+    },
+    {
+      "id": "mcp-authorization-security",
+      "title": "MCP authorization security considerations",
+      "url": "https://modelcontextprotocol.io/specification/draft/basic/authorization/security-considerations",
+      "scope": "Official security considerations for confused-deputy attacks, token passthrough, audience validation, SSRF, session hijacking, and local server compromise.",
+      "verifiedAt": "2026-07-19"
+    },
+    {
+      "id": "mcp-inspector",
+      "title": "MCP Inspector",
+      "url": "https://modelcontextprotocol.io/docs/tools/inspector",
+      "scope": "Official interactive validation workflow for inspecting server resources, prompts, tools, notifications, and protocol exchanges.",
+      "verifiedAt": "2026-07-19"
+    }
+  ]
+}

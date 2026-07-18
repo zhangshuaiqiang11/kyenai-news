@@ -8,6 +8,7 @@ import {
   loopWorkflowSteps,
 } from "../lib/loop-engineering-resource";
 import { CodeExampleCard } from "./CodeExampleCard";
+import { LoopBudgetCalculator } from "./LoopBudgetCalculator";
 import { LoopPatternMatrix } from "./LoopPatternMatrix";
 
 export function LoopEngineeringResources() {
@@ -32,6 +33,8 @@ export function LoopEngineeringResources() {
       </section>
 
       <LoopPatternMatrix />
+
+      <LoopBudgetCalculator />
 
       <section className="instruction-resource-section" aria-labelledby="loop-example-heading">
         <div className="instruction-resource-heading">

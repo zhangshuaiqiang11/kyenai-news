@@ -31,7 +31,7 @@ describe("Next build configuration", () => {
 
     expect(buildTimestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
     expect(Number.isFinite(Date.parse(buildTimestamp || ""))).toBe(true);
-    expect(nextConfig.env?.NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE).toBe("2026-07-14");
+    expect(nextConfig.env?.NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE).toBe("2026-07-19");
   });
 
   it("derives the latest valid non-future date from authoritative source text", () => {
@@ -56,7 +56,7 @@ describe("Next build configuration", () => {
     expect(
       nextConfig.selectLatestEditorialDate(
         nextConfig.extractEditorialDates(source),
-        "2026-06-14T23:59:59.000Z",
+        "2026-06-14T12:00:00.000Z",
       ),
     ).toBe("2026-06-14");
     expect(

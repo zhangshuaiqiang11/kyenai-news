@@ -176,13 +176,25 @@ export function buildGuideJsonLd(guide: Guide) {
 }
 
 export function buildGuideGraphJsonLd(guide: Guide, breadcrumbItems: BreadcrumbItem[], faqs: FaqItem[]) {
-  return buildJsonLdGraph([
+  const nodes: JsonLdNode[] = [
     buildOrganizationJsonLd(false),
     buildWebsiteJsonLd(false),
     buildGuideJsonLd(guide),
     buildBreadcrumbJsonLd(breadcrumbItems, false),
     buildFaqPageJsonLd(faqs, false),
-  ]);
+  ];
+
+  if (guide.resourceIds?.includes("loop-engineering")) {
+    nodes.push(
+      buildWebApplicationJsonLd({
+        title: "Agent Loop Budget Calculator",
+        description: "Estimate maximum token use, tool calls, token cost, risk level, and a recommended stop rule for an AI coding agent loop.",
+        path: `/guides/${guide.slug}`,
+      }),
+    );
+  }
+
+  return buildJsonLdGraph(nodes);
 }
 
 export function buildArticleGraphJsonLd(article: Article, breadcrumbItems: BreadcrumbItem[], faqs: FaqItem[]) {

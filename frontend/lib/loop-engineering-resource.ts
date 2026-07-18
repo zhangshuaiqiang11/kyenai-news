@@ -9,6 +9,56 @@ export type LoopPatternRecord = {
   risk: string;
 };
 
+export type LoopBudgetInput = {
+  tokensPerIteration: number;
+  toolCallsPerIteration: number;
+  maxIterations: number;
+  costPerMillionTokens: number;
+  agentCount: number;
+};
+
+export type LoopBudgetResult = {
+  maximumTokens: number;
+  maximumToolCalls: number;
+  maximumCostUsd: number;
+  risk: "Low" | "Moderate" | "High";
+  stopRule: string;
+};
+
+export function calculateLoopBudget(input: LoopBudgetInput): LoopBudgetResult {
+  const tokensPerIteration = clampFinite(input.tokensPerIteration, 0, 10_000_000);
+  const toolCallsPerIteration = clampFinite(input.toolCallsPerIteration, 0, 10_000);
+  const maxIterations = clampFinite(input.maxIterations, 1, 10_000);
+  const costPerMillionTokens = clampFinite(input.costPerMillionTokens, 0, 10_000);
+  const agentCount = clampFinite(input.agentCount, 1, 1_000);
+  const maximumTokens = Math.round(tokensPerIteration * maxIterations * agentCount);
+  const maximumToolCalls = Math.round(toolCallsPerIteration * maxIterations * agentCount);
+  const maximumCostUsd = (maximumTokens / 1_000_000) * costPerMillionTokens;
+
+  const risk =
+    maxIterations > 10 || agentCount > 4 || maximumCostUsd > 50 || maximumToolCalls > 200
+      ? "High"
+      : maxIterations > 5 || agentCount > 2 || maximumCostUsd > 10 || maximumToolCalls > 60
+        ? "Moderate"
+        : "Low";
+
+  const stopRule =
+    risk === "High"
+      ? "Require a human checkpoint before launch and stop after two repeated failures or any permission expansion."
+      : risk === "Moderate"
+        ? "Stop after two repeated failures and require approval before destructive, secret, network, or production access."
+        : "Stop on success, the iteration cap, a repeated failure, or any request for wider permissions.";
+
+  return { maximumTokens, maximumToolCalls, maximumCostUsd, risk, stopRule };
+}
+
+function clampFinite(value: number, minimum: number, maximum: number): number {
+  if (!Number.isFinite(value)) {
+    return minimum;
+  }
+  return Math.min(maximum, Math.max(minimum, value));
+}
+
 export const loopPatterns: LoopPatternRecord[] = [
   {
     id: "plan-execute-verify",

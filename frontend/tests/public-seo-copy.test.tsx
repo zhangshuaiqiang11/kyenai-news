@@ -67,8 +67,9 @@ describe("public guide SEO copy", () => {
     const homepageSource = readFileSync(resolve(testDirectory, "../pages/index.tsx"), "utf8");
 
     expect(homepageSource).toContain(
-      "Source-backed guides for CLAUDE.md vs Copilot Instructions, loop engineering, MCP security, Codex vs Claude Code, and AI coding agent setup.",
+      "Configure, compare, and secure Codex, Claude Code, Copilot, Cursor, and MCP workflows with source-backed templates, checklists, and browser tools.",
     );
+    expect(homepageSource).toContain("Evidence-Backed Templates and Security Playbooks for AI Coding Agents");
     expect(homepageSource).toContain('/tools/instruction-file-checker');
     expect(homepageSource).not.toMatch(/Search-demand-tested/i);
     expect(homepageSource).not.toMatch(/Validated demand pages/i);

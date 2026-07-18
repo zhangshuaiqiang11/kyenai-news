@@ -71,9 +71,9 @@ export default function Home({ articles, guides, entities = [] }: HomeProps) {
   const organizationJsonLd = buildOrganizationJsonLd();
   const itemListJsonLd = buildItemListJsonLd(articles.slice(0, 12), "Latest AI coding agent articles", "/");
   const guideItemListJsonLd = buildGuideItemListJsonLd(guides, "AI coding agent playbooks", "/guides");
-  const pageTitle = `${SITE_NAME} | AI coding agent guides and evidence watch`;
+  const pageTitle = `${SITE_NAME} | AI Coding Agent Templates & Security Playbooks`;
   const description =
-    "Source-backed guides for CLAUDE.md vs Copilot Instructions, loop engineering, MCP security, Codex vs Claude Code, and AI coding agent setup.";
+    "Configure, compare, and secure Codex, Claude Code, Copilot, Cursor, and MCP workflows with source-backed templates, checklists, and browser tools.";
 
   return (
     <Layout>
@@ -87,8 +87,13 @@ export default function Home({ articles, guides, entities = [] }: HomeProps) {
         <section className="feed-panel" aria-labelledby="latest-heading">
           <div className="section-heading">
             <div>
-              <h1 id="latest-heading">KyenAI: Evidence-led playbooks for AI coding agents</h1>
-              <p>KyenAI is an evidence-led publication of playbooks for AI coding agents — source-backed guides for configuring, migrating, comparing, and securing tools like Codex, Claude Code, Copilot, and Cursor.</p>
+              <h1 id="latest-heading">Evidence-Backed Templates and Security Playbooks for AI Coding Agents</h1>
+              <p>Configure, compare, and secure Codex, Claude Code, Copilot, Cursor, and MCP workflows with copyable templates, source-backed compatibility guides, downloadable security controls, and browser-based audit tools.</p>
+              <div className="home-hero-actions" aria-label="Start with a KyenAI resource">
+                <Link href="/guides/agents-md-template-for-ai-coding-agents">Browse templates</Link>
+                <Link href="/tools/instruction-file-checker">Run an instruction audit</Link>
+                <Link href={MCP_SECURITY_GUIDE_HREF}>Review MCP security</Link>
+              </div>
             </div>
             <Link href="/guides">All guides</Link>
           </div>

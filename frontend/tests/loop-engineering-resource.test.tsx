@@ -1,11 +1,12 @@
 /** @vitest-environment jsdom */
 import React from "react";
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { LoopEngineeringResources } from "../components/LoopEngineeringResources";
+import { LoopBudgetCalculator } from "../components/LoopBudgetCalculator";
 import { LoopPatternMatrix } from "../components/LoopPatternMatrix";
-import { loopBuildingBlocks, loopPatterns, loopStopRules, loopWorkflowSteps } from "../lib/loop-engineering-resource";
+import { calculateLoopBudget, loopBuildingBlocks, loopPatterns, loopStopRules, loopWorkflowSteps } from "../lib/loop-engineering-resource";
 
 (globalThis as typeof globalThis & { React: typeof React }).React = React;
 
@@ -32,6 +33,7 @@ describe("loop engineering resource components", () => {
 
     expect(screen.getByRole("heading", { name: /plan, act, observe, verify, retry or stop/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /loop engineering pattern matrix/i })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: /agent loop budget calculator/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /bounded agent loop/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /when should an ai agent stop the loop/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /five loop building blocks/i })).toBeTruthy();
@@ -50,5 +52,30 @@ describe("loop engineering resource components", () => {
     for (const block of loopBuildingBlocks) {
       expect(screen.getByRole("heading", { name: block.title })).toBeTruthy();
     }
+  });
+
+  it("calculates token, tool-call, cost, and risk ceilings deterministically", () => {
+    expect(calculateLoopBudget({
+      tokensPerIteration: 25_000,
+      toolCallsPerIteration: 8,
+      maxIterations: 5,
+      costPerMillionTokens: 10,
+      agentCount: 2,
+    })).toMatchObject({
+      maximumTokens: 250_000,
+      maximumToolCalls: 80,
+      maximumCostUsd: 2.5,
+      risk: "Moderate",
+    });
+  });
+
+  it("updates the browser calculator and flags high-exposure loops", () => {
+    render(<LoopBudgetCalculator />);
+
+    fireEvent.change(screen.getByLabelText(/maximum iterations/i), { target: { value: "20" } });
+    fireEvent.change(screen.getByLabelText(/concurrent agents/i), { target: { value: "6" } });
+
+    expect(screen.getByText("High", { selector: "dd" })).toBeTruthy();
+    expect(screen.getByText(/human checkpoint before launch/i)).toBeTruthy();
   });
 });

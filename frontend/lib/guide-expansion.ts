@@ -1268,7 +1268,7 @@ export const expansionGuides: Guide[] = [
     title: "What Is Loop Engineering for AI Coding Agents?",
     slug: "loop-engineering-ai-coding-agents",
     summary:
-      "Learn what loop engineering means for AI coding agents: the control loop, examples, stop rules, token and cost caps, verification commands, and Addy Osmani's workflow context.",
+      "Learn what loop engineering means for AI coding agents with a browser-based budget calculator, control-loop examples, stop rules, token and cost caps, verification commands, and Addy Osmani's workflow context.",
     intent:
       "Developers want to move from prompting agents task-by-task to designing durable loops that plan, change code, verify results, and stop safely.",
     audience: "Developers, staff engineers, and platform teams adopting agentic coding workflows in Cursor, Claude Code, Codex, or custom CI agents.",
@@ -1535,10 +1535,10 @@ export const expansionGuides: Guide[] = [
       "github-copilot-cloud-local-sandboxes-preview",
     ],
     publishedAt: "2026-06-15",
-    updatedAt: "2026-07-14",
+    updatedAt: "2026-07-19",
     metaTitle: "What Is Loop Engineering? Addy Osmani, AI Agent Loops, Stop Rules",
     metaDescription:
-      "Loop engineering designs repeatable AI agent loops around goals, tools, verification, retries, stop rules, and cost caps instead of one better prompt.",
+      "Design AI agent loops around goals, tools, verification, retries, and stop rules. Estimate token cost, tool calls, and risk with the free budget calculator.",
     resourceIds: ["loop-engineering"],
   },
 ];
