@@ -310,7 +310,12 @@ describe("guide SEO data", () => {
     const guide = getGuide("codex-vs-claude-code");
 
     expect(guide).toBeDefined();
-    expect(guide!.updatedAt).toBe("2026-07-14");
+    expect(guide!.updatedAt).toBe("2026-07-19");
+    expect(guide!.resourceIds).toEqual(["codex-claude-decision"]);
+    expect(guide!.decisionTable.rows).toHaveLength(13);
+    expect(guide!.decisionTable.rows.map((row) => row.label)).toEqual(
+      expect.arrayContaining(["Installation and runtime", "Permission model", "Data control", "Poor-fit scenario"]),
+    );
     expect(guide!.sections.map((section) => section.heading)).toEqual(
       expect.arrayContaining(["Public example evidence", "Same-task experiment protocol", "Same-repo scoring rubric"]),
     );

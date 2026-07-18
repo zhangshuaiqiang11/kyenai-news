@@ -1880,6 +1880,154 @@ dd {
   line-height: 1.55;
 }
 
+.coding-agent-decision-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  margin-top: 22px;
+}
+
+.coding-agent-decision-form {
+  display: grid;
+  gap: 16px;
+}
+
+.coding-agent-decision-form fieldset {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 0;
+  min-width: 0;
+  padding: 16px;
+}
+
+.coding-agent-decision-form legend {
+  align-items: center;
+  color: var(--ink);
+  display: flex;
+  font-weight: 850;
+  gap: 9px;
+  padding: 0 5px;
+}
+
+.coding-agent-decision-form legend span {
+  align-items: center;
+  background: var(--teal-dark);
+  border-radius: 999px;
+  color: #fff;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 12px;
+  height: 28px;
+  justify-content: center;
+  width: 28px;
+}
+
+.coding-agent-choice-list {
+  display: grid;
+  gap: 9px;
+  margin-top: 10px;
+}
+
+.coding-agent-choice-list label {
+  align-items: flex-start;
+  background: var(--surface-soft);
+  border: 1px solid transparent;
+  border-radius: 7px;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  min-height: 52px;
+  padding: 11px;
+}
+
+.coding-agent-choice-list label:has(input:checked) {
+  background: #e8f4f3;
+  border-color: var(--teal);
+}
+
+.coding-agent-choice-list input {
+  accent-color: var(--teal-dark);
+  flex: 0 0 auto;
+  height: 18px;
+  margin: 2px 0 0;
+  width: 18px;
+}
+
+.coding-agent-choice-list label > span {
+  display: grid;
+  gap: 3px;
+}
+
+.coding-agent-choice-list small {
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.coding-agent-decision-form > button {
+  background: #fff;
+  border: 1px solid var(--teal-dark);
+  border-radius: 6px;
+  color: var(--teal-dark);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 850;
+  min-height: 44px;
+  padding: 10px 14px;
+}
+
+.coding-agent-choice-list input:focus-visible,
+.coding-agent-decision-form > button:focus-visible {
+  outline: 3px solid #5fb8b2;
+  outline-offset: 2px;
+}
+
+.coding-agent-decision-result {
+  align-self: start;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--teal);
+  border-radius: 8px;
+  padding: 20px;
+  position: sticky;
+  top: 20px;
+}
+
+.coding-agent-decision-result h3 {
+  font-size: 24px;
+  margin: 6px 0 10px;
+}
+
+.coding-agent-decision-result > p:not(.instruction-resource-eyebrow),
+.coding-agent-decision-result > small {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.coding-agent-decision-result dl {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.coding-agent-decision-result dl div {
+  align-items: baseline;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 8px;
+}
+
+.coding-agent-decision-result dt {
+  color: var(--muted);
+  font-weight: 750;
+}
+
+.coding-agent-decision-result dd {
+  font-size: 20px;
+  font-weight: 900;
+  margin: 0;
+}
+
 .home-hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -2219,6 +2367,14 @@ dd {
   .loop-workflow-steps,
   .loop-budget-grid {
     grid-template-columns: 1fr;
+  }
+
+  .coding-agent-decision-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .coding-agent-decision-result {
+    position: static;
   }
 
   .loop-budget-fields {

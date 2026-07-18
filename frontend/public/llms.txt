@@ -26,7 +26,7 @@
   Audit MCP server security with 25 source-backed controls covering authentication, permissions, prompt injection, secrets, sandboxing, logging, revocation, and allow-or-deny tests. Last substantively updated: 2026-07-19.
   Markdown: https://www.kyenai.com/guides/secure-mcp-servers-ai-coding-agents.md
 - [Codex vs Claude Code](https://www.kyenai.com/guides/codex-vs-claude-code)
-  Compare Codex vs Claude Code by workflow shape, public same-task examples, repository instructions, review effort, and a same-repo checklist your team can run before standardizing. Last substantively updated: 2026-07-14.
+  Compare Codex vs Claude Code by workflow shape, public same-task examples, repository instructions, review effort, and a same-repo checklist your team can run before standardizing. Last substantively updated: 2026-07-19.
   Markdown: https://www.kyenai.com/guides/codex-vs-claude-code.md
 - [Claude Code Hooks vs MCP: Setup, Examples and Security](https://www.kyenai.com/guides/claude-code-hooks-mcp-setup)
   A setup-oriented guide for combining Claude Code hooks, skills, and MCP servers without creating brittle automation. Last substantively updated: 2026-06-26.

@@ -15,7 +15,7 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Codex vs Claude Code is a workflow decision: choose Codex when OpenAI-native planning, code review, and shareable agent work fit your team; choose Claude Code when terminal-local memory, hooks, MCP servers, and subagents are part of daily engineering. Use public comparisons as examples, then run one same-repository bug fix, API change, component refactor, and test repair before calling either tool better.",
+          "Choose Codex when your workflow centers on AGENTS.md, GitHub-oriented agent execution, built-in parallel worktrees, and OpenAI tooling. Choose Claude Code when terminal-native workflows, CLAUDE.md project memory, hooks, MCP, and Anthropic deployment options better match your team. The better choice depends more on repository workflow, permissions, data controls, and review requirements than on a single benchmark.",
         ],
       },
       {
@@ -62,40 +62,112 @@ export const expansionGuides: Guide[] = [
       "Use public examples as hypotheses, then replace them with measured repository data once your team runs the protocol.",
     ],
     decisionTable: {
-      title: "Codex and Claude Code fit map",
-      intro: "Use this table to pick the starting tool by workflow, not by brand preference.",
+      title: "Codex vs Claude Code across 13 decision dimensions",
+      intro: "Use this source-aware matrix to choose a pilot starting point. Verify product behavior against the linked official documentation before procurement or rollout.",
       columns: ["Choose Codex when", "Choose Claude Code when", "Check before rollout"],
       rows: [
         {
-          label: "Daily workspace",
+          label: "Installation and runtime",
           values: [
-            "Planning, code review, and task handoff already happen around OpenAI tools",
-            "The team works from terminal sessions and repository-local context",
-            "Confirm where instructions, logs, and generated artifacts are stored",
+            "You want Codex across app, CLI, IDE, and cloud task surfaces",
+            "You want a terminal-native CLI on macOS, Linux, or Windows environments documented by Anthropic",
+            "Confirm supported operating systems, authentication, and where execution occurs",
           ],
         },
         {
-          label: "Repository guidance",
+          label: "Context and repository understanding",
           values: [
-            "You want AGENTS.md-style repository instructions for Codex-compatible workflows",
-            "You rely on CLAUDE.md memory and Claude-specific workflow notes",
+            "Open files, selected code, repository setup, and task threads fit the planned handoff",
+            "Interactive terminal sessions and resumable local project context fit daily work",
+            "Use the same repository state and task boundary; do not compare model marketing claims",
+          ],
+        },
+        {
+          label: "Instruction files",
+          values: [
+            "You maintain root or nested AGENTS.md files",
+            "You maintain CLAUDE.md project memory and Claude-specific workflow notes",
             "Keep commands and security rules consistent across files",
           ],
         },
         {
-          label: "Automation",
+          label: "Permission model",
           values: [
-            "You need agent work that can move from conversation to code artifacts",
-            "You want hooks, MCP, and subagents as explicit control points",
-            "Start read-only or low-risk until the workflow proves useful",
+            "Codex approval rules and elevated-command controls match team policy",
+            "Claude Code allowed/disallowed tools and permission modes match team policy",
+            "Test denied commands, approval prompts, and destructive-action handling",
           ],
         },
         {
-          label: "Team review",
+          label: "Sandbox",
           values: [
-            "You want reviewable outputs that fit OpenAI/Codex collaboration habits",
-            "You want terminal-local changes that can be checked with existing commands",
-            "Require tests, diff review, and rollback for both",
+            "Configurable Codex sandboxing and restricted network access fit the threat model",
+            "Claude Code filesystem and permission boundaries fit the local environment",
+            "Verify write roots, network access, secrets exposure, and escalation paths",
+          ],
+        },
+        {
+          label: "GitHub workflow",
+          values: [
+            "Cloud task delegation, pull requests, reviews, or app handoff are primary",
+            "Terminal work that ends in the team's existing Git and PR flow is primary",
+            "Measure final diff clarity, test evidence, and reviewer interventions",
+          ],
+        },
+        {
+          label: "Parallel tasks",
+          values: [
+            "Built-in agent threads and isolated worktrees are useful",
+            "Claude Code subagents and terminal coordination match the workflow",
+            "Prohibit agents from editing the same worktree or files concurrently",
+          ],
+        },
+        {
+          label: "MCP and tools",
+          values: [
+            "Codex skills, apps, web search, and MCP connections fit current tools",
+            "Claude Code hooks, MCP servers, and CLI automation fit current tools",
+            "Inventory every tool, credential, network destination, and write capability",
+          ],
+        },
+        {
+          label: "Enterprise governance",
+          values: [
+            "OpenAI workspace policies and managed Codex requirements fit governance",
+            "Anthropic organization controls or the chosen enterprise platform fit governance",
+            "Confirm SSO, audit logs, policy enforcement, retention, and offboarding",
+          ],
+        },
+        {
+          label: "Data control",
+          values: [
+            "The approved OpenAI plan and execution surface meet data requirements",
+            "Anthropic API, Amazon Bedrock, or Google Vertex AI routing meets data requirements",
+            "Review current contracts and data policies; do not infer them from product names",
+          ],
+        },
+        {
+          label: "Cost structure",
+          values: [
+            "Existing ChatGPT/Codex access and credit model fits measured usage",
+            "Existing Claude subscription, API, Bedrock, or Vertex billing fits measured usage",
+            "Capture actual task cost and rate limits; write Not measured when unavailable",
+          ],
+        },
+        {
+          label: "Best-fit team",
+          values: [
+            "OpenAI-native teams want app, IDE, cloud, review, and parallel-agent handoff",
+            "Terminal-first teams want local commands, hooks, MCP, and subagent workflows",
+            "Pilot with the engineers and reviewers who will own the production workflow",
+          ],
+        },
+        {
+          label: "Poor-fit scenario",
+          values: [
+            "Avoid when required controls or surfaces cannot be approved or reproduced",
+            "Avoid when terminal access, provider routing, or required permissions cannot be approved",
+            "Use neither for an unbounded task with no proof command, owner, or rollback",
           ],
         },
       ],
@@ -172,6 +244,12 @@ export const expansionGuides: Guide[] = [
     ],
     evidence: [
       {
+        title: "Introducing the Codex app",
+        url: "https://openai.com/index/introducing-the-codex-app/",
+        publisher: "OpenAI",
+        note: "Official reference for Codex app surfaces, parallel agent threads, worktrees, sandboxing, and availability.",
+      },
+      {
         title: "OpenAI Codex AGENTS.md documentation",
         url: "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
         publisher: "OpenAI",
@@ -182,6 +260,12 @@ export const expansionGuides: Guide[] = [
         url: "https://code.claude.com/docs/en/overview",
         publisher: "Anthropic",
         note: "Official Claude Code workflow overview.",
+      },
+      {
+        title: "Claude Code CLI reference",
+        url: "https://docs.anthropic.com/en/docs/claude-code/cli-usage",
+        publisher: "Anthropic",
+        note: "Official reference for permission flags, headless runs, session continuation, and MCP configuration.",
       },
       {
         title: "Claude Code autonomous workflow update",
@@ -198,10 +282,11 @@ export const expansionGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "claude-code-dynamic-workflows-parallel-subagents"],
     publishedAt: "2026-06-14",
-    updatedAt: "2026-07-14",
+    updatedAt: "2026-07-19",
     metaTitle: "Codex vs Claude Code: Workflow Fit and Same-Repo Test Checklist",
     metaDescription:
       "Compare Codex and Claude Code by repo workflow, instruction files, review effort, MCP/hooks, and a same-task protocol before standardizing.",
+    resourceIds: ["codex-claude-decision"],
   },
   {
     id: "guide-agents-md-template",

@@ -136,6 +136,7 @@ export type GuideResourceId =
   | "mcp-security"
   | "agents-md-template"
   | "claude-code-setup"
+  | "codex-claude-decision"
   | "loop-engineering";
 
 export type Guide = {

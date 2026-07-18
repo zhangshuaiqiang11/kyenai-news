@@ -124,6 +124,14 @@ const LoopEngineeringResourcePanel = dynamic(
   { ssr: true },
 );
 
+const CodexClaudeResourcePanel = dynamic(
+  () =>
+    import("../../components/CodexClaudeResources").then(
+      ({ CodexClaudeResources }) => CodexClaudeResources,
+    ),
+  { ssr: true },
+);
+
 function GuideResources({ guide }: { guide: Guide }) {
   if (guide.resourceIds?.includes("instruction-files")) {
     return <InstructionResources />;
@@ -147,6 +155,10 @@ function GuideResources({ guide }: { guide: Guide }) {
 
   if (guide.resourceIds?.includes("loop-engineering")) {
     return <LoopEngineeringResourcePanel />;
+  }
+
+  if (guide.resourceIds?.includes("codex-claude-decision")) {
+    return <CodexClaudeResourcePanel />;
   }
 
   return null;

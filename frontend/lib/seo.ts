@@ -194,6 +194,16 @@ export function buildGuideGraphJsonLd(guide: Guide, breadcrumbItems: BreadcrumbI
     );
   }
 
+  if (guide.resourceIds?.includes("codex-claude-decision")) {
+    nodes.push(
+      buildWebApplicationJsonLd({
+        title: "Codex vs Claude Code Decision Tool",
+        description: "Score workflow fit for Codex or Claude Code by workspace, instruction files, parallelism, automation, and enterprise deployment controls.",
+        path: `/guides/${guide.slug}`,
+      }),
+    );
+  }
+
   return buildJsonLdGraph(nodes);
 }
 
