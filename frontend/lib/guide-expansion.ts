@@ -233,6 +233,11 @@ export const expansionGuides: Guide[] = [
         anchor: "loop engineering for AI coding agents",
         reason: "Tool choice often leads to whether work stays in one session or becomes a durable plan-execute-verify loop.",
       },
+      {
+        slug: "codex-vs-github-copilot",
+        anchor: "Codex vs GitHub Copilot",
+        reason: "Teams comparing OpenAI and Anthropic should also separate model choice from the GitHub control-plane decision.",
+      },
     ],
     checklist: [
       "Use one real bug fix for the comparison.",
@@ -1625,6 +1630,192 @@ export const expansionGuides: Guide[] = [
     metaDescription:
       "Design AI agent loops around goals, tools, verification, retries, and stop rules. Estimate token cost, tool calls, and risk with the free budget calculator.",
     resourceIds: ["loop-engineering"],
+  },
+  {
+    id: "guide-codex-vs-github-copilot",
+    title: "Codex vs GitHub Copilot: Which Coding Agent Fits Your Team?",
+    slug: "codex-vs-github-copilot",
+    summary:
+      "Compare Codex vs GitHub Copilot by app, CLI, IDE, cloud-agent, instruction-file, model, parallel-work, permission, billing, and team-governance fit—with a six-question decision tool.",
+    intent: "Developers and engineering leaders want to choose between Codex and GitHub Copilot for agentic coding work, not just autocomplete.",
+    audience: "Developers, platform teams, engineering managers, and enterprise buyers evaluating coding-agent workflows.",
+    pageType: "Comparison decision guide",
+    secondaryKeywords: [
+      "OpenAI Codex vs GitHub Copilot",
+      "GitHub Copilot vs Codex",
+      "Codex CLI vs Copilot CLI",
+      "Codex alternative",
+      "GitHub Copilot alternative",
+      "best AI coding agent for teams",
+      "Codex vs Copilot pricing",
+    ],
+    sections: [
+      {
+        heading: "Quick answer",
+        body: [
+          "Choose Codex when your team wants an OpenAI-native agent across the desktop app, CLI, IDE, cloud, and mobile handoff, with AGENTS.md and isolated worktree-based parallelism. Choose GitHub Copilot when GitHub organization policy, broad editor coverage, multiple model providers, repository and path-specific instructions, and issue-to-pull-request workflows are the stronger fit. Neither is only a code-completion product in 2026, so compare the exact surfaces your team will deploy.",
+        ],
+      },
+      {
+        heading: "The old comparison is no longer useful",
+        body: [
+          "A comparison that calls Codex an autonomous agent and GitHub Copilot an autocomplete extension is now incomplete. Codex spans its app, CLI, IDE integration, cloud tasks, GitHub-oriented review, skills, plugins, hooks, automations, remote environments, and mobile steering. GitHub Copilot spans editor completion and chat, a local and cloud-capable CLI, cloud coding agent, code review, custom agents, skills, hooks, MCP, model selection, and GitHub-native administration.",
+          "The useful question is not which product can edit more than one file. Both can inspect repositories, change code, run commands, and work toward a verified result on supported surfaces. The decision is where work starts, which control plane owns it, how permissions are constrained, what instruction files already exist, and how the final diff enters your review process.",
+        ],
+      },
+      {
+        heading: "Codex vs GitHub Copilot at a glance",
+        body: [
+          "Codex is the cleaner starting point for teams that already use ChatGPT or OpenAI workspaces and want one agent relationship across local and cloud execution. The Codex app gives multiple tasks separate threads and built-in worktrees, while the CLI exposes configurable sandbox and approval modes. AGENTS.md supplies durable repository guidance that can narrow by directory.",
+          "GitHub Copilot is the cleaner starting point when repositories, issues, pull requests, seats, policy, and developer identity already live in GitHub. Copilot can stay inside supported editors, run in a terminal, or accept cloud tasks. Its instruction system is broader but more surface-dependent: repository-wide instructions, path-specific files, organization and personal rules, plus agent instruction files such as AGENTS.md on documented surfaces.",
+        ],
+      },
+      {
+        heading: "Codex app vs Copilot in GitHub and the IDE",
+        body: [
+          "The Codex app is designed as a command center for multiple agent threads. Each task can use an isolated worktree, and a reviewer can inspect the diff, comment, continue the thread, or open the changes in an editor. This fits work that begins as a delegated outcome: investigate a defect, implement a feature, repair CI, or keep a recurring workflow moving.",
+          "Copilot's advantage is distribution across the GitHub and editor surfaces teams already use. A developer can move from inline assistance and chat to agent mode, CLI work, cloud-agent delegation, code review, or a pull-request workflow without introducing a separate repository control plane. The exact feature and instruction support varies by surface, so procurement should name the IDEs and GitHub features that are actually approved.",
+        ],
+      },
+      {
+        heading: "Codex CLI vs GitHub Copilot CLI",
+        body: [
+          "Both CLIs can read and edit files, run commands, use tools, and work iteratively. Codex exposes sandbox modes and approval policies at launch, and shares sessions and configuration with other Codex surfaces. Copilot CLI exposes tool, path, and URL permissions, plan mode, MCP, custom agents, skills, hooks, model selection, GitHub pull-request commands, local sandboxing, cloud sessions, and context or usage views.",
+          "For unattended work, do not compare only whether a permissive flag exists. Compare the restrictive default you can operate: allowed directories, network access, destructive commands, secret access, maximum continuation steps, audit evidence, and who may widen permissions. GitHub warns that Copilot CLI path scoping is heuristic; OpenAI likewise recommends sandbox and approval controls. A safe pilot should record every permission grant rather than using an all-access mode by default.",
+        ],
+      },
+      {
+        heading: "Parallel agents and isolated work",
+        body: [
+          "Codex makes parallelism visible through separate app threads and built-in worktrees. This is useful when several agents must explore or implement independent paths without modifying the same checkout. The reviewer can keep each diff and conversation separate, then choose which branch to continue or integrate.",
+          "GitHub Copilot offers parallel patterns through the cloud coding agent and Copilot CLI's /fleet command, which delegates parts of a task to subagents. The GitHub-native route is attractive when work should begin from issues and end as pull requests. In either product, parallel execution is safe only when ownership is disjoint, verification commands are shared, and one reviewer resolves integration conflicts.",
+        ],
+      },
+      {
+        heading: "AGENTS.md vs Copilot custom instructions",
+        body: [
+          "Codex uses AGENTS.md as its primary repository instruction surface, including nested files for directory-specific commands and boundaries. That gives teams a simple canonical policy: purpose, setup, tests, safe edit scope, generated files, security rules, and completion evidence.",
+          "Copilot supports a larger instruction family. The broad repository baseline is .github/copilot-instructions.md; path-specific rules use .github/instructions files; personal and organization rules apply on supported surfaces; and agent instruction files such as AGENTS.md or CLAUDE.md are supported selectively. This flexibility is valuable, but it creates a synchronization risk. Keep one shared policy source and generate or audit surface adapters instead of copying divergent rules by hand.",
+        ],
+      },
+      {
+        heading: "Models, extensions, and ecosystem fit",
+        body: [
+          "Codex is an OpenAI-native product. That simplifies the model, account, workspace, and support relationship for organizations already standardized on OpenAI. Its extensibility includes skills, plugins, MCP connections, hooks, and automations that can package repeatable work across the app and CLI.",
+          "GitHub Copilot documents a broad supported-model catalog and lets users select a model or use automatic selection where plans and policies allow it. Copilot CLI also supports custom agents, skills, hooks, plugins, and MCP. Model variety can be an advantage for procurement or task matching, but it also increases evaluation and governance work: every approved model may differ in availability, token pricing, context, data handling, and behavior.",
+        ],
+      },
+      {
+        heading: "Pricing and usage are not one static number",
+        body: [
+          "Codex usage is available through eligible ChatGPT plans, with optional additional credits where offered. GitHub Copilot uses individual or organization plans and, under its current billing documentation, AI Credits derived from token use and model rates. Both vendors can change allowances, overage rules, included models, and temporary promotions.",
+          "Do not publish a winner based on one monthly sticker price. Model the team's real workload: active developers, completion use, agent sessions, code review, parallel tasks, long context, overages, and administrative overhead. Record the plan page and date used for the estimate. This guide intentionally does not freeze a price table that could become wrong after the July 19, 2026 verification date.",
+        ],
+      },
+      {
+        heading: "Security and enterprise rollout",
+        body: [
+          "For Codex, review local sandbox modes, approval policies, workspace controls, cloud-environment configuration, plugins, MCP servers, hooks, network access, and the path from agent output to a reviewed change. For Copilot, review organization policy, seat assignment, model availability, tool and path permissions, cloud-agent access, repository instructions, MCP, hooks, extensions, and GitHub audit ownership.",
+          "The safer product is the one your organization can configure narrowly and inspect consistently. Require named owners, approved repositories, least-privilege tools, secret boundaries, network allowlists, review gates, cost caps, and revocation. Do not equate a sandbox toggle with a complete security program, and do not let a pilot run with production credentials merely to reduce setup time.",
+        ],
+      },
+      {
+        heading: "How to run a fair same-repository pilot",
+        body: [
+          "Start from the same clean commit. Give each tool the same bug fix or small feature, prompt, readable instruction files, allowed tools, network policy, time window, and verification command. Record product and CLI versions, selected model, elapsed time, changed files, human interventions, permission grants, verification result, review comments, and any cost data the product exposes.",
+          "Run at least one failing-test repair, one small API or UI change, and one refactor with no intended behavior change. Preserve failures and raw outputs. A faster run that fails verification or produces a high-risk diff is not a win. If cost, token use, or reviewer time is unavailable, label it Not measured rather than estimating from a marketing plan.",
+        ],
+      },
+      {
+        heading: "Can teams use Codex and Copilot together?",
+        body: [
+          "Yes. A common division is Copilot for editor-native assistance, GitHub review, and issue-to-pull-request workflows, with Codex for separate delegated threads, worktree-isolated exploration, OpenAI-connected workflows, or long-running automations. The tools overlap more than they used to, so the division should be explicit rather than based on old product stereotypes.",
+          "When both are allowed, avoid maintaining two conflicting instruction systems. Put shared repository facts and safety rules in a canonical source, adapt them to documented surfaces, and audit drift. Assign one tool per task or branch, use the same CI gates, and keep ownership of the final merge with a human reviewer.",
+        ],
+      },
+    ],
+    recommendedPlay: [
+      "Choose the approved work surface and control plane before comparing model claims.",
+      "Run the six-question decision tool, then verify the result with the same bounded repository task in both products.",
+      "Keep one canonical instruction policy and audit Codex and Copilot adapters for drift.",
+      "Verify current plan allowances and model availability on the vendor pages before procurement.",
+      "Score verification, permissions, interventions, and review effort—not output speed alone.",
+    ],
+    decisionTable: {
+      title: "Codex vs GitHub Copilot across 14 decision dimensions",
+      intro: "This matrix reflects official product documentation reviewed July 19, 2026. Support can vary by Copilot surface and organization policy; verify before rollout.",
+      columns: ["Codex", "GitHub Copilot", "Decision rule"],
+      rows: [
+        { label: "Primary product shape", values: ["OpenAI agent across app, CLI, IDE, cloud, and mobile handoff", "GitHub and editor assistant plus CLI, cloud agent, and code review", "Choose where tasks should begin and be supervised"] },
+        { label: "Local CLI", values: ["Codex CLI with sandbox and approval configuration", "Copilot CLI with tool, path, URL, sandbox, model, and context controls", "Pilot the restrictive configuration, not an all-access flag"] },
+        { label: "IDE workflow", values: ["Codex IDE integration and app-to-editor handoff", "Broad Copilot editor distribution with chat, completion, and agent surfaces", "Inventory the exact IDEs your team supports"] },
+        { label: "Cloud delegation", values: ["Independent cloud tasks in repository environments", "GitHub cloud coding agent and cloud-backed CLI sessions", "Choose the approved identity, repository, and review boundary"] },
+        { label: "Parallel work", values: ["Separate threads and built-in worktrees", "Cloud tasks plus CLI /fleet subagents", "Require disjoint ownership and shared verification"] },
+        { label: "Repository instructions", values: ["Root and nested AGENTS.md", ".github/copilot-instructions.md, path-specific rules, and agent files by surface", "Keep one canonical policy and prevent adapter drift"] },
+        { label: "Model selection", values: ["OpenAI-native Codex model path", "Supported multi-provider model catalog and auto selection", "Balance procurement simplicity against model choice"] },
+        { label: "Extensions", values: ["Skills, plugins, hooks, MCP, and automations", "Custom agents, skills, plugins, hooks, and MCP", "Compare governance and reuse, not feature-name counts"] },
+        { label: "Permissions", values: ["Configurable sandbox and approval policies", "Tool, path, and URL approvals plus local sandbox options", "Record grants and keep production credentials out of pilots"] },
+        { label: "Planning and autonomy", values: ["Interactive and delegated agent threads with configurable approvals", "Plan mode, autopilot, continuation caps, and programmatic CLI", "Cap autonomous steps and define escalation"] },
+        { label: "GitHub workflow", values: ["Review diffs and create or hand off pull requests", "Native repositories, issues, pull requests, cloud agent, and code review", "Prefer Copilot when GitHub is the required control plane"] },
+        { label: "Usage model", values: ["Eligible ChatGPT plans plus optional credits where offered", "Copilot plans and AI Credits based on documented token rates", "Estimate the real workload using current vendor pages"] },
+        { label: "Administration", values: ["OpenAI workspace and Codex controls", "GitHub organization and enterprise policy", "Choose the team that can own identity, policy, logs, and revocation"] },
+        { label: "Poor-fit scenario", values: ["Poorer fit when GitHub policy and model variety are non-negotiable", "Poorer fit when the team wants one OpenAI-native multi-agent command center", "Do not force a tool across a control plane the team cannot govern"] },
+      ],
+    },
+    actionSteps: [
+      { title: "Name the real surfaces", body: "List app, CLI, IDE, GitHub, cloud agent, code review, mobile, and automation surfaces the team will actually enable." },
+      { title: "Freeze a pilot task", body: "Use one commit, prompt, instruction set, permission boundary, and verification command for both products." },
+      { title: "Measure reviewable outcomes", body: "Record verification, interventions, permission grants, changed files, review comments, and only the cost data actually available." },
+      { title: "Choose the control plane", body: "Assign ownership for seats, models, repository access, instructions, tools, logs, limits, and revocation." },
+      { title: "Recheck changing claims", body: "Verify plans, models, feature availability, and data policy against the linked official sources before signing or renewal." },
+    ],
+    pitfalls: [
+      { title: "Treating Copilot as autocomplete only", fix: "Evaluate its IDE, CLI, cloud-agent, code-review, custom-agent, skill, hook, MCP, and parallel surfaces." },
+      { title: "Counting features instead of workflows", fix: "Map every claimed feature to a task owner, permission boundary, proof command, and review path." },
+      { title: "Publishing stale price tables", fix: "Link current vendor plan pages, state the verification date, and model the team's actual token and agent workload." },
+      { title: "Using permissive flags in the pilot", fix: "Start with narrow tool, path, URL, network, and secret access; record every exception." },
+      { title: "Calling an unverified output a benchmark win", fix: "Require tests or another observable completion criterion and publish failures alongside passes." },
+    ],
+    internalLinks: [
+      { slug: "codex-vs-claude-code", anchor: "compare Codex with Claude Code", reason: "Separate the OpenAI-vs-Anthropic decision from the GitHub control-plane decision." },
+      { slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions", anchor: "compare Codex and Copilot instruction files", reason: "Verify which repository instruction surface each enabled product feature reads." },
+      { slug: "agents-md-template-for-ai-coding-agents", anchor: "copy a tested AGENTS.md template", reason: "Give both agent pilots concrete setup, test, safety, and completion guidance." },
+      { slug: "local-vs-cloud-ai-coding-agent", anchor: "choose local or cloud agent execution", reason: "Decide execution location before comparing vendor surfaces." },
+      { slug: "loop-engineering-ai-coding-agents", anchor: "design bounded agent loops", reason: "Set verification, retry, cost, and stop rules for either CLI." },
+      { slug: "agent-governance-checklist-for-software-teams", anchor: "apply the coding-agent governance checklist", reason: "Turn product selection into owned identity, permission, logging, and incident controls." },
+      { slug: "secure-mcp-servers-ai-coding-agents", anchor: "secure MCP access", reason: "Both ecosystems can connect tools through MCP and need least-privilege controls." },
+    ],
+    checklist: [
+      "Inventory the exact Codex and Copilot surfaces in scope.",
+      "Verify official feature and instruction support by surface.",
+      "Use the same repository commit and task for the pilot.",
+      "Start with least-privilege tool, path, URL, and network access.",
+      "Record versions, models, prompts, permissions, and verification output.",
+      "Measure human interventions and review effort.",
+      "Use current vendor plan pages for any cost estimate.",
+      "Assign owners for policy, billing, logs, and revocation.",
+    ],
+    evidence: [
+      { title: "Introducing the Codex app", url: "https://openai.com/index/introducing-the-codex-app/", publisher: "OpenAI", note: "Official description of Codex app threads, worktrees, skills, automations, sandboxing, surfaces, and plan access." },
+      { title: "Codex CLI — Getting Started", url: "https://help.openai.com/en/articles/11096431", publisher: "OpenAI", note: "Official Codex CLI overview covering local repository work and approval modes." },
+      { title: "Use AGENTS.md with Codex", url: "https://learn.chatgpt.com/docs/agent-configuration/agents-md", publisher: "OpenAI", note: "Official Codex repository instruction discovery and scoped precedence guidance." },
+      { title: "About GitHub Copilot CLI", url: "https://docs.github.com/en/copilot/concepts/agents/copilot-cli/about-copilot-cli", publisher: "GitHub", note: "Official CLI capabilities, permissions, plan mode, custom agents, skills, hooks, MCP, and instruction guidance." },
+      { title: "Allowing GitHub Copilot CLI to work autonomously", url: "https://docs.github.com/en/copilot/concepts/agents/copilot-cli/autopilot", publisher: "GitHub", note: "Official autopilot, permission, continuation-limit, safety, and AI Credit considerations." },
+      { title: "Support for different types of custom instructions", url: "https://docs.github.com/en/copilot/reference/custom-instructions-support", publisher: "GitHub", note: "Official instruction-file support matrix across GitHub, IDE, cloud agent, review, and CLI surfaces." },
+      { title: "Plans for GitHub Copilot", url: "https://docs.github.com/en/copilot/get-started/plans", publisher: "GitHub", note: "Official current plan positioning and included Copilot capabilities." },
+      { title: "Models and pricing for GitHub Copilot", url: "https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing", publisher: "GitHub", note: "Official current model-token and AI Credit billing reference; values should be rechecked before procurement." },
+    ],
+    relatedArticleSlugs: [
+      "openai-codex-plugins-sites-annotations",
+      "github-copilot-cloud-local-sandboxes-preview",
+      "github-copilot-sdk-general-availability",
+    ],
+    publishedAt: "2026-07-19",
+    updatedAt: "2026-07-19",
+    metaTitle: "Codex vs GitHub Copilot: Agent Workflow & Team Fit (2026)",
+    metaDescription:
+      "Compare Codex vs GitHub Copilot across app, CLI, IDE, cloud agents, instructions, models, permissions, billing, and governance. Use the decision tool.",
+    resourceIds: ["codex-copilot-decision"],
   },
   {
     id: "guide-instruction-file-adoption-report-2026",

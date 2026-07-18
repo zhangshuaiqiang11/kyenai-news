@@ -56,7 +56,7 @@ describe("guide SEO data", () => {
     const guides = getGuides();
     const slugs = guides.map((guide) => guide.slug);
 
-    expect(guides).toHaveLength(14);
+    expect(guides).toHaveLength(15);
     expect(slugs).toContain("agents-md-vs-claude-md-cursorrules-copilot-instructions");
     expect(slugs).toContain("claude-code-subagents-examples");
     expect(slugs).toContain("claude-code-hooks-mcp-setup");
@@ -71,6 +71,7 @@ describe("guide SEO data", () => {
     expect(slugs).toContain("agent-governance-checklist-for-software-teams");
     expect(slugs).toContain("loop-engineering-ai-coding-agents");
     expect(slugs).toContain("ai-coding-agent-instruction-file-adoption-report-2026");
+    expect(slugs).toContain("codex-vs-github-copilot");
     expect(guides.every((guide) => guide.evidence.length >= 2)).toBe(true);
     expect(guides.every((guide) => guide.checklist.length >= 5)).toBe(true);
   });
@@ -83,7 +84,7 @@ describe("guide SEO data", () => {
     );
 
     expect(new Set(slugs).size).toBe(slugs.length);
-    expect(primaryKeywords).toHaveLength(14);
+    expect(primaryKeywords).toHaveLength(15);
     expect(primaryKeywords.every(Boolean)).toBe(true);
     expect(new Set(primaryKeywords).size).toBe(primaryKeywords.length);
   });
@@ -335,6 +336,28 @@ describe("guide SEO data", () => {
     expect(guide!.evidence.map((source) => source.publisher)).toEqual(
       expect.arrayContaining(["OpenAI", "Anthropic", "Tom's Guide"]),
     );
+  });
+
+  it("publishes a current Codex vs GitHub Copilot agent-platform comparison", () => {
+    const guide = getGuide("codex-vs-github-copilot");
+
+    expect(guide).toBeDefined();
+    expect(guide!.resourceIds).toEqual(["codex-copilot-decision"]);
+    expect(guide!.updatedAt).toBe("2026-07-19");
+    expect(guide!.decisionTable.rows).toHaveLength(14);
+    expect(guide!.sections[0].body[0]).toMatch(/Neither is only a code-completion product in 2026/i);
+    expect(guide!.sections.map((section) => section.heading)).toEqual(
+      expect.arrayContaining([
+        "Codex CLI vs GitHub Copilot CLI",
+        "Parallel agents and isolated work",
+        "AGENTS.md vs Copilot custom instructions",
+        "Pricing and usage are not one static number",
+        "How to run a fair same-repository pilot",
+      ]),
+    );
+    expect(guide!.evidence.map((source) => source.publisher)).toEqual(expect.arrayContaining(["OpenAI", "GitHub"]));
+    expect(JSON.stringify(guide)).toMatch(/Not measured/i);
+    expect(JSON.stringify(guide)).not.toMatch(/KyenAI (tested|measured|found)/i);
   });
 
   it("publishes the instruction-file adoption report with downloadable-data boundaries", () => {

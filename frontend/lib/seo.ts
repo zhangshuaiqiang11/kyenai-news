@@ -204,6 +204,16 @@ export function buildGuideGraphJsonLd(guide: Guide, breadcrumbItems: BreadcrumbI
     );
   }
 
+  if (guide.resourceIds?.includes("codex-copilot-decision")) {
+    nodes.push(
+      buildWebApplicationJsonLd({
+        title: "Codex vs GitHub Copilot Decision Tool",
+        description: "Score Codex or GitHub Copilot workflow fit by starting surface, instructions, parallel work, model choice, billing, and governance.",
+        path: `/guides/${guide.slug}`,
+      }),
+    );
+  }
+
   if (guide.resourceIds?.includes("instruction-adoption-report")) {
     nodes.push(buildInstructionAdoptionDatasetJsonLd(guide));
   }
@@ -344,7 +354,7 @@ export function buildItemListJsonLd(articles: Array<Pick<ArticleSummary, "title"
   };
 }
 
-export function buildGuideItemListJsonLd(guides: Guide[], name: string, path: string) {
+export function buildGuideItemListJsonLd(guides: Array<Pick<Guide, "title" | "slug">>, name: string, path: string) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",

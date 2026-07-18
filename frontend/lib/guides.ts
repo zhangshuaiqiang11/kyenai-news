@@ -231,6 +231,11 @@ const coreGuides: Guide[] = [
         reason: "Compare the tool workflows after instruction-file compatibility and scope are controlled.",
       },
       {
+        slug: "codex-vs-github-copilot",
+        anchor: "Codex vs GitHub Copilot",
+        reason: "Compare current app, CLI, cloud-agent, model, permission, and governance surfaces after choosing the instruction policy.",
+      },
+      {
         slug: "claude-code-hooks-mcp-setup",
         anchor: "Claude Code hooks and MCP setup",
         reason: "Move deterministic automation into hooks or MCP after deciding what belongs in CLAUDE.md.",

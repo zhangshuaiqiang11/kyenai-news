@@ -10,6 +10,7 @@ const featuredGuideSlugs = [
   "agents-md-template-for-ai-coding-agents",
   "secure-mcp-servers-ai-coding-agents",
   "codex-vs-claude-code",
+  "codex-vs-github-copilot",
   "claude-code-hooks-mcp-setup",
 ] as const;
 

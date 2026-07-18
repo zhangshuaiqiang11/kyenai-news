@@ -111,6 +111,21 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
     },
     emergencyPriority: 100,
   },
+  "codex-vs-github-copilot": {
+    priority: "P0",
+    primaryKeyword: "Codex vs GitHub Copilot",
+    demandScore: 8.8,
+    attackabilityScore: 8.7,
+    fitScore: 9.5,
+    gscWatchQueries: [
+      "codex vs github copilot",
+      "github copilot vs codex",
+      "openai codex vs github copilot",
+      "codex cli vs copilot cli",
+      "codex alternative github copilot",
+      "github copilot alternative codex",
+    ],
+  },
   "agents-md-template-for-ai-coding-agents": {
     priority: "P0",
     primaryKeyword: "AGENTS.md template",

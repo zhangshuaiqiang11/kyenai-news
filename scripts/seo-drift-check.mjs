@@ -28,6 +28,11 @@ const pageContracts = [
     h1Includes: "Codex vs Claude Code",
   },
   {
+    path: "/guides/codex-vs-github-copilot",
+    titleIncludes: "Codex vs GitHub Copilot",
+    h1Includes: "Codex vs GitHub Copilot",
+  },
+  {
     path: "/guides/loop-engineering-ai-coding-agents",
     titleIncludes: "What Is Loop Engineering?",
     h1Includes: "What Is Loop Engineering for AI Coding Agents?",

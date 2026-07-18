@@ -7,7 +7,9 @@ import { SignalPanel } from "../components/SignalPanel";
 import { getArticles } from "../lib/api";
 import { getEntityCoverage } from "../lib/entities";
 import { toArticleSummary } from "../lib/catalog";
+import { toGuideSummary } from "../lib/guide-summary";
 import {
+  CODEX_COPILOT_GUIDE_HREF,
   INSTRUCTION_ADOPTION_REPORT_HREF,
   INSTRUCTION_COMPARISON_GUIDE_HREF,
   LOOP_ENGINEERING_GUIDE_HREF,
@@ -20,12 +22,12 @@ import {
   buildWebsiteJsonLd,
   SITE_NAME,
 } from "../lib/seo";
-import type { ArticleSummary, Guide } from "../lib/types";
+import type { ArticleSummary, GuideSummary } from "../lib/types";
 import type { BrandEntity } from "../lib/entities";
 
 type HomeProps = {
   articles: ArticleSummary[];
-  guides: Guide[];
+  guides: GuideSummary[];
   entities?: BrandEntity[];
 };
 
@@ -39,6 +41,11 @@ const highImpressionEntries = [
     href: INSTRUCTION_ADOPTION_REPORT_HREF,
     label: "AI instruction-file adoption report: 400 GitHub files",
     note: "Download the dated CSV/JSON and see which test, scope, verification, and security rules samples omit.",
+  },
+  {
+    href: CODEX_COPILOT_GUIDE_HREF,
+    label: "Codex vs GitHub Copilot: app, CLI, cloud and team fit",
+    note: "Compare current agent surfaces with a six-question workflow decision tool.",
   },
   {
     href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
@@ -214,7 +221,7 @@ export async function getStaticProps() {
   return {
     props: {
       articles: fullArticles.map(toArticleSummary),
-      guides: getPriorityGuides(),
+      guides: getPriorityGuides().map(toGuideSummary),
       entities: getEntityCoverage(fullArticles),
     },
     revalidate: 300,

@@ -8,11 +8,12 @@ import {
   MCP_SECURITY_GUIDE_HREF,
 } from "../../lib/guide-routes";
 import { getGuides } from "../../lib/guides";
+import { toGuideSummary } from "../../lib/guide-summary";
 import { buildBreadcrumbJsonLd, buildCollectionPageJsonLd, buildGuideItemListJsonLd } from "../../lib/seo";
-import type { Guide } from "../../lib/types";
+import type { GuideSummary } from "../../lib/types";
 
 type GuidesPageProps = {
-  guides: Guide[];
+  guides: GuideSummary[];
 };
 
 type GuideTopicHub = {
@@ -361,7 +362,7 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
 export function getStaticProps() {
   return {
     props: {
-      guides: getGuides(),
+      guides: getGuides().map(toGuideSummary),
     },
     revalidate: 300,
   };

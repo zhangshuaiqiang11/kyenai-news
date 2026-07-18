@@ -9,17 +9,18 @@ import { getVisibleGuideFaqs } from "../../lib/guide-faqs";
 import { getGuide, getGuides, getInternalLinkedGuides, getRelatedArticlesForGuide } from "../../lib/guides";
 import { EDITORIAL_AUTHOR_NAME, EDITORIAL_AUTHOR_PATH } from "../../lib/editorial";
 import { resolveIndexableGuideTopicHref } from "../../lib/guide-topic-links";
+import { toGuideSummary } from "../../lib/guide-summary";
 import {
   buildCanonicalUrl,
   buildGuideGraphJsonLd,
   buildOgImageUrl,
   formatDate,
 } from "../../lib/seo";
-import type { Article, Guide } from "../../lib/types";
+import type { Article, Guide, GuideSummary } from "../../lib/types";
 
 type GuidePageProps = {
   guide: Guide;
-  relatedGuides: Guide[];
+  relatedGuides: GuideSummary[];
   relatedArticles: Article[];
 };
 
@@ -48,6 +49,11 @@ const bestNextStepsByGuideSlug: Record<string, { href: string; label: string; no
     href: "/guides/loop-engineering-ai-coding-agents",
     label: "Use loop engineering to compare Codex and Claude Code on the same repo task",
     note: "Measure behavior with a plan-act-observe-verify loop instead of generic feature lists.",
+  },
+  "codex-vs-github-copilot": {
+    href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
+    label: "Verify which instruction files each Codex and Copilot surface reads",
+    note: "Choose the tool surface first, then keep one canonical repository policy and audit every adapter.",
   },
   "secure-mcp-servers-ai-coding-agents": {
     href: "/guides/loop-engineering-ai-coding-agents",
@@ -137,6 +143,14 @@ const CodexClaudeResourcePanel = dynamic(
   { ssr: true },
 );
 
+const CodexCopilotResourcePanel = dynamic(
+  () =>
+    import("../../components/CodexCopilotResources").then(
+      ({ CodexCopilotResources }) => CodexCopilotResources,
+    ),
+  { ssr: true },
+);
+
 const InstructionAdoptionReportPanel = dynamic(
   () =>
     import("../../components/InstructionAdoptionReport").then(
@@ -172,6 +186,10 @@ function GuideResources({ guide }: { guide: Guide }) {
 
   if (guide.resourceIds?.includes("codex-claude-decision")) {
     return <CodexClaudeResourcePanel />;
+  }
+
+  if (guide.resourceIds?.includes("codex-copilot-decision")) {
+    return <CodexCopilotResourcePanel />;
   }
 
   if (guide.resourceIds?.includes("instruction-adoption-report")) {
@@ -450,7 +468,7 @@ export const getStaticProps: GetStaticProps<GuidePageProps> = async ({ params })
   return {
     props: {
       guide,
-      relatedGuides: getInternalLinkedGuides(guide),
+      relatedGuides: getInternalLinkedGuides(guide).map(toGuideSummary),
       relatedArticles: getRelatedArticlesForGuide(guide, await getArticles()),
     },
     revalidate: 300,

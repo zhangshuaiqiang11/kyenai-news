@@ -137,6 +137,7 @@ export type GuideResourceId =
   | "agents-md-template"
   | "claude-code-setup"
   | "codex-claude-decision"
+  | "codex-copilot-decision"
   | "loop-engineering"
   | "instruction-adoption-report";
 
@@ -164,6 +165,11 @@ export type Guide = {
   metaDescription: string;
   resourceIds?: GuideResourceId[];
 };
+
+export type GuideSummary = Pick<
+  Guide,
+  "id" | "title" | "slug" | "summary" | "pageType" | "audience" | "updatedAt"
+>;
 
 export type GuideEditorialSignals = {
   priority: "P0" | "P1" | "P2";

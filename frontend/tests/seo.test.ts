@@ -309,6 +309,18 @@ describe("SEO helpers", () => {
     expect(JSON.stringify(graph)).toContain("Codex vs Claude Code Decision Tool");
   });
 
+  it("adds WebApplication schema for the Codex vs GitHub Copilot workflow tool", () => {
+    const guide = getGuides().find((candidate) => candidate.slug === "codex-vs-github-copilot")!;
+    const graph = buildGuideGraphJsonLd(guide, [
+      { name: "Home", path: "/" },
+      { name: "Guides", path: "/guides" },
+      { name: guide.title, path: `/guides/${guide.slug}` },
+    ], buildGuideFaqs(guide));
+
+    expect(graph["@graph"].map((node) => node["@type"])).toContain("WebApplication");
+    expect(JSON.stringify(graph)).toContain("Codex vs GitHub Copilot Decision Tool");
+  });
+
   it("adds Dataset schema and two downloads for the instruction adoption report", () => {
     const guide = getGuides().find((candidate) => candidate.slug === "ai-coding-agent-instruction-file-adoption-report-2026")!;
     const graph = buildGuideGraphJsonLd(guide, [
