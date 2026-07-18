@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import {
+  CLAUDE_CODE_ALTERNATIVES_GUIDE_HREF,
   CODEX_COPILOT_GUIDE_HREF,
   CODING_AGENT_COMPARISON_GUIDE_HREF,
   INSTRUCTION_COMPARISON_GUIDE_HREF,
@@ -116,6 +117,11 @@ const guideTopicHubs: GuideTopicHub[] = [
     advanced: "AI Coding Agents Comparison",
     readingOrder: [
       {
+        href: CLAUDE_CODE_ALTERNATIVES_GUIDE_HREF,
+        label: "Claude Code alternatives by workflow",
+        note: "Choose a replacement pilot by the constraint you actually need to change.",
+      },
+      {
         href: CODING_AGENT_COMPARISON_GUIDE_HREF,
         label: "AI coding agents comparison",
         note: "Build a Codex, Claude Code, GitHub Copilot, or Cursor shortlist by operating model.",
@@ -173,6 +179,13 @@ const startingGuides = [
 ];
 
 const comparisonPages = [
+  {
+    href: CLAUDE_CODE_ALTERNATIVES_GUIDE_HREF,
+    label: "7 Claude Code Alternatives by Workflow",
+    type: "Alternatives decision guide",
+    verdict:
+      "Use this when the team needs a wider commercial and open-source shortlist—or evidence that staying with Claude Code is the better choice.",
+  },
   {
     href: CODING_AGENT_COMPARISON_GUIDE_HREF,
     label: "Codex vs Claude Code vs Cursor vs GitHub Copilot",
@@ -280,6 +293,10 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
             <p>Choose the next guide by the decision your team needs to make.</p>
           </div>
           <div className="featured-guide-path-grid">
+            <Link href={CLAUDE_CODE_ALTERNATIVES_GUIDE_HREF}>
+              <strong>Compare Claude Code alternatives by reason to switch</strong>
+              <span>Shortlist seven commercial and open-source options without inventing a universal winner.</span>
+            </Link>
             <Link href={CODING_AGENT_COMPARISON_GUIDE_HREF}>
               <strong>Compare AI coding agents by operating model</strong>
               <span>Build a four-tool shortlist, then verify it with focused pairwise guides and the same repository task.</span>

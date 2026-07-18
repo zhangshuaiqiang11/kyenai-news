@@ -10,7 +10,7 @@ export const expansionGuides: Guide[] = [
     intent: "Developers want a plain comparison of Codex and Claude Code before choosing an AI coding agent.",
     audience: "Developers, staff engineers, and team leads comparing agentic coding tools for real repositories.",
     pageType: "Comparison decision guide",
-    secondaryKeywords: ["OpenAI Codex vs Claude Code", "Codex alternatives", "Claude Code alternatives", "AI coding agent comparison", "agentic loop AI coding"],
+    secondaryKeywords: ["OpenAI Codex vs Claude Code", "Codex alternatives", "AI coding agent comparison", "agentic loop AI coding"],
     sections: [
       {
         heading: "Quick answer",
@@ -217,6 +217,11 @@ export const expansionGuides: Guide[] = [
         slug: "ai-coding-agents-comparison",
         anchor: "compare Codex, Claude Code, Cursor, and GitHub Copilot",
         reason: "Start with the four-tool operating-model map before narrowing to the OpenAI-versus-Anthropic decision.",
+      },
+      {
+        slug: "claude-code-alternatives",
+        anchor: "compare seven Claude Code alternatives by workflow",
+        reason: "Use the alternatives guide when the decision extends beyond the focused OpenAI-versus-Anthropic comparison.",
       },
       {
         slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
@@ -1773,6 +1778,7 @@ export const expansionGuides: Guide[] = [
       { title: "Running every tool with full access", fix: "Start with narrow repository, directory, tool, network, and secret permissions and record every exception." },
     ],
     internalLinks: [
+      { slug: "claude-code-alternatives", anchor: "compare Claude Code alternatives by reason to switch", reason: "Move from the four-tool operating-model shortlist to a wider set of commercial and open-source pilot options." },
       { slug: "codex-vs-claude-code", anchor: "compare Codex with Claude Code", reason: "Open the OpenAI-versus-Anthropic workflow decision after building a shortlist." },
       { slug: "codex-vs-github-copilot", anchor: "compare Codex with GitHub Copilot", reason: "Separate the OpenAI agent-workspace decision from the GitHub control-plane decision." },
       { slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions", anchor: "compare repository instruction files", reason: "Verify which policy file each approved surface reads." },
@@ -2149,5 +2155,182 @@ export const expansionGuides: Guide[] = [
     metaDescription:
       "See GitHub match counts and a 400-file sample of AGENTS.md, CLAUDE.md, Copilot instructions, and Cursor rules. Download the raw CSV and JSON.",
     resourceIds: ["instruction-adoption-report"],
+  },
+  {
+    id: "guide-claude-code-alternatives",
+    title: "7 Claude Code Alternatives for Different Coding Workflows",
+    slug: "claude-code-alternatives",
+    summary:
+      "Compare Codex, GitHub Copilot, Cursor, Gemini CLI, Cline, Aider, and OpenCode by the workflow problem you need to solve—not by an invented universal ranking.",
+    intent: "Developers and engineering teams want a current, evidence-led shortlist of Claude Code alternatives and a safe way to decide whether switching is worth the migration cost.",
+    audience: "Developers, staff engineers, platform teams, security reviewers, and buyers evaluating a replacement or complement for Claude Code.",
+    pageType: "Alternatives decision guide",
+    secondaryKeywords: [
+      "alternatives to Claude Code",
+      "Claude Code alternative",
+      "free Claude Code alternative",
+      "open source Claude Code alternative",
+      "Claude Code alternatives for teams",
+      "Claude Code replacement",
+      "Codex vs Claude Code alternatives",
+    ],
+    sections: [
+      {
+        heading: "Quick answer",
+        body: [
+          "Start with Codex for an OpenAI-native agent workspace; GitHub Copilot for a GitHub and existing-IDE control plane; Cursor for an AI-first editor plus Cloud Agents; Gemini CLI for Google's open-source terminal agent; Cline for explicit approvals and provider choice in an editor or terminal; Aider for a lightweight Git-centered terminal workflow; and OpenCode for an open-source multi-provider terminal, desktop, or IDE client. Stay with Claude Code when its terminal workflow, CLAUDE.md, Anthropic model boundary, permissions, and review cost already fit. The right answer is a pilot starting point, not a universal winner.",
+        ],
+      },
+      {
+        heading: "When you should stay with Claude Code",
+        body: [
+          "A new tool is not automatically an improvement. Claude Code already provides repository-aware terminal work, project instructions and memory, permissions, hooks, subagents, MCP connections, sessions, and automation paths. If the current setup passes verification, fits the approved Anthropic boundary, and produces reviewable diffs at an acceptable cost, migration may add instruction drift, retraining, duplicate subscriptions, and governance work without solving a measured problem.",
+          "Write down the reason to switch before comparing products. Useful reasons are concrete: GitHub must own identity and pull requests; the team needs an AI-first editor; provider choice is mandatory; an open-source client is required; Google Cloud authentication is already approved; or the current review and permission workflow is too expensive. If the reason is only curiosity or a benchmark headline, keep Claude Code as the baseline and run a time-boxed pilot without replacing it.",
+        ],
+      },
+      {
+        heading: "1. Codex: for an OpenAI-native agent workspace",
+        body: [
+          "Codex is the closest alternative when the desired change is the command center rather than the terminal itself. OpenAI documents Codex across its app, CLI, IDE, and cloud workflows. The app can separate delegated work into threads and isolated worktrees, while AGENTS.md provides durable root and directory-scoped repository guidance. That shape fits teams already using OpenAI workspaces or wanting several bounded agent tasks visible from one place.",
+          "The tradeoff is a real platform migration: models, accounts, repository instructions, sandbox and approval settings, cloud environments, plugins, MCP connections, billing, and administration all need review. Do not compare a fully configured Claude Code workflow with a permissive Codex demo. Give both the same clean commit, prompt, allowed tools, timebox, and proof command, then compare verification, interventions, permission grants, diff clarity, and reviewer effort.",
+        ],
+      },
+      {
+        heading: "2. GitHub Copilot: for GitHub and existing IDEs",
+        body: [
+          "GitHub Copilot is the strongest starting point when repositories, organization identity, issues, pull requests, seats, and policy should remain the control plane. Copilot spans supported IDEs, GitHub, CLI, cloud coding agent, code review, custom agents, skills, hooks, MCP, and model selection. This can reduce organizational migration when developers use several editors but already work inside GitHub governance.",
+          "The main caution is surface variation. Instruction-file support, models, permissions, plan features, and organization policy differ across IDE chat, CLI, cloud agent, review, and GitHub.com. Name the exact surfaces the team will deploy before calling a feature supported. Keep one canonical repository policy and verify how .github/copilot-instructions.md, path-specific rules, AGENTS.md, and CLAUDE.md are handled by each enabled surface.",
+        ],
+      },
+      {
+        heading: "3. Cursor: for an AI-first editor and Cloud Agents",
+        body: [
+          "Cursor is the natural pilot when the team wants the editor itself to become the AI operating surface. Its workflow combines an AI-first code editor, project and team rules, foreground agent work, and remote Cloud Agents connected to approved source-control repositories. This can fit teams that want to move between interactive editing and asynchronous remote tasks without centering every job in a terminal session.",
+          "Changing editors is broader than changing assistants. Evaluate extension compatibility, onboarding, privacy settings, repository access, network controls, remote-environment identity, model routing, Cloud Agent availability, review path, and plan administration. Use the current term Cloud Agents—Cursor's documentation says they were formerly called Background Agents—and verify local and remote tasks separately because their permissions and operational risks are different.",
+        ],
+      },
+      {
+        heading: "4. Gemini CLI: for Google's open-source terminal agent",
+        body: [
+          "Gemini CLI is a relevant Claude Code alternative for terminal teams aligned with Google. Google describes it as an Apache-2.0 open-source terminal agent with file operations, shell commands, web fetching, Google Search grounding, MCP, non-interactive scripting, GEMINI.md context files, checkpointing, and GitHub workflow integration. Authentication can use a Google account, Gemini API key, or Vertex AI, depending on the workload and organization.",
+          "Do not freeze today's quota or model names into a long-term procurement claim. Free allowances, request limits, available models, billing, and enterprise requirements can change, and the correct authentication path affects data handling and administration. Verify the current official quota and terms on the day of the pilot. Record which account, project, model, release channel, sandbox, trusted-folder, and telemetry settings were used.",
+        ],
+      },
+      {
+        heading: "5. Cline: for explicit approval and provider choice",
+        body: [
+          "Cline is an open-source alternative for teams that want the coding agent in an editor or terminal while choosing how model access is billed. Its current documentation describes file reads and writes, terminal commands, browser use, explicit approval, CLI and headless automation, VS Code and JetBrains experiences, checkpoints, MCP, hooks, skills, and bring-your-own-key or managed access paths. That makes it a useful pilot for visible human-in-the-loop control and provider flexibility.",
+          "Open source does not collapse the evaluation into one product. The client, selected model provider, credentials, usage charges, data terms, enterprise controls, extensions, and auto-approval settings each create a boundary. Pilot one provider and one restrictive approval configuration first. Treat Kanban, headless automation, and parallel worktrees as separate higher-autonomy evaluations rather than enabling them during the initial comparison.",
+        ],
+      },
+      {
+        heading: "6. Aider: for a lightweight Git-centered terminal workflow",
+        body: [
+          "Aider is a strong alternative when a developer wants terminal pair programming with explicit file context and close Git integration. Its documentation covers editing a local Git repository, a repository map, automatic commits and undo workflows, linting and testing, coding conventions, scripting, IDE and browser bridges, and connections to many model providers and local runtimes. The client can therefore be smaller and more provider-neutral than a managed agent workspace.",
+          "That different product shape is also the tradeoff. Aider is not a drop-in replica of every Claude Code surface, team control, or subagent workflow. Provider setup and model behavior remain part of the test, and API or local-model costs still apply. Evaluate whether the simple Git loop reduces review effort: inspect commits, undo behavior, test repair, context selection, generated changes, and the amount of manual steering required.",
+        ],
+      },
+      {
+        heading: "7. OpenCode: for an open-source multi-provider agent client",
+        body: [
+          "OpenCode is an open-source coding agent available through a terminal interface, desktop app, or IDE extension. Its current documentation includes provider configuration, AGENTS.md initialization, Plan and Build modes, permissions, policies, tools, agents, MCP servers, LSP integration, GitHub and GitLab workflows, and a broad customization surface. It is a useful pilot when the client must be open source and the team wants to choose among approved model providers.",
+          "Provider choice shifts responsibility to the adopter. API keys, model terms, token cost, data policy, network access, plugins, custom tools, and configuration now need explicit owners. Open-source software is not the same as free model usage, and a provider subscription does not automatically supply enterprise governance. Start in read-only Plan mode, review the generated AGENTS.md, approve one provider, and run a bounded Build-mode task without production secrets.",
+        ],
+      },
+      {
+        heading: "Free and open-source alternatives are not cost-free",
+        body: [
+          "Gemini CLI, Cline, Aider, and OpenCode have open-source client paths, but the complete workflow may still use paid APIs, subscriptions, hosted services, cloud projects, or local hardware. Even when a vendor offers a free allowance, quotas, eligible models, rate limits, data terms, and account requirements can change. A credible cost comparison separates client license, model usage, seats, overages, cloud compute, administration, security review, and developer time.",
+          "Use current vendor pages on the day of evaluation and record the access date, currency, plan, model, included allowance, and overage rule. At task level, record only the cost or token data the product exposes. Mark anything else Not measured. A lower sticker price is not a win when setup, failed verification, manual repair, or review time costs more than the tool saves.",
+        ],
+      },
+      {
+        heading: "How to run a fair replacement pilot",
+        body: [
+          "Pick the leading two alternatives from the selector and keep Claude Code as the baseline. Start every run from the same clean commit. Use the same bounded bug fix, feature, or refactor; prompt; readable instruction files; allowed directories and tools; network policy; timebox; and verification command. Record product and CLI version, model, authentication path, changed files, elapsed time, human interventions, permission grants, verification result, reviewer findings, and measurable cost.",
+          "Run at least three task types: repair one failing test, implement one small API or UI change, and perform one behavior-preserving refactor. Preserve failed runs and setup problems. A product should not win because it silently widened permissions, skipped tests, or produced a larger diff faster. Choose the smallest tool set the team can govern, and keep more than one product only when each has a named workflow rather than overlapping by habit.",
+        ],
+      },
+    ],
+    recommendedPlay: [
+      "Write one measurable reason to switch before comparing products.",
+      "Use the selector to choose a pilot starting point, including the option to stay with Claude Code.",
+      "Run the leading alternatives and Claude Code from the same clean commit with identical boundaries and verification.",
+      "Compare permission grants, interventions, diff clarity, reviewer effort, and measurable cost—not feature counts.",
+      "Recheck official models, quotas, plans, data terms, and enterprise controls before rollout or procurement.",
+    ],
+    decisionTable: {
+      title: "Claude Code alternatives by workflow reason",
+      intro: "Use this matrix to choose a pilot, not to declare a universal quality winner. Product facts were reviewed against official sources on July 19, 2026.",
+      columns: ["Natural fit", "Main tradeoff", "Verify before switching"],
+      rows: [
+        { label: "Stay with Claude Code", values: ["Terminal-first Anthropic workflow already performs well", "Keeps the current vendor and instruction boundary", "Baseline verification, review effort, cost, and the actual unsolved problem"] },
+        { label: "Codex", values: ["OpenAI app, CLI, IDE, cloud, threads, worktrees, and AGENTS.md", "Changes workspace, models, instructions, and administration", "Sandbox, approvals, cloud environment, repository policy, and same-task result"] },
+        { label: "GitHub Copilot", values: ["GitHub identity, pull requests, organization policy, and existing IDEs", "Support and controls vary by surface", "Exact IDE, CLI, cloud-agent, review, model, and instruction support"] },
+        { label: "Cursor", values: ["AI-first editor plus remote Cloud Agents", "Editor adoption becomes part of the migration", "Local vs remote permissions, rules, privacy, network, and review path"] },
+        { label: "Gemini CLI", values: ["Google-aligned open-source terminal agent and scripting", "Auth, quotas, models, and billing vary by path", "Google account, API, or Vertex route; current limits; sandbox; telemetry"] },
+        { label: "Cline", values: ["Editor or terminal agent with explicit approval and provider choice", "Client and provider boundaries must both be governed", "Model access, billing, auto-approval, MCP, hooks, and enterprise controls"] },
+        { label: "Aider", values: ["Lightweight terminal pair programming with Git integration", "Different operating model from a managed agent workspace", "Provider, repository map, commits, undo, tests, context, and review effort"] },
+        { label: "OpenCode", values: ["Open-source terminal, desktop, or IDE client with provider choice", "More configuration and provider responsibility", "API keys, provider policy, AGENTS.md, Plan mode, permissions, and model cost"] },
+      ],
+    },
+    actionSteps: [
+      { title: "Name the switching trigger", body: "Write the one workflow, control-plane, provider, cost, permission, or interface constraint the current setup does not solve." },
+      { title: "Choose two candidates", body: "Use the selector and decision table to shortlist no more than two alternatives while keeping Claude Code as the baseline." },
+      { title: "Freeze the pilot", body: "Use one clean commit, task, prompt, instruction set, permission boundary, timebox, and proof command for every run." },
+      { title: "Collect reviewable evidence", body: "Record versions, models, auth, grants, interventions, changed files, test output, review findings, and only measurable cost." },
+      { title: "Decide or stay", body: "Switch only when the alternative measurably improves the named constraint without creating an unacceptable governance or migration cost." },
+    ],
+    pitfalls: [
+      { title: "Ranking tools without a switching reason", fix: "Start from the constraint to solve; a generic winner list cannot reflect the team's control plane, permissions, or review process." },
+      { title: "Calling open source free", fix: "Separate the client license from model usage, hosted services, cloud compute, local hardware, security review, and operations." },
+      { title: "Comparing different tasks or permissions", fix: "Use the same commit, prompt, allowed tools, network policy, timebox, and verification command for every candidate." },
+      { title: "Copying a stale price table", fix: "Link current plan and quota pages, state the access date, and mark unavailable task-level cost Not measured." },
+      { title: "Migrating instruction files blindly", fix: "Keep one canonical policy, map it to documented product surfaces, and test precedence and scope before removing CLAUDE.md." },
+      { title: "Keeping every pilot tool", fix: "Retain multiple products only when each owns a distinct workflow with accountable policy, billing, logs, and revocation." },
+    ],
+    internalLinks: [
+      { slug: "codex-vs-claude-code", anchor: "compare Codex and Claude Code directly", reason: "Use the focused pairwise guide after the alternatives selector points to an OpenAI-native pilot." },
+      { slug: "ai-coding-agents-comparison", anchor: "compare the four major coding-agent operating models", reason: "Place the seven-option shortlist inside a deeper Codex, Claude Code, Copilot, and Cursor governance matrix." },
+      { slug: "codex-vs-github-copilot", anchor: "compare Codex with GitHub Copilot", reason: "Separate the OpenAI-workspace decision from the GitHub control-plane decision." },
+      { slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions", anchor: "map repository instruction files by tool", reason: "Verify AGENTS.md, CLAUDE.md, Copilot instruction, Cursor rule, and surface-specific support before migration." },
+      { slug: "local-vs-cloud-ai-coding-agent", anchor: "choose local or cloud agent execution", reason: "Decide where work may run before comparing vendor automation and remote-agent claims." },
+      { slug: "secure-mcp-servers-ai-coding-agents", anchor: "secure MCP and provider access", reason: "Every alternative that can call external tools needs least-privilege credentials, logs, and revocation." },
+      { slug: "loop-engineering-ai-coding-agents", anchor: "design a bounded agent pilot loop", reason: "Use shared verification, retry, cost, and stop rules for each replacement candidate." },
+      { slug: "agent-governance-checklist-for-software-teams", anchor: "apply the coding-agent governance checklist", reason: "Turn the shortlist into owned identity, repository, permission, logging, billing, and incident controls." },
+    ],
+    checklist: [
+      "State one measurable reason for leaving or complementing Claude Code.",
+      "Keep Claude Code as the controlled baseline during evaluation.",
+      "Verify every product claim against a current official source.",
+      "Use the same commit, task, prompt, tools, network policy, and proof command.",
+      "Start every candidate with least-privilege permissions and no production secrets.",
+      "Record the client, model, version, authentication path, and instruction files.",
+      "Measure verification, interventions, diff clarity, reviewer effort, and available cost.",
+      "Separate open-source client status from provider and model charges.",
+      "Assign owners for policy, billing, logs, limits, support, and revocation.",
+      "Remove duplicate tools when the pilot does not prove a distinct workflow benefit.",
+    ],
+    evidence: [
+      { title: "Claude Code overview", url: "https://code.claude.com/docs/en/overview", publisher: "Anthropic", note: "Official baseline for Claude Code surfaces, repository workflows, integrations, and administration paths." },
+      { title: "Introducing the Codex app", url: "https://openai.com/index/introducing-the-codex-app/", publisher: "OpenAI", note: "Official Codex app description covering threads, worktrees, skills, automations, sandboxing, and cross-surface work." },
+      { title: "About GitHub Copilot CLI", url: "https://docs.github.com/en/copilot/concepts/agents/copilot-cli/about-copilot-cli", publisher: "GitHub", note: "Official CLI, plan mode, tools, permissions, custom agents, skills, hooks, MCP, and GitHub workflow reference." },
+      { title: "Cursor Cloud Agents", url: "https://cursor.com/docs/cloud-agent", publisher: "Cursor", note: "Official remote Cloud Agent workflow and current terminology for the feature formerly called Background Agents." },
+      { title: "Gemini CLI", url: "https://github.com/google-gemini/gemini-cli", publisher: "Google", note: "Official open-source repository covering terminal tools, GEMINI.md, MCP, scripting, authentication, quotas, and release channels." },
+      { title: "Cline overview", url: "https://docs.cline.bot/cline-overview", publisher: "Cline", note: "Official editor, terminal, approval, provider, CLI, Kanban, SDK, and enterprise overview." },
+      { title: "Aider documentation", url: "https://aider.chat/docs/", publisher: "Aider", note: "Official terminal, Git, repository map, test and lint, model provider, scripting, and configuration documentation." },
+      { title: "OpenCode intro", url: "https://opencode.ai/docs/", publisher: "OpenCode", note: "Official open-source terminal, desktop, IDE, provider, AGENTS.md, Plan mode, permission, and customization overview." },
+    ],
+    relatedArticleSlugs: [
+      "openai-codex-plugins-sites-annotations",
+      "github-copilot-cloud-local-sandboxes-preview",
+      "cursor-enterprise-organizations-governance",
+    ],
+    publishedAt: "2026-07-19",
+    updatedAt: "2026-07-19",
+    metaTitle: "7 Claude Code Alternatives by Workflow (2026)",
+    metaDescription:
+      "Compare Codex, Copilot, Cursor, Gemini CLI, Cline, Aider, and OpenCode by interface, model choice, permissions, cost model, and team fit.",
+    resourceIds: ["claude-code-alternatives"],
   },
 ];

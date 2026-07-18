@@ -9,6 +9,7 @@ import { getEntityCoverage } from "../lib/entities";
 import { toArticleSummary } from "../lib/catalog";
 import { toGuideSummary } from "../lib/guide-summary";
 import {
+  CLAUDE_CODE_ALTERNATIVES_GUIDE_HREF,
   CODEX_COPILOT_GUIDE_HREF,
   CODING_AGENT_COMPARISON_GUIDE_HREF,
   INSTRUCTION_ADOPTION_REPORT_HREF,
@@ -137,6 +138,11 @@ export default function Home({ articles, guides, entities = [] }: HomeProps) {
               ))}
             </div>
             <div className="guide-strip-next-steps" aria-label="Recommended guide starting points">
+              <p>
+                Replacing or complementing Claude Code?{" "}
+                <Link href={CLAUDE_CODE_ALTERNATIVES_GUIDE_HREF}>Compare seven Claude Code alternatives by workflow</Link>{" "}
+                and keep staying with Claude Code as a valid result when no candidate improves the measured constraint.
+              </p>
               <p>
                 Standardizing repository guidance?{" "}
                 <Link href={INSTRUCTION_COMPARISON_GUIDE_HREF}>

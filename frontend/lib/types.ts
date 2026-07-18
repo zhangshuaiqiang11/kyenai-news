@@ -139,6 +139,7 @@ export type GuideResourceId =
   | "codex-claude-decision"
   | "codex-copilot-decision"
   | "coding-agent-comparison"
+  | "claude-code-alternatives"
   | "loop-engineering"
   | "instruction-adoption-report";
 

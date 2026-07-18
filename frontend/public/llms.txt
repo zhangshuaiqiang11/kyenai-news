@@ -13,6 +13,9 @@
 - RSS feed: https://www.kyenai.com/feed.xml
 
 ## Featured guides
+- [7 Claude Code Alternatives for Different Coding Workflows](https://www.kyenai.com/guides/claude-code-alternatives)
+  Compare Codex, GitHub Copilot, Cursor, Gemini CLI, Cline, Aider, and OpenCode by the workflow problem you need to solve—not by an invented universal ranking. Last substantively updated: 2026-07-19.
+  Markdown: https://www.kyenai.com/guides/claude-code-alternatives.md
 - [AI Coding Agents Comparison: Codex, Claude Code, Cursor, and Copilot](https://www.kyenai.com/guides/ai-coding-agents-comparison)
   Compare Codex, Claude Code, Cursor, and GitHub Copilot by starting surface, repository instructions, parallel work, model boundary, permissions, review path, and team governance. Last substantively updated: 2026-07-19.
   Markdown: https://www.kyenai.com/guides/ai-coding-agents-comparison.md
@@ -64,6 +67,7 @@
 - [AI Coding Agents Comparison: Codex, Claude Code, Cursor, and Copilot](https://www.kyenai.com/guides/ai-coding-agents-comparison): Compare Codex, Claude Code, Cursor, and GitHub Copilot by starting surface, repository instructions, parallel work, model boundary, permissions, review path, and team governance.
 - [Codex vs GitHub Copilot: Which Coding Agent Fits Your Team?](https://www.kyenai.com/guides/codex-vs-github-copilot): Compare Codex vs GitHub Copilot by app, CLI, IDE, cloud-agent, instruction-file, model, parallel-work, permission, billing, and team-governance fit—with a six-question decision tool.
 - [AI Coding Agent Instruction File Adoption Report — Q3 2026](https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026): Explore a reproducible public GitHub snapshot of 400 AGENTS.md, CLAUDE.md, Copilot instruction, and Cursor rule files, including indexed match counts, language mix, test commands, security rules, and common gaps.
+- [7 Claude Code Alternatives for Different Coding Workflows](https://www.kyenai.com/guides/claude-code-alternatives): Compare Codex, GitHub Copilot, Cursor, Gemini CLI, Cline, Aider, and OpenCode by the workflow problem you need to solve—not by an invented universal ranking.
 
 ## Citation guidance
 - Prefer linking to the canonical guide URL for evergreen decisions.

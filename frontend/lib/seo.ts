@@ -224,6 +224,16 @@ export function buildGuideGraphJsonLd(guide: Guide, breadcrumbItems: BreadcrumbI
     );
   }
 
+  if (guide.resourceIds?.includes("claude-code-alternatives")) {
+    nodes.push(
+      buildWebApplicationJsonLd({
+        title: "Claude Code Alternatives Selector",
+        description: "Choose a Claude Code alternative pilot by workflow constraint, control plane, interface, provider boundary, permissions, and migration cost.",
+        path: `/guides/${guide.slug}`,
+      }),
+    );
+  }
+
   if (guide.resourceIds?.includes("instruction-adoption-report")) {
     nodes.push(buildInstructionAdoptionDatasetJsonLd(guide));
   }

@@ -56,7 +56,7 @@ describe("guide SEO data", () => {
     const guides = getGuides();
     const slugs = guides.map((guide) => guide.slug);
 
-    expect(guides).toHaveLength(16);
+    expect(guides).toHaveLength(17);
     expect(slugs).toContain("agents-md-vs-claude-md-cursorrules-copilot-instructions");
     expect(slugs).toContain("claude-code-subagents-examples");
     expect(slugs).toContain("claude-code-hooks-mcp-setup");
@@ -73,6 +73,7 @@ describe("guide SEO data", () => {
     expect(slugs).toContain("ai-coding-agent-instruction-file-adoption-report-2026");
     expect(slugs).toContain("codex-vs-github-copilot");
     expect(slugs).toContain("ai-coding-agents-comparison");
+    expect(slugs).toContain("claude-code-alternatives");
     expect(guides.every((guide) => guide.evidence.length >= 2)).toBe(true);
     expect(guides.every((guide) => guide.checklist.length >= 5)).toBe(true);
   });
@@ -85,7 +86,7 @@ describe("guide SEO data", () => {
     );
 
     expect(new Set(slugs).size).toBe(slugs.length);
-    expect(primaryKeywords).toHaveLength(16);
+    expect(primaryKeywords).toHaveLength(17);
     expect(primaryKeywords.every(Boolean)).toBe(true);
     expect(new Set(primaryKeywords).size).toBe(primaryKeywords.length);
   });
@@ -377,6 +378,29 @@ describe("guide SEO data", () => {
     expect(JSON.stringify(guide)).not.toMatch(/KyenAI (tested|measured|found)/i);
   });
 
+  it("publishes a source-aware Claude Code alternatives decision page", () => {
+    const guide = getGuide("claude-code-alternatives");
+
+    expect(guide).toBeDefined();
+    expect(guide!.resourceIds).toEqual(["claude-code-alternatives"]);
+    expect(guide!.publishedAt).toBe("2026-07-19");
+    expect(guide!.decisionTable.rows).toHaveLength(8);
+    expect(guide!.sections[0].body[0]).toMatch(/Stay with Claude Code/i);
+    expect(guide!.sections.map((section) => section.heading)).toEqual(
+      expect.arrayContaining([
+        "When you should stay with Claude Code",
+        "4. Gemini CLI: for Google's open-source terminal agent",
+        "Free and open-source alternatives are not cost-free",
+        "How to run a fair replacement pilot",
+      ]),
+    );
+    expect(guide!.evidence.map((source) => source.publisher)).toEqual(
+      expect.arrayContaining(["Anthropic", "OpenAI", "GitHub", "Cursor", "Google", "Cline", "Aider", "OpenCode"]),
+    );
+    expect(JSON.stringify(guide)).toMatch(/Not measured/i);
+    expect(JSON.stringify(guide)).not.toMatch(/KyenAI (tested|measured|found)/i);
+  });
+
   it("publishes the instruction-file adoption report with downloadable-data boundaries", () => {
     const guide = getGuide("ai-coding-agent-instruction-file-adoption-report-2026");
 
@@ -406,7 +430,6 @@ describe("guide SEO data", () => {
         "claude code vs codex",
         "openai codex vs claude code",
         "codex alternatives",
-        "claude code alternatives",
       ],
       gscBaseline: {
         clicks: 1,

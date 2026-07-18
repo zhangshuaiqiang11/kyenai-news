@@ -333,6 +333,18 @@ describe("SEO helpers", () => {
     expect(JSON.stringify(graph)).toContain("AI Coding Agent Comparison Tool");
   });
 
+  it("adds WebApplication schema for the Claude Code alternatives selector", () => {
+    const guide = getGuides().find((candidate) => candidate.slug === "claude-code-alternatives")!;
+    const graph = buildGuideGraphJsonLd(guide, [
+      { name: "Home", path: "/" },
+      { name: "Guides", path: "/guides" },
+      { name: guide.title, path: `/guides/${guide.slug}` },
+    ], buildGuideFaqs(guide));
+
+    expect(graph["@graph"].map((node) => node["@type"])).toContain("WebApplication");
+    expect(JSON.stringify(graph)).toContain("Claude Code Alternatives Selector");
+  });
+
   it("adds Dataset schema and two downloads for the instruction adoption report", () => {
     const guide = getGuides().find((candidate) => candidate.slug === "ai-coding-agent-instruction-file-adoption-report-2026")!;
     const graph = buildGuideGraphJsonLd(guide, [

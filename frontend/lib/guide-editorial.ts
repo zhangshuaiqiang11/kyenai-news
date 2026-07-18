@@ -101,7 +101,6 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
       "claude code vs codex",
       "openai codex vs claude code",
       "codex alternatives",
-      "claude code alternatives",
     ],
     gscBaseline: {
       clicks: 1,
@@ -110,6 +109,21 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
       averagePosition: 36.8,
     },
     emergencyPriority: 100,
+  },
+  "claude-code-alternatives": {
+    priority: "P0",
+    primaryKeyword: "Claude Code alternatives",
+    demandScore: 9.2,
+    attackabilityScore: 8.8,
+    fitScore: 9.8,
+    gscWatchQueries: [
+      "claude code alternatives",
+      "alternatives to claude code",
+      "claude code alternative",
+      "free claude code alternative",
+      "open source claude code alternative",
+      "claude code alternatives for teams",
+    ],
   },
   "codex-vs-github-copilot": {
     priority: "P0",

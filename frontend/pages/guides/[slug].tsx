@@ -55,6 +55,11 @@ const bestNextStepsByGuideSlug: Record<string, { href: string; label: string; no
     label: "Verify which instruction file each shortlisted coding agent reads",
     note: "After choosing the operating model, keep one canonical repository policy and audit every tool-specific adapter.",
   },
+  "claude-code-alternatives": {
+    href: "/guides/codex-vs-claude-code",
+    label: "Run the focused Codex vs Claude Code same-repository protocol",
+    note: "If the selector points to Codex, compare it with the current Claude Code baseline under identical permissions and verification.",
+  },
   "codex-vs-github-copilot": {
     href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
     label: "Verify which instruction files each Codex and Copilot surface reads",
@@ -164,6 +169,14 @@ const AiCodingAgentComparisonResourcePanel = dynamic(
   { ssr: true },
 );
 
+const ClaudeCodeAlternativesResourcePanel = dynamic(
+  () =>
+    import("../../components/ClaudeCodeAlternativesResources").then(
+      ({ ClaudeCodeAlternativesResources }) => ClaudeCodeAlternativesResources,
+    ),
+  { ssr: true },
+);
+
 const InstructionAdoptionReportPanel = dynamic(
   () =>
     import("../../components/InstructionAdoptionReport").then(
@@ -207,6 +220,10 @@ function GuideResources({ guide }: { guide: Guide }) {
 
   if (guide.resourceIds?.includes("coding-agent-comparison")) {
     return <AiCodingAgentComparisonResourcePanel />;
+  }
+
+  if (guide.resourceIds?.includes("claude-code-alternatives")) {
+    return <ClaudeCodeAlternativesResourcePanel />;
   }
 
   if (guide.resourceIds?.includes("instruction-adoption-report")) {

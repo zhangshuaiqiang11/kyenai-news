@@ -79,4 +79,14 @@ describe("guide topic links", () => {
       "/guides/codex-vs-claude-code",
     );
   });
+
+  it("assigns Claude Code alternatives intent to the dedicated guide", () => {
+    expect(resolveIndexableGuideTopicHref("Claude Code alternatives", "codex-vs-claude-code")).toBe(
+      "/guides/claude-code-alternatives",
+    );
+    expect(resolveIndexableGuideTopicHref("open source Claude Code alternative")).toBe(
+      "/guides/claude-code-alternatives",
+    );
+    expect(resolveIndexableGuideTopicHref("Claude Code alternatives", "claude-code-alternatives")).toBeNull();
+  });
 });

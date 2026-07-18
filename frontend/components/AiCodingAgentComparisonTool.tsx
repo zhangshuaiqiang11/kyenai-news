@@ -10,7 +10,7 @@ import {
 
 const deepComparisonLinks: Partial<Record<CodingAgentId, { href: string; label: string }>> = {
   codex: { href: "/guides/codex-vs-claude-code", label: "Compare Codex with Claude Code" },
-  claude: { href: "/guides/codex-vs-claude-code", label: "Compare Claude Code with Codex" },
+  claude: { href: "/guides/claude-code-alternatives", label: "Compare Claude Code alternatives by workflow" },
   copilot: { href: "/guides/codex-vs-github-copilot", label: "Compare GitHub Copilot with Codex" },
   cursor: { href: "/guides/local-vs-cloud-ai-coding-agent", label: "Compare local and cloud execution" },
 };

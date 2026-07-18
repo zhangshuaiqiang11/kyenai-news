@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import Home from "../pages";
 import GuidesPage, { guidesPageSeo } from "../pages/guides";
 import {
+  CLAUDE_CODE_ALTERNATIVES_GUIDE_SLUG,
   CODING_AGENT_COMPARISON_GUIDE_SLUG,
   INSTRUCTION_COMPARISON_GUIDE_SLUG,
   LOOP_ENGINEERING_GUIDE_SLUG,
@@ -22,6 +23,10 @@ vi.mock("next/router", () => ({
 }));
 
 const approvedGuidePlacements = [
+  [CLAUDE_CODE_ALTERNATIVES_GUIDE_SLUG, "codex-vs-claude-code"],
+  [CLAUDE_CODE_ALTERNATIVES_GUIDE_SLUG, CODING_AGENT_COMPARISON_GUIDE_SLUG],
+  [CODING_AGENT_COMPARISON_GUIDE_SLUG, CLAUDE_CODE_ALTERNATIVES_GUIDE_SLUG],
+  ["codex-vs-claude-code", CLAUDE_CODE_ALTERNATIVES_GUIDE_SLUG],
   [CODING_AGENT_COMPARISON_GUIDE_SLUG, "codex-vs-claude-code"],
   [CODING_AGENT_COMPARISON_GUIDE_SLUG, "codex-vs-github-copilot"],
   ["codex-vs-claude-code", CODING_AGENT_COMPARISON_GUIDE_SLUG],
@@ -194,7 +199,7 @@ describe("contextual internal links", () => {
     expect(centers!.textContent).toMatch(/Advanced page:/);
 
     const hrefs = expectValidUniqueGuideLinks(centers!, "guides-index", validHrefs);
-    expect(hrefs).toHaveLength(15);
+    expect(hrefs).toHaveLength(16);
     expect(hrefs).toEqual(
       expect.arrayContaining([
         `guides-index::${INSTRUCTION_COMPARISON_GUIDE_SLUG}`,
@@ -211,6 +216,7 @@ describe("contextual internal links", () => {
         "guides-index::local-vs-cloud-ai-coding-agent",
         "guides-index::antigravity-cli-gemini-cli-migration",
         `guides-index::${CODING_AGENT_COMPARISON_GUIDE_SLUG}`,
+        `guides-index::${CLAUDE_CODE_ALTERNATIVES_GUIDE_SLUG}`,
         "guides-index::codex-vs-github-copilot",
       ]),
     );
@@ -257,7 +263,7 @@ describe("contextual internal links", () => {
       ...homepagePlacements,
       ...guidesIndexPlacements,
     ];
-    expect(actualRequiredPlacements).toHaveLength(approvedGuidePlacements.length + 8);
+    expect(actualRequiredPlacements).toHaveLength(approvedGuidePlacements.length + 10);
     expect(new Set(actualRequiredPlacements).size).toBe(actualRequiredPlacements.length);
 
     for (const guide of guides) {

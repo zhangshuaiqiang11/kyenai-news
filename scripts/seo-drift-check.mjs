@@ -38,6 +38,11 @@ const pageContracts = [
     h1Includes: "AI Coding Agents Comparison",
   },
   {
+    path: "/guides/claude-code-alternatives",
+    titleIncludes: "7 Claude Code Alternatives",
+    h1Includes: "7 Claude Code Alternatives",
+  },
+  {
     path: "/guides/loop-engineering-ai-coding-agents",
     titleIncludes: "What Is Loop Engineering?",
     h1Includes: "What Is Loop Engineering for AI Coding Agents?",
