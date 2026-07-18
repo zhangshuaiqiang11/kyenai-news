@@ -107,6 +107,28 @@ const guideFaqsBySlug: Record<string, FaqItem[]> = {
         "Engineering leaders, security reviewers, platform teams, and developer tooling owners who can inventory the server owner, methods, credentials, deployment environment, and rollback plan before rollout.",
     },
   ],
+  "mcp-server-not-showing-tools": [
+    {
+      question: "Why is my MCP server connected but showing zero tools?",
+      answer:
+        "A connected state proves the transport reached the server, not that initialization completed or tools/list returned definitions. Open the same server in MCP Inspector. If its Tools tab is empty, fix capability negotiation, tool registration, tools/list, or invalid schemas. If Inspector lists tools, check the target client's scope, authentication, enabled-tool filters, and refresh behavior.",
+    },
+    {
+      question: "How do I test MCP tools/list?",
+      answer:
+        "Connect the server with the official MCP Inspector and open its Tools tab. Confirm the expected names, descriptions, and input schemas appear, then run one safe test call. This gives client-independent proof before you troubleshoot Claude Code, Cursor, GitHub Copilot, or another client's policy and loading behavior.",
+    },
+    {
+      question: "Why is an MCP tool visible but never called?",
+      answer:
+        "That is usually a selection, loading, permission, or schema problem rather than discovery failure. Use an explicit request that clearly requires the tool, check whether the client defers tools through tool search, review the description and required schema fields, and confirm the invocation is allowed in the current agent and workspace.",
+    },
+    {
+      question: "Should an MCP stdio server write logs to stdout?",
+      answer:
+        "No. For a stdio MCP server, stdout carries protocol messages, so debug output can corrupt JSON-RPC framing. Send diagnostic logs to stderr, run the exact configured command with the same environment, and use absolute paths when the client may launch from a different working directory.",
+    },
+  ],
   "claude-code-hooks-mcp-setup": [
     {
       question: "When should you use Claude Code hooks instead of MCP?",

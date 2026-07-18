@@ -23,6 +23,11 @@ const pageContracts = [
     h1Includes: "MCP Server Security Checklist: 25 Controls",
   },
   {
+    path: "/guides/mcp-server-not-showing-tools",
+    titleIncludes: "MCP Server Not Showing Tools? 8 Checks",
+    h1Includes: "MCP Server Not Showing Tools? Diagnose tools/list in 8 Checks",
+  },
+  {
     path: "/guides/codex-vs-claude-code",
     titleIncludes: "Codex vs Claude Code",
     h1Includes: "Codex vs Claude Code",

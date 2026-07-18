@@ -3,6 +3,7 @@ import { expansionGuides } from "./guide-expansion";
 import {
   INSTRUCTION_COMPARISON_GUIDE_SLUG,
   MCP_SECURITY_GUIDE_SLUG,
+  MCP_TOOL_DISCOVERY_GUIDE_SLUG,
 } from "./guide-routes";
 
 const coreGuides: Guide[] = [
@@ -607,6 +608,11 @@ const coreGuides: Guide[] = [
     ],
     internalLinks: [
       {
+        slug: "mcp-server-not-showing-tools",
+        anchor: "MCP server not showing tools troubleshooting guide",
+        reason: "Use the diagnostic fault tree when a configured Claude Code MCP server is missing tools or exposes zero tools.",
+      },
+      {
         slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
         anchor: "repository instruction file comparison",
         reason: "Decide what belongs in CLAUDE.md before moving repeatable actions into hooks or MCP tools.",
@@ -827,6 +833,11 @@ const coreGuides: Guide[] = [
     ],
     internalLinks: [
       {
+        slug: "mcp-server-not-showing-tools",
+        anchor: "MCP tool discovery debugger",
+        reason: "Prove tools are discovered and enabled before applying production security controls to their use.",
+      },
+      {
         slug: "claude-code-hooks-mcp-setup",
         anchor: "Claude Code hooks and MCP setup",
         reason: "The setup page explains where MCP belongs in the broader Claude Code control map.",
@@ -887,6 +898,217 @@ const coreGuides: Guide[] = [
     metaDescription:
       "Audit MCP server security across authentication, permissions, prompt injection, secrets, logging, sandboxing, and revocation. Download PDF, CSV, or JSON.",
     resourceIds: ["mcp-security"],
+  },
+  {
+    id: "guide-mcp-tool-discovery",
+    title: "MCP Server Not Showing Tools? Diagnose tools/list in 8 Checks",
+    slug: MCP_TOOL_DISCOVERY_GUIDE_SLUG,
+    summary:
+      "Fix an MCP server that is missing, connected with zero tools, stale, filtered, or visible but never called across Claude Code, Cursor, GitHub Copilot, and other clients.",
+    intent:
+      "Diagnose why an MCP server is not showing tools and identify the first failing layer without widening permissions or reinstalling everything.",
+    audience: "Developers, MCP server authors, platform teams, and AI coding tool administrators.",
+    pageType: "Interactive MCP troubleshooting guide",
+    secondaryKeywords: [
+      "MCP server not showing tools",
+      "MCP tools not appearing",
+      "MCP tools/list debugging",
+      "Claude Code MCP zero tools",
+      "Cursor MCP tools missing",
+      "GitHub Copilot MCP tools",
+    ],
+    sections: [
+      {
+        heading: "Quick answer",
+        body: [
+          "If an MCP server is not showing tools, do not start by reinstalling the client. Prove each layer in order: confirm the client loaded the server config, reproduce the process or HTTP transport, complete initialization, and inspect tools/list in MCP Inspector. If Inspector lists the tools, the server works and the remaining fault is usually client scope, authentication, a tool allowlist or denylist, stale discovery, or on-demand tool loading. A visible tool that is never called is a selection or permission problem, not a discovery problem.",
+        ],
+      },
+      {
+        heading: "Connected with zero tools has a specific meaning",
+        body: [
+          "A connected state proves only that the client reached the server. It does not prove the server completed capability negotiation or returned a non-empty tool list. Claude Code's official MCP documentation explicitly distinguishes a server that advertises the tools capability but exposes no tools, and its /mcp panel shows the tool count beside each server.",
+          "Use MCP Inspector as the client-independent boundary. Its Tools tab lists tool names, descriptions, and schemas and can invoke them with test inputs. If that view is empty, fix the server implementation or registration. If it is populated, move to the target client's filters, scope, authentication, cache, and session behavior.",
+        ],
+      },
+      {
+        heading: "Test initialize before blaming tools/list",
+        body: [
+          "MCP tool discovery happens after the protocol initialization exchange. Verify the negotiated protocol version, the server's declared capabilities, and the initialized notification before investigating tool schemas. A transport that opens and then fails initialization can look like an empty tool catalog in a client UI.",
+          "For local stdio servers, run the exact configured command with the same arguments and environment. Use absolute paths where the working directory may differ, and write diagnostics to stderr because stdout is reserved for protocol messages. For Streamable HTTP, inspect authentication, response status, session headers, and server-side logs.",
+        ],
+      },
+      {
+        heading: "Separate discovery, loading, and invocation",
+        body: [
+          "Discovery asks whether tools/list returns valid tool definitions. Loading asks whether the client makes those definitions available in the current workspace, agent, and session. Invocation asks whether the model selects an available tool and receives permission to call it. Each layer has different proof and a different fix.",
+          "Claude Code and GitHub Copilot can load tools on demand to reduce context use. That means a tool may not be expanded into the model context until a matching task triggers tool search. Check the client status and tool policy before treating deferred loading as server failure.",
+        ],
+      },
+      {
+        heading: "Client-specific checks after Inspector passes",
+        body: [
+          "In Claude Code, use /mcp to inspect connection state, authentication, and tool count. Project-scoped configuration may require approval, duplicate names can resolve by scope precedence, and tool search can defer definitions. In GitHub Copilot CLI, inspect /mcp or copilot mcp get, then check enabled-tool filters and any custom-agent tool policy.",
+          "In Cursor or another MCP client, use the MCP settings and logs exposed by the installed version, then compare that client view with the same server in Inspector. Product interfaces and policy controls change, so retain the client version and a sanitized status capture in the bug report instead of assuming one universal menu path.",
+        ],
+      },
+      {
+        heading: "What evidence to collect before filing a bug",
+        body: [
+          "Record the client and server versions, transport, operating system, active config scope, exact symptom, expected tool names, initialization result, tools/list result, enabled-tool policy, and sanitized logs. Remove credentials, tokens, private URLs, and sensitive payloads before sharing any record.",
+          "The downloadable worksheet on this page follows the same eight-layer order as the debugger. Attach the first failing check and its observable output; a report that says only 'tools are missing' forces maintainers to repeat every layer.",
+        ],
+      },
+    ],
+    recommendedPlay: [
+      "Use MCP Inspector first when the server connects but exposes zero tools; it separates server discovery from client behavior.",
+      "Keep discovery, client loading, and model invocation as three different states with separate pass conditions.",
+      "Change only the first failing layer, then rerun the same proof before modifying permissions or unrelated configuration.",
+    ],
+    decisionTable: {
+      title: "MCP missing-tools symptom map",
+      intro: "Start at the row that matches the observable symptom, then move only after its pass condition is proven.",
+      columns: ["Likely layer", "First proof", "Do not confuse with"],
+      rows: [
+        {
+          label: "Server absent from status",
+          values: ["Config load or scope", "Server name appears in the active client status view", "A tools/list implementation bug"],
+        },
+        {
+          label: "Configured but disconnected",
+          values: ["Process, transport, auth, or initialization", "Exact command stays alive or HTTP connection initializes", "A model tool-selection problem"],
+        },
+        {
+          label: "Connected with 0 tools",
+          values: ["Capability negotiation or tools/list", "Inspector Tools tab returns expected definitions", "Write permission or prompt wording"],
+        },
+        {
+          label: "Inspector passes, client empty",
+          values: ["Client scope, authentication, or tool filter", "Tool is enabled for the current workspace and agent", "A server reinstall"],
+        },
+        {
+          label: "Tool visible but unused",
+          values: ["Deferred loading, description, schema, prompt, or approval", "Explicit matching request selects and invokes the tool", "A discovery failure"],
+        },
+      ],
+    },
+    actionSteps: [
+      {
+        title: "Capture the exact state",
+        body: "Record whether the server is absent, disconnected, connected with zero tools, populated only in Inspector, stale after a change, or visible but never called.",
+      },
+      {
+        title: "Prove process and initialization",
+        body: "Reproduce the exact transport, inspect initialization and declared capabilities, and eliminate stdout noise for local stdio servers.",
+      },
+      {
+        title: "Inspect tools/list independently",
+        body: "Connect MCP Inspector to the same server and verify expected names, descriptions, input schemas, and one safe test invocation.",
+      },
+      {
+        title: "Audit client policy",
+        body: "Check authentication, configuration precedence, workspace scope, enabled tools, allowlists, denylists, custom-agent policy, and on-demand loading.",
+      },
+      {
+        title: "Retest one changed layer",
+        body: "Reconnect or reload as required, repeat the original proof, and retain sanitized evidence for the server and client versions tested.",
+      },
+    ],
+    pitfalls: [
+      {
+        title: "Reinstalling before finding the failing layer",
+        fix: "A reinstall changes many variables without proving the cause. Test config, transport, initialize, and tools/list in order.",
+      },
+      {
+        title: "Writing debug logs to stdout",
+        fix: "For stdio servers, keep stdout exclusively for protocol traffic and send diagnostic logs to stderr.",
+      },
+      {
+        title: "Treating a tool that is not called as a missing tool",
+        fix: "First prove the tool is visible. Then check deferred loading, prompt fit, description, schema, permission, and invocation separately.",
+      },
+      {
+        title: "Widening every tool permission",
+        fix: "Enable only the expected tool in the required scope. A broad allow-all rule hides policy mistakes and increases risk.",
+      },
+    ],
+    internalLinks: [
+      {
+        slug: "secure-mcp-servers-ai-coding-agents",
+        anchor: "MCP server security checklist",
+        reason: "After discovery works, review each visible tool's authentication, permissions, data access, logs, and revocation path.",
+      },
+      {
+        slug: "claude-code-hooks-mcp-setup",
+        anchor: "Claude Code hooks and MCP setup",
+        reason: "Use the control map to decide whether the failing capability belongs in MCP, a hook, or a reusable skill.",
+      },
+      {
+        slug: "agent-governance-checklist-for-software-teams",
+        anchor: "AI agent governance checklist",
+        reason: "Tool inventory, ownership, audit evidence, and approval boundaries belong in the wider governance process.",
+      },
+      {
+        slug: "loop-engineering-ai-coding-agents",
+        anchor: "loop engineering verification workflow",
+        reason: "Turn each diagnostic layer into an observable pass or stop condition for repeatable agent operations.",
+      },
+    ],
+    checklist: [
+      "Record the exact missing-tools symptom before changing configuration.",
+      "Confirm the active config source, scope, server name, command or URL, and authentication state.",
+      "Run the exact stdio command or inspect the Streamable HTTP connection and server logs.",
+      "Verify initialization, protocol version, declared tools capability, and initialized notification.",
+      "Inspect tools/list in MCP Inspector and validate names, descriptions, and input schemas.",
+      "Check client allowlists, denylists, enabled-tool filters, workspace scope, and custom-agent policy.",
+      "Reconnect or reload after changes and verify dynamic list-change behavior where applicable.",
+      "Test one explicit, safe request that clearly matches the expected tool.",
+      "Redact credentials, tokens, private URLs, and sensitive payloads from shared evidence.",
+    ],
+    evidence: [
+      {
+        title: "MCP Inspector",
+        url: "https://modelcontextprotocol.io/docs/tools/inspector",
+        publisher: "MCP",
+        note: "Official client-independent tool for inspecting server connections, capabilities, tools, schemas, calls, and notifications.",
+        verifiedAt: "2026-07-19",
+      },
+      {
+        title: "MCP debugging guide",
+        url: "https://modelcontextprotocol.io/docs/tools/debugging",
+        publisher: "MCP",
+        note: "Official guidance for stdio logging, paths, environment variables, initialization, transport debugging, and client logs.",
+        verifiedAt: "2026-07-19",
+      },
+      {
+        title: "MCP tools specification",
+        url: "https://modelcontextprotocol.io/specification/draft/server/tools",
+        publisher: "MCP",
+        note: "Defines tool discovery, tools/list, tool schemas, and list-change capability behavior.",
+        verifiedAt: "2026-07-19",
+      },
+      {
+        title: "Connect Claude Code to tools via MCP",
+        url: "https://code.claude.com/docs/en/mcp",
+        publisher: "Anthropic",
+        note: "Documents /mcp status, tool count, scope precedence, dynamic updates, reconnection, authentication, and Tool Search.",
+        verifiedAt: "2026-07-19",
+      },
+      {
+        title: "MCP server debugging guide",
+        url: "https://docs.github.com/en/copilot/how-tos/copilot-sdk/troubleshooting/mcp-debugging",
+        publisher: "GitHub",
+        note: "Official debugging guidance for server startup, enabled tools, initialize, tools/list, schemas, timeouts, and stdout framing.",
+        verifiedAt: "2026-07-19",
+      },
+    ],
+    relatedArticleSlugs: ["visual-studio-agent-mode-mcp-general-availability"],
+    publishedAt: "2026-07-19",
+    updatedAt: "2026-07-19",
+    metaTitle: "MCP Server Not Showing Tools? 8 Checks That Fix It",
+    metaDescription:
+      "Fix missing MCP tools by checking config, transport, initialize, tools/list, client filters, refresh behavior, and invocation. Includes a debugger.",
+    resourceIds: ["mcp-tool-discovery"],
   },
   {
     id: "guide-antigravity-cli-migration",

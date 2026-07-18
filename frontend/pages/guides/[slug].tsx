@@ -66,9 +66,14 @@ const bestNextStepsByGuideSlug: Record<string, { href: string; label: string; no
     note: "Choose the tool surface first, then keep one canonical repository policy and audit every adapter.",
   },
   "secure-mcp-servers-ai-coding-agents": {
-    href: "/guides/loop-engineering-ai-coding-agents",
-    label: "Scope MCP tools before running unattended agent loops",
-    note: "MCP access inside loops needs auth, permissions, logs, revocation, and stop rules.",
+    href: "/guides/mcp-server-not-showing-tools",
+    label: "Diagnose an MCP server that connects but exposes no tools",
+    note: "Prove configuration, transport, initialization, tools/list, client policy, and refresh behavior before widening permissions.",
+  },
+  "mcp-server-not-showing-tools": {
+    href: "/guides/secure-mcp-servers-ai-coding-agents",
+    label: "Apply least-privilege controls after tool discovery works",
+    note: "A visible tool is not automatically a safe tool; review authentication, permissions, secrets, logging, and revocation before rollout.",
   },
 };
 
@@ -128,6 +133,19 @@ const McpSecurityResources = dynamic(
   () =>
     import("../../components/McpSecurityControls").then(
       ({ McpSecurityControls }) => McpSecurityControls,
+    ),
+  { ssr: true },
+);
+
+export const loadMcpToolDiscoveryResources = () =>
+  import("../../components/McpToolDiscoveryDebugger").then(
+    ({ McpToolDiscoveryDebugger }) => McpToolDiscoveryDebugger,
+  );
+
+const McpToolDiscoveryResourcePanel = dynamic(
+  () =>
+    import("../../components/McpToolDiscoveryDebugger").then(
+      ({ McpToolDiscoveryDebugger }) => McpToolDiscoveryDebugger,
     ),
   { ssr: true },
 );
@@ -204,6 +222,10 @@ function GuideResources({ guide }: { guide: Guide }) {
 
   if (guide.resourceIds?.includes("mcp-security")) {
     return <McpSecurityResources />;
+  }
+
+  if (guide.resourceIds?.includes("mcp-tool-discovery")) {
+    return <McpToolDiscoveryResourcePanel />;
   }
 
   if (guide.resourceIds?.includes("loop-engineering")) {

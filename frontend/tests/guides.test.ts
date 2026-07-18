@@ -56,11 +56,12 @@ describe("guide SEO data", () => {
     const guides = getGuides();
     const slugs = guides.map((guide) => guide.slug);
 
-    expect(guides).toHaveLength(17);
+    expect(guides).toHaveLength(18);
     expect(slugs).toContain("agents-md-vs-claude-md-cursorrules-copilot-instructions");
     expect(slugs).toContain("claude-code-subagents-examples");
     expect(slugs).toContain("claude-code-hooks-mcp-setup");
     expect(slugs).toContain("secure-mcp-servers-ai-coding-agents");
+    expect(slugs).toContain("mcp-server-not-showing-tools");
     expect(slugs).toContain("antigravity-cli-gemini-cli-migration");
     expect(slugs).toContain("codex-vs-claude-code");
     expect(slugs).toContain("agents-md-template-for-ai-coding-agents");
@@ -86,7 +87,7 @@ describe("guide SEO data", () => {
     );
 
     expect(new Set(slugs).size).toBe(slugs.length);
-    expect(primaryKeywords).toHaveLength(17);
+    expect(primaryKeywords).toHaveLength(18);
     expect(primaryKeywords.every(Boolean)).toBe(true);
     expect(new Set(primaryKeywords).size).toBe(primaryKeywords.length);
   });

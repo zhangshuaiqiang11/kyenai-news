@@ -10,6 +10,7 @@ const pageContracts = [
   ["/guides/agents-md-template-for-ai-coding-agents", "AGENTS.md Template for Codex", "AGENTS.md Template for Codex and Monorepos"],
   ["/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions", "AGENTS.md vs CLAUDE.md vs Copilot Instructions", "AGENTS.md vs CLAUDE.md vs Copilot Instructions"],
   ["/guides/secure-mcp-servers-ai-coding-agents", "MCP Server Security Checklist: 25 Controls", "MCP Server Security Checklist: 25 Controls"],
+  ["/guides/mcp-server-not-showing-tools", "MCP Server Not Showing Tools? 8 Checks", "MCP Server Not Showing Tools? Diagnose tools/list in 8 Checks"],
   ["/guides/codex-vs-claude-code", "Codex vs Claude Code", "Codex vs Claude Code"],
   ["/guides/codex-vs-github-copilot", "Codex vs GitHub Copilot", "Codex vs GitHub Copilot"],
   ["/guides/ai-coding-agents-comparison", "AI Coding Agent Comparison", "AI Coding Agents Comparison"],
@@ -80,7 +81,7 @@ test("SEO drift check passes the known-good contract", async (t) => {
   const result = await runCheck(`http://127.0.0.1:${address.port}`);
   assert.equal(result.code, 0, result.stderr || result.stdout);
   const report = JSON.parse(result.stdout);
-  assert.equal(report.pagesChecked, 16);
+  assert.equal(report.pagesChecked, 17);
   assert.equal(report.failures, 0);
 });
 

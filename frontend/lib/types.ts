@@ -142,6 +142,7 @@ export type GuideResourceId =
   | "coding-agent-comparison"
   | "claude-code-alternatives"
   | "loop-engineering"
+  | "mcp-tool-discovery"
   | "instruction-adoption-report";
 
 export type Guide = {

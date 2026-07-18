@@ -77,6 +77,22 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
     },
     emergencyPriority: 80,
   },
+  "mcp-server-not-showing-tools": {
+    priority: "P0",
+    primaryKeyword: "MCP server not showing tools",
+    demandScore: 8.4,
+    attackabilityScore: 9.2,
+    fitScore: 9.7,
+    gscWatchQueries: [
+      "mcp server not showing tools",
+      "mcp tools not appearing",
+      "mcp server connected but no tools",
+      "mcp tools list debugging",
+      "claude code mcp zero tools",
+      "cursor mcp tools missing",
+      "github copilot mcp tools missing",
+    ],
+  },
   "antigravity-cli-gemini-cli-migration": {
     priority: "P1",
     primaryKeyword: "Antigravity CLI migration from Gemini CLI",

@@ -199,6 +199,16 @@ export function buildGuideGraphJsonLd(guide: Guide, breadcrumbItems: BreadcrumbI
     );
   }
 
+  if (guide.resourceIds?.includes("mcp-tool-discovery")) {
+    nodes.push(
+      buildWebApplicationJsonLd({
+        title: "MCP Tool Discovery Debugger",
+        description: "Diagnose why an MCP server or tool is missing, connected with zero tools, stale, filtered, or visible but never called.",
+        path: `/guides/${guide.slug}`,
+      }),
+    );
+  }
+
   if (guide.resourceIds?.includes("agents-md-template")) {
     nodes.push(
       buildWebApplicationJsonLd({

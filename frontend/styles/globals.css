@@ -2162,6 +2162,81 @@ dd {
   margin-bottom: 4px;
 }
 
+.mcp-debugger-fields {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 2fr 1fr 1fr;
+  margin-top: 20px;
+}
+
+.mcp-debugger-fields label {
+  color: #3f4750;
+  display: grid;
+  font-size: 13px;
+  font-weight: 850;
+  gap: 7px;
+}
+
+.mcp-debugger-fields select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--ink);
+  font: inherit;
+  min-height: 46px;
+  padding: 9px 12px;
+  width: 100%;
+}
+
+.mcp-debugger-fields select:focus-visible {
+  outline: 3px solid #5fb8b2;
+  outline-offset: 2px;
+}
+
+.mcp-debugger-result {
+  background: #e8f4f3;
+  border-left: 4px solid var(--teal);
+  border-radius: 7px;
+  margin-top: 20px;
+  padding: 18px;
+}
+
+.mcp-debugger-result h3,
+.mcp-debugger-result dl,
+.mcp-debugger-result dd {
+  margin: 0;
+}
+
+.mcp-debugger-result dl {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.mcp-debugger-result dl div {
+  border-top: 1px solid rgba(23, 60, 58, 0.16);
+  padding-top: 10px;
+}
+
+.mcp-debugger-result dt {
+  color: var(--teal-dark);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mcp-debugger-result dd {
+  line-height: 1.55;
+  margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+  .mcp-debugger-fields {
+    grid-template-columns: 1fr;
+  }
+}
+
 .instruction-table-scroll tbody th small {
   color: var(--muted);
   display: block;
