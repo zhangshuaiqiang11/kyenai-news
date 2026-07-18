@@ -2,6 +2,7 @@ import type { Article } from "../types";
 
 const sourceIds = {
   sec: "src-spacex-cursor-sec-8k",
+  cursor: "src-cursor-grok-4-5",
   reuters: "src-spacex-cursor-reuters",
   axios: "src-spacex-cursor-axios",
   ft: "src-spacex-cursor-ft",
@@ -9,16 +10,18 @@ const sourceIds = {
 
 export const spacexCursorAcquisitionArticle: Article = {
   id: "article-spacex-cursor-acquisition",
-  title: "SpaceX Cursor Acquisition: Deal Status, Timeline, and Developer Impact",
+  title: "Did SpaceX Buy Cursor? $60B Deal Status and Timeline",
   slug: "spacex-cursor-acquisition-2026",
   summary:
-    "SpaceX signed a $60 billion all-stock agreement to acquire Cursor maker Anysphere. The deal is not closed yet; here is the status, expected Q3 2026 timeline, and what developers should watch.",
+    "SpaceX signed a $60 billion all-stock agreement to acquire Cursor maker Anysphere, but the deal is not closed yet. Track the verified status, Q3 2026 timeline, and what Cursor users should review.",
   category: "AI Coding Agents",
   tags: ["spacex", "cursor", "anysphere", "acquisition", "ai-coding-market"],
   authorName: "Editorial Automation Desk",
   status: "published",
   keywords: [
     "SpaceX Cursor acquisition",
+    "did SpaceX buy Cursor",
+    "is Cursor owned by SpaceX",
     "Anysphere acquisition",
     "Cursor acquisition 2026",
     "AI coding market",
@@ -69,6 +72,19 @@ export const spacexCursorAcquisitionArticle: Article = {
       sourceIds: [sourceIds.sec, sourceIds.reuters, sourceIds.axios],
     },
     {
+      id: "post-signing-update-heading",
+      type: "heading",
+      content: "What Changed After the Agreement Was Signed",
+      sourceIds: [sourceIds.cursor, sourceIds.sec],
+    },
+    {
+      id: "post-signing-update-body",
+      type: "paragraph",
+      content:
+        "On July 8, Cursor released Grok 4.5 and said it had trained the model jointly with SpaceXAI using a broad mix that included Cursor developer-agent interaction data. That is a material product-development milestone and evidence that the collaboration is active. It is not evidence that the legal merger has closed: ownership transfers only when the merger conditions are satisfied and a closing occurs. The product announcement also does not establish that every customer input is used for training; teams should rely on the terms, data-use controls, and contracts that apply to their own account.",
+      sourceIds: [sourceIds.cursor, sourceIds.sec],
+    },
+    {
       id: "what-buying-heading",
       type: "heading",
       content: "What SpaceX Is Actually Buying",
@@ -105,14 +121,14 @@ export const spacexCursorAcquisitionArticle: Article = {
       id: "user-impact-heading",
       type: "heading",
       content: "What the Agreement Means for Cursor Users",
-      sourceIds: [sourceIds.reuters],
+      sourceIds: [sourceIds.sec, sourceIds.cursor, sourceIds.reuters],
     },
     {
       id: "user-impact-body",
       type: "paragraph",
       content:
         "The signed agreement does not by itself prove that Cursor pricing, model choice, privacy terms, or product behavior will change immediately. The clearest strategic direction is deeper cooperation around coding models and Grok, but the practical user questions remain open: whether Cursor stays model-flexible, how enterprise data boundaries are handled, which infrastructure powers future releases, and whether product priorities shift toward the wider SpaceX and xAI ecosystem. Teams should treat the acquisition as a change-of-control signal and review contracts, data-processing terms, export options, and model dependencies before making long-term platform commitments.",
-      sourceIds: [sourceIds.reuters],
+      sourceIds: [sourceIds.sec, sourceIds.cursor, sourceIds.reuters],
     },
     {
       id: "kyenai-view-heading",
@@ -169,6 +185,13 @@ export const spacexCursorAcquisitionArticle: Article = {
       sourceIds: [sourceIds.sec, sourceIds.reuters, sourceIds.axios, sourceIds.ft],
     },
     {
+      id: "faq-owner",
+      type: "faq",
+      content:
+        "Does SpaceX own Cursor now?\nNot on the evidence cited here. SpaceX signed an agreement to acquire Anysphere, but the June 16 Form 8-K says the merger remains subject to closing conditions. Product collaboration with SpaceXAI does not by itself prove that legal ownership has transferred.",
+      sourceIds: [sourceIds.sec, sourceIds.cursor],
+    },
+    {
       id: "faq-price",
       type: "faq",
       content:
@@ -193,8 +216,8 @@ export const spacexCursorAcquisitionArticle: Article = {
       id: "source-boundary",
       type: "source_note",
       content:
-        "Evidence boundary: the confirmed facts on this page are the signed $60 billion all-stock merger agreement, the earlier acquisition option, and the expected Q3 2026 closing window. Product-roadmap, data-governance, and competitive implications are explicitly presented as analysis. Sources include SpaceX's Form 8-K, Reuters, Axios, and the Financial Times, all published or filed on June 16, 2026.",
-      sourceIds: [sourceIds.sec, sourceIds.reuters, sourceIds.axios, sourceIds.ft],
+        "Evidence boundary: the confirmed transaction facts are the signed $60 billion all-stock merger agreement, the earlier acquisition option, and the expected Q3 2026 closing window. Cursor's July 8 Grok 4.5 announcement confirms active product collaboration with SpaceXAI, not legal closing. Product-roadmap, data-governance, pricing, and ownership implications beyond those records remain unconfirmed or are explicitly presented as analysis.",
+      sourceIds: [sourceIds.sec, sourceIds.cursor, sourceIds.reuters, sourceIds.axios, sourceIds.ft],
     },
   ],
   sources: [
@@ -204,6 +227,14 @@ export const spacexCursorAcquisitionArticle: Article = {
       url: "https://www.sec.gov/Archives/edgar/data/1181412/000162828026043411/spaceexplorationtechnologi.htm",
       publisher: "SEC",
       publishedAt: "2026-06-16",
+      credibility: 5,
+    },
+    {
+      id: sourceIds.cursor,
+      title: "Introducing Grok 4.5",
+      url: "https://cursor.com/blog/grok-4-5",
+      publisher: "Cursor",
+      publishedAt: "2026-07-08",
       credibility: 5,
     },
     {
@@ -232,11 +263,11 @@ export const spacexCursorAcquisitionArticle: Article = {
     },
   ],
   publishedAt: "2026-06-16T10:35:00Z",
-  updatedAt: "2026-06-25",
-  version: 3,
-  metaTitle: "SpaceX Cursor Acquisition Status: Is the Anysphere Deal Closed?",
+  updatedAt: "2026-07-19",
+  version: 4,
+  metaTitle: "Did SpaceX Buy Cursor? $60B Deal Status & Timeline",
   metaDescription:
-    "SpaceX Cursor acquisition status: signed $60B all-stock Anysphere deal, not closed yet, Q3 2026 timeline, and what Cursor users should watch.",
+    "Did SpaceX buy Cursor? SpaceX signed a $60B Anysphere merger agreement, but the deal is not closed. See its status, Q3 timeline, and user checklist.",
 };
 
 export const featuredArticles: Article[] = [spacexCursorAcquisitionArticle];

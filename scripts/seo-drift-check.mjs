@@ -62,6 +62,11 @@ const pageContracts = [
     titleIncludes: "Source & Verification Ledger",
     h1Includes: "Source & Verification Ledger",
   },
+  {
+    path: "/articles/spacex-cursor-acquisition-2026",
+    titleIncludes: "Did SpaceX Buy Cursor? $60B Deal Status & Timeline",
+    h1Includes: "Did SpaceX Buy Cursor? $60B Deal Status and Timeline",
+  },
 ];
 
 function readOption(name, fallback) {

@@ -1,4 +1,5 @@
 import { EDITORIAL_AUTHOR_NAME } from "./editorial";
+import { spacexCursorDealResource } from "./spacex-cursor-deal-resource";
 import type { Article, ArticleSummary, Guide } from "./types";
 import { getArticleEntities } from "./entities";
 
@@ -82,7 +83,7 @@ export function buildMetaDescription(article: Article): string {
 
 export function buildArticleJsonLd(article: Article) {
   const canonical = buildCanonicalUrl(`/articles/${article.slug}`);
-  return {
+  const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": article.category === "Security & Governance" ? "TechArticle" : "NewsArticle",
     "@id": `${canonical}#article`,
@@ -128,6 +129,10 @@ export function buildArticleJsonLd(article: Article) {
       },
     })),
   };
+
+  return article.slug === "spacex-cursor-acquisition-2026"
+    ? { ...articleJsonLd, hasPart: { "@id": `${canonical}#deal-status-dataset` } }
+    : articleJsonLd;
 }
 
 export function buildGuideJsonLd(guide: Guide) {
@@ -252,13 +257,66 @@ export function buildGuideGraphJsonLd(guide: Guide, breadcrumbItems: BreadcrumbI
 }
 
 export function buildArticleGraphJsonLd(article: Article, breadcrumbItems: BreadcrumbItem[], faqs: FaqItem[]) {
-  return buildJsonLdGraph([
+  const nodes: JsonLdNode[] = [
     buildOrganizationJsonLd(false),
     buildWebsiteJsonLd(false),
     buildArticleJsonLd(article),
     buildBreadcrumbJsonLd(breadcrumbItems, false),
     buildFaqPageJsonLd(faqs, false),
-  ]);
+  ];
+
+  if (article.slug === "spacex-cursor-acquisition-2026") {
+    nodes.push(buildSpacexCursorDealDatasetJsonLd(article));
+  }
+
+  return buildJsonLdGraph(nodes);
+}
+
+export function buildSpacexCursorDealDatasetJsonLd(article: Article) {
+  const canonical = buildCanonicalUrl(`/articles/${article.slug}`);
+  const resource = spacexCursorDealResource;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "@id": `${canonical}#deal-status-dataset`,
+    name: "SpaceX-Cursor Acquisition Status and Evidence Timeline",
+    description:
+      "A dated, source-linked record separating the signed SpaceX-Anysphere merger agreement, product collaboration, and legal closing status.",
+    url: canonical,
+    datePublished: article.publishedAt,
+    dateModified: resource.verifiedAt,
+    temporalCoverage: `${resource.announcedAt}/${resource.verifiedAt}`,
+    creator: { "@id": ORGANIZATION_ID },
+    publisher: { "@id": ORGANIZATION_ID },
+    isAccessibleForFree: true,
+    measurementTechnique:
+      "Manual verification against the SpaceX Form 8-K, filed merger agreement, and dated Cursor product announcement",
+    variableMeasured: [
+      "Agreement status",
+      "Closing status",
+      "Expected closing window",
+      "Transaction consideration",
+      "Product collaboration milestones",
+    ],
+    isBasedOn: [
+      resource.officialFilingUrl,
+      resource.mergerAgreementUrl,
+      resource.cursorUpdateUrl,
+    ],
+    distribution: [
+      {
+        "@type": "DataDownload",
+        encodingFormat: "application/json",
+        contentUrl: buildCanonicalUrl(resource.downloads.json),
+      },
+      {
+        "@type": "DataDownload",
+        encodingFormat: "text/csv",
+        contentUrl: buildCanonicalUrl(resource.downloads.csv),
+      },
+    ],
+  };
 }
 
 export function buildGuideFaqs(guide: Guide): FaqItem[] {

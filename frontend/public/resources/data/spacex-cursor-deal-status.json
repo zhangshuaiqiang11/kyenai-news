@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "title": "SpaceX-Cursor acquisition status",
+  "as_of": "2026-07-19",
+  "status": "signed_not_closed",
+  "status_label": "Definitive agreement signed; closing still pending",
+  "agreement_signed": "2026-06-16",
+  "buyer": "SpaceX",
+  "target": "Anysphere, maker of Cursor",
+  "implied_equity_value_usd": 60000000000,
+  "consideration": "SpaceX Class A common stock",
+  "expected_closing_window": "Third quarter of 2026",
+  "closing_conditions": [
+    "Required regulatory approvals",
+    "Other conditions in the merger agreement"
+  ],
+  "confirmed": [
+    "SpaceX, X67 Inc., and Anysphere signed a definitive merger agreement.",
+    "The transaction has an implied Anysphere equity value of $60 billion.",
+    "The cited SEC filing describes closing as subject to conditions."
+  ],
+  "not_confirmed": [
+    "Exact closing date",
+    "Post-closing Cursor pricing changes",
+    "Post-closing model exclusivity",
+    "Post-closing data-use or contract changes"
+  ],
+  "primary_sources": [
+    {
+      "title": "Space Exploration Technologies Corp. Form 8-K",
+      "published_at": "2026-06-16",
+      "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026043411/spaceexplorationtechnologi.htm"
+    },
+    {
+      "title": "Agreement and Plan of Merger",
+      "published_at": "2026-06-16",
+      "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026043411/exhibit101-8xk.htm"
+    },
+    {
+      "title": "Introducing Grok 4.5",
+      "published_at": "2026-07-08",
+      "url": "https://cursor.com/blog/grok-4-5"
+    }
+  ],
+  "methodology": "KyenAI separates signed-agreement evidence, product-collaboration evidence, and a legal closing event. A product announcement is not treated as proof of closing.",
+  "page_url": "https://www.kyenai.com/articles/spacex-cursor-acquisition-2026"
+}

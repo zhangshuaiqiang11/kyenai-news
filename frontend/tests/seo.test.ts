@@ -367,7 +367,7 @@ describe("SEO helpers", () => {
     const dataset = graph["@graph"].find((node) => node["@type"] === "Dataset");
 
     expect(dataset).toBeDefined();
-    expect(dataset.distribution).toHaveLength(2);
+    expect(dataset?.distribution).toHaveLength(2);
     expect(JSON.stringify(dataset)).toContain("instruction-file-adoption-report-2026-q3.csv");
     expect(JSON.stringify(dataset)).toContain("instruction-file-adoption-report-2026-q3.json");
   });

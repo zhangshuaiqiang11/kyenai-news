@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import { SourceList } from "../../components/SourceList";
+import { SpacexCursorDealTracker } from "../../components/SpacexCursorDealTracker";
 import { getArticle, getArticles } from "../../lib/api";
 import { getVisibleArticleFaqs } from "../../lib/article-faqs";
 import { getRelatedGuidesForArticle } from "../../lib/article-guide-links";
@@ -75,6 +76,7 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
             <div><dt>Source Date</dt><dd>{primarySource ? formatDate(primarySource.publishedAt) : "Not available"}</dd></div>
           </dl>
         </section>
+        {article.slug === "spacex-cursor-acquisition-2026" ? <SpacexCursorDealTracker /> : null}
         <div className="article-content-grid">
           <div className="article-body">
             {article.blocks.map((block) => (

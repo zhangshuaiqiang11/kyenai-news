@@ -1,4 +1,6 @@
 /** @vitest-environment jsdom */
+import fs from "node:fs";
+import path from "node:path";
 import React from "react";
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -9,7 +11,7 @@ import { getRelatedGuidesForArticle } from "../lib/article-guide-links";
 import { mergeFeaturedArticles } from "../lib/api";
 import { spacexCursorAcquisitionArticle } from "../lib/articles/spacex-cursor-acquisition";
 import { buildSitemapEntries } from "../lib/sitemap";
-import { buildArticleJsonLd, buildFaqPageJsonLd, countArticleWords } from "../lib/seo";
+import { buildArticleGraphJsonLd, buildArticleJsonLd, buildFaqPageJsonLd, countArticleWords } from "../lib/seo";
 import { seedArticles } from "../lib/seed";
 
 (globalThis as typeof globalThis & { React: typeof React }).React = React;
@@ -34,6 +36,7 @@ describe("SpaceX Cursor acquisition article", () => {
     expect(article.publishedAt).toContain("2026-06-16");
     expect(article.sources.map((source) => source.publisher)).toEqual([
       "SEC",
+      "Cursor",
       "Reuters",
       "Axios",
       "Financial Times",
@@ -50,10 +53,10 @@ describe("SpaceX Cursor acquisition article", () => {
     const faqs = getVisibleArticleFaqs(spacexCursorAcquisitionArticle);
     const faqJsonLd = buildFaqPageJsonLd(faqs);
 
-    expect(faqs).toHaveLength(5);
+    expect(faqs).toHaveLength(6);
     expect(faqs[0].question).toBe("Has SpaceX completed its acquisition of Cursor?");
     expect(faqs[0].answer).toMatch(/still pending closing/i);
-    expect(faqJsonLd.mainEntity).toHaveLength(5);
+    expect(faqJsonLd.mainEntity).toHaveLength(6);
     expect(faqJsonLd.mainEntity[0].acceptedAnswer.text).toBe(faqs[0].answer);
   });
 
@@ -69,6 +72,26 @@ describe("SpaceX Cursor acquisition article", () => {
     expect(articleJsonLd.url).toBe(
       "https://www.kyenai.com/articles/spacex-cursor-acquisition-2026",
     );
+    expect(articleJsonLd).toMatchObject({
+      hasPart: {
+        "@id": "https://www.kyenai.com/articles/spacex-cursor-acquisition-2026#deal-status-dataset",
+      },
+    });
+  });
+
+  it("adds a source-linked Dataset node for the status and timeline downloads", () => {
+    const article = spacexCursorAcquisitionArticle;
+    const graph = buildArticleGraphJsonLd(article, [
+      { name: "Home", path: "/" },
+      { name: article.category, path: "/categories/ai-coding-agents" },
+      { name: article.title, path: `/articles/${article.slug}` },
+    ], getVisibleArticleFaqs(article));
+    const dataset = graph["@graph"].find((node) => node["@type"] === "Dataset");
+
+    expect(dataset).toBeDefined();
+    expect(dataset?.distribution).toHaveLength(2);
+    expect(JSON.stringify(dataset)).toContain("spacex-cursor-deal-status.json");
+    expect(JSON.stringify(dataset)).toContain("spacex-cursor-deal-timeline.csv");
   });
 
   it("merges the article into public collections without creating duplicates", () => {
@@ -117,6 +140,14 @@ describe("SpaceX Cursor acquisition article", () => {
 
     expect(screen.getByRole("heading", { name: spacexCursorAcquisitionArticle.title })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /deal status: signed, not yet closed/i })).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 2, name: /current spacex-cursor deal status/i })).toBeTruthy();
+    expect(screen.getByText(/product collaboration is evidence of collaboration/i)).toBeTruthy();
+    expect(screen.getByRole("link", { name: /download status json/i }).getAttribute("href")).toBe(
+      "/resources/data/spacex-cursor-deal-status.json",
+    );
+    expect(screen.getByRole("link", { name: /download team checklist/i }).getAttribute("href")).toBe(
+      "/resources/cursor-change-of-control-review.md",
+    );
     expect(screen.getByRole("heading", { name: /kyenai view/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /questions this update answers/i })).toBeTruthy();
     expect(screen.getAllByText("Has SpaceX completed its acquisition of Cursor?")).toHaveLength(1);
@@ -145,5 +176,30 @@ describe("SpaceX Cursor acquisition article", () => {
     expect(
       within(citationGroups[0]).getAllByRole("link").map((link) => link.getAttribute("href")),
     ).toEqual(cursorArticle.sources.map((source) => source.url));
+  });
+
+  it("keeps the public status resources aligned with the visible verification record", () => {
+    const resourcesDir = fs.existsSync(path.resolve("public/resources"))
+      ? path.resolve("public/resources")
+      : path.resolve("frontend/public/resources");
+    const status = JSON.parse(
+      fs.readFileSync(path.join(resourcesDir, "data/spacex-cursor-deal-status.json"), "utf8"),
+    );
+    const timeline = fs
+      .readFileSync(path.join(resourcesDir, "data/spacex-cursor-deal-timeline.csv"), "utf8")
+      .trim()
+      .split("\n");
+    const checklist = fs.readFileSync(
+      path.join(resourcesDir, "cursor-change-of-control-review.md"),
+      "utf8",
+    );
+
+    expect(status.as_of).toBe("2026-07-19");
+    expect(status.status).toBe("signed_not_closed");
+    expect(status.page_url).toContain(spacexCursorAcquisitionArticle.slug);
+    expect(timeline).toHaveLength(5);
+    expect(timeline[0]).toBe("date,event,status,evidence_url");
+    expect(checklist).toContain("Closing publicly confirmed");
+    expect(checklist).toContain("not legal advice");
   });
 });

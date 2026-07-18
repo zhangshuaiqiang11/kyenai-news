@@ -45,8 +45,8 @@
   Markdown: https://www.kyenai.com/guides/claude-code-hooks-mcp-setup.md
 
 ## Priority evidence articles
-- [SpaceX Cursor Acquisition: Deal Status, Timeline, and Developer Impact](https://www.kyenai.com/articles/spacex-cursor-acquisition-2026)
-  SpaceX signed a $60 billion all-stock agreement to acquire Cursor maker Anysphere. The deal is not closed yet; here is the status, expected Q3 2026 timeline, and what developers should watch. Last substantively updated: 2026-06-25.
+- [Did SpaceX Buy Cursor? $60B Deal Status and Timeline](https://www.kyenai.com/articles/spacex-cursor-acquisition-2026)
+  SpaceX signed a $60 billion all-stock agreement to acquire Cursor maker Anysphere, but the deal is not closed yet. Track the verified status, Q3 2026 timeline, and what Cursor users should review. Last substantively updated: 2026-07-19.
 - [Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions](https://www.kyenai.com/articles/cursor-enterprise-organizations-governance)
   Cursor Enterprise security depends on organization controls, Privacy Mode, model-provider retention limits, repo allowlists, MCP controls, and agent permissions. Last substantively updated: 2026-07-14T00:00:00Z.
 
