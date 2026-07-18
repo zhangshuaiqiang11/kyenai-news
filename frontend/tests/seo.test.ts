@@ -357,7 +357,7 @@ describe("SEO helpers", () => {
     expect(JSON.stringify(graph)).toContain("Claude Code Alternatives Selector");
   });
 
-  it("adds Dataset schema and two downloads for the instruction adoption report", () => {
+  it("adds a versioned Dataset schema and two data downloads for the instruction adoption report", () => {
     const guide = getGuides().find((candidate) => candidate.slug === "ai-coding-agent-instruction-file-adoption-report-2026")!;
     const graph = buildGuideGraphJsonLd(guide, [
       { name: "Home", path: "/" },
@@ -367,6 +367,9 @@ describe("SEO helpers", () => {
     const dataset = graph["@graph"].find((node) => node["@type"] === "Dataset");
 
     expect(dataset).toBeDefined();
+    expect(dataset?.identifier).toBe("https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026");
+    expect(dataset?.version).toBe("2026-Q3");
+    expect(dataset?.keywords).toContain("AGENTS.md adoption");
     expect(dataset?.distribution).toHaveLength(2);
     expect(JSON.stringify(dataset)).toContain("instruction-file-adoption-report-2026-q3.csv");
     expect(JSON.stringify(dataset)).toContain("instruction-file-adoption-report-2026-q3.json");

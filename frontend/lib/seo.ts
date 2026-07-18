@@ -518,6 +518,15 @@ export function buildInstructionAdoptionDatasetJsonLd(guide: Guide) {
     name: "AI Coding Agent Instruction File Adoption Report — Q3 2026",
     description: "Public GitHub code-search snapshot and 400-file content sample covering AGENTS.md, CLAUDE.md, Copilot instructions, and Cursor rules.",
     url: canonical,
+    identifier: canonical,
+    version: "2026-Q3",
+    keywords: [
+      "AGENTS.md adoption",
+      "CLAUDE.md adoption",
+      "GitHub Copilot instructions",
+      "Cursor rules",
+      "AI coding agent instruction files",
+    ],
     datePublished: guide.publishedAt,
     dateModified: guide.updatedAt,
     temporalCoverage: "2026-07-19",
@@ -536,11 +545,13 @@ export function buildInstructionAdoptionDatasetJsonLd(guide: Guide) {
     distribution: [
       {
         "@type": "DataDownload",
+        name: "AI coding agent instruction-file sample (CSV)",
         encodingFormat: "text/csv",
         contentUrl: buildCanonicalUrl("/resources/data/instruction-file-adoption-report-2026-q3.csv"),
       },
       {
         "@type": "DataDownload",
+        name: "AI coding agent instruction-file report and methodology (JSON)",
         encodingFormat: "application/json",
         contentUrl: buildCanonicalUrl("/resources/data/instruction-file-adoption-report-2026-q3.json"),
       },

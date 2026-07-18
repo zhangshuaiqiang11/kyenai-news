@@ -20,6 +20,17 @@ describe("InstructionAdoptionReport", () => {
     expect(screen.getByRole("link", { name: /Download JSON/i }).getAttribute("href")).toBe(
       "/resources/data/instruction-file-adoption-report-2026-q3.json",
     );
+    expect(screen.getByText(/this release has no DOI/i)).toBeTruthy();
+    expect(screen.getByText(/Preferred citation/i)).toBeTruthy();
+    expect(screen.getByRole("link", { name: /Download BibTeX/i }).getAttribute("href")).toBe(
+      "/resources/data/instruction-file-adoption-report-2026-q3-citation.bib",
+    );
+    expect(screen.getByRole("link", { name: /Download manifest/i }).getAttribute("href")).toBe(
+      "/resources/data/instruction-file-adoption-report-2026-q3-manifest.json",
+    );
+    expect(screen.getByRole("link", { name: /Verify SHA-256/i }).getAttribute("href")).toBe(
+      "/resources/data/instruction-file-adoption-report-2026-q3-sha256.txt",
+    );
   });
 
   it("renders all four query rows and methodology limitations", () => {

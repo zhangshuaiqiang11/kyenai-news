@@ -2100,6 +2100,30 @@ dd {
   line-height: 1.55;
 }
 
+.adoption-citation-card {
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  margin: 20px 0 0;
+  padding: 18px;
+}
+
+.adoption-citation-card blockquote {
+  color: #173c3a;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.adoption-citation-card figcaption {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
 .mcp-download-links {
   display: flex;
   flex-wrap: wrap;

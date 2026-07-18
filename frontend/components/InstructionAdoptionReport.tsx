@@ -3,6 +3,8 @@ import React from "react";
 import report from "../lib/data/instruction-file-adoption-report-2026-q3.json";
 
 const number = new Intl.NumberFormat("en-US");
+const dataBase = "/resources/data/instruction-file-adoption-report-2026-q3";
+const preferredCitation = "KyenAI. (2026). AI Coding Agent Instruction File Adoption Report — Q3 2026 (Version 2026-Q3) [Data set]. https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026";
 
 function githubSearchUrl(query: string) {
   return `https://github.com/search?q=${encodeURIComponent(query)}&type=code`;
@@ -31,8 +33,30 @@ export function InstructionAdoptionReport() {
           </p>
         </div>
         <div className="mcp-download-links" aria-label="Download the instruction-file adoption report data">
-          <a href="/resources/data/instruction-file-adoption-report-2026-q3.csv" download>Download raw CSV</a>
-          <a href="/resources/data/instruction-file-adoption-report-2026-q3.json" download>Download JSON + methodology</a>
+          <a href={`${dataBase}.csv`} download>Download raw CSV</a>
+          <a href={`${dataBase}.json`} download>Download JSON + methodology</a>
+        </div>
+      </section>
+
+      <section className="instruction-resource-section" aria-labelledby="adoption-citation-heading">
+        <div className="instruction-resource-heading">
+          <div>
+            <p className="instruction-resource-eyebrow">Stable citation · version 2026-Q3</p>
+            <h2 id="adoption-citation-heading">Cite, verify, and reproduce this dataset</h2>
+          </div>
+          <p>Use the canonical report URL as the identifier; this release has no DOI.</p>
+        </div>
+        <figure className="adoption-citation-card">
+          <blockquote>{preferredCitation}</blockquote>
+          <figcaption>Preferred citation; keep the snapshot date and best-match sampling limitation with quoted percentages.</figcaption>
+        </figure>
+        <div className="mcp-download-links" aria-label="Download citation and reproducibility files">
+          <a href={`${dataBase}-citation.bib`} download>Download BibTeX</a>
+          <a href={`${dataBase}-citation.cff`} download>Download Citation CFF</a>
+          <a href={`${dataBase}-methodology.md`} download>Read reproducibility notes</a>
+          <a href={`${dataBase}-manifest.json`} download>Download manifest</a>
+          <a href={`${dataBase}-sha256.txt`} download>Verify SHA-256</a>
+          <a href={`${dataBase}-generator.mjs`} download>Download generator</a>
         </div>
       </section>
 
@@ -117,7 +141,7 @@ export function InstructionAdoptionReport() {
         <ol className="adoption-method-list">
           <li>Ran the four displayed queries through the GitHub REST code-search endpoint on {report.snapshotDate}.</li>
           <li>Kept the first {report.methodology.sampleSizePerQuery} best-match files per query and counted unique repositories inside each sample.</li>
-          <li>Fetched public file text and repository metadata, then detected explicit command and policy patterns with the published generator.</li>
+          <li>Fetched public file text and repository metadata, then detected explicit command and policy patterns with the <a href={`${dataBase}-generator.mjs`} download>published generator</a>.</li>
           <li>Deduplicated only exact repository/path pairs within a query; one repository may appear in different query samples.</li>
         </ol>
         <ul className="adoption-limitations">

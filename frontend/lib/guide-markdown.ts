@@ -34,6 +34,26 @@ export function buildGuideMarkdown(guide: Guide): string {
 
   lines.push("## Use this guide to", "", guide.intent, "");
 
+  if (guide.resourceIds?.includes("instruction-adoption-report")) {
+    const dataBase = "https://www.kyenai.com/resources/data/instruction-file-adoption-report-2026-q3";
+    lines.push("## Dataset citation and verification", "");
+    lines.push(
+      "Preferred citation: KyenAI. (2026). AI Coding Agent Instruction File Adoption Report — Q3 2026 (Version 2026-Q3) [Data set]. https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026",
+      "",
+      "This release has no DOI. Preserve the snapshot date and best-match sampling limitation when citing percentages.",
+      "",
+      `- [Raw CSV](${dataBase}.csv)`,
+      `- [JSON and methodology](${dataBase}.json)`,
+      `- [BibTeX citation](${dataBase}-citation.bib)`,
+      `- [Citation CFF](${dataBase}-citation.cff)`,
+      `- [Reproducibility notes](${dataBase}-methodology.md)`,
+      `- [Version and checksum manifest](${dataBase}-manifest.json)`,
+      `- [SHA-256 checksums](${dataBase}-sha256.txt)`,
+      `- [Published generator](${dataBase}-generator.mjs)`,
+      "",
+    );
+  }
+
   lines.push("## Recommended play", "");
   guide.recommendedPlay.forEach((item, index) => {
     lines.push(`${index + 1}. ${item}`);

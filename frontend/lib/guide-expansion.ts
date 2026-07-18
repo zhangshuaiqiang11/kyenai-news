@@ -2105,11 +2105,19 @@ export const expansionGuides: Guide[] = [
           "For research or citation, download the JSON to preserve the query totals, methodology, summaries, limitations, and raw rows together. Use the CSV when you need repository URLs and detected signals for independent analysis. Always cite the snapshot date and the best-match sampling limitation next to any percentage.",
         ],
       },
+      {
+        heading: "How to cite and verify this release",
+        body: [
+          "Preferred citation: KyenAI. (2026). AI Coding Agent Instruction File Adoption Report — Q3 2026 (Version 2026-Q3) [Data set]. https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026",
+          "This release has no DOI, so use the canonical report URL as its stable identifier. Download the BibTeX or Citation CFF record for a reference manager; use the manifest and SHA-256 file to verify the JSON, CSV, and published generator before analysis or redistribution.",
+        ],
+      },
     ],
     recommendedPlay: [
       "Treat GitHub match totals as file counts, never as unique-repository adoption rates.",
       "Use the sample gaps as an audit checklist for setup, tests, completion, scope, and safety.",
       "Download the JSON when citing results so the date, query, denominator, and limitations remain attached.",
+      "Use the versioned citation record and verify core artifacts against the published SHA-256 checksums.",
       "Repeat the generator on a later date to measure search-index change with the same method.",
     ],
     decisionTable: {

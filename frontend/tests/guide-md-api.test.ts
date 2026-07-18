@@ -58,4 +58,22 @@ describe("guide Markdown API", () => {
     expect(response.statusCode).toBe(405);
     expect(response.headers.get("allow")).toBe("GET, HEAD");
   });
+
+  it("exposes citation and integrity links in the adoption report Markdown", () => {
+    const response = createResponse();
+    handler(
+      {
+        method: "GET",
+        query: { slug: "ai-coding-agent-instruction-file-adoption-report-2026" },
+      } as never,
+      response as never,
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toContain("## Dataset citation and verification");
+    expect(response.body).toContain("This release has no DOI");
+    expect(response.body).toContain("instruction-file-adoption-report-2026-q3-citation.bib");
+    expect(response.body).toContain("instruction-file-adoption-report-2026-q3-sha256.txt");
+    expect(response.body).toContain("instruction-file-adoption-report-2026-q3-generator.mjs");
+  });
 });

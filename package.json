@@ -14,6 +14,7 @@
     "generate:mcp-pdf": "uv run scripts/generate_mcp_security_pdf.py",
     "generate:mcp-assets": "npm run generate:mcp-data && npm run generate:mcp-pdf",
     "generate:adoption-report": "bash scripts/run-node-script.sh scripts/generate-github-instruction-adoption.mjs",
+    "generate:adoption-assets": "bash scripts/run-node-script.sh scripts/generate-instruction-adoption-assets.mjs",
     "generate:llms": "npm run generate:llms --prefix frontend",
     "audit:resources": "bash scripts/run-node-script.sh --experimental-strip-types --test scripts/resource-generation.test.mjs",
     "test:scripts": "bash scripts/run-node-script.sh --test scripts/*.test.mjs",
