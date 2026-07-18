@@ -12,6 +12,7 @@ import { generateInstructionAdoptionAssets } from "./generate-instruction-adopti
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const inputDirectory = join(repoRoot, "frontend", "public", "resources", "data");
 const generatorPath = join(repoRoot, "scripts", "generate-github-instruction-adoption.mjs");
+const repositoryCitationPath = join(repoRoot, "CITATION.cff");
 const stem = "instruction-file-adoption-report-2026-q3";
 
 function sha256(pathname) {
@@ -50,5 +51,15 @@ describe("instruction adoption citation assets", () => {
     } finally {
       rmSync(outputDirectory, { recursive: true, force: true });
     }
+  });
+
+  it("keeps the repository citation entry tied to the same bounded dataset release", () => {
+    const repositoryCitation = readFileSync(repositoryCitationPath, "utf8");
+
+    assert.match(repositoryCitation, /^cff-version: 1\.2\.0/m);
+    assert.match(repositoryCitation, /^type: dataset/m);
+    assert.match(repositoryCitation, /^version: "2026-Q3"/m);
+    assert.match(repositoryCitation, /instruction-file-adoption-report-2026/);
+    assert.match(repositoryCitation, /dataset or generator in this repository/);
   });
 });
