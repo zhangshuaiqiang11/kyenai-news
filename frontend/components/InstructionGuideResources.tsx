@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { BenchmarkPanel } from "./BenchmarkPanel";
 import { InstructionCompatibilityMatrix } from "./InstructionCompatibilityMatrix";
+import { InstructionFileEvidenceSnapshot } from "./InstructionFileEvidenceSnapshot";
 import { InstructionScopeGuide } from "./InstructionScopeGuide";
 import { RepositoryTree } from "./RepositoryTree";
 import { TemplateDownloads } from "./TemplateDownloads";
@@ -23,6 +24,7 @@ export function InstructionGuideResources() {
           <strong>Evidence refresh:</strong> GitHub&apos;s current support matrix includes Copilot CLI agent-file support, while Claude Code documents <code>@AGENTS.md</code> as an import from <code>CLAUDE.md</code>. Verified July 14, 2026.
         </p>
       </section>
+      <InstructionFileEvidenceSnapshot />
       <InstructionCompatibilityMatrix />
       <InstructionScopeGuide />
       <RepositoryTree />

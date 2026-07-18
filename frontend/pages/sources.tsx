@@ -12,7 +12,7 @@ export type SourcesPageProps = { sources: SourceLedgerEntry[] };
 export default function SourcesPage({ sources }: SourcesPageProps) {
   const coverage = getSourceLedgerCoverage(sources);
   const description =
-    "Verify the official documentation, announcements, primary records, standards, and reporting used by KyenAI guides and articles, with review dates, status, and page-level usage.";
+    "Verify the official documentation, announcements, primary records, research, standards, and reporting used by KyenAI guides and articles, with review dates, status, and page-level usage.";
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: "Home", path: "/" },
     { name: "Source Ledger", path: "/sources" },
@@ -64,7 +64,7 @@ export default function SourcesPage({ sources }: SourcesPageProps) {
           <div>
             <p className="instruction-resource-eyebrow">Evidence coverage</p>
             <h2 id="ledger-summary-heading">One ledger for guides and articles</h2>
-            <p>Product documentation is scheduled for review every 14 days; announcements and independent reporting every 30 days; standards and primary records every 90 days.</p>
+            <p>Product documentation is scheduled for review every 14 days; announcements and independent reporting every 30 days; standards, research, and primary records every 90 days.</p>
           </div>
           <dl>
             <div><dt>Sources</dt><dd>{coverage.sources}</dd></div>
@@ -79,9 +79,10 @@ export default function SourcesPage({ sources }: SourcesPageProps) {
         <section className="answer-panel methodology-panel" aria-labelledby="source-ledger-method-heading">
           <h2 id="source-ledger-method-heading">How to read the ledger</h2>
           <p>
-            High confidence means an official publisher or standards body owns the source. Medium confidence marks
-            independent reporting that still needs direct attribution. “Last checked” comes from the substantive
-            update date of the page using the source. “Next review” is KyenAI’s editorial schedule, not the source’s
+            High confidence means an official publisher, primary record, or standards body owns the source. Medium confidence marks
+            independent reporting or preprint research that still needs direct attribution. “Last checked” uses a source-level
+            verification date when one is recorded; older entries fall back to the substantive update date of the page using the source.
+            “Next review” is KyenAI’s editorial schedule, not the source’s
             expiration date. A source remains visible if it is later superseded so readers can audit historical claims.
           </p>
         </section>

@@ -78,6 +78,7 @@ export type GuideEvidence = {
   url: string;
   publisher: string;
   note: string;
+  verifiedAt?: string;
 };
 
 export type GuideInternalLink = {

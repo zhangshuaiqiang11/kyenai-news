@@ -105,7 +105,7 @@ describe("guide SEO data", () => {
     expect(guide).toBeDefined();
     expect(guide).toMatchObject({
       slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
-      updatedAt: "2026-07-14",
+      updatedAt: "2026-07-19",
       resourceIds: ["instruction-files"],
     });
     expect(guide!.metaTitle.length).toBeGreaterThanOrEqual(25);
@@ -148,11 +148,13 @@ describe("guide SEO data", () => {
 
     expect(guide!.evidence.map((source) => source.url)).toEqual([
       "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+      "https://agents.md/",
       "https://code.claude.com/docs/en/memory",
       "https://docs.github.com/en/copilot/reference/custom-instructions-support",
       "https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions",
       "https://docs.cursor.com/context/rules-for-ai",
       "https://docs.cursor.com/en/cli/using",
+      "https://arxiv.org/abs/2606.15828",
     ]);
 
     const internalSlugs = guide!.internalLinks.map((link) => link.slug);

@@ -4,6 +4,7 @@ export type SourceLedgerType =
   | "Official documentation"
   | "Official announcement"
   | "Primary filing or record"
+  | "Research paper or preprint"
   | "Standards or methodology"
   | "Independent reporting";
 
@@ -58,6 +59,8 @@ const STANDARDS_PUBLISHERS = new Set(["AGENTS.md", "MCP", "NIST", "OWASP", "Mode
 
 const PRIMARY_RECORD_PUBLISHERS = new Set(["SEC"]);
 
+const RESEARCH_PUBLISHERS = new Set(["arXiv"]);
+
 const DOCUMENTATION_HINT = /\b(api|cli|documentation|docs|guide|help|manual|overview|reference|security|specification|support)\b/i;
 
 export function buildSourceLedger(
@@ -95,7 +98,7 @@ export function buildSourceLedger(
         slug: guide.slug,
         title: guide.title,
         passages: null,
-        verifiedAt: toDateOnly(guide.updatedAt),
+        verifiedAt: toDateOnly(source.verifiedAt || guide.updatedAt),
         note: source.note,
       };
       mergeSource(entries, source, usage, asOfDate);
@@ -141,7 +144,7 @@ function mergeSource(
       url,
       publisher: source.publisher,
       sourceType,
-      confidence: sourceType === "Independent reporting" ? "Medium" : "High",
+      confidence: sourceType === "Independent reporting" || sourceType === "Research paper or preprint" ? "Medium" : "High",
       publishedAt: source.publishedAt || null,
       lastVerifiedAt: usage.verifiedAt,
       nextReviewAt: addDays(usage.verifiedAt, reviewCadenceDays),
@@ -184,6 +187,7 @@ function finalizeSourceEntry(entry: SourceLedgerEntry, asOfDate: string): Source
 
 function classifySource(publisher: string, title: string, url: string): SourceLedgerType {
   if (PRIMARY_RECORD_PUBLISHERS.has(publisher)) return "Primary filing or record";
+  if (RESEARCH_PUBLISHERS.has(publisher)) return "Research paper or preprint";
   if (STANDARDS_PUBLISHERS.has(publisher)) return "Standards or methodology";
   if (!OFFICIAL_PUBLISHERS.has(publisher)) return "Independent reporting";
   if (DOCUMENTATION_HINT.test(title) || /\/(docs|documentation|help|reference|security)(\/|$)/i.test(url)) {
@@ -194,7 +198,11 @@ function classifySource(publisher: string, title: string, url: string): SourceLe
 
 function reviewCadenceFor(sourceType: SourceLedgerType): number {
   if (sourceType === "Official documentation") return 14;
-  if (sourceType === "Standards or methodology" || sourceType === "Primary filing or record") return 90;
+  if (
+    sourceType === "Standards or methodology" ||
+    sourceType === "Primary filing or record" ||
+    sourceType === "Research paper or preprint"
+  ) return 90;
   return 30;
 }
 

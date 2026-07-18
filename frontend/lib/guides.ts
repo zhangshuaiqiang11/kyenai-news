@@ -18,6 +18,7 @@ const coreGuides: Guide[] = [
     pageType: "Evidence-backed compatibility guide",
     secondaryKeywords: [
       "AGENTS.md vs CLAUDE.md",
+      "AGENTS.md open standard",
       "GitHub Copilot CLAUDE.md support",
       ".github/copilot-instructions.md",
       ".cursor/rules MDC migration",
@@ -27,13 +28,13 @@ const coreGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "CLAUDE.md vs Copilot Instructions is a surface question, not a universal filename rule. Use AGENTS.md for Codex, CLAUDE.md for Claude Code, .github/copilot-instructions.md for broad GitHub Copilot repository guidance, and .cursor/rules/*.mdc for current Cursor project rules. GitHub Copilot support for CLAUDE.md depends on the Copilot surface: selected cloud-agent surfaces and Copilot CLI support it, while many Copilot Chat and code-review surfaces do not, so Copilot instructions remain the safer baseline.",
+          "AGENTS.md vs CLAUDE.md is a reader-support question, not a choice between interchangeable filenames. Use AGENTS.md for Codex and as an open shared policy for other documented readers; use CLAUDE.md for Claude Code, where it can import @AGENTS.md; use .github/copilot-instructions.md for broad GitHub Copilot repository guidance; and use .cursor/rules/*.mdc for current Cursor project rules. GitHub Copilot support for CLAUDE.md depends on the Copilot surface: selected cloud-agent surfaces and Copilot CLI support it, while many Copilot Chat and code-review surfaces do not. No single filename is a universal baseline across every agent surface.",
         ],
       },
       {
         heading: "Which instruction file should each tool use?",
         body: [
-          "Choose the file by the tool that must read it, not by the wording you prefer. Codex documents AGENTS.md for repository instructions. Claude Code documents CLAUDE.md as project memory. GitHub documents .github/copilot-instructions.md as the broad repository-wide Copilot instructions file. Cursor documents project rules under .cursor/rules/*.mdc.",
+          "Choose the file by the tool that must read it, not by the wording you prefer. The official AGENTS.md project describes an open format used across a growing coding-agent ecosystem, while each product still documents its own discovery behavior. Codex documents AGENTS.md for repository instructions. Claude Code documents CLAUDE.md as project memory. GitHub documents .github/copilot-instructions.md as the broad repository-wide Copilot instructions file. Cursor documents project rules under .cursor/rules/*.mdc.",
           "A repository can keep the same policy language synchronized across those files, but no single filename is the universal reader for all four tools. Treat each file as a small adapter for the surface that actually loads it.",
         ],
       },
@@ -47,8 +48,15 @@ const coreGuides: Guide[] = [
       {
         heading: "CLAUDE.md vs AGENTS.md: What Is the Difference?",
         body: [
-          "AGENTS.md is the documented repository instruction file for Codex, including directory-scoped guidance and precedence. CLAUDE.md is the documented project memory file for Claude Code. The files can say similar things, but they are read by different tools and have different scope rules.",
-          "Use AGENTS.md for Codex-specific commands, allowed edits, verification, and nested package instructions. Use CLAUDE.md for Claude Code memory, workflows, and project context. Keep shared facts synchronized, but do not assume Claude Code will use Codex precedence or Codex will read Claude-specific memory behavior.",
+          "AGENTS.md is a simple open Markdown format for coding-agent instructions and is the documented repository instruction file for Codex, including directory-scoped guidance and precedence. The official AGENTS.md project says the format is used by more than 60,000 open-source projects and is stewarded by the Agentic AI Foundation under the Linux Foundation. CLAUDE.md is the documented project memory file for Claude Code.",
+          "Use AGENTS.md as a shared baseline only for tools and surfaces that document loading it. Use CLAUDE.md for Claude Code memory, workflows, and project context; when appropriate, a short CLAUDE.md can import @AGENTS.md. Keep shared facts synchronized, but do not assume every tool implements the same discovery order, nesting, or precedence.",
+        ],
+      },
+      {
+        heading: "What Do Public AGENTS.md and CLAUDE.md Files Commonly Miss?",
+        body: [
+          "KyenAI's July 19 GitHub snapshot analyzed 100 readable best-match AGENTS.md files and 100 readable best-match CLAUDE.md files. The detector found no explicit security or approval rule in 68% of the AGENTS.md sample and 62% of the CLAUDE.md sample. It found no verification or completion criteria in 53% and 58%, respectively. These percentages describe the non-random samples, not all repositories.",
+          "A separate June 2026 preprint analyzed 100 popular repositories and cataloged six instruction-file configuration smells. It reported lint leakage in 62% of files, context bloat in 42%, and skill leakage in 35%. The study uses different sampling and definitions from KyenAI's dataset, so treat the results as complementary warnings rather than numbers to combine.",
         ],
       },
       {
@@ -130,9 +138,9 @@ const coreGuides: Guide[] = [
         {
           label: "AGENTS.md",
           values: [
-            "Codex repository instructions; root project instructions in Cursor IDE and CLI",
-            "Codex supports nested precedence; cited Cursor support is root-level and does not inherit Codex nesting behavior",
-            "Use it as a readable shared root policy, but keep tool-specific scope rules where behavior differs",
+            "Open cross-agent instruction format; Codex repository instructions; root project instructions in Cursor IDE and CLI",
+            "Support is tool- and surface-specific; Codex supports nested precedence while cited Cursor support is root-level and does not inherit Codex nesting behavior",
+            "Use it as a shared policy only where the reader documents support, and keep thin tool-specific adapters where behavior differs",
           ],
         },
         {
@@ -277,41 +285,61 @@ const coreGuides: Guide[] = [
         url: "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
         publisher: "OpenAI",
         note: "Documents Codex instruction discovery, precedence, scope, and fallback filenames.",
+        verifiedAt: "2026-07-14",
+      },
+      {
+        title: "AGENTS.md open format and supported-agent ecosystem",
+        url: "https://agents.md/",
+        publisher: "AGENTS.md",
+        note: "Describes the open format, supported-agent ecosystem, 60,000-plus open-source project usage statement, nested guidance, and AAIF stewardship.",
+        verifiedAt: "2026-07-19",
       },
       {
         title: "Claude Code memory documentation",
         url: "https://code.claude.com/docs/en/memory",
         publisher: "Anthropic",
         note: "Documents CLAUDE.md loading, scoped project memory, imports such as @AGENTS.md, and symlink options.",
+        verifiedAt: "2026-07-14",
       },
       {
         title: "GitHub Copilot custom instructions support matrix",
         url: "https://docs.github.com/en/copilot/reference/custom-instructions-support",
         publisher: "GitHub",
         note: "Lists instruction-file support by Copilot surface, including surface-specific CLAUDE.md support.",
+        verifiedAt: "2026-07-14",
       },
       {
         title: "Adding custom instructions for GitHub Copilot",
         url: "https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions",
         publisher: "GitHub",
         note: "Documents repository-wide and path-specific Copilot instruction files.",
+        verifiedAt: "2026-07-14",
       },
       {
         title: "Cursor rules documentation",
         url: "https://docs.cursor.com/context/rules-for-ai",
         publisher: "Cursor",
         note: "Documents project rules, root AGENTS.md support, and the legacy/deprecated .cursorrules status.",
+        verifiedAt: "2026-07-14",
       },
       {
         title: "Cursor CLI instruction-file support",
         url: "https://docs.cursor.com/en/cli/using",
         publisher: "Cursor",
         note: "Documents Cursor CLI loading root AGENTS.md and CLAUDE.md alongside .cursor/rules.",
+        verifiedAt: "2026-07-14",
+      },
+      {
+        title: "Configuration Smells in AGENTS.md Files",
+        url: "https://arxiv.org/abs/2606.15828",
+        publisher: "arXiv",
+        note: "June 2026 preprint that catalogs six instruction-file configuration smells across 100 popular repositories and reports their observed prevalence.",
+        verifiedAt: "2026-07-19",
       },
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
     publishedAt: "2026-06-14",
-    updatedAt: "2026-07-14",
+    updatedAt: "2026-07-19",
     metaTitle: "AGENTS.md vs CLAUDE.md vs Copilot Instructions",
     metaDescription:
       "Compare CLAUDE.md, .github/copilot-instructions.md, AGENTS.md, and Cursor rules by tool surface, scope, and safe sync policy.",

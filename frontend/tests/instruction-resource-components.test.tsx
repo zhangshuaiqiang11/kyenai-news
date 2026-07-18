@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it } from "vitest";
 
 import { BenchmarkPanel } from "../components/BenchmarkPanel";
 import { InstructionCompatibilityMatrix } from "../components/InstructionCompatibilityMatrix";
+import { InstructionFileEvidenceSnapshot } from "../components/InstructionFileEvidenceSnapshot";
 import { InstructionScopeGuide } from "../components/InstructionScopeGuide";
 import { RepositoryTree } from "../components/RepositoryTree";
 import { TemplateDownloads } from "../components/TemplateDownloads";
@@ -19,6 +20,22 @@ import {
 afterEach(cleanup);
 
 describe("instruction resource components", () => {
+  it("puts the original AGENTS.md and CLAUDE.md evidence on the comparison page", () => {
+    render(<InstructionFileEvidenceSnapshot />);
+
+    expect(screen.getByRole("heading", { name: /what public agents\.md and claude\.md files actually contain/i })).toBeTruthy();
+    expect(screen.getByText("158,592")).toBeTruthy();
+    expect(screen.getByText("46,772")).toBeTruthy();
+    expect(screen.getAllByText("100 readable best matches")).toHaveLength(2);
+    expect(screen.getByRole("note", { name: /instruction file evidence takeaway/i }).textContent)
+      .toMatch(/choose by reader support/i);
+    expect(screen.getByRole("link", { name: /full adoption report and methodology/i }).getAttribute("href"))
+      .toBe("/guides/ai-coding-agent-instruction-file-adoption-report-2026");
+    expect(screen.getByRole("link", { name: /configuration-smells preprint/i }).getAttribute("href"))
+      .toBe("https://arxiv.org/abs/2606.15828");
+    expect(screen.getByRole("link", { name: /download 400-file csv/i }).hasAttribute("download")).toBe(true);
+  });
+
   it("renders a surface-aware compatibility matrix and direct answer", () => {
     render(<InstructionCompatibilityMatrix />);
 

@@ -239,7 +239,10 @@ describe("public guide SEO copy", () => {
     expect(screen.getByRole("heading", { name: /repository instruction tree/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /instruction template downloads/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /same-repository benchmark/i })).toBeTruthy();
-    expect(screen.getAllByRole("link", { name: /download/i })).toHaveLength(4);
+    const templateDownloadLinks = screen.getAllByRole("link", { name: /download/i }).filter((link) =>
+      link.getAttribute("href")?.startsWith("/resources/instruction-files/"),
+    );
+    expect(templateDownloadLinks).toHaveLength(4);
     expect(screen.getAllByText(/\.cursor\/rules\//i, { selector: "code" }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole("link", { name: /publisher source/i }).length).toBeGreaterThanOrEqual(8);
     expect(screen.getByText(/benchmark not yet run/i)).toBeTruthy();

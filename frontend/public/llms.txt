@@ -23,7 +23,7 @@
   Explore a reproducible public GitHub snapshot of 400 AGENTS.md, CLAUDE.md, Copilot instruction, and Cursor rule files, including indexed match counts, language mix, test commands, security rules, and common gaps. Last substantively updated: 2026-07-19.
   Markdown: https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026.md
 - [AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?](https://www.kyenai.com/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions)
-  Use this support matrix to decide whether CLAUDE.md, Copilot instructions, AGENTS.md, or Cursor rules should carry repository guidance for each tool surface. Last substantively updated: 2026-07-14.
+  Use this support matrix to decide whether CLAUDE.md, Copilot instructions, AGENTS.md, or Cursor rules should carry repository guidance for each tool surface. Last substantively updated: 2026-07-19.
   Markdown: https://www.kyenai.com/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions.md
 - [What Is Loop Engineering for AI Coding Agents?](https://www.kyenai.com/guides/loop-engineering-ai-coding-agents)
   Learn what loop engineering means for AI coding agents with a browser-based budget calculator, control-loop examples, stop rules, token and cost caps, verification commands, and Addy Osmani's workflow context. Last substantively updated: 2026-07-19.

@@ -112,6 +112,33 @@ describe("source verification ledger", () => {
     });
   });
 
+  it("labels preprint research separately from independent reporting", () => {
+    const guide: Guide = {
+      ...getGuides()[0],
+      id: "research-guide",
+      slug: "research-guide",
+      title: "Research guide",
+      updatedAt: "2026-07-19",
+      evidence: [{
+        title: "Configuration Smells in AGENTS.md Files",
+        url: "https://arxiv.org/abs/2606.15828",
+        publisher: "arXiv",
+        note: "Reports a repository-mining analysis.",
+        verifiedAt: "2026-07-01",
+      }],
+    };
+
+    const [entry] = buildSourceLedger([], [guide], "2026-07-19");
+
+    expect(entry).toMatchObject({
+      sourceType: "Research paper or preprint",
+      confidence: "Medium",
+      reviewCadenceDays: 90,
+      lastVerifiedAt: "2026-07-01",
+    });
+    expect(entry.usedBy[0].verifiedAt).toBe("2026-07-01");
+  });
+
   it("renders coverage, verification metadata, usage links, and ItemList schema", () => {
     const source: SourceLedgerEntry = {
       title: "Model Context Protocol specification",
