@@ -1705,6 +1705,76 @@ dd {
   min-width: 150px;
 }
 
+.instruction-table-scroll tbody th small {
+  color: var(--muted);
+  display: block;
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+.instruction-table-scroll tbody th a,
+.adoption-source-note a {
+  color: var(--teal-dark);
+  font-weight: 800;
+}
+
+.adoption-signal-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 20px;
+}
+
+.adoption-signal-grid article {
+  background: var(--surface-soft);
+  border-radius: 7px;
+  padding: 18px;
+}
+
+.adoption-signal-grid h3 {
+  margin: 0 0 12px;
+}
+
+.adoption-signal-grid dl,
+.adoption-signal-grid dd {
+  margin: 0;
+}
+
+.adoption-signal-grid dl div {
+  border-top: 1px solid var(--border);
+  padding: 10px 0;
+}
+
+.adoption-signal-grid dt {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.adoption-signal-grid dd {
+  line-height: 1.45;
+  margin-top: 3px;
+}
+
+.adoption-method-list,
+.adoption-limitations {
+  line-height: 1.6;
+  padding-left: 22px;
+}
+
+.adoption-limitations {
+  background: var(--amber-bg);
+  border-radius: 6px;
+  color: var(--amber-text);
+  padding: 14px 14px 14px 36px;
+}
+
+.adoption-source-note {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
 .mcp-download-links {
   display: flex;
   flex-wrap: wrap;
@@ -2364,6 +2434,7 @@ dd {
   .instruction-scope-list > div,
   .instruction-template-grid,
   .instruction-benchmark-protocol,
+  .adoption-signal-grid,
   .loop-workflow-steps,
   .loop-budget-grid {
     grid-template-columns: 1fr;

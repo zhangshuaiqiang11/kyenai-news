@@ -137,7 +137,8 @@ export type GuideResourceId =
   | "agents-md-template"
   | "claude-code-setup"
   | "codex-claude-decision"
-  | "loop-engineering";
+  | "loop-engineering"
+  | "instruction-adoption-report";
 
 export type Guide = {
   id: string;

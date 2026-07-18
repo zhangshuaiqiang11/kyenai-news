@@ -245,6 +245,11 @@ const coreGuides: Guide[] = [
         anchor: "loop engineering for AI coding agents",
         reason: "Shared instruction files should name verification commands and stop rules for agent loops, not only one-shot prompts.",
       },
+      {
+        slug: "ai-coding-agent-instruction-file-adoption-report-2026",
+        anchor: "GitHub instruction-file adoption report",
+        reason: "Compare official support rules with a dated 400-file public GitHub content sample and downloadable raw data.",
+      },
     ],
     checklist: [
       "List every agent surface, not just each vendor name.",

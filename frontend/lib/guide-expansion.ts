@@ -1626,4 +1626,151 @@ export const expansionGuides: Guide[] = [
       "Design AI agent loops around goals, tools, verification, retries, and stop rules. Estimate token cost, tool calls, and risk with the free budget calculator.",
     resourceIds: ["loop-engineering"],
   },
+  {
+    id: "guide-instruction-file-adoption-report-2026",
+    title: "AI Coding Agent Instruction File Adoption Report — Q3 2026",
+    slug: "ai-coding-agent-instruction-file-adoption-report-2026",
+    summary:
+      "Explore a reproducible public GitHub snapshot of 400 AGENTS.md, CLAUDE.md, Copilot instruction, and Cursor rule files, including indexed match counts, language mix, test commands, security rules, and common gaps.",
+    intent: "Developers and researchers want current public data on how AI coding agent instruction files are written and what important controls they omit.",
+    audience: "Engineering leaders, developer-tool researchers, platform teams, and maintainers designing repository instructions for coding agents.",
+    pageType: "Original data report",
+    secondaryKeywords: [
+      "AGENTS.md adoption",
+      "CLAUDE.md adoption",
+      "copilot-instructions.md examples",
+      "Cursor MDC rules",
+      "AI coding agent instruction file statistics",
+      "GitHub AGENTS.md report",
+    ],
+    sections: [
+      {
+        heading: "Quick answer",
+        body: [
+          "On July 19, 2026, GitHub code search returned 158,592 indexed file matches for AGENTS.md, 56,888 for .github/copilot-instructions.md, 46,772 for CLAUDE.md, and 8,392 for Cursor MDC rules. These are file matches—not unique repositories or adoption rates. KyenAI separately analyzed the first 100 best-match public files for each query to report content signals and gaps.",
+        ],
+      },
+      {
+        heading: "What the GitHub match counts mean",
+        body: [
+          "The headline numbers come from GitHub's public code-search API at one point in time. A repository can contain more than one matching file, generated copies can be indexed, forks may be present, and GitHub does not expose the total number of eligible repositories for these queries. For those reasons, dividing a match count by a guessed repository total would create a false adoption rate.",
+          "Use the counts as a reproducible search-visibility snapshot: they show how many indexed files matched the exact query when collected. Use the sample analysis to form hypotheses about instruction quality, then validate those hypotheses in a random or stratified study before making population claims.",
+        ],
+      },
+      {
+        heading: "What the 400-file sample found",
+        body: [
+          "All 100 AGENTS.md and CLAUDE.md sample files were readable. The Copilot query produced 99 readable files and the Cursor query produced 100. Every query also produced 99 or 100 unique repositories within its own sample, reducing—but not eliminating—duplicate-repository effects.",
+          "Explicit verification and security guidance were often absent. In the AGENTS.md sample, 68% lacked a detected security or approval rule and 53% lacked detected verification or completion criteria. In the Cursor rule sample, 87% lacked a detected security or approval rule, 83% lacked detected completion criteria, and 75% lacked an explicit test command. These are deterministic text detections, not judgments about repository quality.",
+        ],
+      },
+      {
+        heading: "Test commands and security patterns",
+        body: [
+          "The most frequently detected test command in sampled AGENTS.md files was pytest at 11%, followed by cargo test at 10% and go test at 7%. The top detected AGENTS.md security category was secrets and credentials at 24%. CLAUDE.md most often named npm test at 12%, while production restrictions appeared in 36% of its sample.",
+          "A missing text pattern does not prove that a repository lacks tests or security controls; the rules may live in CI, contributor documentation, policy tooling, or another instruction file. The report measures whether the sampled file itself gives an agent an explicit, recognizable command or boundary.",
+        ],
+      },
+      {
+        heading: "How to use this report",
+        body: [
+          "Benchmark your own instruction file against five practical categories: setup, explicit test commands, completion criteria, scope or precedence, and security or approval rules. Copy only controls that are true for your repository, and run each command from a clean checkout before publishing it to an agent.",
+          "For research or citation, download the JSON to preserve the query totals, methodology, summaries, limitations, and raw rows together. Use the CSV when you need repository URLs and detected signals for independent analysis. Always cite the snapshot date and the best-match sampling limitation next to any percentage.",
+        ],
+      },
+    ],
+    recommendedPlay: [
+      "Treat GitHub match totals as file counts, never as unique-repository adoption rates.",
+      "Use the sample gaps as an audit checklist for setup, tests, completion, scope, and safety.",
+      "Download the JSON when citing results so the date, query, denominator, and limitations remain attached.",
+      "Repeat the generator on a later date to measure search-index change with the same method.",
+    ],
+    decisionTable: {
+      title: "Instruction-file snapshot by surface",
+      intro: "Choose the row that matches the tool surface you are researching; the match totals and sample results are not interchangeable.",
+      columns: ["Search query", "Snapshot finding", "Interpretation boundary"],
+      rows: [
+        {
+          label: "AGENTS.md",
+          values: ["filename:AGENTS.md", "158,592 indexed file matches; 100 sampled files", "May include multiple files per repository and forks"],
+        },
+        {
+          label: "CLAUDE.md",
+          values: ["filename:CLAUDE.md", "46,772 indexed file matches; 100 sampled files", "Measures filenames, not active Claude Code use"],
+        },
+        {
+          label: "Copilot instructions",
+          values: ["filename:copilot-instructions.md path:.github", "56,888 indexed file matches; 100 sampled files", "Path query covers the repository-wide file, not every Copilot instruction surface"],
+        },
+        {
+          label: "Cursor MDC rules",
+          values: ["extension:mdc path:.cursor/rules", "8,392 indexed file matches; 100 sampled files", "Counts individual rule files, so one repository may contribute many"],
+        },
+      ],
+    },
+    actionSteps: [
+      { title: "Choose the exact surface", body: "Match your coding tool to its documented instruction path before comparing counts or content." },
+      { title: "Preserve the denominator", body: "State whether a percentage uses readable files, sampled files, unique sample repositories, or GitHub file matches." },
+      { title: "Audit your repository", body: "Check for setup, tests, verification, scope, and security rules with the downloadable categories." },
+      { title: "Reproduce or extend", body: "Run the generator with a GitHub token, record the new date, and compare like-for-like queries." },
+    ],
+    pitfalls: [
+      { title: "Calling file matches an adoption rate", fix: "Say indexed file matches and publish the unique-repository count only for the analyzed sample." },
+      { title: "Treating best-match results as random", fix: "Label every sample percentage as descriptive of GitHub's first 100 best matches for that query." },
+      { title: "Equating absence with failure", fix: "Describe missing detected patterns; do not claim the repository lacks a control elsewhere." },
+      { title: "Citing a live number without a date", fix: "Include the July 19, 2026 snapshot date or regenerate the dataset before publication." },
+    ],
+    internalLinks: [
+      {
+        slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+        anchor: "compare AGENTS.md, CLAUDE.md, Copilot instructions, and Cursor rules",
+        reason: "Use official support documentation to choose the correct file after reviewing the public data.",
+      },
+      {
+        slug: "agents-md-template-for-ai-coding-agents",
+        anchor: "download an AGENTS.md template",
+        reason: "Turn the report's common gaps into a tested repository policy.",
+      },
+      {
+        slug: "agents-md-examples-codex-node-python-monorepos",
+        anchor: "review Node.js, Python, and monorepo AGENTS.md examples",
+        reason: "Compare the detected language and test-command patterns with complete examples.",
+      },
+      {
+        slug: "agent-governance-checklist-for-software-teams",
+        anchor: "apply the AI agent governance checklist",
+        reason: "Move security and approval guidance from prose into owned team controls.",
+      },
+    ],
+    checklist: [
+      "Name the exact GitHub query and snapshot date.",
+      "Separate indexed file matches from unique sampled repositories.",
+      "State that GitHub best-match ordering is not random.",
+      "Keep sample percentages tied to readable-file denominators.",
+      "Describe regex detections as signals, not quality judgments.",
+      "Link the downloadable raw rows and methodology.",
+      "Regenerate before citing the figures as current.",
+    ],
+    evidence: [
+      {
+        title: "REST API endpoints for search: Search code",
+        url: "https://docs.github.com/en/rest/search/search?apiVersion=2022-11-28#search-code",
+        publisher: "GitHub",
+        note: "Primary documentation for the public code-search endpoint, result totals, ordering, and API constraints used by the generator.",
+      },
+      {
+        title: "Understanding GitHub Code Search syntax",
+        url: "https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax",
+        publisher: "GitHub",
+        note: "Primary documentation for filename, path, and extension query qualifiers used in the four searches.",
+      },
+    ],
+    relatedArticleSlugs: [],
+    publishedAt: "2026-07-19",
+    updatedAt: "2026-07-19",
+    metaTitle: "AI Agent Instruction File Adoption: GitHub Data Report",
+    metaDescription:
+      "See GitHub match counts and a 400-file sample of AGENTS.md, CLAUDE.md, Copilot instructions, and Cursor rules. Download the raw CSV and JSON.",
+    resourceIds: ["instruction-adoption-report"],
+  },
 ];

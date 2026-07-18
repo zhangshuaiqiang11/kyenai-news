@@ -33,6 +33,11 @@ const pageContracts = [
     h1Includes: "What Is Loop Engineering for AI Coding Agents?",
   },
   {
+    path: "/guides/ai-coding-agent-instruction-file-adoption-report-2026",
+    titleIncludes: "AI Agent Instruction File Adoption",
+    h1Includes: "AI Coding Agent Instruction File Adoption Report",
+  },
+  {
     path: "/tools/instruction-file-checker",
     titleIncludes: "Instruction File Checker",
     h1Includes: "AI Coding Agent Instruction File Checker",

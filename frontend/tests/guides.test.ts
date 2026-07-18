@@ -56,7 +56,7 @@ describe("guide SEO data", () => {
     const guides = getGuides();
     const slugs = guides.map((guide) => guide.slug);
 
-    expect(guides).toHaveLength(13);
+    expect(guides).toHaveLength(14);
     expect(slugs).toContain("agents-md-vs-claude-md-cursorrules-copilot-instructions");
     expect(slugs).toContain("claude-code-subagents-examples");
     expect(slugs).toContain("claude-code-hooks-mcp-setup");
@@ -70,6 +70,7 @@ describe("guide SEO data", () => {
     expect(slugs).toContain("local-vs-cloud-ai-coding-agent");
     expect(slugs).toContain("agent-governance-checklist-for-software-teams");
     expect(slugs).toContain("loop-engineering-ai-coding-agents");
+    expect(slugs).toContain("ai-coding-agent-instruction-file-adoption-report-2026");
     expect(guides.every((guide) => guide.evidence.length >= 2)).toBe(true);
     expect(guides.every((guide) => guide.checklist.length >= 5)).toBe(true);
   });
@@ -82,7 +83,7 @@ describe("guide SEO data", () => {
     );
 
     expect(new Set(slugs).size).toBe(slugs.length);
-    expect(primaryKeywords).toHaveLength(13);
+    expect(primaryKeywords).toHaveLength(14);
     expect(primaryKeywords.every(Boolean)).toBe(true);
     expect(new Set(primaryKeywords).size).toBe(primaryKeywords.length);
   });
@@ -334,6 +335,21 @@ describe("guide SEO data", () => {
     expect(guide!.evidence.map((source) => source.publisher)).toEqual(
       expect.arrayContaining(["OpenAI", "Anthropic", "Tom's Guide"]),
     );
+  });
+
+  it("publishes the instruction-file adoption report with downloadable-data boundaries", () => {
+    const guide = getGuide("ai-coding-agent-instruction-file-adoption-report-2026");
+
+    expect(guide).toBeDefined();
+    expect(guide!.resourceIds).toEqual(["instruction-adoption-report"]);
+    expect(guide!.publishedAt).toBe("2026-07-19");
+    expect(guide!.sections[0].body[0]).toMatch(/158,592 indexed file matches/i);
+    expect(guide!.sections[0].body[0]).toMatch(/file matches—not unique repositories or adoption rates/i);
+    expect(guide!.sections.map((section) => section.heading)).toEqual(
+      expect.arrayContaining(["What the GitHub match counts mean", "What the 400-file sample found", "Test commands and security patterns"]),
+    );
+    expect(guide!.evidence.every((source) => source.publisher === "GitHub")).toBe(true);
+    expect(JSON.stringify(guide)).toMatch(/best-match/i);
   });
 
   it("keeps private editorial signals available by guide slug", () => {

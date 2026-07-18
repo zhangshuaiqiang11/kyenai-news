@@ -8,6 +8,7 @@ import { getArticles } from "../lib/api";
 import { getEntityCoverage } from "../lib/entities";
 import { toArticleSummary } from "../lib/catalog";
 import {
+  INSTRUCTION_ADOPTION_REPORT_HREF,
   INSTRUCTION_COMPARISON_GUIDE_HREF,
   LOOP_ENGINEERING_GUIDE_HREF,
   MCP_SECURITY_GUIDE_HREF,
@@ -33,6 +34,11 @@ const highImpressionEntries = [
     href: "/tools/instruction-file-checker",
     label: "Audit AGENTS.md, CLAUDE.md, Copilot, or Cursor rules",
     note: "Run deterministic browser-only checks for setup, tests, scope, safety, and file-path compatibility.",
+  },
+  {
+    href: INSTRUCTION_ADOPTION_REPORT_HREF,
+    label: "AI instruction-file adoption report: 400 GitHub files",
+    note: "Download the dated CSV/JSON and see which test, scope, verification, and security rules samples omit.",
   },
   {
     href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",

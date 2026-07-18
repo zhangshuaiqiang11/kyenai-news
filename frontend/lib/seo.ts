@@ -204,6 +204,10 @@ export function buildGuideGraphJsonLd(guide: Guide, breadcrumbItems: BreadcrumbI
     );
   }
 
+  if (guide.resourceIds?.includes("instruction-adoption-report")) {
+    nodes.push(buildInstructionAdoptionDatasetJsonLd(guide));
+  }
+
   return buildJsonLdGraph(nodes);
 }
 
@@ -404,6 +408,45 @@ export function buildWebApplicationJsonLd({ title: name, description, path }: Pa
       name: SITE_NAME,
       url: buildCanonicalUrl("/"),
     },
+  };
+}
+
+export function buildInstructionAdoptionDatasetJsonLd(guide: Guide) {
+  const canonical = buildCanonicalUrl(`/guides/${guide.slug}`);
+  return {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "@id": `${canonical}#dataset`,
+    name: "AI Coding Agent Instruction File Adoption Report — Q3 2026",
+    description: "Public GitHub code-search snapshot and 400-file content sample covering AGENTS.md, CLAUDE.md, Copilot instructions, and Cursor rules.",
+    url: canonical,
+    datePublished: guide.publishedAt,
+    dateModified: guide.updatedAt,
+    temporalCoverage: "2026-07-19",
+    creator: { "@id": ORGANIZATION_ID },
+    publisher: { "@id": ORGANIZATION_ID },
+    isAccessibleForFree: true,
+    measurementTechnique: "GitHub REST API public code search, best-match sampling, and deterministic text-pattern detection",
+    variableMeasured: [
+      "GitHub indexed file matches",
+      "unique repositories within each sample",
+      "repository primary language",
+      "explicit test commands",
+      "security rules",
+      "missing configuration categories",
+    ],
+    distribution: [
+      {
+        "@type": "DataDownload",
+        encodingFormat: "text/csv",
+        contentUrl: buildCanonicalUrl("/resources/data/instruction-file-adoption-report-2026-q3.csv"),
+      },
+      {
+        "@type": "DataDownload",
+        encodingFormat: "application/json",
+        contentUrl: buildCanonicalUrl("/resources/data/instruction-file-adoption-report-2026-q3.json"),
+      },
+    ],
   };
 }
 

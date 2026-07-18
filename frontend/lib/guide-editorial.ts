@@ -226,6 +226,21 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
     },
     emergencyPriority: 115,
   },
+  "ai-coding-agent-instruction-file-adoption-report-2026": {
+    priority: "P0",
+    primaryKeyword: "AI coding agent instruction file adoption",
+    demandScore: 8.3,
+    attackabilityScore: 9.4,
+    fitScore: 9.8,
+    gscWatchQueries: [
+      "agents.md adoption",
+      "claude.md adoption",
+      "ai coding agent instruction file statistics",
+      "github agents.md report",
+      "copilot-instructions.md examples",
+      "cursor mdc rules examples",
+    ],
+  },
 };
 
 export function getGuideEditorialSignals(slug: string): GuideEditorialSignals | undefined {

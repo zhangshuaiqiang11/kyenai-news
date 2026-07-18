@@ -25,9 +25,14 @@ type GuidePageProps = {
 
 const bestNextStepsByGuideSlug: Record<string, { href: string; label: string; note: string }> = {
   "agents-md-vs-claude-md-cursorrules-copilot-instructions": {
+    href: "/guides/ai-coding-agent-instruction-file-adoption-report-2026",
+    label: "See what 400 public GitHub instruction files include and omit",
+    note: "Compare the official support matrix with a dated, downloadable content sample before writing your policy.",
+  },
+  "ai-coding-agent-instruction-file-adoption-report-2026": {
     href: "/guides/agents-md-template-for-ai-coding-agents",
-    label: "Copy the AGENTS.md template for Codex, Node.js, Python, and monorepos",
-    note: "After choosing the instruction-file surface, turn it into a repo policy the agent can follow.",
+    label: "Turn the report gaps into a tested AGENTS.md policy",
+    note: "Use the Node.js, Python, and monorepo templates after checking which controls are true for your repository.",
   },
   "agents-md-template-for-ai-coding-agents": {
     href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
@@ -132,6 +137,14 @@ const CodexClaudeResourcePanel = dynamic(
   { ssr: true },
 );
 
+const InstructionAdoptionReportPanel = dynamic(
+  () =>
+    import("../../components/InstructionAdoptionReport").then(
+      ({ InstructionAdoptionReport }) => InstructionAdoptionReport,
+    ),
+  { ssr: true },
+);
+
 function GuideResources({ guide }: { guide: Guide }) {
   if (guide.resourceIds?.includes("instruction-files")) {
     return <InstructionResources />;
@@ -159,6 +172,10 @@ function GuideResources({ guide }: { guide: Guide }) {
 
   if (guide.resourceIds?.includes("codex-claude-decision")) {
     return <CodexClaudeResourcePanel />;
+  }
+
+  if (guide.resourceIds?.includes("instruction-adoption-report")) {
+    return <InstructionAdoptionReportPanel />;
   }
 
   return null;

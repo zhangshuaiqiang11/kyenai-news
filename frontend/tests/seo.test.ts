@@ -309,6 +309,21 @@ describe("SEO helpers", () => {
     expect(JSON.stringify(graph)).toContain("Codex vs Claude Code Decision Tool");
   });
 
+  it("adds Dataset schema and two downloads for the instruction adoption report", () => {
+    const guide = getGuides().find((candidate) => candidate.slug === "ai-coding-agent-instruction-file-adoption-report-2026")!;
+    const graph = buildGuideGraphJsonLd(guide, [
+      { name: "Home", path: "/" },
+      { name: "Guides", path: "/guides" },
+      { name: guide.title, path: `/guides/${guide.slug}` },
+    ], buildGuideFaqs(guide));
+    const dataset = graph["@graph"].find((node) => node["@type"] === "Dataset");
+
+    expect(dataset).toBeDefined();
+    expect(dataset.distribution).toHaveLength(2);
+    expect(JSON.stringify(dataset)).toContain("instruction-file-adoption-report-2026-q3.csv");
+    expect(JSON.stringify(dataset)).toContain("instruction-file-adoption-report-2026-q3.json");
+  });
+
   it("combines article page schema into one graph for easier extraction", () => {
     const article = seedArticles[0];
     const faqs = buildArticleFaqs(article);
