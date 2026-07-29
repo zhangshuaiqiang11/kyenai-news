@@ -2,6 +2,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
+import { AuthorityPathPanel } from "../../components/AuthorityPathPanel";
 import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import { getArticles } from "../../lib/api";
@@ -9,6 +10,10 @@ import { getVisibleGuideFaqs } from "../../lib/guide-faqs";
 import { getGuide, getGuides, getInternalLinkedGuides, getRelatedArticlesForGuide } from "../../lib/guides";
 import { EDITORIAL_AUTHOR_NAME, EDITORIAL_AUTHOR_PATH } from "../../lib/editorial";
 import { resolveIndexableGuideTopicHref } from "../../lib/guide-topic-links";
+import {
+  shouldShowGuideAuthorityPath,
+  shouldShowGuideChecker,
+} from "../../lib/authority-paths";
 import { toGuideSummary } from "../../lib/guide-summary";
 import {
   buildCanonicalUrl,
@@ -324,6 +329,12 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
           <p>{quickAnswer}</p>
         </section>
         <GuideResources guide={guide} />
+        {shouldShowGuideAuthorityPath(guide.slug) ? (
+          <AuthorityPathPanel
+            currentPath={guidePath}
+            includeChecker={shouldShowGuideChecker(guide.slug)}
+          />
+        ) : null}
         <section className="answer-panel citation-panel" aria-labelledby="guide-summary-heading">
           <h2 id="guide-summary-heading">Evidence reviewed</h2>
           <p>{buildGuideSummary(guide)}</p>

@@ -1,6 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import Link from "next/link";
 
+import { AuthorityPathPanel } from "../../components/AuthorityPathPanel";
 import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import { SourceList } from "../../components/SourceList";
@@ -20,6 +21,10 @@ import {
   slugify,
 } from "../../lib/seo";
 import { EDITORIAL_AUTHOR_PATH } from "../../lib/editorial";
+import {
+  shouldShowArticleAuthorityPath,
+  shouldShowArticleChecker,
+} from "../../lib/authority-paths";
 import type { Article, ArticleBlock, EvidenceSource, Guide } from "../../lib/types";
 
 type ArticlePageProps = {
@@ -79,6 +84,12 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
         </section>
         {article.slug === "spacex-cursor-acquisition-2026" ? <SpacexCursorDealTracker /> : null}
         {article.slug === "cursor-enterprise-organizations-governance" ? <CursorEnterpriseSecurityControls /> : null}
+        {shouldShowArticleAuthorityPath(article.slug) ? (
+          <AuthorityPathPanel
+            currentPath={`/articles/${article.slug}`}
+            includeChecker={shouldShowArticleChecker(article.slug)}
+          />
+        ) : null}
         <div className="article-content-grid">
           <div className="article-body">
             {article.blocks.map((block) => (

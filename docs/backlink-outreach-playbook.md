@@ -79,6 +79,27 @@ For each target page:
 5. Annotate confirmed external-link discovery dates separately from on-page deployment dates.
 6. Do not attribute every change to backlinks; Google updates, query mix, titles, internal links, and seasonality can move at the same time.
 
+## 8. Publish to communities without turning into spam
+
+Community posts are for qualified discovery and feedback. They are not recorded as earned backlinks merely because the platform renders an external URL.
+
+1. Read both the platform policy and the community-specific rules immediately before posting.
+2. Use a designated showcase or self-promotion thread when one exists.
+3. Disclose the relationship in the first sentence: “I built this” or “I maintain this resource.”
+4. Publish the useful explanation in the post itself; do not make the link the only content.
+5. Post once per project, do not cross-post the same pitch across several communities, and never ask for votes.
+6. Do not automate Reddit posts, replies, votes, chat, or private messages.
+7. If a community requires that the project was built with a specific product, do not post unless that statement is documented and true.
+8. For Hacker News, use `Show HN` only for something readers can try and follow the current Show HN and general submission guidelines.
+
+Rule references checked 2026-07-30:
+
+- Reddit spam policy: https://support.reddithelp.com/hc/en-us/articles/360043504051-Spam
+- Hacker News guidelines: https://news.ycombinator.com/newsguidelines.html
+- Show HN guidelines: https://news.ycombinator.com/showhn.html
+
+Because community rules change, these links must be re-opened on the day of submission.
+
 ## Outreach templates
 
 Each template is a draft. Replace every bracketed field and obtain approval before sending.
