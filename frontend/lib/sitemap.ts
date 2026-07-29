@@ -16,6 +16,7 @@ const staticPageDates = {
   "/entities": "2026-07-14",
   "/authors/editorial-automation-desk": "2026-06-27",
   "/tools/instruction-file-checker": "2026-07-14",
+  "/research": "2026-07-30",
 } as const;
 
 export const noindexUtilityPaths = [

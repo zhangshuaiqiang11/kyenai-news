@@ -106,7 +106,7 @@ describe("guide SEO data", () => {
     expect(guide).toBeDefined();
     expect(guide).toMatchObject({
       slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
-      updatedAt: "2026-07-19",
+      updatedAt: "2026-07-30",
       resourceIds: ["instruction-files"],
     });
     expect(guide!.metaTitle.length).toBeGreaterThanOrEqual(25);
@@ -214,7 +214,7 @@ describe("guide SEO data", () => {
     expect(guide!.resourceIds).toEqual(["agents-md-template"]);
     expect(guide!.title).toBe("AGENTS.md Template for Codex and Monorepos");
     expect(guide!.metaTitle).toBe("AGENTS.md Template for Codex: Node.js, Python & Monorepos");
-    expect(guide!.updatedAt).toBe("2026-07-19");
+    expect(guide!.updatedAt).toBe("2026-07-30");
   });
 
   it("publishes P2 AGENTS.md support pages as narrow, internally linked guides", () => {
@@ -259,7 +259,7 @@ describe("guide SEO data", () => {
 
     expect(guide).toBeDefined();
     expect(guide!.resourceIds).toEqual(["loop-engineering"]);
-    expect(guide!.updatedAt).toBe("2026-07-19");
+    expect(guide!.updatedAt).toBe("2026-07-30");
 
     const quickAnswer = guide!.sections[0].body[0];
     expect(guide!.title).toMatch(/What Is Loop Engineering for AI Coding Agents/i);
@@ -544,7 +544,7 @@ describe("guide SEO data", () => {
         slug: "agents-md-template-for-ai-coding-agents",
         title: /AGENTS\.md Template for Codex and Monorepos/i,
         headings: ["Copyable starter templates", "Root vs nested AGENTS.md inheritance", "What every template must say"],
-        updatedAt: "2026-07-19",
+        updatedAt: "2026-07-30",
       },
       {
         slug: "agent-mode-vs-chat-mode-in-ide",

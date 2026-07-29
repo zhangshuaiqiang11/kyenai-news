@@ -17,6 +17,7 @@ const rootTemplate = getRootAgentsTemplate();
 
 const githubExamplesUrl =
   "https://github.com/zhangshuaiqiang11/kyenai-news/tree/codex/develop/artifacts/kyenai-agent-instruction-files";
+const starterPackUrl = "/resources/instruction-files/kyenai-agents-md-starter-pack.zip";
 
 const loadingOrder = [
   {
@@ -48,6 +49,18 @@ export function AgentsMdTemplateResource() {
           </div>
           <p>Copy the root template first, then choose the Node.js, Python, or monorepo edition that matches the repository.</p>
         </div>
+
+        <aside className="resource-citation-note" aria-label="AGENTS.md template starter pack">
+          <strong>AGENTS.md Starter Pack · v1.0.0 · MIT License</strong>
+          <p>
+            Includes root, Node.js, Python, and monorepo templates, an example repository tree, a manifest, and an
+            independent verification command. Cite the canonical guide URL when reusing or discussing the templates.
+          </p>
+          <div className="mcp-download-links">
+            <a href={starterPackUrl} download>Download the complete ZIP pack</a>
+          </div>
+          <p><code>python3 verify_pack.py</code> checks the manifest and required template sections without sending repository content anywhere.</p>
+        </aside>
 
         <div className="instruction-template-grid">
           <CodeExampleCard

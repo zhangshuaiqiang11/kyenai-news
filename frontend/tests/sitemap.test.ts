@@ -41,6 +41,7 @@ describe("sitemap helpers", () => {
     expect(locations).toContain("https://www.kyenai.com/entities");
     expect(locations).toContain("https://www.kyenai.com/authors/editorial-automation-desk");
     expect(locations).toContain("https://www.kyenai.com/tools/instruction-file-checker");
+    expect(locations).toContain("https://www.kyenai.com/research");
     expect(locations).toContain("https://www.kyenai.com/guides");
     expect(entries.find((entry) => entry.loc.endsWith("/about"))?.lastmod).toBe("2026-06-06");
     expect(entries.find((entry) => entry.loc.endsWith("/editorial-policy"))?.lastmod).toBe("2026-06-06");
@@ -52,6 +53,7 @@ describe("sitemap helpers", () => {
     expect(entries.find((entry) => entry.loc.endsWith("/entities"))?.lastmod).toBe("2026-07-14");
     expect(entries.find((entry) => entry.loc.endsWith("/authors/editorial-automation-desk"))?.lastmod).toBe("2026-06-27");
     expect(entries.find((entry) => entry.loc.endsWith("/tools/instruction-file-checker"))?.lastmod).toBe("2026-07-14");
+    expect(entries.find((entry) => entry.loc.endsWith("/research"))?.lastmod).toBe("2026-07-30");
 
     for (const article of publishedArticles) {
       expect(locations).toContain(`https://www.kyenai.com/articles/${article.slug}`);

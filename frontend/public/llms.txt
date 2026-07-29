@@ -5,6 +5,7 @@
 ## Site
 - Canonical: https://www.kyenai.com
 - Guides index: https://www.kyenai.com/guides
+- Research and resources: https://www.kyenai.com/research (versioned datasets, runbooks, security assessments, citation files, and templates)
 - Instruction file checker: https://www.kyenai.com/tools/instruction-file-checker (deterministic, browser-only audit; no instruction text is uploaded)
 - Editorial policy: https://www.kyenai.com/editorial-policy
 - Editorial author: https://www.kyenai.com/authors/editorial-automation-desk
@@ -20,16 +21,16 @@
   Compare Codex, Claude Code, Cursor, and GitHub Copilot by starting surface, repository instructions, parallel work, model boundary, permissions, review path, and team governance. Last substantively updated: 2026-07-19.
   Markdown: https://www.kyenai.com/guides/ai-coding-agents-comparison.md
 - [AI Coding Agent Instruction File Adoption Report — Q3 2026](https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026)
-  Explore a reproducible public GitHub snapshot of 400 AGENTS.md, CLAUDE.md, Copilot instruction, and Cursor rule files, including indexed match counts, language mix, test commands, security rules, and common gaps. Last substantively updated: 2026-07-19.
+  Explore a reproducible public GitHub snapshot of 400 AGENTS.md, CLAUDE.md, Copilot instruction, and Cursor rule files, including indexed match counts, language mix, test commands, security rules, and common gaps. Last substantively updated: 2026-07-30.
   Markdown: https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026.md
 - [AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?](https://www.kyenai.com/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions)
-  Use this support matrix to decide whether CLAUDE.md, Copilot instructions, AGENTS.md, or Cursor rules should carry repository guidance for each tool surface. Last substantively updated: 2026-07-19.
+  Use this support matrix to decide whether CLAUDE.md, Copilot instructions, AGENTS.md, or Cursor rules should carry repository guidance for each tool surface. Last substantively updated: 2026-07-30.
   Markdown: https://www.kyenai.com/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions.md
 - [What Is Loop Engineering for AI Coding Agents?](https://www.kyenai.com/guides/loop-engineering-ai-coding-agents)
-  Learn loop engineering for AI coding agents through Addy Osmani's workflow context, a budget calculator, stop rules, and a downloadable proof-of-done JSON contract. Last substantively updated: 2026-07-19.
+  Learn loop engineering for AI coding agents through Addy Osmani's workflow context, a budget calculator, stop rules, and a downloadable proof-of-done JSON contract. Last substantively updated: 2026-07-30.
   Markdown: https://www.kyenai.com/guides/loop-engineering-ai-coding-agents.md
 - [AGENTS.md Template for Codex and Monorepos](https://www.kyenai.com/guides/agents-md-template-for-ai-coding-agents)
-  Build, audit, copy, and download concise AGENTS.md starters for Codex, Node.js, Python, and monorepos with commands, boundaries, and review checks. Last substantively updated: 2026-07-19.
+  Build, audit, copy, and download concise AGENTS.md starters for Codex, Node.js, Python, and monorepos with commands, boundaries, and review checks. Last substantively updated: 2026-07-30.
   Markdown: https://www.kyenai.com/guides/agents-md-template-for-ai-coding-agents.md
 - [MCP Server Security Checklist: 25 Controls for AI Agents](https://www.kyenai.com/guides/secure-mcp-servers-ai-coding-agents)
   Audit MCP server security with 25 source-backed controls covering authentication, permissions, prompt injection, secrets, sandboxing, logging, revocation, and allow-or-deny tests. Last substantively updated: 2026-07-19.
@@ -46,9 +47,9 @@
 
 ## Priority evidence articles
 - [Did SpaceX Buy Cursor? $60B Deal Status and Timeline](https://www.kyenai.com/articles/spacex-cursor-acquisition-2026)
-  SpaceX signed a $60 billion all-stock agreement to acquire Cursor maker Anysphere, but the deal is not closed yet. Track the verified status, Q3 2026 timeline, and what Cursor users should review. Last substantively updated: 2026-07-19.
+  SpaceX signed a $60 billion all-stock agreement to acquire Cursor maker Anysphere, but the deal is not closed yet. Track the verified status, Q3 2026 timeline, and what Cursor users should review. Last substantively updated: 2026-07-30.
 - [Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions](https://www.kyenai.com/articles/cursor-enterprise-organizations-governance)
-  Cursor Enterprise security depends on organization controls, Privacy Mode, model-provider retention limits, repo allowlists, MCP controls, and agent permissions. Last substantively updated: 2026-07-14T00:00:00Z.
+  Cursor Enterprise security depends on organization controls, Privacy Mode, model-provider retention limits, repo allowlists, MCP controls, and agent permissions. Last substantively updated: 2026-07-30T00:00:00Z.
 
 ## All guides
 - [AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?](https://www.kyenai.com/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions): Use this support matrix to decide whether CLAUDE.md, Copilot instructions, AGENTS.md, or Cursor rules should carry repository guidance for each tool surface.
@@ -71,6 +72,7 @@
 - [7 Claude Code Alternatives for Different Coding Workflows](https://www.kyenai.com/guides/claude-code-alternatives): Compare Codex, GitHub Copilot, Cursor, Gemini CLI, Cline, Aider, and OpenCode by the workflow problem you need to solve—not by an invented universal ranking.
 
 ## Citation guidance
+- Start at https://www.kyenai.com/research for version, license, verification date, and preferred citation details.
 - Prefer linking to the canonical guide URL for evergreen decisions.
 - News articles summarize dated vendor changes; verify status against listed sources.
 - KyenAI mentions third-party brands factually and does not imply endorsement.

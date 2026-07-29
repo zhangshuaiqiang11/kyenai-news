@@ -331,7 +331,7 @@ const rawSeedArticles: Article[] = [
         id: "cursor-security-source-boundary",
         type: "source_note",
         content:
-          "Evidence boundary: this page summarizes Cursor's public enterprise, security, and data-use materials as of July 14, 2026. It does not claim a universal retention default for every model, workspace, or contract; enterprise buyers should verify the active admin settings and customer agreement.",
+          "Evidence boundary: this page summarizes Cursor's public enterprise, security, data-use, pricing, sandbox, hooks, and audit-log materials as of July 30, 2026. It does not claim a universal retention default or control availability for every model, workspace, client, region, or contract; enterprise buyers should verify the active admin settings and customer agreement.",
         sourceIds: ["src-cursor-enterprise-orgs", "src-cursor-security", "src-cursor-data-use"],
       },
     ],
@@ -362,11 +362,11 @@ const rawSeedArticles: Article[] = [
       },
     ],
     publishedAt: "2026-06-03T09:00:00Z",
-    updatedAt: "2026-07-14T00:00:00Z",
-    version: 2,
+    updatedAt: "2026-07-30T00:00:00Z",
+    version: 3,
     metaTitle: "Cursor Enterprise Security: Governance, Privacy Mode, Agent Permissions",
     metaDescription:
-      "Cursor Enterprise security checklist: Privacy Mode, retention caveats, repo and model controls, MCP allowlists, SSO, SCIM, and agent permissions.",
+      "Cursor Enterprise security checklist with 30 controls for Privacy Mode, retention, SSO, SCIM, repositories, models, MCP, sandbox, hooks, and audit logs.",
   },
   {
     id: "article-gpt-53-codex",

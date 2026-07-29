@@ -263,11 +263,11 @@ export const spacexCursorAcquisitionArticle: Article = {
     },
   ],
   publishedAt: "2026-06-16T10:35:00Z",
-  updatedAt: "2026-07-19",
-  version: 4,
-  metaTitle: "Did SpaceX Buy Cursor? $60B Deal Status & Timeline",
+  updatedAt: "2026-07-30",
+  version: 5,
+  metaTitle: "SpaceX–Cursor Deal Status (July 2026): Signed, Not Closed",
   metaDescription:
-    "Did SpaceX buy Cursor? SpaceX signed a $60B Anysphere merger agreement, but the deal is not closed. See its status, Q3 timeline, and user checklist.",
+    "SpaceX–Cursor deal status for July 2026: the $60B Anysphere agreement is signed, not closed. Check the official filing, next milestone, timeline, JSON, and CSV.",
 };
 
 export const featuredArticles: Article[] = [spacexCursorAcquisitionArticle];

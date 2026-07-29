@@ -25,9 +25,9 @@ export function SpacexCursorDealTracker() {
 
       <dl className="deal-status-grid">
         <div><dt>Agreement signed</dt><dd><time dateTime={resource.announcedAt}>June 16, 2026</time></dd></div>
-        <div><dt>Verified through</dt><dd><time dateTime={resource.verifiedAt}>July 19, 2026</time></dd></div>
+        <div><dt>Last verified</dt><dd><time dateTime={resource.verifiedAt}>July 30, 2026</time></dd></div>
+        <div><dt>Next key milestone</dt><dd>{resource.nextMilestone}</dd></div>
         <div><dt>Expected window</dt><dd>{resource.expectedClosingWindow}</dd></div>
-        <div><dt>Deal value</dt><dd>{resource.impliedEquityValue}, all stock</dd></div>
       </dl>
 
       <div className="deal-downloads" aria-label="Deal status downloads and primary records">
@@ -37,6 +37,11 @@ export function SpacexCursorDealTracker() {
         <a href={resource.officialFilingUrl} rel="noreferrer" target="_blank">Read the SEC filing</a>
         <a href={resource.mergerAgreementUrl} rel="noreferrer" target="_blank">Read the merger agreement</a>
       </div>
+
+      <aside className="resource-citation-note" aria-label="How to cite this deal status dataset">
+        <strong>Version {resource.schemaVersion} · {resource.license}</strong>
+        <p>{resource.preferredCitation}</p>
+      </aside>
 
       <div className="deal-evidence-columns">
         <section aria-labelledby="confirmed-facts-heading">

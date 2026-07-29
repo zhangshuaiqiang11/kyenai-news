@@ -77,7 +77,7 @@ describe("loop engineering resource components", () => {
     const contractPath = path.join(process.cwd(), "public/resources/loop-engineering/proof-of-done-contract.json");
     const contract = JSON.parse(fs.readFileSync(contractPath, "utf8"));
 
-    expect(contract.templateVersion).toBe("1.0.0");
+    expect(contract.templateVersion).toBe("1.1.0");
     expect(contract.trustBoundary).toMatch(/does not prove semantic program correctness/i);
     expect(contract.task.sourceRevision).toMatch(/git-sha/i);
     expect(contract.budgets.maxIterations).toBeGreaterThan(0);

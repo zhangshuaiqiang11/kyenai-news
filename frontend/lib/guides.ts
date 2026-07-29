@@ -340,7 +340,7 @@ const coreGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
     publishedAt: "2026-06-14",
-    updatedAt: "2026-07-19",
+    updatedAt: "2026-07-30",
     metaTitle: "AGENTS.md vs CLAUDE.md vs Copilot Instructions",
     metaDescription:
       "Compare CLAUDE.md, .github/copilot-instructions.md, AGENTS.md, and Cursor rules by tool surface, scope, and safe sync policy.",

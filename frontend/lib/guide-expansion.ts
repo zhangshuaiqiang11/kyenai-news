@@ -488,7 +488,7 @@ export const expansionGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
     publishedAt: "2026-06-14",
-    updatedAt: "2026-07-19",
+    updatedAt: "2026-07-30",
     metaTitle: "AGENTS.md Template for Codex: Node.js, Python & Monorepos",
     metaDescription:
       "Copy tested AGENTS.md templates for Codex, Node.js, Python and monorepos. Includes setup commands, test rules, safe edit boundaries and review checks.",
@@ -1679,7 +1679,7 @@ export const expansionGuides: Guide[] = [
       "github-copilot-cloud-local-sandboxes-preview",
     ],
     publishedAt: "2026-06-15",
-    updatedAt: "2026-07-19",
+    updatedAt: "2026-07-30",
     metaTitle: "What Is Loop Engineering? Addy Osmani, AI Agent Loops, Stop Rules",
     metaDescription:
       "Design AI agent loops around goals, tools, verification, retries, and stop rules. Estimate token cost, tool calls, and risk with the free budget calculator.",
@@ -2202,7 +2202,7 @@ export const expansionGuides: Guide[] = [
     ],
     relatedArticleSlugs: [],
     publishedAt: "2026-07-19",
-    updatedAt: "2026-07-19",
+    updatedAt: "2026-07-30",
     metaTitle: "AI Agent Instruction File Adoption: GitHub Data Report",
     metaDescription:
       "See GitHub match counts and a 400-file sample of AGENTS.md, CLAUDE.md, Copilot instructions, and Cursor rules. Download the raw CSV and JSON.",

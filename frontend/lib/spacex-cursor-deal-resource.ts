@@ -1,9 +1,14 @@
 export const spacexCursorDealResource = {
-  verifiedAt: "2026-07-19",
+  schemaVersion: "1.1",
+  verifiedAt: "2026-07-30",
   statusCode: "signed_not_closed",
-  statusLabel: "Signed; closing still pending",
+  statusLabel: "Signed, not closed",
   announcedAt: "2026-06-16",
   expectedClosingWindow: "Third quarter of 2026",
+  nextMilestone: "Official closing confirmation or a new filing that changes the Q3 2026 window",
+  license: "CC BY 4.0",
+  preferredCitation:
+    "KyenAI. (2026). SpaceX-Cursor Deal Status Timeline (Version 1.1, verified July 30, 2026) [Data set]. https://www.kyenai.com/articles/spacex-cursor-acquisition-2026",
   buyer: "SpaceX",
   target: "Anysphere, maker of Cursor",
   impliedEquityValue: "$60 billion",
@@ -37,9 +42,9 @@ export const spacexCursorDealTimeline = [
     evidence: "Cursor product and research announcement",
   },
   {
-    date: "2026-07-19",
-    event: "KyenAI verification checkpoint: the latest cited filing still describes closing as pending.",
-    evidence: "Official filing review; no closing claim inferred from product collaboration",
+    date: "2026-07-30",
+    event: "KyenAI verification checkpoint: no later official closing announcement was located; the cited filing remains the controlling record.",
+    evidence: "SEC filing and Cursor company-news review; absence of an announcement is not proof that conditions are complete",
   },
 ] as const;
 

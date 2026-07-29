@@ -409,8 +409,8 @@ def seed_articles() -> list[Article]:
             ["Cursor Enterprise security", "Cursor privacy mode", "Cursor data retention", "Cursor agent permissions"],
             CURSOR_ENTERPRISE,
             "2026-06-03T09:00:00Z",
-            "2026-07-14T00:00:00Z",
-            2,
+            "2026-07-30T00:00:00Z",
+            3,
             [
                 "Cursor Enterprise security is not one setting. Buyers should verify organization-level administration, role permissions, repository allowlists or blocklists, model controls, MCP server controls, SSO and SCIM, SOC 2 evidence, subprocessors, and Privacy Mode data-handling choices.",
                 "For enterprise readers, the practical decision is what an admin should verify before rollout: whether Privacy Mode is enforced, which repositories and models are allowed, which MCP servers an agent may call, how agent permissions differ by group, and what evidence the vendor can provide for retention, subprocessors, and audit needs.",

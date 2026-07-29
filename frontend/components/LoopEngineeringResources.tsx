@@ -7,6 +7,7 @@ import {
   loopProofContractDownload,
   loopProofContractPreview,
   loopProofGateChecks,
+  loopProofPack,
   loopStopRules,
   loopWorkflowSteps,
 } from "../lib/loop-engineering-resource";
@@ -38,6 +39,24 @@ export function LoopEngineeringResources() {
       <LoopPatternMatrix />
 
       <LoopBudgetCalculator />
+
+      <section className="instruction-resource-section" aria-labelledby="loop-definition-heading">
+        <div className="instruction-resource-heading">
+          <div>
+            <p className="instruction-resource-eyebrow">Definition</p>
+            <h2 id="loop-definition-heading">Loop engineering is the outer control system</h2>
+          </div>
+          <p>It governs an agent&apos;s repeated attempts; it is not merely asking the model to try again.</p>
+        </div>
+        <div className="instruction-direct-answer" role="note" aria-label="Loop engineering definition">
+          <strong>Operational definition</strong>
+          <p>
+            Loop engineering designs the outer plan → act → observe → verify cycle around an AI agent. A complete loop
+            names its done signal, evidence gate, retry strategy, stop rules, token/time/cost budget, permission boundary,
+            and escalation owner before execution starts.
+          </p>
+        </div>
+      </section>
 
       <section className="instruction-resource-section" aria-labelledby="loop-proof-heading">
         <div className="instruction-resource-heading">
@@ -72,6 +91,17 @@ export function LoopEngineeringResources() {
             ]}
           />
         </div>
+
+        <aside className="resource-citation-note" aria-label="Loop Engineering Proof-of-Done Pack citation">
+          <strong>{loopProofPack.name} · v{loopProofPack.version} · {loopProofPack.license}</strong>
+          <p>{loopProofPack.preferredCitation}</p>
+          <div className="mcp-download-links">
+            <a href={loopProofPack.downloads.runbook} download>Download Markdown runbook</a>
+            <a href={loopProofPack.downloads.checklist} download>Download CSV checklist</a>
+            <a href={loopProofPack.downloads.example} download>Download completed example</a>
+            <a href={loopProofPack.downloads.contract} download>Download JSON contract</a>
+          </div>
+        </aside>
       </section>
 
       <section className="instruction-resource-section" aria-labelledby="loop-example-heading">

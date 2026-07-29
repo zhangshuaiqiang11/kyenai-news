@@ -112,6 +112,7 @@ export function Layout({ children }: LayoutProps) {
         </Link>
         <nav className="main-nav" aria-label="Primary navigation">
           <Link href="/guides">Guides</Link>
+          <Link href="/research">Research</Link>
           <Link href="/glossary">Glossary</Link>
           <Link href={INSTRUCTION_COMPARISON_GUIDE_HREF}>Agent Instructions</Link>
           <Link href={MCP_SECURITY_GUIDE_HREF}>MCP Security</Link>
@@ -141,6 +142,7 @@ export function Layout({ children }: LayoutProps) {
         <Link href="/about">About</Link>
         <Link href="/guides">Guides</Link>
         <Link href="/sources">Sources</Link>
+        <Link href="/research">Research</Link>
         <Link href="/entities">Entities</Link>
         <Link href="/editorial-policy">Methodology</Link>
         <Link href="/contact">Contact</Link>

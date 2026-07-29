@@ -1,7 +1,7 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "title": "SpaceX-Cursor acquisition status",
-  "as_of": "2026-07-19",
+  "as_of": "2026-07-30",
   "status": "signed_not_closed",
   "status_label": "Definitive agreement signed; closing still pending",
   "agreement_signed": "2026-06-16",
@@ -10,6 +10,9 @@
   "implied_equity_value_usd": 60000000000,
   "consideration": "SpaceX Class A common stock",
   "expected_closing_window": "Third quarter of 2026",
+  "next_key_milestone": "Official closing confirmation or a new filing that changes the Q3 2026 window",
+  "license": "CC BY 4.0",
+  "preferred_citation": "KyenAI. (2026). SpaceX-Cursor Deal Status Timeline (Version 1.1, verified July 30, 2026) [Data set]. https://www.kyenai.com/articles/spacex-cursor-acquisition-2026",
   "closing_conditions": [
     "Required regulatory approvals",
     "Other conditions in the merger agreement"
@@ -42,6 +45,6 @@
       "url": "https://cursor.com/blog/grok-4-5"
     }
   ],
-  "methodology": "KyenAI separates signed-agreement evidence, product-collaboration evidence, and a legal closing event. A product announcement is not treated as proof of closing.",
+  "methodology": "KyenAI separates signed-agreement evidence, product-collaboration evidence, and a legal closing event. On July 30, 2026, KyenAI reviewed the cited SEC filing and Cursor company-news feed and found no later official closing announcement. Absence of an announcement is not proof that conditions are complete; a product announcement is not treated as proof of closing.",
   "page_url": "https://www.kyenai.com/articles/spacex-cursor-acquisition-2026"
 }

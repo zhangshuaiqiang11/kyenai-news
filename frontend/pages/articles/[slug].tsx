@@ -5,6 +5,7 @@ import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import { SourceList } from "../../components/SourceList";
 import { SpacexCursorDealTracker } from "../../components/SpacexCursorDealTracker";
+import { CursorEnterpriseSecurityControls } from "../../components/CursorEnterpriseSecurityControls";
 import { getArticle, getArticles } from "../../lib/api";
 import { getVisibleArticleFaqs } from "../../lib/article-faqs";
 import { getRelatedGuidesForArticle } from "../../lib/article-guide-links";
@@ -77,6 +78,7 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
           </dl>
         </section>
         {article.slug === "spacex-cursor-acquisition-2026" ? <SpacexCursorDealTracker /> : null}
+        {article.slug === "cursor-enterprise-organizations-governance" ? <CursorEnterpriseSecurityControls /> : null}
         <div className="article-content-grid">
           <div className="article-body">
             {article.blocks.map((block) => (

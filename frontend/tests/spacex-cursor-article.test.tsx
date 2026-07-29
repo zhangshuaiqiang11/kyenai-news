@@ -194,7 +194,7 @@ describe("SpaceX Cursor acquisition article", () => {
       "utf8",
     );
 
-    expect(status.as_of).toBe("2026-07-19");
+    expect(status.as_of).toBe("2026-07-30");
     expect(status.status).toBe("signed_not_closed");
     expect(status.page_url).toContain(spacexCursorAcquisitionArticle.slug);
     expect(timeline).toHaveLength(5);

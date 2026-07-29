@@ -1,6 +1,20 @@
-export const loopEngineeringVerifiedAt = "July 19, 2026";
+export const loopEngineeringVerifiedAt = "July 30, 2026";
 
 export const loopProofContractDownload = "/resources/loop-engineering/proof-of-done-contract.json";
+export const loopProofPack = {
+  name: "Loop Engineering Proof-of-Done Pack",
+  version: "1.1.0",
+  verifiedAt: "2026-07-30",
+  license: "CC BY 4.0",
+  downloads: {
+    runbook: "/resources/loop-engineering/proof-of-done-runbook.md",
+    checklist: "/resources/loop-engineering/proof-of-done-checklist.csv",
+    example: "/resources/loop-engineering/proof-of-done-example.json",
+    contract: loopProofContractDownload,
+  },
+  preferredCitation:
+    "KyenAI. (2026). Loop Engineering Proof-of-Done Pack (Version 1.1.0) [Runbook, checklist, and templates]. https://www.kyenai.com/guides/loop-engineering-ai-coding-agents",
+} as const;
 
 export const loopProofGateChecks = [
   {

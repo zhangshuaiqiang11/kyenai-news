@@ -19,7 +19,8 @@ const pageContracts = [
   ["/guides/ai-coding-agent-instruction-file-adoption-report-2026", "AI Agent Instruction File Adoption", "AI Coding Agent Instruction File Adoption Report"],
   ["/tools/instruction-file-checker", "Instruction File Checker", "AI Coding Agent Instruction File Checker"],
   ["/sources", "Source & Verification Ledger", "Source & Verification Ledger"],
-  ["/articles/spacex-cursor-acquisition-2026", "Did SpaceX Buy Cursor? $60B Deal Status & Timeline", "Did SpaceX Buy Cursor? $60B Deal Status and Timeline"],
+  ["/articles/spacex-cursor-acquisition-2026", "SpaceX–Cursor Deal Status (July 2026): Signed, Not Closed", "Did SpaceX Buy Cursor? $60B Deal Status and Timeline"],
+  ["/articles/cursor-enterprise-organizations-governance", "Cursor Enterprise Security: Governance, Privacy Mode, Agent Permissions", "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions"],
 ];
 
 function html(path, title, h1) {
@@ -81,7 +82,7 @@ test("SEO drift check passes the known-good contract", async (t) => {
   const result = await runCheck(`http://127.0.0.1:${address.port}`);
   assert.equal(result.code, 0, result.stderr || result.stdout);
   const report = JSON.parse(result.stdout);
-  assert.equal(report.pagesChecked, 17);
+  assert.equal(report.pagesChecked, 18);
   assert.equal(report.failures, 0);
 });
 

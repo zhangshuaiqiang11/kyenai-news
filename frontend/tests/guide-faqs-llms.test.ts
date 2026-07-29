@@ -41,6 +41,7 @@ describe("llms.txt", () => {
     expect(body).toContain("https://www.kyenai.com/articles/cursor-enterprise-organizations-governance");
     expect(body).toContain("https://www.kyenai.com/authors/editorial-automation-desk");
     expect(body).toContain("https://www.kyenai.com/sources");
+    expect(body).toContain("https://www.kyenai.com/research");
     expect(body).toContain("https://www.kyenai.com/guides/loop-engineering-ai-coding-agents.md");
     expect(body).toContain("Citation guidance");
     expect(body).not.toContain("gscBaseline");
@@ -59,6 +60,7 @@ describe("llms.txt", () => {
     expect(publicBody).toContain("https://www.kyenai.com/articles/cursor-enterprise-organizations-governance");
     expect(publicBody).toContain("https://www.kyenai.com/authors/editorial-automation-desk");
     expect(publicBody).toContain("https://www.kyenai.com/sources");
+    expect(publicBody).toContain("https://www.kyenai.com/research");
     expect(publicBody).toContain("Citation guidance");
     expect(publicBody).not.toContain("<!DOCTYPE html>");
   });

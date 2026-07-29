@@ -25,6 +25,7 @@ const requiredPublicPaths = [
   "instruction-files/CLAUDE.md",
   "instruction-files/copilot-instructions.md",
   "instruction-files/cursor-project-rule.mdc",
+  "instruction-files/kyenai-agents-md-starter-pack.zip",
   "mcp-security-review.md",
 ];
 
@@ -159,6 +160,10 @@ describe("generated instruction resources", () => {
         ],
         { cwd: repoRoot, stdio: "pipe" },
       );
+      execFileSync("python3", ["scripts/generate_agents_template_pack.py"], {
+        cwd: repoRoot,
+        stdio: "pipe",
+      });
 
       const after = snapshotFiles();
       assert.deepEqual(after, before, "generation wrote outside the approved output directories");
