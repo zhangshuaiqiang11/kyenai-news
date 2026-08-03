@@ -145,6 +145,15 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: "/api/og",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow",
+          },
+        ],
+      },
+      {
         source: "/resources/:path*",
         headers: [
           {
