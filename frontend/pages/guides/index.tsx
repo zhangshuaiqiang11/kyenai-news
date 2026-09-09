@@ -9,6 +9,7 @@ import {
   INSTRUCTION_COMPARISON_GUIDE_HREF,
   LOOP_ENGINEERING_GUIDE_HREF,
   MCP_SECURITY_GUIDE_HREF,
+  MCP_TOOL_DISCOVERY_GUIDE_HREF,
 } from "../../lib/guide-routes";
 import { getGuides } from "../../lib/guides";
 import { toGuideSummary } from "../../lib/guide-summary";
@@ -293,29 +294,25 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
             <p>Choose the next guide by the decision your team needs to make.</p>
           </div>
           <div className="featured-guide-path-grid">
-            <Link href={CLAUDE_CODE_ALTERNATIVES_GUIDE_HREF}>
-              <strong>Compare Claude Code alternatives by reason to switch</strong>
-              <span>Shortlist seven commercial and open-source options without inventing a universal winner.</span>
-            </Link>
-            <Link href={CODING_AGENT_COMPARISON_GUIDE_HREF}>
-              <strong>Compare AI coding agents by operating model</strong>
-              <span>Build a four-tool shortlist, then verify it with focused pairwise guides and the same repository task.</span>
-            </Link>
             <Link href={INSTRUCTION_COMPARISON_GUIDE_HREF}>
-              <strong>Choose repository instruction files</strong>
-              <span>Compare AGENTS.md, CLAUDE.md, Cursor rules, and Copilot support before standardizing guidance.</span>
+              <strong>Choose the instruction file for each agent surface</strong>
+              <span>Map AGENTS.md, CLAUDE.md, Copilot instructions, and Cursor rules before standardizing repository guidance.</span>
             </Link>
-            <Link href="/guides/codex-vs-claude-code">
-              <strong>Compare Codex and Claude Code</strong>
-              <span>Choose by repo workflow, instruction files, review effort, and a same-task test protocol.</span>
+            <Link href="/guides/agents-md-template-for-ai-coding-agents">
+              <strong>Build and audit an AGENTS.md starter</strong>
+              <span>Generate a Node.js, Python, or monorepo template, then verify its commands and safety boundaries.</span>
+            </Link>
+            <Link href={MCP_TOOL_DISCOVERY_GUIDE_HREF}>
+              <strong>Diagnose missing MCP tools</strong>
+              <span>Find the first failure across config, transport, initialize, tools/list, client policy, refresh, and invocation.</span>
             </Link>
             <Link href={MCP_SECURITY_GUIDE_HREF}>
               <strong>Set boundaries for MCP access</strong>
               <span>Review permissions, secrets, authentication, logs, and revocation before enabling an MCP server.</span>
             </Link>
-            <Link href={LOOP_ENGINEERING_GUIDE_HREF}>
-              <strong>Design durable agent loops: what is loop engineering?</strong>
-              <span>Move from one-shot prompts to act-observe-reason cycles with verification commands, stop rules, and cost limits.</span>
+            <Link href="/articles/cursor-enterprise-organizations-governance">
+              <strong>Review Cursor Enterprise controls</strong>
+              <span>Check Privacy Mode, retention exceptions, groups, models, repositories, MCP, identity, and audit evidence.</span>
             </Link>
           </div>
         </section>

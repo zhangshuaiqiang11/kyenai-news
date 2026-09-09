@@ -12,6 +12,9 @@ export type EvidenceSource = {
   publisher: string;
   publishedAt: string;
   credibility: number;
+  verifiedAt?: string;
+  verificationConclusion?: string;
+  verificationChangeNote?: string;
 };
 
 export type Article = {
@@ -79,6 +82,8 @@ export type GuideEvidence = {
   publisher: string;
   note: string;
   verifiedAt?: string;
+  verificationConclusion?: string;
+  verificationChangeNote?: string;
 };
 
 export type GuideInternalLink = {
@@ -183,6 +188,10 @@ export type GuideEditorialSignals = {
   fitScore: number;
   gscWatchQueries: string[];
   gscBaseline?: {
+    source: "Google Search Console";
+    dimension: "page" | "query";
+    startDate: string;
+    endDate: string;
     clicks: number;
     impressions: number;
     ctr: number;

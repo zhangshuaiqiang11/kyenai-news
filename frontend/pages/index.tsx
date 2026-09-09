@@ -16,6 +16,7 @@ import {
   INSTRUCTION_COMPARISON_GUIDE_HREF,
   LOOP_ENGINEERING_GUIDE_HREF,
   MCP_SECURITY_GUIDE_HREF,
+  MCP_TOOL_DISCOVERY_GUIDE_HREF,
 } from "../lib/guide-routes";
 import {
   buildGuideItemListJsonLd,
@@ -35,54 +36,39 @@ type HomeProps = {
 
 const highImpressionEntries = [
   {
-    href: CODING_AGENT_COMPARISON_GUIDE_HREF,
-    label: "AI coding agents comparison: Codex, Claude, Cursor, and Copilot",
-    note: "Build an evidence-led shortlist by operating surface, instructions, parallel work, model boundary, permissions, and governance.",
+    href: INSTRUCTION_COMPARISON_GUIDE_HREF,
+    label: "Choose AGENTS.md, CLAUDE.md, Copilot instructions, or Cursor rules",
+    note: "Start with the current support matrix, then maintain one shared policy with small tool-specific adapters.",
   },
   {
-    href: "/tools/instruction-file-checker",
-    label: "Audit AGENTS.md, CLAUDE.md, Copilot, or Cursor rules",
-    note: "Run deterministic browser-only checks for setup, tests, scope, safety, and file-path compatibility.",
-  },
-  {
-    href: INSTRUCTION_ADOPTION_REPORT_HREF,
-    label: "AI instruction-file adoption report: 400 GitHub files",
-    note: "Download the dated CSV/JSON and see which test, scope, verification, and security rules samples omit.",
-  },
-  {
-    href: CODEX_COPILOT_GUIDE_HREF,
-    label: "Codex vs GitHub Copilot: app, CLI, cloud and team fit",
-    note: "Compare current agent surfaces with a six-question workflow decision tool.",
-  },
-  {
-    href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
-    label: "CLAUDE.md vs Copilot Instructions support matrix",
-    note: "Choose the right repo instruction file by tool surface.",
-  },
-  {
-    href: "/guides/loop-engineering-ai-coding-agents",
-    label: "Loop Engineering: Addy Osmani, examples, stop rules",
-    note: "Learn the workflow, caps, and human checkpoints before scaling agent work.",
+    href: MCP_TOOL_DISCOVERY_GUIDE_HREF,
+    label: "Fix an MCP server that is connected but shows no tools",
+    note: "Use the interactive fault tree and minimal tools/list reproduction before changing permissions.",
   },
   {
     href: "/guides/agents-md-template-for-ai-coding-agents",
-    label: "AGENTS.md template for Codex, Node.js, Python",
-    note: "Copy practical repo instructions after choosing the right file.",
+    label: "Build an AGENTS.md template for Codex",
+    note: "Generate a Node.js, Python, or monorepo starter with setup, verification, boundaries, and proof-of-done rules.",
   },
   {
-    href: "/articles/spacex-cursor-acquisition-2026",
-    label: "SpaceX Cursor acquisition deal status and timeline",
-    note: "Event page with deal status, Q3 2026 closing window, and developer impact.",
+    href: "/guides/does-github-copilot-read-claude-md-support-matrix",
+    label: "Check whether GitHub Copilot reads CLAUDE.md",
+    note: "Use the surface-specific answer for IDE Chat, cloud agent, code review, and Copilot CLI.",
+  },
+  {
+    href: MCP_SECURITY_GUIDE_HREF,
+    label: "Audit MCP authentication, permissions, and revocation",
+    note: "Apply the source-backed security controls before an agent receives credentials or write access.",
   },
   {
     href: "/articles/cursor-enterprise-organizations-governance",
-    label: "Cursor Enterprise security and Privacy Mode checklist",
-    note: "Verify retention caveats, repo controls, MCP allowlists, and agent permissions.",
+    label: "Review Cursor Enterprise security and Privacy Mode",
+    note: "Verify current retention caveats, group policy, model controls, MCP access, and contract evidence.",
   },
   {
-    href: "/guides/secure-mcp-servers-ai-coding-agents",
-    label: "MCP server security checklist",
-    note: "Secure MCP connections with authentication, permissions, logs, and revocation.",
+    href: "/tools/instruction-file-checker",
+    label: "Audit an instruction file in the browser",
+    note: "Check setup, tests, scope, safety, and path compatibility without uploading repository content.",
   },
 ];
 
@@ -120,7 +106,7 @@ export default function Home({ articles, guides, entities = [] }: HomeProps) {
           <section className="guide-strip" aria-labelledby="priority-guides-heading">
             <div>
               <h2 id="priority-guides-heading">Practical playbooks</h2>
-              <p>Start with the guide that matches the decision in front of your team, then continue into setup and security.</p>
+              <p>Follow one of two focused paths: choose, build, and audit agent instructions; or diagnose, secure, and govern MCP access.</p>
             </div>
             <div className="guide-strip-next-steps" aria-label="Guides to read first">
               {highImpressionEntries.map((entry) => (

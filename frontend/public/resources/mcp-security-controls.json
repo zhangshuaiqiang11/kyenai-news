@@ -1,6 +1,6 @@
 {
   "title": "MCP Server Security Checklist: 25 Controls for AI Agents",
-  "verifiedAt": "2026-07-19",
+  "verifiedAt": "2026-09-08",
   "controlCount": 25,
   "scope": "Official MCP requirements and guidance are labeled separately from KyenAI operational recommendations. Validate each control against the named server, client, version, and deployment context.",
   "controls": [
@@ -344,28 +344,28 @@
       "title": "MCP security best practices",
       "url": "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices",
       "scope": "Official guidance for authorization, token handling, least-privilege scopes, session security, SSRF, and local MCP server compromise.",
-      "verifiedAt": "2026-07-19"
+      "verifiedAt": "2026-09-08"
     },
     {
       "id": "mcp-authorization",
       "title": "MCP authorization specification",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization",
       "scope": "Official protocol requirements for HTTP-based authorization, protected resource metadata, access tokens, scopes, and audience validation.",
-      "verifiedAt": "2026-07-19"
+      "verifiedAt": "2026-09-08"
     },
     {
       "id": "mcp-authorization-security",
       "title": "MCP authorization security considerations",
       "url": "https://modelcontextprotocol.io/specification/draft/basic/authorization/security-considerations",
       "scope": "Official security considerations for confused-deputy attacks, token passthrough, audience validation, SSRF, session hijacking, and local server compromise.",
-      "verifiedAt": "2026-07-19"
+      "verifiedAt": "2026-09-08"
     },
     {
       "id": "mcp-inspector",
       "title": "MCP Inspector",
       "url": "https://modelcontextprotocol.io/docs/tools/inspector",
       "scope": "Official interactive validation workflow for inspecting server resources, prompts, tools, notifications, and protocol exchanges.",
-      "verifiedAt": "2026-07-19"
+      "verifiedAt": "2026-09-08"
     }
   ]
 }

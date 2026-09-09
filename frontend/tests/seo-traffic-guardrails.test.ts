@@ -10,14 +10,14 @@ const protectedGuides = [
     title: "AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?",
     metaTitle: "AGENTS.md vs CLAUDE.md vs Copilot Instructions",
     publishedAt: "2026-06-14",
-    updatedAt: "2026-07-30",
+    updatedAt: "2026-09-08",
   },
   {
     slug: "agents-md-template-for-ai-coding-agents",
     title: "AGENTS.md Template for Codex and Monorepos",
     metaTitle: "AGENTS.md Template for Codex: Node.js, Python & Monorepos",
     publishedAt: "2026-06-14",
-    updatedAt: "2026-07-30",
+    updatedAt: "2026-09-08",
   },
   {
     slug: "loop-engineering-ai-coding-agents",
@@ -41,7 +41,7 @@ const protectedArticles = [
     title: "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions",
     metaTitle: "Cursor Enterprise Security: Governance, Privacy Mode, Agent Permissions",
     publishedAt: "2026-06-03T09:00:00Z",
-    updatedAt: "2026-07-30T00:00:00Z",
+    updatedAt: "2026-09-08T00:00:00Z",
   },
 ] as const;
 

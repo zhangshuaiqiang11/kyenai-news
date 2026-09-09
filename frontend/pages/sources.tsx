@@ -72,6 +72,7 @@ export default function SourcesPage({ sources }: SourcesPageProps) {
             <div><dt>Guides covered</dt><dd>{coverage.guides}</dd></div>
             <div><dt>Articles covered</dt><dd>{coverage.articles}</dd></div>
             <div><dt>Review due</dt><dd>{coverage.reviewDue}</dd></div>
+            <div><dt>Verification needed</dt><dd>{coverage.verificationNeeded}</dd></div>
             <div><dt>Superseded</dt><dd>{coverage.superseded}</dd></div>
           </dl>
         </section>
@@ -81,7 +82,8 @@ export default function SourcesPage({ sources }: SourcesPageProps) {
           <p>
             High confidence means an official publisher, primary record, or standards body owns the source. Medium confidence marks
             independent reporting or preprint research that still needs direct attribution. “Last checked” uses a source-level
-            verification date when one is recorded; older entries fall back to the substantive update date of the page using the source.
+            verification date only when one is recorded for that exact source-and-page use. Editing a page does not refresh its evidence,
+            and checking a shared source for one page does not verify another page that cites it.
             “Next review” is KyenAI’s editorial schedule, not the source’s
             expiration date. A source remains visible if it is later superseded so readers can audit historical claims.
           </p>
@@ -99,8 +101,8 @@ export default function SourcesPage({ sources }: SourcesPageProps) {
                 <div><dt>Source type</dt><dd>{source.sourceType}</dd></div>
                 <div><dt>Confidence</dt><dd>{source.confidence}</dd></div>
                 <div><dt>Published</dt><dd>{source.publishedAt ? formatDate(source.publishedAt) : "Not recorded"}</dd></div>
-                <div><dt>Last checked</dt><dd>{formatDate(source.lastVerifiedAt)}</dd></div>
-                <div><dt>Next review</dt><dd>{formatDate(source.nextReviewAt)}</dd></div>
+                <div><dt>Last checked</dt><dd>{source.lastVerifiedAt ? formatDate(source.lastVerifiedAt) : "Not yet verified"}</dd></div>
+                <div><dt>Next review</dt><dd>{source.nextReviewAt ? formatDate(source.nextReviewAt) : "After first verification"}</dd></div>
                 <div><dt>Cadence</dt><dd>{source.reviewCadenceDays} days</dd></div>
                 <div><dt>Superseded</dt><dd>{source.supersededBy ? "Yes" : "No record"}</dd></div>
               </dl>
@@ -110,8 +112,13 @@ export default function SourcesPage({ sources }: SourcesPageProps) {
                   {source.usedBy.map((usage) => (
                     <li key={usage.path}>
                       <Link href={usage.path}>{usage.title}</Link>
-                      <span>{usage.kind} · checked {formatDate(usage.verifiedAt)}{usage.passages ? ` · ${usage.passages} cited passage${usage.passages === 1 ? "" : "s"}` : ""}</span>
+                      <span>
+                        {usage.kind} · {usage.verifiedAt ? `checked ${formatDate(usage.verifiedAt)}` : "verification needed"}
+                        {usage.passages ? ` · ${usage.passages} cited passage${usage.passages === 1 ? "" : "s"}` : ""}
+                      </span>
                       <small>{usage.note}</small>
+                      {usage.verificationConclusion ? <small>Conclusion: {usage.verificationConclusion}</small> : null}
+                      {usage.verificationChangeNote ? <small>Change note: {usage.verificationChangeNote}</small> : null}
                     </li>
                   ))}
                 </ul>

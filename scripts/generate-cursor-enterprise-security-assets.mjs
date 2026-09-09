@@ -47,8 +47,10 @@ fs.writeFileSync(path.join(resourcesDir, "cursor-enterprise-security-controls.cs
 const markdown = [
   `# ${payload.title}`,
   "",
-  `Version: ${payload.version}  `,
-  `Verified: ${payload.verifiedAt}  `,
+  `Version: ${payload.version}`,
+  "",
+  `Verified: ${payload.verifiedAt}`,
+  "",
   `License: ${payload.license}`,
   "",
   `Preferred citation: ${payload.preferredCitation}`,

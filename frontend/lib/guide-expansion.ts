@@ -462,14 +462,20 @@ export const expansionGuides: Guide[] = [
         url: "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
         publisher: "OpenAI",
         note: "Official AGENTS.md behavior and precedence reference.",
-        verifiedAt: "2026-07-19",
+        verifiedAt: "2026-09-08",
+        verificationConclusion:
+          "OpenAI documents AGENTS.md as repository instructions with nearest-file precedence for Codex workflows.",
+        verificationChangeNote: "Rechecked precedence and scope against the current official guide.",
       },
       {
         title: "GitHub Copilot custom instructions",
         url: "https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions",
         publisher: "GitHub",
         note: "Official repository instruction reference for Copilot workflows.",
-        verifiedAt: "2026-07-19",
+        verifiedAt: "2026-09-08",
+        verificationConclusion:
+          ".github/copilot-instructions.md remains GitHub's repository-wide instructions path for Copilot.",
+        verificationChangeNote: "Rechecked the Copilot baseline before keeping the cross-tool recommendation.",
       },
       {
         title: "Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?",
@@ -488,7 +494,7 @@ export const expansionGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
     publishedAt: "2026-06-14",
-    updatedAt: "2026-07-30",
+    updatedAt: "2026-09-08",
     metaTitle: "AGENTS.md Template for Codex: Node.js, Python & Monorepos",
     metaDescription:
       "Copy tested AGENTS.md templates for Codex, Node.js, Python and monorepos. Includes setup commands, test rules, safe edit boundaries and review checks.",
@@ -659,12 +665,18 @@ export const expansionGuides: Guide[] = [
         url: "https://docs.github.com/en/copilot/reference/custom-instructions-support",
         publisher: "GitHub",
         note: "Official matrix for which Copilot surfaces support which instruction files.",
+        verifiedAt: "2026-09-08",
+        verificationConclusion: "GitHub currently lists CLAUDE.md for Copilot cloud agent and Copilot CLI, not as the universal instruction file for every Copilot surface.",
+        verificationChangeNote: "Rechecked the current matrix and clarified surface-specific ownership.",
       },
       {
         title: "Add repository custom instructions for GitHub Copilot",
         url: "https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions",
         publisher: "GitHub",
         note: "Official repository-wide Copilot instructions path and setup guidance.",
+        verifiedAt: "2026-09-08",
+        verificationConclusion: ".github/copilot-instructions.md remains the repository-wide Copilot instructions path.",
+        verificationChangeNote: "Rechecked the repository-wide baseline recommendation.",
       },
       {
         title: "Claude Code memory",
@@ -675,7 +687,7 @@ export const expansionGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["github-copilot-sdk-general-availability"],
     publishedAt: "2026-06-18",
-    updatedAt: "2026-07-14",
+    updatedAt: "2026-09-08",
     metaTitle: "Does GitHub Copilot Read CLAUDE.md? Surface Matrix",
     metaDescription:
       "Check when GitHub Copilot reads CLAUDE.md, when to use copilot-instructions.md, and which Copilot surfaces need each file.",

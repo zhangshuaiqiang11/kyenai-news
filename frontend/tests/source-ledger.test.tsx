@@ -65,6 +65,9 @@ describe("source verification ledger", () => {
         url: "https://platform.openai.com/docs/api-reference?utm_medium=guide",
         publisher: "OpenAI",
         note: "Confirms the supported API surface.",
+        verifiedAt: "2026-07-10",
+        verificationConclusion: "The documented API surface is present.",
+        verificationChangeNote: "No material change.",
       }],
     };
 
@@ -78,10 +81,36 @@ describe("source verification ledger", () => {
       lastVerifiedAt: "2026-07-10",
       nextReviewAt: "2026-07-24",
       reviewCadenceDays: 14,
-      status: "Review due",
+      status: "Verification needed",
     });
     expect(entries[0].usedBy).toHaveLength(2);
-    expect(entries[0].usedBy.find((usage) => usage.kind === "Article")?.passages).toBe(1);
+    const articleUsage = entries[0].usedBy.find((usage) => usage.kind === "Article");
+    const guideUsage = entries[0].usedBy.find((usage) => usage.kind === "Guide");
+    expect(articleUsage).toMatchObject({ passages: 1, verifiedAt: null, status: "Verification needed" });
+    expect(guideUsage).toMatchObject({ verifiedAt: "2026-07-10", status: "Review due" });
+    expect(guideUsage?.verificationConclusion).toBe("The documented API surface is present.");
+  });
+
+  it("does not use an article update date as source verification", () => {
+    const article: Article = {
+      ...seedArticles[0],
+      id: "updated-without-source-check",
+      slug: "updated-without-source-check",
+      updatedAt: "2026-09-08",
+      sources: [{
+        id: "unchanged-source",
+        title: "OpenAI API reference",
+        url: "https://platform.openai.com/docs/api-reference",
+        publisher: "OpenAI",
+        publishedAt: "2026-01-01",
+        credibility: 5,
+      }],
+    };
+
+    const [entry] = buildSourceLedger([article], [], "2026-09-08");
+
+    expect(entry).toMatchObject({ lastVerifiedAt: null, nextReviewAt: null, status: "Verification needed" });
+    expect(entry.usedBy[0]).toMatchObject({ verifiedAt: null, status: "Verification needed" });
   });
 
   it("distinguishes regulatory records from independent reporting", () => {
@@ -159,6 +188,10 @@ describe("source verification ledger", () => {
         title: "MCP Server Security Checklist",
         passages: null,
         verifiedAt: "2026-07-19",
+        nextReviewAt: "2026-10-17",
+        status: "Current",
+        verificationConclusion: "The tool model is documented.",
+        verificationChangeNote: "No material change.",
         note: "Defines the protocol security model.",
       }],
     };

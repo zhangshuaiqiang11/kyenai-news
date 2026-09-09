@@ -25,7 +25,7 @@ afterEach(() => cleanup());
 
 describe("MCP tool discovery fault tree", () => {
   it("defines eight ordered checks with observable proof and fixes", () => {
-    expect(mcpDiscoveryVerifiedAt).toBe("2026-07-19");
+    expect(mcpDiscoveryVerifiedAt).toBe("2026-09-08");
     expect(mcpDiscoveryChecks).toHaveLength(8);
     expect(mcpDiscoveryChecks.map((check) => check.id)).toEqual([
       "config-load",
@@ -81,7 +81,7 @@ describe("MCP missing-tools guide integration", () => {
 
     expect(guide).toMatchObject({
       resourceIds: ["mcp-tool-discovery"],
-      updatedAt: "2026-07-19",
+      updatedAt: "2026-09-08",
       metaTitle: "MCP Server Not Showing Tools? 8 Checks That Fix It",
     });
     expect(guide!.sections[0].body[0]).toMatch(/tools\/list in MCP Inspector/i);

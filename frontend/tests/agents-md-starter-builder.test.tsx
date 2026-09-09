@@ -39,6 +39,19 @@ describe("AGENTS.md starter builder", () => {
     expect(output).not.toContain("`tests`");
   });
 
+  it.each([
+    ["node", "npm ci", "npm test", "src/, tests/"],
+    ["python", "uv sync", "pytest", "src/, tests/"],
+    ["monorepo", "pnpm install --frozen-lockfile", "pnpm test", "apps/, packages/"],
+  ] as const)("renders verified %s defaults", (stack, installCommand, testCommand, preferredPaths) => {
+    const output = renderAgentsMdStarter(getAgentsMdStarterDefaults(stack));
+    expect(output).toContain(`Install dependencies with \`${installCommand}\``);
+    expect(output).toContain(`Run \`${testCommand}\``);
+    expect(output).toContain(`Prefer edits in ${preferredPaths}`);
+    expect(auditInstructionFile({ tool: "codex", surface: "Codex", filePath: "AGENTS.md", content: output }).grade)
+      .toBe("Strong");
+  });
+
   it("switches stack defaults, copies, downloads, and links to the full checker", async () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText } });

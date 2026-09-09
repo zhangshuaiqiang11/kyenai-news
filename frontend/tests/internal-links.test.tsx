@@ -11,6 +11,7 @@ import {
   INSTRUCTION_COMPARISON_GUIDE_SLUG,
   LOOP_ENGINEERING_GUIDE_SLUG,
   MCP_SECURITY_GUIDE_SLUG,
+  MCP_TOOL_DISCOVERY_GUIDE_SLUG,
 } from "../lib/guide-routes";
 import { getGuide, getGuides } from "../lib/guides";
 
@@ -67,7 +68,10 @@ afterEach(() => {
 function getGuideRouteData() {
   const guides = getGuides();
   const validSlugs = new Set(guides.map((guide) => guide.slug));
-  const validHrefs = new Set(guides.map((guide) => `/guides/${guide.slug}`));
+  const validHrefs = new Set([
+    ...guides.map((guide) => `/guides/${guide.slug}`),
+    "/articles/cursor-enterprise-organizations-governance",
+  ]);
 
   return { guides, validSlugs, validHrefs };
 }
@@ -146,34 +150,34 @@ describe("contextual internal links", () => {
     expect(featuredPaths).not.toBeNull();
 
     const instructionLink = within(featuredPaths!).getByRole("link", {
-      name: /Choose repository instruction files/i,
+      name: /Choose the instruction file for each agent surface/i,
     });
-    const comparisonHubLink = within(featuredPaths!).getByRole("link", {
-      name: /Compare AI coding agents by operating model/i,
+    const templateLink = within(featuredPaths!).getByRole("link", {
+      name: /Build and audit an AGENTS\.md starter/i,
     });
-    const codexLink = within(featuredPaths!).getByRole("link", {
-      name: /Compare Codex and Claude Code/i,
+    const discoveryLink = within(featuredPaths!).getByRole("link", {
+      name: /Diagnose missing MCP tools/i,
     });
     const securityLink = within(featuredPaths!).getByRole("link", {
       name: /Set boundaries for MCP access/i,
     });
-    const loopLink = within(featuredPaths!).getByRole("link", {
-      name: /Design durable agent loops/i,
+    const cursorLink = within(featuredPaths!).getByRole("link", {
+      name: /Review Cursor Enterprise controls/i,
     });
     const guideGrid = document.querySelector(".guide-grid");
 
     // Featured paths and the full grid have different navigation roles, so cross-block repeats are intentional.
     expectValidUniqueGuideLinks(featuredPaths!, "guides-index", validHrefs);
-    expect(comparisonHubLink.getAttribute("href")).toBe(`/guides/${CODING_AGENT_COMPARISON_GUIDE_SLUG}`);
     expect(instructionLink.getAttribute("href")).toBe(`/guides/${INSTRUCTION_COMPARISON_GUIDE_SLUG}`);
-    expect(codexLink.getAttribute("href")).toBe("/guides/codex-vs-claude-code");
+    expect(templateLink.getAttribute("href")).toBe("/guides/agents-md-template-for-ai-coding-agents");
+    expect(discoveryLink.getAttribute("href")).toBe(`/guides/${MCP_TOOL_DISCOVERY_GUIDE_SLUG}`);
     expect(securityLink.getAttribute("href")).toBe(`/guides/${MCP_SECURITY_GUIDE_SLUG}`);
-    expect(loopLink.getAttribute("href")).toBe(`/guides/${LOOP_ENGINEERING_GUIDE_SLUG}`);
-    expect(instructionLink.textContent).toMatch(/before standardizing guidance/i);
-    expect(codexLink.textContent).toMatch(/same-task test protocol/i);
+    expect(cursorLink.getAttribute("href")).toBe("/articles/cursor-enterprise-organizations-governance");
+    expect(instructionLink.textContent).toMatch(/before standardizing repository guidance/i);
+    expect(templateLink.textContent).toMatch(/Node\.js, Python, or monorepo/i);
+    expect(discoveryLink.textContent).toMatch(/tools\/list/i);
     expect(securityLink.textContent).toMatch(/before enabling an MCP server/i);
-    expect(loopLink.textContent).toMatch(/what is loop engineering/i);
-    expect(loopLink.textContent).toMatch(/act-observe-reason cycles/i);
+    expect(cursorLink.textContent).toMatch(/Privacy Mode/i);
     expect(
       featuredPaths!.compareDocumentPosition(guideGrid!) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
@@ -263,7 +267,7 @@ describe("contextual internal links", () => {
       ...homepagePlacements,
       ...guidesIndexPlacements,
     ];
-    expect(actualRequiredPlacements).toHaveLength(approvedGuidePlacements.length + 10);
+    expect(actualRequiredPlacements).toHaveLength(approvedGuidePlacements.length + 9);
     expect(new Set(actualRequiredPlacements).size).toBe(actualRequiredPlacements.length);
 
     for (const guide of guides) {

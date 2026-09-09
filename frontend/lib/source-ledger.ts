@@ -8,7 +8,7 @@ export type SourceLedgerType =
   | "Standards or methodology"
   | "Independent reporting";
 
-export type SourceLedgerStatus = "Current" | "Review due" | "Superseded";
+export type SourceLedgerStatus = "Current" | "Review due" | "Verification needed" | "Superseded";
 
 export type SourceLedgerUsage = {
   kind: "Article" | "Guide";
@@ -16,7 +16,11 @@ export type SourceLedgerUsage = {
   slug: string;
   title: string;
   passages: number | null;
-  verifiedAt: string;
+  verifiedAt: string | null;
+  nextReviewAt: string | null;
+  status: SourceLedgerStatus;
+  verificationConclusion: string | null;
+  verificationChangeNote: string | null;
   note: string;
 };
 
@@ -27,8 +31,8 @@ export type SourceLedgerEntry = {
   sourceType: SourceLedgerType;
   confidence: "High" | "Medium";
   publishedAt: string | null;
-  lastVerifiedAt: string;
-  nextReviewAt: string;
+  lastVerifiedAt: string | null;
+  nextReviewAt: string | null;
   reviewCadenceDays: number;
   status: SourceLedgerStatus;
   supersededBy: string | null;
@@ -78,7 +82,11 @@ export function buildSourceLedger(
         slug: article.slug,
         title: article.title,
         passages: article.blocks.filter((block) => block.sourceIds.includes(source.id)).length,
-        verifiedAt: toDateOnly(article.updatedAt),
+        verifiedAt: source.verifiedAt ? toDateOnly(source.verifiedAt) : null,
+        nextReviewAt: null,
+        status: "Verification needed",
+        verificationConclusion: source.verificationConclusion || null,
+        verificationChangeNote: source.verificationChangeNote || null,
         note: `Cited by ${article.category} coverage.`,
       };
       mergeSource(entries, {
@@ -98,7 +106,11 @@ export function buildSourceLedger(
         slug: guide.slug,
         title: guide.title,
         passages: null,
-        verifiedAt: toDateOnly(source.verifiedAt || guide.updatedAt),
+        verifiedAt: source.verifiedAt ? toDateOnly(source.verifiedAt) : null,
+        nextReviewAt: null,
+        status: "Verification needed",
+        verificationConclusion: source.verificationConclusion || null,
+        verificationChangeNote: source.verificationChangeNote || null,
         note: source.note,
       };
       mergeSource(entries, source, usage, asOfDate);
@@ -110,7 +122,7 @@ export function buildSourceLedger(
     .sort((left, right) => {
       const statusOrder = statusRank(left.status) - statusRank(right.status);
       if (statusOrder !== 0) return statusOrder;
-      const dateOrder = right.lastVerifiedAt.localeCompare(left.lastVerifiedAt);
+      const dateOrder = (right.lastVerifiedAt || "").localeCompare(left.lastVerifiedAt || "");
       return dateOrder || left.publisher.localeCompare(right.publisher) || left.title.localeCompare(right.title);
     });
 }
@@ -123,6 +135,7 @@ export function getSourceLedgerCoverage(entries: SourceLedgerEntry[]) {
     guides: new Set(usages.filter((usage) => usage.kind === "Guide").map((usage) => usage.slug)).size,
     articles: new Set(usages.filter((usage) => usage.kind === "Article").map((usage) => usage.slug)).size,
     reviewDue: entries.filter((entry) => entry.status === "Review due").length,
+    verificationNeeded: entries.filter((entry) => entry.status === "Verification needed").length,
     superseded: entries.filter((entry) => entry.status === "Superseded").length,
   };
 }
@@ -136,6 +149,7 @@ function mergeSource(
   const url = normalizeSourceUrl(source.url);
   const sourceType = classifySource(source.publisher, source.title, url);
   const reviewCadenceDays = reviewCadenceFor(sourceType);
+  const finalizedUsage = finalizeUsage(usage, reviewCadenceDays, asOfDate);
   const existing = entries.get(url);
 
   if (!existing) {
@@ -146,42 +160,65 @@ function mergeSource(
       sourceType,
       confidence: sourceType === "Independent reporting" || sourceType === "Research paper or preprint" ? "Medium" : "High",
       publishedAt: source.publishedAt || null,
-      lastVerifiedAt: usage.verifiedAt,
-      nextReviewAt: addDays(usage.verifiedAt, reviewCadenceDays),
+      lastVerifiedAt: finalizedUsage.verifiedAt,
+      nextReviewAt: finalizedUsage.nextReviewAt,
       reviewCadenceDays,
-      status: compareDates(asOfDate, addDays(usage.verifiedAt, reviewCadenceDays)) > 0 ? "Review due" : "Current",
+      status: finalizedUsage.status,
       supersededBy: null,
-      usedBy: [usage],
+      usedBy: [finalizedUsage],
     });
     return;
   }
 
-  existing.lastVerifiedAt = latestDate(existing.lastVerifiedAt, usage.verifiedAt);
-  existing.nextReviewAt = addDays(existing.lastVerifiedAt, existing.reviewCadenceDays);
   if (!existing.publishedAt && source.publishedAt) existing.publishedAt = source.publishedAt;
-  const existingUsage = existing.usedBy.find((candidate) => candidate.path === usage.path);
+  const existingUsage = existing.usedBy.find((candidate) => candidate.path === finalizedUsage.path);
   if (existingUsage) {
-    existingUsage.passages = Math.max(existingUsage.passages || 0, usage.passages || 0) || null;
-    existingUsage.verifiedAt = latestDate(existingUsage.verifiedAt, usage.verifiedAt);
-    if (usage.note.length > existingUsage.note.length) existingUsage.note = usage.note;
+    existingUsage.passages = Math.max(existingUsage.passages || 0, finalizedUsage.passages || 0) || null;
+    if (isLater(finalizedUsage.verifiedAt, existingUsage.verifiedAt)) {
+      Object.assign(existingUsage, finalizedUsage);
+    } else if (finalizedUsage.note.length > existingUsage.note.length) {
+      existingUsage.note = finalizedUsage.note;
+    }
   } else {
-    existing.usedBy.push(usage);
+    existing.usedBy.push(finalizedUsage);
   }
 }
 
 function finalizeSourceEntry(entry: SourceLedgerEntry, asOfDate: string): SourceLedgerEntry {
-  const nextReviewAt = addDays(entry.lastVerifiedAt, entry.reviewCadenceDays);
+  const usedBy = entry.usedBy.map((usage) => finalizeUsage(usage, entry.reviewCadenceDays, asOfDate));
+  const verifiedDates = usedBy.flatMap((usage) => usage.verifiedAt ? [usage.verifiedAt] : []);
+  const reviewDates = usedBy.flatMap((usage) => usage.nextReviewAt ? [usage.nextReviewAt] : []);
+  const aggregateStatus: SourceLedgerStatus = entry.supersededBy
+    ? "Superseded"
+    : usedBy.some((usage) => usage.status === "Verification needed")
+      ? "Verification needed"
+      : usedBy.some((usage) => usage.status === "Review due")
+        ? "Review due"
+        : "Current";
   return {
     ...entry,
-    nextReviewAt,
-    status: entry.supersededBy
-      ? "Superseded"
-      : compareDates(asOfDate, nextReviewAt) > 0
-        ? "Review due"
-        : "Current",
-    usedBy: [...entry.usedBy].sort((left, right) => {
-      return right.verifiedAt.localeCompare(left.verifiedAt) || left.path.localeCompare(right.path);
+    lastVerifiedAt: verifiedDates.sort().at(-1) || null,
+    nextReviewAt: reviewDates.sort()[0] || null,
+    status: aggregateStatus,
+    usedBy: usedBy.sort((left, right) => {
+      return (right.verifiedAt || "").localeCompare(left.verifiedAt || "") || left.path.localeCompare(right.path);
     }),
+  };
+}
+
+function finalizeUsage(
+  usage: SourceLedgerUsage,
+  reviewCadenceDays: number,
+  asOfDate: string,
+): SourceLedgerUsage {
+  if (!usage.verifiedAt) {
+    return { ...usage, nextReviewAt: null, status: "Verification needed" };
+  }
+  const nextReviewAt = addDays(usage.verifiedAt, reviewCadenceDays);
+  return {
+    ...usage,
+    nextReviewAt,
+    status: compareDates(asOfDate, nextReviewAt) > 0 ? "Review due" : "Current",
   };
 }
 
@@ -224,8 +261,8 @@ function addDays(value: string, days: number): string {
   return date.toISOString().slice(0, 10);
 }
 
-function latestDate(left: string, right: string): string {
-  return compareDates(left, right) >= 0 ? toDateOnly(left) : toDateOnly(right);
+function isLater(left: string | null, right: string | null): boolean {
+  return Boolean(left && (!right || compareDates(left, right) > 0));
 }
 
 function compareDates(left: string, right: string): number {
@@ -237,5 +274,5 @@ function toDateOnly(value: string): string {
 }
 
 function statusRank(status: SourceLedgerStatus): number {
-  return status === "Review due" ? 0 : status === "Current" ? 1 : 2;
+  return status === "Verification needed" ? 0 : status === "Review due" ? 1 : status === "Current" ? 2 : 3;
 }

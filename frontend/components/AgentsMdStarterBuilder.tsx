@@ -8,6 +8,7 @@ import {
   type AgentsMdStarterStack,
 } from "../lib/agents-md-starter-builder";
 import { auditInstructionFile } from "../lib/instruction-file-audit";
+import { getCurrentPagePath, trackGrowthEvent } from "../lib/analytics";
 
 const stackOptions: Array<{ value: AgentsMdStarterStack; label: string }> = [
   { value: "node", label: "Node.js" },
@@ -42,6 +43,11 @@ export function AgentsMdStarterBuilder() {
     if (!navigator.clipboard) return;
     await navigator.clipboard.writeText(output);
     setCopied(true);
+    trackGrowthEvent("template_copy", {
+      page_path: getCurrentPagePath(),
+      tool_id: "agents_md_starter_builder",
+      resource_id: "generated_agents_md",
+    });
   };
 
   return (
@@ -106,7 +112,14 @@ export function AgentsMdStarterBuilder() {
           <pre aria-label="Generated AGENTS.md preview"><code>{output}</code></pre>
           <div className="agents-starter-builder-actions">
             <button type="button" onClick={copyOutput}>{copied ? "Copied" : "Copy AGENTS.md"}</button>
-            <a href={downloadHref} download="AGENTS.md">Download AGENTS.md</a>
+            <a
+              href={downloadHref}
+              download="AGENTS.md"
+              onClick={() => trackGrowthEvent("resource_download_click", {
+                page_path: getCurrentPagePath(),
+                resource_id: "generated_agents_md",
+              })}
+            >Download AGENTS.md</a>
             <Link href="/tools/instruction-file-checker">Open the full instruction checker</Link>
           </div>
         </div>

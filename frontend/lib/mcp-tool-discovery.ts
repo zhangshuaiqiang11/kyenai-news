@@ -25,7 +25,7 @@ export type McpDiscoveryDiagnosis = {
   transportNote: string;
 };
 
-export const mcpDiscoveryVerifiedAt = "2026-07-19";
+export const mcpDiscoveryVerifiedAt = "2026-09-08";
 
 export const mcpDiscoveryChecks: McpDiscoveryCheck[] = [
   {

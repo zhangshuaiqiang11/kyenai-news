@@ -35,7 +35,7 @@ afterEach(() => {
 
 describe("MCP security resource records", () => {
   it("defines the exact threat model with current verification and official evidence", () => {
-    expect(mcpSecurityVerifiedAt).toBe("2026-07-19");
+    expect(mcpSecurityVerifiedAt).toBe("2026-09-08");
     expect(mcpSecurityThreats.map((threat) => threat.id)).toEqual([
       "prompt-injection",
       "excessive-permissions-scope",
@@ -192,7 +192,7 @@ describe("MCP security guide integration", () => {
 
     expect(guide).toMatchObject({
       resourceIds: ["mcp-security"],
-      updatedAt: "2026-07-19",
+      updatedAt: "2026-09-08",
     });
     expect(guide!.title).toMatch(/MCP Server Security Checklist: 25 Controls/i);
     expect(guide!.metaTitle).toMatch(/MCP Server Security Checklist: 25 Controls/i);
@@ -206,6 +206,7 @@ describe("MCP security guide integration", () => {
     expect(JSON.stringify(guide)).toMatch(/security config example/i);
     expect(JSON.stringify(guide)).toMatch(/MCP tool permissions boundaries/i);
     expect(editorial).toMatchObject({
+      priority: "P1",
       primaryKeyword: "MCP server security checklist",
       gscWatchQueries: [
         "mcp security",

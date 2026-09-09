@@ -21,6 +21,9 @@ type BackendArticle = {
     publisher: string;
     published_at: string;
     credibility: number;
+    verified_at?: string;
+    verification_conclusion?: string;
+    verification_change_note?: string;
   }>;
   published_at: string;
   updated_at: string;
@@ -119,6 +122,9 @@ export function fromBackendArticle(article: BackendArticle): Article {
       publisher: source.publisher,
       publishedAt: source.published_at,
       credibility: source.credibility,
+      verifiedAt: source.verified_at,
+      verificationConclusion: source.verification_conclusion,
+      verificationChangeNote: source.verification_change_note,
     })),
     publishedAt: article.published_at,
     updatedAt: article.updated_at,

@@ -1,5 +1,5 @@
-export const cursorEnterpriseSecurityVerifiedAt = "2026-07-30";
-export const cursorEnterpriseSecurityVersion = "1.0.0";
+export const cursorEnterpriseSecurityVerifiedAt = "2026-09-08";
+export const cursorEnterpriseSecurityVersion = "1.1.0";
 
 const urls = {
   enterprise: "https://cursor.com/enterprise",

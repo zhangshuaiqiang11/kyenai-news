@@ -1,4 +1,4 @@
-export const mcpSecurityVerifiedAt = "2026-07-19" as const;
+export const mcpSecurityVerifiedAt = "2026-09-08" as const;
 
 export const mcpSecuritySourceUrls = {
   bestPractices:

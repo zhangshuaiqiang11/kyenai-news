@@ -1,6 +1,6 @@
 # MCP security review
 
-Verified: 2026-07-19
+Verified: 2026-09-08
 
 Use this template for one named server and deployment context. It combines official MCP security requirements and guidance with clearly labeled KyenAI operational recommendations.
 

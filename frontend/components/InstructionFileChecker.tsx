@@ -9,6 +9,7 @@ import {
   type InstructionTool,
 } from "../lib/instruction-file-audit";
 import { instructionTemplates } from "../lib/instruction-resources";
+import { getCurrentPagePath, trackGrowthEvent } from "../lib/analytics";
 
 const toolLabels: Record<InstructionTool, string> = {
   codex: "OpenAI Codex",
@@ -51,12 +52,22 @@ export function InstructionFileChecker() {
   const runAudit = () => {
     setCopied(false);
     setResult(auditInstructionFile({ tool, surface, filePath, content }));
+    trackGrowthEvent("tool_use", {
+      page_path: getCurrentPagePath(),
+      tool_id: "instruction_file_checker",
+      action_id: "audit",
+    });
   };
 
   const copyRecommendedPath = async () => {
     if (!navigator.clipboard) return;
     await navigator.clipboard.writeText(recommendedPath);
     setCopied(true);
+    trackGrowthEvent("template_copy", {
+      page_path: getCurrentPagePath(),
+      tool_id: "instruction_file_checker",
+      resource_id: "recommended_instruction_path",
+    });
   };
 
   return (

@@ -56,7 +56,8 @@ describe("dual-pillar authority path", () => {
     ];
 
     expect(relevantGuideSlugs.every(shouldShowGuideAuthorityPath)).toBe(true);
-    expect(shouldShowGuideAuthorityPath("mcp-server-not-showing-tools")).toBe(false);
+    expect(shouldShowGuideAuthorityPath("mcp-server-not-showing-tools")).toBe(true);
+    expect(shouldShowGuideAuthorityPath("secure-mcp-servers-ai-coding-agents")).toBe(true);
   });
 
   it("exposes the checker on six relevant guides and not on unrelated content", () => {
@@ -81,6 +82,16 @@ describe("dual-pillar authority path", () => {
     expect(shouldShowArticleChecker("github-copilot-sdk-general-availability")).toBe(true);
     expect(shouldShowArticleChecker("claude-code-dynamic-workflows-parallel-subagents")).toBe(false);
     expect(shouldShowArticleAuthorityPath("spacex-cursor-acquisition-2026")).toBe(false);
+    expect(shouldShowArticleAuthorityPath("cursor-enterprise-organizations-governance")).toBe(true);
+  });
+
+  it("uses a focused MCP path on troubleshooting and security pages", () => {
+    render(<AuthorityPathPanel currentPath="/guides/mcp-server-not-showing-tools" />);
+
+    expect(screen.getByRole("heading", { name: /MCP diagnosis to controlled access/i })).toBeTruthy();
+    expect(screen.getByRole("link", { name: /MCP server security checklist/i })).toBeTruthy();
+    expect(screen.getByRole("link", { name: /Cursor Enterprise controls/i })).toBeTruthy();
+    expect(screen.queryByRole("link", { name: /compare Codex, Claude Code/i })).toBeNull();
   });
 
   it("renders the path through relevant page templates and omits it from unrelated pages", () => {

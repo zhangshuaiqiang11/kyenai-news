@@ -1,10 +1,12 @@
 # Cursor Enterprise Security Assessment: 30 Administrator Controls
 
-Version: 1.0.0  
-Verified: 2026-07-30  
+Version: 1.1.0
+
+Verified: 2026-09-08
+
 License: CC BY 4.0
 
-Preferred citation: KyenAI. (2026). Cursor Enterprise Security Assessment: 30 Administrator Controls (Version 1.0.0). https://www.kyenai.com/articles/cursor-enterprise-organizations-governance
+Preferred citation: KyenAI. (2026). Cursor Enterprise Security Assessment: 30 Administrator Controls (Version 1.1.0). https://www.kyenai.com/articles/cursor-enterprise-organizations-governance
 
 Public vendor claims are separated from KyenAI operational recommendations. Buyers must verify account, plan, region, model, workspace, console, and contract-specific behavior.
 
