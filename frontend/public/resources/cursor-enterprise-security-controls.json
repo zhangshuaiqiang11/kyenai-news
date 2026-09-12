@@ -1,10 +1,10 @@
 {
   "title": "Cursor Enterprise Security Assessment: 30 Administrator Controls",
-  "version": "1.1.0",
-  "verifiedAt": "2026-09-08",
+  "version": "1.2.0",
+  "verifiedAt": "2026-09-12",
   "license": "CC BY 4.0",
   "canonicalUrl": "https://www.kyenai.com/articles/cursor-enterprise-organizations-governance",
-  "preferredCitation": "KyenAI. (2026). Cursor Enterprise Security Assessment: 30 Administrator Controls (Version 1.1.0). https://www.kyenai.com/articles/cursor-enterprise-organizations-governance",
+  "preferredCitation": "KyenAI. (2026). Cursor Enterprise Security Assessment: 30 Administrator Controls (Version 1.2.0). https://www.kyenai.com/articles/cursor-enterprise-organizations-governance",
   "scope": "Public vendor claims are separated from KyenAI operational recommendations. Buyers must verify account, plan, region, model, workspace, console, and contract-specific behavior.",
   "controlCount": 30,
   "responsibilityMatrix": [
@@ -170,7 +170,7 @@
       "sourceUrls": [
         "https://cursor.com/data-use",
         "https://cursor.com/security",
-        "https://docs.cursor.com/account/privacy"
+        "https://prod.cursor.com/docs/enterprise/privacy-and-data-governance"
       ]
     },
     {
@@ -466,7 +466,7 @@
       "contractOrConsoleCheck": "Verify backups, legal holds, logs, shared artifacts, and contract termination handling.",
       "sourceUrls": [
         "https://cursor.com/security",
-        "https://docs.cursor.com/account/privacy"
+        "https://prod.cursor.com/docs/enterprise/privacy-and-data-governance"
       ]
     },
     {
@@ -505,27 +505,42 @@
     {
       "title": "Cursor for Enterprise",
       "url": "https://cursor.com/enterprise",
-      "scope": "Identity, SCIM, admin, repository, model, MCP, agent, analytics, and encryption claims"
+      "scope": "Identity, SCIM, admin, repository, model, MCP, agent, analytics, and encryption claims",
+      "verifiedAt": "2026-09-12",
+      "verificationConclusion": "Public enterprise materials support organization, identity, repository, model, MCP, agent, analytics, and encryption control questions; exact availability remains plan-specific.",
+      "verificationChangeNote": "Rechecked September 12, 2026 and retained account, plan, workspace, and contract qualification for every control."
     },
     {
       "title": "Cursor Security",
       "url": "https://cursor.com/security",
-      "scope": "Certifications, infrastructure, Privacy Mode, client and agent security, and trust evidence"
+      "scope": "Certifications, infrastructure, Privacy Mode, client and agent security, and trust evidence",
+      "verifiedAt": "2026-09-12",
+      "verificationConclusion": "The current security page supports Privacy Mode, enterprise administration, client and agent security, and trust-evidence claims as of its August 25 update.",
+      "verificationChangeNote": "Rechecked September 12, 2026 and preserved the page's scope and exception language."
     },
     {
       "title": "Data Use & Privacy Overview",
       "url": "https://cursor.com/data-use",
-      "scope": "Privacy Mode, model-provider handling, training, storage, and policy exceptions"
+      "scope": "Privacy Mode, model-provider handling, training, storage, and policy exceptions",
+      "verifiedAt": "2026-09-12",
+      "verificationConclusion": "Privacy Mode excludes customer data from training and provider ZDR arrangements have documented exceptions for abuse detection, non-ZDR models, and feature-specific storage.",
+      "verificationChangeNote": "Rechecked September 12, 2026 against the September 3 data-use revision and updated the retention boundary."
     },
     {
       "title": "Introducing Cursor for Enterprise",
       "url": "https://cursor.com/blog/enterprise",
-      "scope": "Hooks, team rules, analytics, audit log, and sandbox behavior"
+      "scope": "Hooks, team rules, analytics, audit log, and sandbox behavior",
+      "verifiedAt": "2026-09-12",
+      "verificationConclusion": "The enterprise launch material supports questions about managed rules, hooks, analytics, audit evidence, and sandbox-related controls.",
+      "verificationChangeNote": "Rechecked September 12, 2026 and labeled operational recommendations separately from public vendor claims."
     },
     {
       "title": "Cursor Pricing",
       "url": "https://cursor.com/pricing",
-      "scope": "Current plan-level enterprise controls and availability"
+      "scope": "Current plan-level enterprise controls and availability",
+      "verifiedAt": "2026-09-12",
+      "verificationConclusion": "Pricing and plan materials are used only to flag availability questions; they do not establish a universal control for every contract.",
+      "verificationChangeNote": "Rechecked September 12, 2026 and retained the requirement to verify purchased-plan behavior in the console and agreement."
     }
   ]
 }

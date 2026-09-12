@@ -16,8 +16,8 @@ export function SpacexCursorDealTracker() {
           <p className="instruction-resource-eyebrow">Verified transaction status</p>
           <h2 id="deal-tracker-heading">Current SpaceX-Cursor deal status</h2>
           <p>
-            SpaceX signed a definitive agreement to acquire Anysphere, but the cited SEC filing does not say the
-            merger has closed. Product collaboration is evidence of collaboration—not proof that ownership has transferred.
+            SpaceX completed the merger on August 14, 2026. The completion filing confirms that Cursor became a wholly
+            owned subsidiary; product collaboration is separate evidence from the legal closing record.
           </p>
         </div>
         <span className="deal-status-badge" data-status={resource.statusCode}>{resource.statusLabel}</span>
@@ -25,9 +25,9 @@ export function SpacexCursorDealTracker() {
 
       <dl className="deal-status-grid">
         <div><dt>Agreement signed</dt><dd><time dateTime={resource.announcedAt}>June 16, 2026</time></dd></div>
-        <div><dt>Last verified</dt><dd><time dateTime={resource.verifiedAt}>July 30, 2026</time></dd></div>
+        <div><dt>Last verified</dt><dd><time dateTime={resource.verifiedAt}>September 12, 2026</time></dd></div>
         <div><dt>Next key milestone</dt><dd>{resource.nextMilestone}</dd></div>
-        <div><dt>Expected window</dt><dd>{resource.expectedClosingWindow}</dd></div>
+        <div><dt>Closing date</dt><dd><time dateTime={resource.closingDate}>August 14, 2026</time></dd></div>
       </dl>
 
       <div className="deal-downloads" aria-label="Deal status downloads and primary records">
@@ -36,6 +36,7 @@ export function SpacexCursorDealTracker() {
         <a href={resource.downloads.checklist} download>Download team checklist</a>
         <a href={resource.officialFilingUrl} rel="noreferrer" target="_blank">Read the SEC filing</a>
         <a href={resource.mergerAgreementUrl} rel="noreferrer" target="_blank">Read the merger agreement</a>
+        <a href={resource.completionFilingUrl} rel="noreferrer" target="_blank">Read the completion filing</a>
       </div>
 
       <aside className="resource-citation-note" aria-label="How to cite this deal status dataset">

@@ -10,16 +10,16 @@ import {
 describe("search growth baseline", () => {
   it("preserves the exported scope and site totals", () => {
     expect(searchBaselineScope).toMatchObject({
-      startDate: "2026-06-06",
-      endDate: "2026-09-05",
+      startDate: "2026-06-10",
+      endDate: "2026-09-09",
       hasQueryPageDimension: false,
     });
-    expect(siteSearchBaseline).toMatchObject({ clicks: 98, impressions: 23318, ctr: 0.0042 });
+    expect(siteSearchBaseline).toMatchObject({ clicks: 97, impressions: 25271, ctr: 0.0038 });
   });
 
   it("keeps page metrics separate from editorial query mappings", () => {
-    expect(Object.keys(priorityPageBaselines)).toHaveLength(6);
-    expect(prioritySearchTargets).toHaveLength(24);
+    expect(Object.keys(priorityPageBaselines)).toHaveLength(8);
+    expect(prioritySearchTargets).toHaveLength(30);
     expect(prioritySearchTargets.every((target) => target.mappingBasis === "editorial-target")).toBe(true);
     expect(prioritySearchTargets.some((target) => target.observedQueryMetric === null)).toBe(true);
     expect(prioritySearchTargets.filter((target) => target.observedQueryMetric !== null)
@@ -30,7 +30,7 @@ describe("search growth baseline", () => {
     const page = priorityPageBaselines["/articles/cursor-enterprise-organizations-governance"];
     const query = prioritySearchTargets.find((target) => target.query === "cursor enterprise security");
 
-    expect(page.averagePosition).toBe(11.84);
-    expect(query?.observedQueryMetric?.averagePosition).toBe(42.76);
+    expect(page.averagePosition).toBe(11.18);
+    expect(query?.observedQueryMetric?.averagePosition).toBe(42.36);
   });
 });

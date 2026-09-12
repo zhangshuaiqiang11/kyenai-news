@@ -1,12 +1,12 @@
 # Cursor Enterprise Security Assessment: 30 Administrator Controls
 
-Version: 1.1.0
+Version: 1.2.0
 
-Verified: 2026-09-08
+Verified: 2026-09-12
 
 License: CC BY 4.0
 
-Preferred citation: KyenAI. (2026). Cursor Enterprise Security Assessment: 30 Administrator Controls (Version 1.1.0). https://www.kyenai.com/articles/cursor-enterprise-organizations-governance
+Preferred citation: KyenAI. (2026). Cursor Enterprise Security Assessment: 30 Administrator Controls (Version 1.2.0). https://www.kyenai.com/articles/cursor-enterprise-organizations-governance
 
 Public vendor claims are separated from KyenAI operational recommendations. Buyers must verify account, plan, region, model, workspace, console, and contract-specific behavior.
 
@@ -117,7 +117,7 @@ Public vendor claims are separated from KyenAI operational recommendations. Buye
 - Pass: Every data class has a duration, deletion path, and accountable owner.
 - Basis: KyenAI operational recommendation
 - Contract or console check: Unknown until the active agreement, plan, features, and support process are reviewed.
-- Sources: https://cursor.com/data-use, https://cursor.com/security, https://docs.cursor.com/account/privacy
+- Sources: https://cursor.com/data-use, https://cursor.com/security, https://prod.cursor.com/docs/enterprise/privacy-and-data-governance
 
 ### 10. Review subprocessors
 
@@ -326,7 +326,7 @@ Public vendor claims are separated from KyenAI operational recommendations. Buye
 - Pass: Access is revoked promptly and deletion follows the documented schedule.
 - Basis: KyenAI operational recommendation
 - Contract or console check: Verify backups, legal holds, logs, shared artifacts, and contract termination handling.
-- Sources: https://cursor.com/security, https://docs.cursor.com/account/privacy
+- Sources: https://cursor.com/security, https://prod.cursor.com/docs/enterprise/privacy-and-data-governance
 
 ### 29. Monitor material product and policy changes
 

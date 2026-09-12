@@ -1,14 +1,14 @@
 # Cursor change-of-control review checklist
 
-Verified: 2026-07-19
+Verified: 2026-09-12
 
-Use this checklist while the SpaceX-Anysphere merger remains signed but not yet closed. It is an operational review aid, not legal advice.
+Use this checklist after the SpaceX-Anysphere merger closed, while teams review post-close product, privacy, model, and contract changes. It is an operational review aid, not legal advice.
 
 ## Current status
 
 - [x] Definitive merger agreement signed on June 16, 2026.
-- [ ] Closing publicly confirmed in an official filing or company notice.
-- [ ] Exact closing date confirmed.
+- [x] Closing publicly confirmed in an official filing or company notice.
+- [x] Exact closing date confirmed: August 14, 2026.
 - [ ] Post-closing pricing, model, data-use, and contract changes confirmed.
 
 ## Inventory current dependencies
@@ -49,6 +49,7 @@ Use this checklist while the SpaceX-Anysphere merger remains signed but not yet 
 ## Primary records
 
 - SpaceX Form 8-K: https://www.sec.gov/Archives/edgar/data/1181412/000162828026043411/spaceexplorationtechnologi.htm
+- SpaceX completion Form 8-K: https://www.sec.gov/Archives/edgar/data/1181412/000162828026056945/spcx-20260814.htm
 - Merger agreement: https://www.sec.gov/Archives/edgar/data/1181412/000162828026043411/exhibit101-8xk.htm
 - Cursor Grok 4.5 update: https://cursor.com/blog/grok-4-5
 - KyenAI status page: https://www.kyenai.com/articles/spacex-cursor-acquisition-2026

@@ -312,6 +312,7 @@ export function buildSpacexCursorDealDatasetJsonLd(article: Article) {
     isBasedOn: [
       resource.officialFilingUrl,
       resource.mergerAgreementUrl,
+      resource.completionFilingUrl,
       resource.cursorUpdateUrl,
     ],
     distribution: [

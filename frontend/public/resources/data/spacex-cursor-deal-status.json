@@ -1,18 +1,18 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "title": "SpaceX-Cursor acquisition status",
-  "as_of": "2026-07-30",
-  "status": "signed_not_closed",
-  "status_label": "Definitive agreement signed; closing still pending",
+  "as_of": "2026-09-12",
+  "status": "closed",
+  "status_label": "Merger completed on August 14, 2026",
   "agreement_signed": "2026-06-16",
   "buyer": "SpaceX",
   "target": "Anysphere, maker of Cursor",
   "implied_equity_value_usd": 60000000000,
   "consideration": "SpaceX Class A common stock",
-  "expected_closing_window": "Third quarter of 2026",
-  "next_key_milestone": "Official closing confirmation or a new filing that changes the Q3 2026 window",
+  "closing_date": "2026-08-14",
+  "next_key_milestone": "Monitor post-close Cursor product, privacy, model, and enterprise contract changes",
   "license": "CC BY 4.0",
-  "preferred_citation": "KyenAI. (2026). SpaceX-Cursor Deal Status Timeline (Version 1.1, verified July 30, 2026) [Data set]. https://www.kyenai.com/articles/spacex-cursor-acquisition-2026",
+  "preferred_citation": "KyenAI. (2026). SpaceX-Cursor Deal Status Timeline (Version 1.2, verified September 12, 2026) [Data set]. https://www.kyenai.com/articles/spacex-cursor-acquisition-2026",
   "closing_conditions": [
     "Required regulatory approvals",
     "Other conditions in the merger agreement"
@@ -20,10 +20,10 @@
   "confirmed": [
     "SpaceX, X67 Inc., and Anysphere signed a definitive merger agreement.",
     "The transaction has an implied Anysphere equity value of $60 billion.",
-    "The cited SEC filing describes closing as subject to conditions."
+    "The merger became effective on August 14, 2026.",
+    "Cursor survived the merger as a wholly owned subsidiary of SpaceX."
   ],
   "not_confirmed": [
-    "Exact closing date",
     "Post-closing Cursor pricing changes",
     "Post-closing model exclusivity",
     "Post-closing data-use or contract changes"
@@ -33,6 +33,11 @@
       "title": "Space Exploration Technologies Corp. Form 8-K",
       "published_at": "2026-06-16",
       "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026043411/spaceexplorationtechnologi.htm"
+    },
+    {
+      "title": "Space Exploration Technologies Corp. Form 8-K: Completion of Acquisition",
+      "published_at": "2026-08-14",
+      "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026056945/spcx-20260814.htm"
     },
     {
       "title": "Agreement and Plan of Merger",
@@ -45,6 +50,6 @@
       "url": "https://cursor.com/blog/grok-4-5"
     }
   ],
-  "methodology": "KyenAI separates signed-agreement evidence, product-collaboration evidence, and a legal closing event. On July 30, 2026, KyenAI reviewed the cited SEC filing and Cursor company-news feed and found no later official closing announcement. Absence of an announcement is not proof that conditions are complete; a product announcement is not treated as proof of closing.",
+  "methodology": "KyenAI separates signed-agreement evidence, product-collaboration evidence, and the legal closing event. On September 12, 2026, KyenAI reviewed the August 14 SEC completion filing, which states that the merger became effective and Cursor became a wholly owned subsidiary of SpaceX. Product announcements are not treated as legal closing evidence.",
   "page_url": "https://www.kyenai.com/articles/spacex-cursor-acquisition-2026"
 }

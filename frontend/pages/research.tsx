@@ -33,9 +33,9 @@ const assets = [
       ["Timeline CSV", "/resources/data/spacex-cursor-deal-timeline.csv"],
       ["Review checklist", "/resources/cursor-change-of-control-review.md"],
     ],
-    version: "1.1",
+    version: "1.2",
     license: "CC BY 4.0",
-    dateModified: "2026-07-30",
+    dateModified: "2026-09-12",
   },
   {
     id: "loop-proof-pack",
@@ -65,9 +65,9 @@ const assets = [
       ["CSV", "/resources/cursor-enterprise-security-controls.csv"],
       ["JSON", "/resources/cursor-enterprise-security-controls.json"],
     ],
-    version: "1.0.0",
+    version: "1.2.0",
     license: "CC BY 4.0",
-    dateModified: "2026-07-30",
+    dateModified: "2026-09-12",
   },
   {
     id: "agents-starter-pack",

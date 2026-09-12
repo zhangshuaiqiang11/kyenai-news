@@ -441,12 +441,12 @@ describe("guide SEO data", () => {
       gscBaseline: {
         source: "Google Search Console",
         dimension: "page",
-        startDate: "2026-06-06",
-        endDate: "2026-09-05",
+        startDate: "2026-06-10",
+        endDate: "2026-09-09",
         clicks: 39,
-        impressions: 2773,
-        ctr: 0.0141,
-        averagePosition: 9.16,
+        impressions: 2937,
+        ctr: 0.0133,
+        averagePosition: 8.98,
       },
       emergencyPriority: 105,
     });

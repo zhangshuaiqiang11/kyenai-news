@@ -1,5 +1,5 @@
-export const cursorEnterpriseSecurityVerifiedAt = "2026-09-08";
-export const cursorEnterpriseSecurityVersion = "1.1.0";
+export const cursorEnterpriseSecurityVerifiedAt = "2026-09-12";
+export const cursorEnterpriseSecurityVersion = "1.2.0";
 
 const urls = {
   enterprise: "https://cursor.com/enterprise",
@@ -7,15 +7,50 @@ const urls = {
   dataUse: "https://cursor.com/data-use",
   enterpriseLaunch: "https://cursor.com/blog/enterprise",
   pricing: "https://cursor.com/pricing",
-  docs: "https://docs.cursor.com/account/privacy",
+  docs: "https://prod.cursor.com/docs/enterprise/privacy-and-data-governance",
 } as const;
 
 export const cursorEnterpriseSecuritySources = [
-  { title: "Cursor for Enterprise", url: urls.enterprise, scope: "Identity, SCIM, admin, repository, model, MCP, agent, analytics, and encryption claims" },
-  { title: "Cursor Security", url: urls.security, scope: "Certifications, infrastructure, Privacy Mode, client and agent security, and trust evidence" },
-  { title: "Data Use & Privacy Overview", url: urls.dataUse, scope: "Privacy Mode, model-provider handling, training, storage, and policy exceptions" },
-  { title: "Introducing Cursor for Enterprise", url: urls.enterpriseLaunch, scope: "Hooks, team rules, analytics, audit log, and sandbox behavior" },
-  { title: "Cursor Pricing", url: urls.pricing, scope: "Current plan-level enterprise controls and availability" },
+  {
+    title: "Cursor for Enterprise",
+    url: urls.enterprise,
+    scope: "Identity, SCIM, admin, repository, model, MCP, agent, analytics, and encryption claims",
+    verifiedAt: cursorEnterpriseSecurityVerifiedAt,
+    verificationConclusion: "Public enterprise materials support organization, identity, repository, model, MCP, agent, analytics, and encryption control questions; exact availability remains plan-specific.",
+    verificationChangeNote: "Rechecked September 12, 2026 and retained account, plan, workspace, and contract qualification for every control.",
+  },
+  {
+    title: "Cursor Security",
+    url: urls.security,
+    scope: "Certifications, infrastructure, Privacy Mode, client and agent security, and trust evidence",
+    verifiedAt: cursorEnterpriseSecurityVerifiedAt,
+    verificationConclusion: "The current security page supports Privacy Mode, enterprise administration, client and agent security, and trust-evidence claims as of its August 25 update.",
+    verificationChangeNote: "Rechecked September 12, 2026 and preserved the page's scope and exception language.",
+  },
+  {
+    title: "Data Use & Privacy Overview",
+    url: urls.dataUse,
+    scope: "Privacy Mode, model-provider handling, training, storage, and policy exceptions",
+    verifiedAt: cursorEnterpriseSecurityVerifiedAt,
+    verificationConclusion: "Privacy Mode excludes customer data from training and provider ZDR arrangements have documented exceptions for abuse detection, non-ZDR models, and feature-specific storage.",
+    verificationChangeNote: "Rechecked September 12, 2026 against the September 3 data-use revision and updated the retention boundary.",
+  },
+  {
+    title: "Introducing Cursor for Enterprise",
+    url: urls.enterpriseLaunch,
+    scope: "Hooks, team rules, analytics, audit log, and sandbox behavior",
+    verifiedAt: cursorEnterpriseSecurityVerifiedAt,
+    verificationConclusion: "The enterprise launch material supports questions about managed rules, hooks, analytics, audit evidence, and sandbox-related controls.",
+    verificationChangeNote: "Rechecked September 12, 2026 and labeled operational recommendations separately from public vendor claims.",
+  },
+  {
+    title: "Cursor Pricing",
+    url: urls.pricing,
+    scope: "Current plan-level enterprise controls and availability",
+    verifiedAt: cursorEnterpriseSecurityVerifiedAt,
+    verificationConclusion: "Pricing and plan materials are used only to flag availability questions; they do not establish a universal control for every contract.",
+    verificationChangeNote: "Rechecked September 12, 2026 and retained the requirement to verify purchased-plan behavior in the console and agreement.",
+  },
 ] as const;
 
 export type CursorSecurityControl = {

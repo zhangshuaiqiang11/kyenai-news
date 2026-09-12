@@ -32,16 +32,16 @@ const protectedArticles = [
   {
     slug: "spacex-cursor-acquisition-2026",
     title: "Did SpaceX Buy Cursor? $60B Deal Status and Timeline",
-    metaTitle: "SpaceX–Cursor Deal Status (July 2026): Signed, Not Closed",
+    metaTitle: "Did SpaceX Buy Cursor? $60B Deal Closed",
     publishedAt: "2026-06-16T10:35:00Z",
-    updatedAt: "2026-07-30",
+    updatedAt: "2026-09-12",
   },
   {
     slug: "cursor-enterprise-organizations-governance",
     title: "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions",
-    metaTitle: "Cursor Enterprise Security: Governance, Privacy Mode, Agent Permissions",
+    metaTitle: "Cursor Enterprise Security: Privacy Mode, Retention & Admin Controls",
     publishedAt: "2026-06-03T09:00:00Z",
-    updatedAt: "2026-09-08T00:00:00Z",
+    updatedAt: "2026-09-12T00:00:00Z",
   },
 ] as const;
 

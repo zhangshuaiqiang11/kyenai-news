@@ -69,12 +69,12 @@ const pageContracts = [
   },
   {
     path: "/articles/spacex-cursor-acquisition-2026",
-    titleIncludes: "SpaceX–Cursor Deal Status (July 2026): Signed, Not Closed",
+    titleIncludes: "Did SpaceX Buy Cursor? $60B Deal Closed",
     h1Includes: "Did SpaceX Buy Cursor? $60B Deal Status and Timeline",
   },
   {
     path: "/articles/cursor-enterprise-organizations-governance",
-    titleIncludes: "Cursor Enterprise Security: Governance, Privacy Mode, Agent Permissions",
+    titleIncludes: "Cursor Enterprise Security: Privacy Mode, Retention & Admin Controls",
     h1Includes: "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions",
   },
 ];

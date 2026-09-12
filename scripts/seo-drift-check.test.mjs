@@ -19,8 +19,8 @@ const pageContracts = [
   ["/guides/ai-coding-agent-instruction-file-adoption-report-2026", "AI Agent Instruction File Adoption", "AI Coding Agent Instruction File Adoption Report"],
   ["/tools/instruction-file-checker", "Instruction File Checker", "AI Coding Agent Instruction File Checker"],
   ["/sources", "Source & Verification Ledger", "Source & Verification Ledger"],
-  ["/articles/spacex-cursor-acquisition-2026", "SpaceX–Cursor Deal Status (July 2026): Signed, Not Closed", "Did SpaceX Buy Cursor? $60B Deal Status and Timeline"],
-  ["/articles/cursor-enterprise-organizations-governance", "Cursor Enterprise Security: Governance, Privacy Mode, Agent Permissions", "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions"],
+  ["/articles/spacex-cursor-acquisition-2026", "Did SpaceX Buy Cursor? $60B Deal Closed", "Did SpaceX Buy Cursor? $60B Deal Status and Timeline"],
+  ["/articles/cursor-enterprise-organizations-governance", "Cursor Enterprise Security: Privacy Mode, Retention & Admin Controls", "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions"],
 ];
 
 function html(path, title, h1) {

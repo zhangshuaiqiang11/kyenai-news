@@ -36,16 +36,17 @@ describe("SpaceX Cursor acquisition article", () => {
     expect(article.publishedAt).toContain("2026-06-16");
     expect(article.sources.map((source) => source.publisher)).toEqual([
       "SEC",
+      "SEC",
       "Cursor",
       "Reuters",
       "Axios",
       "Financial Times",
     ]);
-    expect(visibleText).toMatch(/signed merger agreement|signed acquisition agreement/i);
+    expect(visibleText).toMatch(/signed (?:all-stock )?merger agreement|signed acquisition agreement/i);
     expect(visibleText).toMatch(/Form 8-K/i);
-    expect(visibleText).toMatch(/not a completed closing|has not yet closed|closing still pending/i);
+    expect(visibleText).toMatch(/merger became effective|wholly owned subsidiary/i);
     expect(visibleText).toMatch(/all-stock/i);
-    expect(visibleText).toMatch(/third quarter of 2026/i);
+    expect(visibleText).toMatch(/August 14, 2026/i);
     expect(countArticleWords(article)).toBeGreaterThanOrEqual(850);
   });
 
@@ -55,7 +56,7 @@ describe("SpaceX Cursor acquisition article", () => {
 
     expect(faqs).toHaveLength(6);
     expect(faqs[0].question).toBe("Has SpaceX completed its acquisition of Cursor?");
-    expect(faqs[0].answer).toMatch(/still pending closing/i);
+    expect(faqs[0].answer).toMatch(/became effective|wholly owned subsidiary/i);
     expect(faqJsonLd.mainEntity).toHaveLength(6);
     expect(faqJsonLd.mainEntity[0].acceptedAnswer.text).toBe(faqs[0].answer);
   });
@@ -139,9 +140,9 @@ describe("SpaceX Cursor acquisition article", () => {
     );
 
     expect(screen.getByRole("heading", { name: spacexCursorAcquisitionArticle.title })).toBeTruthy();
-    expect(screen.getByRole("heading", { name: /deal status: signed, not yet closed/i })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: /deal status: closed/i })).toBeTruthy();
     expect(screen.getByRole("heading", { level: 2, name: /current spacex-cursor deal status/i })).toBeTruthy();
-    expect(screen.getByText(/product collaboration is evidence of collaboration/i)).toBeTruthy();
+    expect(screen.getByText(/product collaboration is separate evidence from the legal closing record/i)).toBeTruthy();
     expect(screen.getByRole("link", { name: /download status json/i }).getAttribute("href")).toBe(
       "/resources/data/spacex-cursor-deal-status.json",
     );
@@ -194,10 +195,10 @@ describe("SpaceX Cursor acquisition article", () => {
       "utf8",
     );
 
-    expect(status.as_of).toBe("2026-07-30");
-    expect(status.status).toBe("signed_not_closed");
+    expect(status.as_of).toBe("2026-09-12");
+    expect(status.status).toBe("closed");
     expect(status.page_url).toContain(spacexCursorAcquisitionArticle.slug);
-    expect(timeline).toHaveLength(5);
+    expect(timeline).toHaveLength(6);
     expect(timeline[0]).toBe("date,event,status,evidence_url");
     expect(checklist).toContain("Closing publicly confirmed");
     expect(checklist).toContain("not legal advice");

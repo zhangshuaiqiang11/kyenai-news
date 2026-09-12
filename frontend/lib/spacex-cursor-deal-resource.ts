@@ -1,18 +1,21 @@
 export const spacexCursorDealResource = {
-  schemaVersion: "1.1",
-  verifiedAt: "2026-07-30",
-  statusCode: "signed_not_closed",
-  statusLabel: "Signed, not closed",
+  schemaVersion: "1.2",
+  verifiedAt: "2026-09-12",
+  statusCode: "closed",
+  statusLabel: "Closed on August 14, 2026",
   announcedAt: "2026-06-16",
-  expectedClosingWindow: "Third quarter of 2026",
-  nextMilestone: "Official closing confirmation or a new filing that changes the Q3 2026 window",
+  closingDate: "2026-08-14",
+  expectedClosingWindow: "Completed August 14, 2026",
+  nextMilestone: "Monitor post-close Cursor product, privacy, model, and enterprise contract changes",
   license: "CC BY 4.0",
   preferredCitation:
-    "KyenAI. (2026). SpaceX-Cursor Deal Status Timeline (Version 1.1, verified July 30, 2026) [Data set]. https://www.kyenai.com/articles/spacex-cursor-acquisition-2026",
+    "KyenAI. (2026). SpaceX-Cursor Deal Status Timeline (Version 1.2, verified September 12, 2026) [Data set]. https://www.kyenai.com/articles/spacex-cursor-acquisition-2026",
   buyer: "SpaceX",
   target: "Anysphere, maker of Cursor",
   impliedEquityValue: "$60 billion",
   consideration: "SpaceX Class A common stock",
+  completionFilingUrl:
+    "https://www.sec.gov/Archives/edgar/data/1181412/000162828026056945/spcx-20260814.htm",
   officialFilingUrl:
     "https://www.sec.gov/Archives/edgar/data/1181412/000162828026043411/spaceexplorationtechnologi.htm",
   mergerAgreementUrl:
@@ -42,24 +45,29 @@ export const spacexCursorDealTimeline = [
     evidence: "Cursor product and research announcement",
   },
   {
-    date: "2026-07-30",
-    event: "KyenAI verification checkpoint: no later official closing announcement was located; the cited filing remains the controlling record.",
-    evidence: "SEC filing and Cursor company-news review; absence of an announcement is not proof that conditions are complete",
+    date: "2026-08-14",
+    event: "The merger becomes effective and Cursor becomes a wholly owned subsidiary of SpaceX.",
+    evidence: "SpaceX Form 8-K: Item 2.01 completion of acquisition",
+  },
+  {
+    date: "2026-09-12",
+    event: "KyenAI verification checkpoint: the August 14 completion filing remains the controlling legal status record.",
+    evidence: "SEC completion filing reviewed September 12, 2026",
   },
 ] as const;
 
 export const spacexCursorConfirmedFacts = [
   "A definitive merger agreement was signed on June 16, 2026.",
   "The transaction uses SpaceX Class A common stock and an implied Anysphere equity value of $60 billion.",
-  "Closing remains subject to conditions, including required regulatory approvals.",
-  "SpaceX said it expected the merger to close during the third quarter of 2026; it did not publish an exact closing date in the cited filing.",
+  "The merger became effective on August 14, 2026.",
+  "Cursor survived the merger as a wholly owned subsidiary of SpaceX.",
 ] as const;
 
 export const spacexCursorOpenQuestions = [
-  "The exact closing date and completion of regulatory review",
   "Whether Cursor pricing or contractual terms will change after closing",
   "How model choice, data use, and subprocessors will evolve",
   "Whether product governance or enterprise controls will materially change",
+  "How the ownership change affects model-provider relationships and portability",
 ] as const;
 
 export const cursorChangeOfControlChecklist = [
@@ -69,5 +77,5 @@ export const cursorChangeOfControlChecklist = [
   "Map which repositories, prompts, secrets, indexes, agents, and automation jobs depend on Cursor-specific behavior.",
   "Verify repository and instruction-file portability with a small alternative-agent pilot.",
   "Define decision triggers for pricing, model availability, data handling, support, or policy changes.",
-  "Recheck official filings and vendor notices before treating the transaction as closed or changing production policy.",
+  "Recheck official filings and vendor notices before changing production policy after the closing.",
 ] as const;

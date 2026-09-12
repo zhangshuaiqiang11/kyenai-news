@@ -50,8 +50,8 @@ describe("Cursor Enterprise security assessment", () => {
     const pdf = fs.readFileSync(path.join(root, "cursor-enterprise-security-controls.pdf"));
 
     expect(json.controlCount).toBe(30);
-    expect(json.version).toBe("1.1.0");
-    expect(json.verifiedAt).toBe("2026-09-08");
+    expect(json.version).toBe("1.2.0");
+    expect(json.verifiedAt).toBe("2026-09-12");
     expect(csv).toHaveLength(31);
     expect(markdown).toContain("30 Administrator Controls");
     expect(pdf.subarray(0, 5).toString()).toBe("%PDF-");

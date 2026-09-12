@@ -47,9 +47,9 @@
 
 ## Priority evidence articles
 - [Did SpaceX Buy Cursor? $60B Deal Status and Timeline](https://www.kyenai.com/articles/spacex-cursor-acquisition-2026)
-  SpaceX signed a $60 billion all-stock agreement to acquire Cursor maker Anysphere, but the deal is not closed yet. Track the verified status, Q3 2026 timeline, and what Cursor users should review. Last substantively updated: 2026-07-30.
+  Yes. SpaceX completed its $60 billion all-stock acquisition of Anysphere, the company behind Cursor, on August 14, 2026. Track the official closing record, post-close changes, and what Cursor users should review. Last substantively updated: 2026-09-12.
 - [Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions](https://www.kyenai.com/articles/cursor-enterprise-organizations-governance)
-  Cursor Enterprise security depends on organization controls, Privacy Mode, model-provider retention limits, repo allowlists, MCP controls, and agent permissions. Last substantively updated: 2026-09-08T00:00:00Z.
+  Cursor Enterprise security depends on Privacy Mode, model-provider retention exceptions, SSO and SCIM, repository and model controls, MCP governance, audit logs, and agent permissions. Last substantively updated: 2026-09-12T00:00:00Z.
 
 ## All guides
 - [AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?](https://www.kyenai.com/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions): Use this support matrix to decide whether CLAUDE.md, Copilot instructions, AGENTS.md, or Cursor rules should carry repository guidance for each tool surface.
