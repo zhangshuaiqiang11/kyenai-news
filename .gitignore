@@ -23,6 +23,7 @@ docs/superpowers/
 
 # Generated research artifacts
 artifacts/*.json
+.seo-cache/
 
 # OS
 .DS_Store

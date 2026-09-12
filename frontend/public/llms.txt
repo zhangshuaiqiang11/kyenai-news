@@ -1,0 +1,78 @@
+# KyenAI
+
+> Evidence-led AI coding agent playbooks for repository instruction files, loop engineering, MCP security, migrations, and tool comparisons.
+
+## Site
+- Canonical: https://www.kyenai.com
+- Guides index: https://www.kyenai.com/guides
+- Research and resources: https://www.kyenai.com/research (versioned datasets, runbooks, security assessments, citation files, and templates)
+- Instruction file checker: https://www.kyenai.com/tools/instruction-file-checker (deterministic, browser-only audit; no instruction text is uploaded)
+- Editorial policy: https://www.kyenai.com/editorial-policy
+- Editorial author: https://www.kyenai.com/authors/editorial-automation-desk
+- Source and verification ledger: https://www.kyenai.com/sources
+- Entity ledger: https://www.kyenai.com/entities
+- RSS feed: https://www.kyenai.com/feed.xml
+
+## Featured guides
+- [7 Claude Code Alternatives for Different Coding Workflows](https://www.kyenai.com/guides/claude-code-alternatives)
+  Compare Codex, GitHub Copilot, Cursor, Gemini CLI, Cline, Aider, and OpenCode by the workflow problem you need to solve—not by an invented universal ranking. Last substantively updated: 2026-07-19.
+  Markdown: https://www.kyenai.com/guides/claude-code-alternatives.md
+- [AI Coding Agents Comparison: Codex, Claude Code, Cursor, and Copilot](https://www.kyenai.com/guides/ai-coding-agents-comparison)
+  Compare Codex, Claude Code, Cursor, and GitHub Copilot by starting surface, repository instructions, parallel work, model boundary, permissions, review path, and team governance. Last substantively updated: 2026-07-19.
+  Markdown: https://www.kyenai.com/guides/ai-coding-agents-comparison.md
+- [AI Coding Agent Instruction File Adoption Report — Q3 2026](https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026)
+  Explore a reproducible public GitHub snapshot of 400 AGENTS.md, CLAUDE.md, Copilot instruction, and Cursor rule files, including indexed match counts, language mix, test commands, security rules, and common gaps. Last substantively updated: 2026-07-30.
+  Markdown: https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026.md
+- [AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?](https://www.kyenai.com/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions)
+  Use this support matrix to decide whether CLAUDE.md, Copilot instructions, AGENTS.md, or Cursor rules should carry repository guidance for each tool surface. Last substantively updated: 2026-09-08.
+  Markdown: https://www.kyenai.com/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions.md
+- [What Is Loop Engineering for AI Coding Agents?](https://www.kyenai.com/guides/loop-engineering-ai-coding-agents)
+  Learn loop engineering for AI coding agents through Addy Osmani's workflow context, a budget calculator, stop rules, and a downloadable proof-of-done JSON contract. Last substantively updated: 2026-07-30.
+  Markdown: https://www.kyenai.com/guides/loop-engineering-ai-coding-agents.md
+- [AGENTS.md Template for Codex and Monorepos](https://www.kyenai.com/guides/agents-md-template-for-ai-coding-agents)
+  Build, audit, copy, and download concise AGENTS.md starters for Codex, Node.js, Python, and monorepos with commands, boundaries, and review checks. Last substantively updated: 2026-09-08.
+  Markdown: https://www.kyenai.com/guides/agents-md-template-for-ai-coding-agents.md
+- [MCP Server Security Checklist: 25 Controls for AI Agents](https://www.kyenai.com/guides/secure-mcp-servers-ai-coding-agents)
+  Audit MCP server security with 25 source-backed controls covering authentication, permissions, prompt injection, secrets, sandboxing, logging, revocation, and allow-or-deny tests. Last substantively updated: 2026-09-08.
+  Markdown: https://www.kyenai.com/guides/secure-mcp-servers-ai-coding-agents.md
+- [Codex vs Claude Code](https://www.kyenai.com/guides/codex-vs-claude-code)
+  Compare Codex vs Claude Code by workflow shape, public same-task examples, repository instructions, review effort, and a same-repo checklist your team can run before standardizing. Last substantively updated: 2026-07-19.
+  Markdown: https://www.kyenai.com/guides/codex-vs-claude-code.md
+- [Codex vs GitHub Copilot: Which Coding Agent Fits Your Team?](https://www.kyenai.com/guides/codex-vs-github-copilot)
+  Compare Codex vs GitHub Copilot by app, CLI, IDE, cloud-agent, instruction-file, model, parallel-work, permission, billing, and team-governance fit—with a six-question decision tool. Last substantively updated: 2026-07-19.
+  Markdown: https://www.kyenai.com/guides/codex-vs-github-copilot.md
+- [Claude Code Hooks vs MCP: Setup, Examples and Security](https://www.kyenai.com/guides/claude-code-hooks-mcp-setup)
+  A setup-oriented guide for combining Claude Code hooks, skills, and MCP servers without creating brittle automation. Last substantively updated: 2026-06-26.
+  Markdown: https://www.kyenai.com/guides/claude-code-hooks-mcp-setup.md
+
+## Priority evidence articles
+- [Did SpaceX Buy Cursor? $60B Deal Status and Timeline](https://www.kyenai.com/articles/spacex-cursor-acquisition-2026)
+  Yes. SpaceX completed its $60 billion all-stock acquisition of Anysphere, the company behind Cursor, on August 14, 2026. Track the official closing record, post-close changes, and what Cursor users should review. Last substantively updated: 2026-09-12.
+- [Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions](https://www.kyenai.com/articles/cursor-enterprise-organizations-governance)
+  Cursor Enterprise security depends on Privacy Mode, model-provider retention exceptions, SSO and SCIM, repository and model controls, MCP governance, audit logs, and agent permissions. Last substantively updated: 2026-09-12T00:00:00Z.
+
+## All guides
+- [AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?](https://www.kyenai.com/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions): Use this support matrix to decide whether CLAUDE.md, Copilot instructions, AGENTS.md, or Cursor rules should carry repository guidance for each tool surface.
+- [Claude Code subagents workflow examples](https://www.kyenai.com/guides/claude-code-subagents-examples): Workflow patterns for using Claude Code subagents to split research, implementation, review, migration, and verification work.
+- [Claude Code Hooks vs MCP: Setup, Examples and Security](https://www.kyenai.com/guides/claude-code-hooks-mcp-setup): A setup-oriented guide for combining Claude Code hooks, skills, and MCP servers without creating brittle automation.
+- [MCP Server Security Checklist: 25 Controls for AI Agents](https://www.kyenai.com/guides/secure-mcp-servers-ai-coding-agents): Audit MCP server security with 25 source-backed controls covering authentication, permissions, prompt injection, secrets, sandboxing, logging, revocation, and allow-or-deny tests.
+- [MCP Server Not Showing Tools? Diagnose tools/list in 8 Checks](https://www.kyenai.com/guides/mcp-server-not-showing-tools): Fix an MCP server that is missing, connected with zero tools, stale, filtered, or visible but never called across Claude Code, Cursor, GitHub Copilot, and other clients.
+- [Antigravity CLI migration from Gemini CLI](https://www.kyenai.com/guides/antigravity-cli-gemini-cli-migration): A migration checklist for Gemini CLI users moving to Antigravity CLI, with the key dates, retained concepts, and verification steps.
+- [Codex vs Claude Code](https://www.kyenai.com/guides/codex-vs-claude-code): Compare Codex vs Claude Code by workflow shape, public same-task examples, repository instructions, review effort, and a same-repo checklist your team can run before standardizing.
+- [AGENTS.md Template for Codex and Monorepos](https://www.kyenai.com/guides/agents-md-template-for-ai-coding-agents): Build, audit, copy, and download concise AGENTS.md starters for Codex, Node.js, Python, and monorepos with commands, boundaries, and review checks.
+- [Does GitHub Copilot Read CLAUDE.md? Support Matrix by Surface](https://www.kyenai.com/guides/does-github-copilot-read-claude-md-support-matrix): GitHub Copilot support for CLAUDE.md is surface-specific. Use the GitHub support matrix before relying on it, and keep .github/copilot-instructions.md as the broad Copilot baseline.
+- [AGENTS.md Examples for Codex: Node.js, Python and Monorepos](https://www.kyenai.com/guides/agents-md-examples-codex-node-python-monorepos): Copy practical AGENTS.md patterns for Codex projects, including Node.js apps, Python services, and monorepos with nested package instructions.
+- [Agent Mode vs Chat Mode: Differences, Risks and When to Use Each](https://www.kyenai.com/guides/agent-mode-vs-chat-mode-in-ide): Use chat mode for questions and small explanations. Use agent mode when the assistant must inspect files, edit code, run commands, react to errors, and bring a task closer to done.
+- [Local vs Cloud AI Coding Agents: Security, Cost and Speed Compared](https://www.kyenai.com/guides/local-vs-cloud-ai-coding-agent): Use a local coding agent when privacy, local tools, and quick feedback matter most. Use a cloud coding agent when the task is long-running, isolated, or better handled as an asynchronous branch or pull request.
+- [AI Coding Agent Governance Checklist: Permissions, Logs and Approvals](https://www.kyenai.com/guides/agent-governance-checklist-for-software-teams): A useful coding agent governance checklist covers identity, permissions, tool access, logs, human approval, sandboxing, cost limits, and incident response. Start with a small pilot before wider rollout.
+- [What Is Loop Engineering for AI Coding Agents?](https://www.kyenai.com/guides/loop-engineering-ai-coding-agents): Learn loop engineering for AI coding agents through Addy Osmani's workflow context, a budget calculator, stop rules, and a downloadable proof-of-done JSON contract.
+- [AI Coding Agents Comparison: Codex, Claude Code, Cursor, and Copilot](https://www.kyenai.com/guides/ai-coding-agents-comparison): Compare Codex, Claude Code, Cursor, and GitHub Copilot by starting surface, repository instructions, parallel work, model boundary, permissions, review path, and team governance.
+- [Codex vs GitHub Copilot: Which Coding Agent Fits Your Team?](https://www.kyenai.com/guides/codex-vs-github-copilot): Compare Codex vs GitHub Copilot by app, CLI, IDE, cloud-agent, instruction-file, model, parallel-work, permission, billing, and team-governance fit—with a six-question decision tool.
+- [AI Coding Agent Instruction File Adoption Report — Q3 2026](https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026): Explore a reproducible public GitHub snapshot of 400 AGENTS.md, CLAUDE.md, Copilot instruction, and Cursor rule files, including indexed match counts, language mix, test commands, security rules, and common gaps.
+- [7 Claude Code Alternatives for Different Coding Workflows](https://www.kyenai.com/guides/claude-code-alternatives): Compare Codex, GitHub Copilot, Cursor, Gemini CLI, Cline, Aider, and OpenCode by the workflow problem you need to solve—not by an invented universal ranking.
+
+## Citation guidance
+- Start at https://www.kyenai.com/research for version, license, verification date, and preferred citation details.
+- Prefer linking to the canonical guide URL for evergreen decisions.
+- News articles summarize dated vendor changes; verify status against listed sources.
+- KyenAI mentions third-party brands factually and does not imply endorsement.

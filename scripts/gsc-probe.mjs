@@ -125,10 +125,12 @@ export async function main(argv = process.argv.slice(2), env = process.env, fetc
         siteUrl,
         startDate,
         endDate,
+        dimensions: body.dimensions,
+        requestedRowLimit: rowLimit,
         rowCount: rows.length,
         totals,
         hasData: hasSearchData(rows),
-        topRows: rows.slice(0, 10).map(formatRow),
+        rows: rows.map(formatSearchAnalyticsRow),
       },
       null,
       2
@@ -294,7 +296,7 @@ function summarizeRows(rows) {
   );
 }
 
-function formatRow(row) {
+export function formatSearchAnalyticsRow(row) {
   const [query, page] = row.keys || [];
   return {
     query,

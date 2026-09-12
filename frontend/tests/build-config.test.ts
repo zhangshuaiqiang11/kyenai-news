@@ -31,7 +31,7 @@ describe("Next build configuration", () => {
 
     expect(buildTimestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
     expect(Number.isFinite(Date.parse(buildTimestamp || ""))).toBe(true);
-    expect(nextConfig.env?.NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE).toBe("2026-06-16");
+    expect(nextConfig.env?.NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE).toBe("2026-09-12");
   });
 
   it("derives the latest valid non-future date from authoritative source text", () => {
@@ -56,15 +56,15 @@ describe("Next build configuration", () => {
     expect(
       nextConfig.selectLatestEditorialDate(
         nextConfig.extractEditorialDates(source),
-        "2026-06-14T23:59:59.000Z",
+        "2026-06-14T12:00:00.000Z",
       ),
     ).toBe("2026-06-14");
     expect(
-      nextConfig.deriveLatestEditorialUpdate("2026-06-14T23:59:59.000Z", frontendRoot),
-    ).toBe("2026-06-14");
+      nextConfig.deriveLatestEditorialUpdate("2026-06-18T23:59:59.000Z", frontendRoot),
+    ).toBe("2026-06-18");
   });
 
-  it("redirects singular article routes to the canonical plural route", async () => {
+  it("redirects singular article and guide routes to canonical plural routes", async () => {
     const nextConfig = require(resolve(frontendRoot, "next.config.js")) as {
       redirects?: () => Promise<Array<{
         source: string;
@@ -79,6 +79,21 @@ describe("Next build configuration", () => {
         {
           source: "/article/:slug",
           destination: "/articles/:slug",
+          permanent: true,
+        },
+        {
+          source: "/guide",
+          destination: "/guides",
+          permanent: true,
+        },
+        {
+          source: "/guide/:slug",
+          destination: "/guides/:slug",
+          permanent: true,
+        },
+        {
+          source: "/llm.txt",
+          destination: "/llms.txt",
           permanent: true,
         },
       ]),
@@ -156,5 +171,32 @@ describe("Next build configuration", () => {
     }
 
     expect(duplicates).toEqual([]);
+  });
+
+  it("diagnoses and clears stale edge containers before production compose up", () => {
+    const deployScript = readFileSync(resolve(repoRoot, "scripts/deploy-on-server.sh"), "utf8");
+
+    expect(deployScript).toContain('COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-kyenai}"');
+    expect(deployScript).toContain('STALE_EDGE_CONTAINERS="${STALE_EDGE_CONTAINERS:-app-caddy-1}"');
+    expect(deployScript).toContain("reexec_updated_script");
+    expect(deployScript).toContain("DEPLOY_SCRIPT_REEXECUTED");
+    expect(deployScript).toContain('exec bash "$updated_script"');
+    expect(deployScript).toContain("report_port_bindings");
+    expect(deployScript).toContain("assert_edge_ports_available");
+    expect(deployScript).toContain("clear_allowed_stale_edge_containers");
+    expect(deployScript).toContain("is_allowed_stale_edge_container");
+    expect(deployScript).toContain("assert_caddy_ports_published");
+    expect(deployScript).toContain("smoke_frontend_container");
+    expect(deployScript).toContain("down --remove-orphans");
+    expect(deployScript).toContain('docker rm -f "$name"');
+    expect(deployScript).toContain("Leaving non-whitelisted edge container running");
+    expect(deployScript).toContain("up -d --build --force-recreate");
+    expect(deployScript).toContain("ports 80 or 443 are still allocated");
+    expect(deployScript).toContain("test -f /app/public/llms.txt");
+    expect(deployScript).toContain("const attempts = 30");
+    expect(deployScript).toContain("frontend llms.txt not ready");
+    expect(deployScript).toContain("readiness timeout");
+    expect(deployScript).toContain("logs --tail=120 frontend");
+    expect(deployScript).not.toContain("llms.txt HTTP %{http_code}\\n\" http://127.0.0.1/llms.txt || true");
   });
 });

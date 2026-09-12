@@ -1,5 +1,6 @@
 import { getIndexableCategoryNames } from "./category-hubs";
 import { buildCategoryPath } from "./categories";
+import { getGlossaryTerms } from "./glossary";
 import { getGuides } from "./guides";
 import { buildCanonicalUrl } from "./seo";
 import type { Article } from "./types";
@@ -12,13 +13,14 @@ export type SitemapEntry = {
 const staticPageDates = {
   "/about": "2026-06-06",
   "/editorial-policy": "2026-06-06",
+  "/entities": "2026-07-14",
+  "/authors/editorial-automation-desk": "2026-06-27",
+  "/tools/instruction-file-checker": "2026-07-14",
+  "/research": "2026-07-30",
 } as const;
 
 export const noindexUtilityPaths = [
   "/contact",
-  "/sources",
-  "/entities",
-  "/authors/editorial-automation-desk",
 ] as const;
 
 export const noindexPathPrefixes = ["/tags/", "/resources/"] as const;
@@ -47,10 +49,16 @@ export function buildSitemapEntries(articles: Article[]): SitemapEntry[] {
   return [
     { loc: buildCanonicalUrl("/"), lastmod: latestContentUpdate },
     ...Object.entries(staticPageDates).map(([path, lastmod]) => ({ loc: buildCanonicalUrl(path), lastmod })),
+    { loc: buildCanonicalUrl("/sources"), lastmod: latestContentUpdate },
     { loc: buildCanonicalUrl("/guides"), lastmod: latestDate(guides.map((guide) => guide.updatedAt)) },
     ...guides.map((guide) => ({
       loc: buildCanonicalUrl(`/guides/${guide.slug}`),
       lastmod: toDateOnly(guide.updatedAt),
+    })),
+    { loc: buildCanonicalUrl("/glossary"), lastmod: latestDate(getGlossaryTerms().map((term) => term.updatedAt)) },
+    ...getGlossaryTerms().map((term) => ({
+      loc: buildCanonicalUrl(`/glossary/${term.slug}`),
+      lastmod: toDateOnly(term.updatedAt),
     })),
     ...publishedArticles.map((article) => ({
       loc: buildCanonicalUrl(`/articles/${article.slug}`),

@@ -6,10 +6,17 @@ import { SeoHead } from "../components/SeoHead";
 import { SignalPanel } from "../components/SignalPanel";
 import { getArticles } from "../lib/api";
 import { getEntityCoverage } from "../lib/entities";
+import { toArticleSummary } from "../lib/catalog";
+import { toGuideSummary } from "../lib/guide-summary";
 import {
+  CLAUDE_CODE_ALTERNATIVES_GUIDE_HREF,
+  CODEX_COPILOT_GUIDE_HREF,
+  CODING_AGENT_COMPARISON_GUIDE_HREF,
+  INSTRUCTION_ADOPTION_REPORT_HREF,
   INSTRUCTION_COMPARISON_GUIDE_HREF,
   LOOP_ENGINEERING_GUIDE_HREF,
   MCP_SECURITY_GUIDE_HREF,
+  MCP_TOOL_DISCOVERY_GUIDE_HREF,
 } from "../lib/guide-routes";
 import {
   buildGuideItemListJsonLd,
@@ -18,22 +25,61 @@ import {
   buildWebsiteJsonLd,
   SITE_NAME,
 } from "../lib/seo";
-import type { Article, Guide } from "../lib/types";
+import type { ArticleSummary, GuideSummary } from "../lib/types";
+import type { BrandEntity } from "../lib/entities";
 
 type HomeProps = {
-  articles: Article[];
-  guides: Guide[];
+  articles: ArticleSummary[];
+  guides: GuideSummary[];
+  entities?: BrandEntity[];
 };
 
-export default function Home({ articles, guides }: HomeProps) {
+const highImpressionEntries = [
+  {
+    href: INSTRUCTION_COMPARISON_GUIDE_HREF,
+    label: "Choose AGENTS.md, CLAUDE.md, Copilot instructions, or Cursor rules",
+    note: "Start with the current support matrix, then maintain one shared policy with small tool-specific adapters.",
+  },
+  {
+    href: MCP_TOOL_DISCOVERY_GUIDE_HREF,
+    label: "Fix an MCP server that is connected but shows no tools",
+    note: "Use the interactive fault tree and minimal tools/list reproduction before changing permissions.",
+  },
+  {
+    href: "/guides/agents-md-template-for-ai-coding-agents",
+    label: "Build an AGENTS.md template for Codex",
+    note: "Generate a Node.js, Python, or monorepo starter with setup, verification, boundaries, and proof-of-done rules.",
+  },
+  {
+    href: "/guides/does-github-copilot-read-claude-md-support-matrix",
+    label: "Check whether GitHub Copilot reads CLAUDE.md",
+    note: "Use the surface-specific answer for IDE Chat, cloud agent, code review, and Copilot CLI.",
+  },
+  {
+    href: MCP_SECURITY_GUIDE_HREF,
+    label: "Audit MCP authentication, permissions, and revocation",
+    note: "Apply the source-backed security controls before an agent receives credentials or write access.",
+  },
+  {
+    href: "/articles/cursor-enterprise-organizations-governance",
+    label: "Review Cursor Enterprise security and Privacy Mode",
+    note: "Verify current retention caveats, group policy, model controls, MCP access, and contract evidence.",
+  },
+  {
+    href: "/tools/instruction-file-checker",
+    label: "Audit an instruction file in the browser",
+    note: "Check setup, tests, scope, safety, and path compatibility without uploading repository content.",
+  },
+];
+
+export default function Home({ articles, guides, entities = [] }: HomeProps) {
   const websiteJsonLd = buildWebsiteJsonLd();
   const organizationJsonLd = buildOrganizationJsonLd();
   const itemListJsonLd = buildItemListJsonLd(articles.slice(0, 12), "Latest AI coding agent articles", "/");
   const guideItemListJsonLd = buildGuideItemListJsonLd(guides, "AI coding agent playbooks", "/guides");
-  const entities = getEntityCoverage(articles);
-  const pageTitle = `${SITE_NAME} | AI coding agent guides and evidence watch`;
+  const pageTitle = `${SITE_NAME} | AI Coding Agent Templates & Security Playbooks`;
   const description =
-    "Compare Codex, Claude Code, Copilot, Cursor, and other AI coding agents with source-backed setup, security, migration, and workflow guides.";
+    "Configure, compare, and secure Codex, Claude Code, Copilot, Cursor, and MCP workflows with source-backed templates, checklists, and browser tools.";
 
   return (
     <Layout>
@@ -47,15 +93,27 @@ export default function Home({ articles, guides }: HomeProps) {
         <section className="feed-panel" aria-labelledby="latest-heading">
           <div className="section-heading">
             <div>
-              <h1 id="latest-heading">AI Coding Agent Playbooks</h1>
-              <p>Source-backed guides for configuring, migrating, comparing, and securing AI coding agents.</p>
+              <h1 id="latest-heading">Evidence-Backed Templates and Security Playbooks for AI Coding Agents</h1>
+              <p>Configure, compare, and secure Codex, Claude Code, Copilot, Cursor, and MCP workflows with copyable templates, source-backed compatibility guides, downloadable security controls, and browser-based audit tools.</p>
+              <div className="home-hero-actions" aria-label="Start with a KyenAI resource">
+                <Link href="/guides/agents-md-template-for-ai-coding-agents">Browse templates</Link>
+                <Link href="/tools/instruction-file-checker">Run an instruction audit</Link>
+                <Link href={MCP_SECURITY_GUIDE_HREF}>Review MCP security</Link>
+              </div>
             </div>
             <Link href="/guides">All guides</Link>
           </div>
           <section className="guide-strip" aria-labelledby="priority-guides-heading">
             <div>
               <h2 id="priority-guides-heading">Practical playbooks</h2>
-              <p>Complete comparison, setup, security, and migration tasks with clear, source-backed guidance.</p>
+              <p>Follow one of two focused paths: choose, build, and audit agent instructions; or diagnose, secure, and govern MCP access.</p>
+            </div>
+            <div className="guide-strip-next-steps" aria-label="Guides to read first">
+              {highImpressionEntries.map((entry) => (
+                <p key={entry.href}>
+                  <Link href={entry.href}>{entry.label}</Link> {entry.note}
+                </p>
+              ))}
             </div>
             <div className="guide-strip-grid">
               {guides.map((guide) => (
@@ -66,6 +124,11 @@ export default function Home({ articles, guides }: HomeProps) {
               ))}
             </div>
             <div className="guide-strip-next-steps" aria-label="Recommended guide starting points">
+              <p>
+                Replacing or complementing Claude Code?{" "}
+                <Link href={CLAUDE_CODE_ALTERNATIVES_GUIDE_HREF}>Compare seven Claude Code alternatives by workflow</Link>{" "}
+                and keep staying with Claude Code as a valid result when no candidate improves the measured constraint.
+              </p>
               <p>
                 Standardizing repository guidance?{" "}
                 <Link href={INSTRUCTION_COMPARISON_GUIDE_HREF}>
@@ -151,11 +214,13 @@ export default function Home({ articles, guides }: HomeProps) {
 
 export async function getStaticProps() {
   const { getPriorityGuides } = await import("../lib/guide-editorial");
+  const fullArticles = await getArticles();
 
   return {
     props: {
-      articles: await getArticles(),
-      guides: getPriorityGuides(),
+      articles: fullArticles.map(toArticleSummary),
+      guides: getPriorityGuides().map(toGuideSummary),
+      entities: getEntityCoverage(fullArticles),
     },
     revalidate: 300,
   };

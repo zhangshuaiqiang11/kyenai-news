@@ -3,22 +3,27 @@ import { describe, expect, it } from "vitest";
 import { buildRobotsTxt } from "../lib/robots";
 
 describe("robots helpers", () => {
-  it("allows public pages, excludes api routes, and points to the canonical sitemap", () => {
+  it("allows public pages and the public OG image endpoint while excluding private api routes", () => {
     const robots = buildRobotsTxt();
 
     expect(robots).toContain("User-agent: *");
     expect(robots).toContain("Allow: /");
+    expect(robots).toContain("Allow: /api/og");
     expect(robots).toContain("Disallow: /api/");
     expect(robots).not.toContain("Disallow: /tags");
     expect(robots).toContain("Sitemap: https://www.kyenai.com/sitemap.xml");
   });
 
-  it("explicitly allows verified search and AI answer crawlers without exposing api routes", () => {
+  it("explicitly allows search, answer, and named training crawlers without exposing api routes", () => {
     const robots = buildRobotsTxt();
     const allowedAgents = [
       "Googlebot",
       "Googlebot-Image",
+      "Googlebot-Video",
       "GoogleOther",
+      "GoogleOther-Image",
+      "GoogleOther-Video",
+      "Google-CloudVertexBot",
       "Google-Extended",
       "Bingbot",
       "BingPreview",
@@ -33,9 +38,12 @@ describe("robots helpers", () => {
       "Bytespider",
     ];
 
+    expect(robots).toContain("# Search and answer retrieval crawlers");
+    expect(robots).toContain("# Training or research crawlers currently allowed for public content discovery");
+
     for (const agent of allowedAgents) {
       expect(robots).toContain(
-        [`User-agent: ${agent}`, "Allow: /", "Disallow: /api/"].join("\n"),
+        [`User-agent: ${agent}`, "Allow: /", "Allow: /api/og", "Disallow: /api/"].join("\n"),
       );
     }
   });

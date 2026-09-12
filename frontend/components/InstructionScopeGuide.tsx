@@ -17,7 +17,7 @@ export function InstructionScopeGuide() {
   const claude = getRecord("claude-code-claude-md");
   const copilotRepository = getRecord("copilot-repository-instructions");
   const cursorCurrent = getRecord("cursor-project-rules");
-  const cursorLegacy = getRecord("cursor-cursorrules-status-unknown");
+  const cursorLegacy = getRecord("cursor-cursorrules-legacy");
 
   return (
     <section className="instruction-resource-section" aria-labelledby="instruction-scope-heading">
@@ -81,7 +81,7 @@ export function InstructionScopeGuide() {
               {cursorCurrent.nesting}
             </p>
             <p>
-              Legacy-status caveat: <code>{cursorLegacy.path}</code>.{" "}
+              Legacy migration: <code>{cursorLegacy.path}</code>.{" "}
               {cursorLegacy.priority} {cursorLegacy.recommendation}
             </p>
           </dd>

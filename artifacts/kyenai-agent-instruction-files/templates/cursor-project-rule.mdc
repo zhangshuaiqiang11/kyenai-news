@@ -6,10 +6,21 @@ alwaysApply: true
 
 # Project guidance
 
+## Scope
+- These instructions apply to the entire repository.
+
+## Setup
+- Install dependencies with `npm ci`.
+
+## Change and safety rules
 - Read nearby implementation and tests before editing.
 - Follow existing architecture, naming, and formatting.
-- Prefer focused changes over broad refactors.
-- Do not edit generated files unless generation is part of the task.
+- Do not edit generated files or expose secrets.
+- Ask before destructive database or dependency changes.
+
+## Verification
 - Run `npm run lint` and `npm test` after code changes.
 - Run `npm run build` for production-facing changes.
+
+## Completion
 - Report changed files, test results, and unresolved risks.

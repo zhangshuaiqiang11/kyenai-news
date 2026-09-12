@@ -7,8 +7,8 @@ This checklist turns the local KyenAI MVP into a measurable production site. It 
 Set these before launch:
 
 ```env
-NEXT_PUBLIC_SITE_URL=https://your-production-domain.com
-NEXT_PUBLIC_EDITORIAL_EMAIL=editorial@your-production-domain.com
+NEXT_PUBLIC_SITE_URL=https://www.kyenai.com
+NEXT_PUBLIC_EDITORIAL_EMAIL=editorial@kyenai.com
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 ```
 
@@ -58,7 +58,7 @@ Use Bing Webmaster data to add non-Google search signals, and IndexNow to notify
 
 - Bing Webmaster API docs: https://learn.microsoft.com/en-us/bingwebmaster/
 - IndexNow docs: https://www.indexnow.org/documentation
-- Required env: `BING_WEBMASTER_API_KEY`, `BING_SITE_URL`, `INDEXNOW_KEY`, `INDEXNOW_HOST`
+- Required env: `BING_WEBMASTER_API_KEY`, `BING_SITE_URL`, `INDEXNOW_KEY`, `INDEXNOW_HOST`, `INDEXNOW_SUBMIT_TOKEN`
 - Store as: `SearchMetric(source="bing")`
 
 IndexNow should run only after a real publish, rollback, or sitemap-affecting change. Do not submit URLs that failed validation or were not materially updated.
@@ -103,3 +103,18 @@ Google does not ban AI-assisted content simply because AI helped produce it. The
 - brand-name stuffing without a visible source or entity relationship
 
 Useful content should add decisions, constraints, scope, source dates, and operational implications beyond the source.
+## 8. IndexNow submission security
+
+Set `INDEXNOW_SUBMIT_TOKEN` to a private, high-entropy value in the production environment. It authenticates calls to `/api/indexnow` and must not equal the public IndexNow verification key. The endpoint fails closed when this variable is missing, accepts only `https://www.kyenai.com` URLs, and applies a short per-client rate limit.
+
+## 9. Metadata experiment policy
+
+Treat a title and description change as one measured release, not a three-day editing loop:
+
+- record the deployment date, previous copy, new copy, target query, and target page
+- freeze the experiment for at least 14 days and prefer a full 28-day comparison window
+- compare query plus page cohorts, not the sitewide CTR alone
+- allow an early change only for a factual error, wrong canonical, accidental noindex, severe truncation, or clear intent mismatch
+- do not stack title, H1, content, internal-link, and URL changes into the same test unless the release is intentionally a full repositioning
+
+For the July 14 instruction-file release, keep the broad comparison focused on `AGENTS.md vs CLAUDE.md`, keep the dedicated Copilot page focused on the exact `Does GitHub Copilot read CLAUDE.md?` question, and avoid another metadata edit before the first 14-day review unless a release defect appears.

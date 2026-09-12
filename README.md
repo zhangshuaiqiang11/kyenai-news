@@ -58,6 +58,19 @@ npm run test
 npm run build
 ```
 
+## Original Research Dataset
+
+The repository includes the versioned [AI Coding Agent Instruction File Adoption Report — Q3 2026](https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026), a 400-file public GitHub best-match sample covering `AGENTS.md`, `CLAUDE.md`, Copilot instructions, and Cursor rules.
+
+- [Download the raw CSV](https://www.kyenai.com/resources/data/instruction-file-adoption-report-2026-q3.csv)
+- [Download the JSON with methodology and limitations](https://www.kyenai.com/resources/data/instruction-file-adoption-report-2026-q3.json)
+- [Read the reproducibility notes](https://www.kyenai.com/resources/data/instruction-file-adoption-report-2026-q3-methodology.md)
+- [Verify the manifest and SHA-256 checksums](https://www.kyenai.com/resources/data/instruction-file-adoption-report-2026-q3-manifest.json)
+
+Preferred citation: KyenAI. (2026). *AI Coding Agent Instruction File Adoption Report — Q3 2026* (Version 2026-Q3) [Data set]. https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026
+
+The snapshot reports indexed file-match counts and the first 100 best matches per query. It is not a unique-repository adoption rate or a statistically representative population estimate.
+
 ## Production Deployment
 
 The production stack is defined in `docker-compose.prod.yml` and uses Caddy as the public reverse proxy. Only Caddy publishes ports `80` and `443`; frontend, backend, Postgres, and Redis stay on the private Docker network.

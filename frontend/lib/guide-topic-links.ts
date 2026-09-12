@@ -4,22 +4,40 @@ import { slugify } from "./seo";
 const TOPIC_GUIDE_OVERRIDES: Record<string, string> = {
   "openai codex vs claude code": "codex-vs-claude-code",
   "codex alternatives": "codex-vs-claude-code",
-  "claude code alternatives": "codex-vs-claude-code",
-  "ai coding agent comparison": "codex-vs-claude-code",
+  "claude code alternatives": "claude-code-alternatives",
+  "alternatives to claude code": "claude-code-alternatives",
+  "claude code alternative": "claude-code-alternatives",
+  "free claude code alternative": "claude-code-alternatives",
+  "open source claude code alternative": "claude-code-alternatives",
+  "ai coding agent comparison": "ai-coding-agents-comparison",
   "agents.md vs claude.md": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
-  "github copilot claude.md support": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+  "claude md vs copilot instructions": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+  "claude.md vs copilot instructions": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+  "claude.md vs copilot-instructions.md": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+  "agents md vs claude md vs copilot instructions md": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+  "does github copilot read claude.md": "does-github-copilot-read-claude-md-support-matrix",
+  "github copilot claude.md support": "does-github-copilot-read-claude-md-support-matrix",
+  "copilot claude.md support matrix": "does-github-copilot-read-claude-md-support-matrix",
+  ".github/copilot-instructions.md vs claude.md": "does-github-copilot-read-claude-md-support-matrix",
   ".github/copilot-instructions.md": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
   ".cursor/rules mdc migration": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
   "ai coding agent instruction files": "agents-md-vs-claude-md-cursorrules-copilot-instructions",
   "agents.md template": "agents-md-template-for-ai-coding-agents",
   "ai coding agent instructions template": "agents-md-template-for-ai-coding-agents",
   "codex agents.md example": "agents-md-template-for-ai-coding-agents",
+  "agents.md examples": "agents-md-examples-codex-node-python-monorepos",
+  "codex agents.md examples": "agents-md-examples-codex-node-python-monorepos",
+  "agents.md node.js example": "agents-md-examples-codex-node-python-monorepos",
+  "agents.md python example": "agents-md-examples-codex-node-python-monorepos",
+  "agents.md monorepo example": "agents-md-examples-codex-node-python-monorepos",
   "repository instructions template": "agents-md-template-for-ai-coding-agents",
   "claude code subagents workflow": "claude-code-subagents-examples",
   "claude code sub-agents": "claude-code-subagents-examples",
   "ai coding subagents": "claude-code-subagents-examples",
   "mcp security": "secure-mcp-servers-ai-coding-agents",
   "mcp server security": "secure-mcp-servers-ai-coding-agents",
+  "secure mcp server connection to ai agent": "secure-mcp-servers-ai-coding-agents",
+  "securing connection between ai agents and mcp servers": "secure-mcp-servers-ai-coding-agents",
   "mcp authentication": "secure-mcp-servers-ai-coding-agents",
   "mcp permissions": "secure-mcp-servers-ai-coding-agents",
   "ai agent tool security": "secure-mcp-servers-ai-coding-agents",
@@ -36,13 +54,25 @@ const TOPIC_GUIDE_OVERRIDES: Record<string, string> = {
   "google coding agent cli": "antigravity-cli-gemini-cli-migration",
 };
 
+const TOPIC_PATH_OVERRIDES: Record<string, string> = {
+  "cursor enterprise security": "/articles/cursor-enterprise-organizations-governance",
+  "cursor privacy mode": "/articles/cursor-enterprise-organizations-governance",
+  "cursor data retention": "/articles/cursor-enterprise-organizations-governance",
+  "cursor agent permissions": "/articles/cursor-enterprise-organizations-governance",
+};
+
 export function resolveIndexableGuideTopicHref(keyword: string, currentGuideSlug?: string): string | null {
   const normalized = keyword.trim().toLowerCase();
   const guides = getGuides();
+  const overridePath = TOPIC_PATH_OVERRIDES[normalized];
   const overrideSlug = TOPIC_GUIDE_OVERRIDES[normalized];
 
-  if (overrideSlug && overrideSlug !== currentGuideSlug) {
-    return `/guides/${overrideSlug}`;
+  if (overridePath) {
+    return overridePath.endsWith(`/${currentGuideSlug}`) ? null : overridePath;
+  }
+
+  if (overrideSlug) {
+    return overrideSlug === currentGuideSlug ? null : `/guides/${overrideSlug}`;
   }
 
   const guideByTitle = guides.find(

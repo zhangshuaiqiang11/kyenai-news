@@ -268,30 +268,73 @@ const rawSeedArticles: Article[] = [
   },
   {
     id: "article-cursor-enterprise-orgs",
-    title: "Cursor Enterprise Adds Organization-Level Governance",
+    title: "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions",
     slug: "cursor-enterprise-organizations-governance",
     summary:
-      "Cursor's June 3 changelog adds organization containers, multi-team support, usage analytics, and group-level agent permissions for enterprise deployments.",
+      "Cursor Enterprise security depends on Privacy Mode, model-provider retention exceptions, SSO and SCIM, repository and model controls, MCP governance, audit logs, and agent permissions.",
     category: "Security & Governance",
-    tags: ["cursor", "enterprise", "governance", "agent-permissions"],
+    tags: ["cursor", "enterprise", "security", "privacy-mode", "agent-permissions"],
     authorName: "Editorial Automation Desk",
     status: "published",
-    keywords: ["Cursor Enterprise", "AI coding governance", "agent permissions"],
+    keywords: ["Cursor Enterprise security", "Cursor privacy mode", "Cursor data retention", "Cursor agent permissions"],
     entityIds: ["cursor"],
     blocks: [
+      {
+        id: "cursor-security-heading",
+        type: "heading",
+        content: "Cursor Enterprise Security Controls to Check First",
+        sourceIds: ["src-cursor-enterprise-orgs", "src-cursor-security", "src-cursor-data-use"],
+      },
       {
         id: "body-1",
         type: "paragraph",
         content:
-          "Cursor Enterprise can now manage multiple teams from one organization-level container. Admins get a rollup of spend and token usage, identity controls, and separate security, governance, budget, and feature settings for each team.",
-        sourceIds: ["src-cursor-enterprise-orgs"],
+          "Cursor Enterprise security is not one setting. Current Cursor documentation points buyers toward a connected bundle of controls: organization administration, role permissions, repository allowlists or blocklists, model and MCP server controls, SSO and SCIM, audit logs, subprocessors, and Privacy Mode data-handling choices.",
+        sourceIds: ["src-cursor-enterprise-orgs", "src-cursor-security", "src-cursor-data-use"],
       },
       {
         id: "body-2",
         type: "paragraph",
         content:
-          "The new group model is especially relevant for agent governance because cohorts can receive separate model access, spend limits, and agent permissions without creating a new team.",
-        sourceIds: ["src-cursor-enterprise-orgs"],
+          "For enterprise readers, the practical decision is what an admin should verify before rollout: whether Privacy Mode is enforced, which repositories and models are allowed, which MCP servers an agent may call, whether Cloud Agents are enabled, how agent permissions differ by group, and what evidence the vendor can provide for retention, subprocessors, and audit needs.",
+        sourceIds: ["src-cursor-enterprise-orgs", "src-cursor-security", "src-cursor-data-use"],
+      },
+      {
+        id: "cursor-security-table",
+        type: "fact_table",
+        content: [
+          "Security question|What to verify",
+          "Privacy Mode|Whether customer data is excluded from training and which abuse-detection or retention exceptions still apply",
+          "Model access|Which models are allowed, blocked, or require admin opt-in",
+          "Repository access|Whether admins can whitelist or blocklist repos before agents run",
+          "MCP access|Which MCP servers are approved, logged, and revocable",
+          "Identity|Whether SSO, SCIM, and deprovisioning are enforced",
+          "Cloud Agents|Whether encrypted repository copies are allowed, how long snapshots remain, and whether network egress is restricted",
+          "Audit|Whether Enterprise audit logs cover the events the security team needs and can be exported",
+          "Evidence|SOC 2 report, penetration-test summary, subprocessors, and customer agreement terms",
+        ].join("\n"),
+        sourceIds: ["src-cursor-enterprise-orgs", "src-cursor-security", "src-cursor-data-use"],
+      },
+      {
+        id: "cursor-security-faq-retention",
+        type: "faq",
+        content:
+          "Does Cursor Enterprise have zero data retention?\nPrivacy Mode prevents customer data from being used for training and Cursor documents zero-data-retention arrangements for covered providers, but exceptions remain. Some models require provider retention and admin approval, and Cloud Agents store encrypted repository copies while an agent runs. Enterprise buyers should verify the exact model, feature, workspace, and contract terms.",
+        sourceIds: ["src-cursor-data-use"],
+      },
+      {
+        id: "cursor-security-faq-admin-controls",
+        type: "faq",
+        content:
+          "What Cursor Enterprise security controls should admins check first?\nStart with SSO and SCIM, role permissions, Privacy Mode enforcement, repository and model controls, MCP allowlists, Run Mode and sandbox settings, Cloud Agent network and retention controls, audit logs, and subprocessors.",
+        sourceIds: ["src-cursor-enterprise-orgs", "src-cursor-security"],
+      },
+      {
+        id: "cursor-security-source-boundary",
+        type: "source_note",
+        content:
+          "Evidence boundary: Cursor's Security page was updated August 25, 2026 and its Data Use & Privacy Overview was updated September 3, 2026; KyenAI rechecked the cited sources on September 12, 2026. Privacy Mode excludes customer data from training and Cursor describes provider ZDR agreements, but abuse-detection exceptions, BYOK behavior, non-ZDR model opt-ins, and Cloud Agent storage remain. This page does not claim a universal retention result or control availability for every model, workspace, client, region, or contract.",
+        sourceIds: ["src-cursor-enterprise-orgs", "src-cursor-security", "src-cursor-data-use"],
       },
     ],
     sources: [
@@ -302,13 +345,39 @@ const rawSeedArticles: Article[] = [
         publisher: "Cursor",
         publishedAt: "2026-06-03",
         credibility: 5,
+        verifiedAt: "2026-09-12",
+        verificationConclusion: "Organizations, teams, and groups provide separate governance, budget, model-access, and agent-permission controls; the most permissive setting can win across memberships.",
+        verificationChangeNote: "Rechecked the organization source and aligned the page with current enterprise administration and model/MCP governance language.",
+      },
+      {
+        id: "src-cursor-security",
+        title: "Security",
+        url: "https://cursor.com/security",
+        publisher: "Cursor",
+        publishedAt: "2026-04-24",
+        credibility: 5,
+        verifiedAt: "2026-09-12",
+        verificationConclusion: "Cursor lists current security attestations, enterprise administration controls, Privacy Mode behavior, and trust-portal evidence as of its August 25 update.",
+        verificationChangeNote: "Updated the evidence boundary to the current August 25 security page revision.",
+      },
+      {
+        id: "src-cursor-data-use",
+        title: "Data Use & Privacy Overview",
+        url: "https://cursor.com/data-use",
+        publisher: "Cursor",
+        publishedAt: "2026-06-09",
+        credibility: 5,
+        verifiedAt: "2026-09-12",
+        verificationConclusion: "With Privacy Mode enabled, Cursor states customer data is not used for training and providers use ZDR agreements, subject to abuse-detection and non-ZDR model exceptions.",
+        verificationChangeNote: "Preserved abuse-detection, BYOK, non-ZDR model, and Cloud Agent exceptions from the current data-use documentation.",
       },
     ],
     publishedAt: "2026-06-03T09:00:00Z",
-    updatedAt: "2026-06-04T07:00:00Z",
-    version: 1,
+    updatedAt: "2026-09-12T00:00:00Z",
+    version: 5,
+    metaTitle: "Cursor Enterprise Security: Privacy Mode, Retention & Admin Controls",
     metaDescription:
-      "Cursor's June 3 changelog adds organization containers, multi-team support, usage analytics, and group-level agent permissions for enterprise deployments.",
+      "Cursor Enterprise security checklist with 30 controls for Privacy Mode, retention, SSO, SCIM, repositories, models, MCP, sandbox, hooks, and audit logs.",
   },
   {
     id: "article-gpt-53-codex",
@@ -564,15 +633,15 @@ const ARTICLE_DEPTH: Record<string, DepthProfile> = {
       "Limits and open questions: Anthropic's source warns about higher token use, and it does not guarantee that every subagent result is correct. Published updates should keep cost, review burden, and merge quality visible.",
   },
   "cursor-enterprise-organizations-governance": {
-    scope: "organization containers, multiple teams, analytics, budgets, and agent permissions",
+    scope: "enterprise security controls, Privacy Mode, retention caveats, repository controls, MCP controls, and agent permissions",
     analysis:
-      "The useful change is administrative scope. Cursor is separating organization-level visibility from team-level controls, which matters when one company has different model policies, budgets, and agent permissions across engineering groups. That turns AI coding governance into an operating model rather than a single workspace setting.",
+      "The useful change is not only administrative scope. Cursor's public enterprise, security, and data-use pages show that enterprise security depends on several connected controls: identity, role permissions, repository allowlists or blocklists, model access, MCP server controls, subprocessors, Privacy Mode, and retention exceptions. That makes the page a security decision guide rather than a short changelog rewrite.",
     implications:
-      "Enterprise admins should map teams, identity groups, cost centers, and agent permissions before turning on broader access. The strongest early use is separating experimental groups from production-facing teams while still getting organization-level spend and usage visibility.",
+      "Enterprise admins should map teams, identity groups, cost centers, repositories, model policies, MCP servers, and agent permissions before turning on broader access. The strongest early use is separating experimental groups from production-facing teams while still verifying Privacy Mode, retention terms, and audit evidence.",
     readerDecision:
-      "This update is most relevant for companies already standardizing on Cursor. Smaller teams may not need organization containers yet, but enterprises should treat the feature as a policy and reporting layer.",
+      "This update is most relevant for buyers searching whether Cursor Enterprise is secure enough for company code. The decision is not yes or no from a headline; it is whether the buyer can verify admin controls, retention behavior, subprocessors, and permission boundaries for their own workspace.",
     limits:
-      "Limits and open questions: the changelog does not establish every security default, retention policy, or export format. Those should be verified through admin docs or a controlled enterprise trial before stronger claims are made.",
+      "Limits and open questions: public pages do not establish every account-specific security default, retention exception, export field, or customer-agreement term. Those should be verified through admin docs, trust-portal evidence, and a controlled enterprise trial before stronger claims are made.",
   },
   "gpt-53-codex-long-running-agentic-coding": {
     scope: "long-running coding, frontend behavior, computer use, and cybersecurity safeguards",

@@ -1,6 +1,8 @@
 /** @vitest-environment jsdom */
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import fs from "node:fs";
+import path from "node:path";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -8,6 +10,8 @@ import { McpSecurityControls } from "../components/McpSecurityControls";
 import { getGuideEditorialSignals } from "../lib/guide-editorial";
 import { getGuide, getInternalLinkedGuides } from "../lib/guides";
 import {
+  mcpSecurityAuthenticationMatrix,
+  mcpSecurityConfigExample,
   mcpSecurityControls,
   mcpSecurityPermissionMatrix,
   mcpSecuritySources,
@@ -31,7 +35,7 @@ afterEach(() => {
 
 describe("MCP security resource records", () => {
   it("defines the exact threat model with current verification and official evidence", () => {
-    expect(mcpSecurityVerifiedAt).toBe("2026-06-14");
+    expect(mcpSecurityVerifiedAt).toBe("2026-09-08");
     expect(mcpSecurityThreats.map((threat) => threat.id)).toEqual([
       "prompt-injection",
       "excessive-permissions-scope",
@@ -51,25 +55,18 @@ describe("MCP security resource records", () => {
   });
 
   it("covers every required operational control without presenting it as an MCP mandate", () => {
-    expect(mcpSecurityControls.map((control) => control.id)).toEqual([
-      "authentication-authorization",
-      "least-privilege",
-      "secure-secret-token-storage-rotation",
-      "read-write-separation",
-      "human-approval-destructive-production",
-      "attributable-audit-logs",
-      "isolation-network-allowlists",
-      "revocation-incident-response",
-    ]);
+    expect(mcpSecurityControls).toHaveLength(25);
+    expect(new Set(mcpSecurityControls.map((control) => control.id)).size).toBe(25);
     expect(mcpSecurityControls.every((control) => control.verifiedAt === mcpSecurityVerifiedAt)).toBe(true);
+    expect(mcpSecurityControls.every((control) => control.risk && control.verificationMethod && control.passCriteria)).toBe(true);
 
     const operationalControls = mcpSecurityControls.filter((control) => control.claimType === "kyenai-operational");
     expect(operationalControls.map((control) => control.id)).toEqual(
       expect.arrayContaining([
-        "read-write-separation",
-        "human-approval-destructive-production",
-        "attributable-audit-logs",
-        "isolation-network-allowlists",
+        "read-write-delete-separation",
+        "human-approval",
+        "attributable-redacted-logs",
+        "prompt-injection-containment",
         "revocation-incident-response",
       ]),
     );
@@ -110,19 +107,36 @@ describe("MCP security resource records", () => {
     }
   });
 
+  it("defines authentication choices and a conservative security config example", () => {
+    expect(mcpSecurityAuthenticationMatrix.map((row) => row.id)).toEqual(["oauth", "api-key", "mtls"]);
+    expect(mcpSecurityAuthenticationMatrix.map((row) => row.option).join(" ")).toMatch(/OAuth|API key|mTLS/);
+    for (const row of mcpSecurityAuthenticationMatrix) {
+      expect(row.useWhen).toBeTruthy();
+      expect(row.mainRisk).toBeTruthy();
+      expect(row.launchGate).toBeTruthy();
+    }
+
+    expect(mcpSecurityConfigExample).toContain("token_audience");
+    expect(mcpSecurityConfigExample).toContain("blocked_paths");
+    expect(mcpSecurityConfigExample).toContain("outbound_network_allowlist");
+    expect(mcpSecurityConfigExample).toContain("write_methods: []");
+    expect(mcpSecurityConfigExample).toContain("log_fields");
+    expect(mcpSecurityConfigExample).toContain("disable_server_command");
+  });
+
   it("labels official MCP claims separately from general operating controls", () => {
     const allRecords = [...mcpSecurityThreats, ...mcpSecurityControls];
     expect(new Set(allRecords.map((record) => record.claimType))).toEqual(
       new Set(["official-mcp", "kyenai-operational"]),
     );
     expect(
-      mcpSecurityControls.find((control) => control.id === "authentication-authorization"),
+      mcpSecurityControls.find((control) => control.id === "token-audience-validation"),
     ).toMatchObject({
       claimType: "official-mcp",
       guidance: expect.stringMatching(/audience|token/i),
     });
     expect(
-      mcpSecurityControls.find((control) => control.id === "human-approval-destructive-production"),
+      mcpSecurityControls.find((control) => control.id === "human-approval"),
     ).toMatchObject({
       claimType: "kyenai-operational",
     });
@@ -134,13 +148,18 @@ describe("McpSecurityControls", () => {
     const markup = renderToStaticMarkup(<McpSecurityControls />);
 
     expect(markup).toContain("MCP security threat model");
-    expect(markup).toContain("MCP security control checklist");
+    expect(markup).toContain("MCP server security checklist");
+    expect(markup).toContain("OAuth, API key, and mTLS comparison");
     expect(markup).toContain("MCP permission matrix");
+    expect(markup).toContain("MCP security config example");
     expect(markup).toContain("Review cadence and revocation");
     expect(markup).toContain("<table");
     expect(markup).toContain("<dl");
     expect(markup).toContain("<ul");
     expect(markup).toContain('href="/resources/mcp-security-review.md"');
+    expect(markup).toContain('href="/resources/mcp-security-controls.pdf"');
+    expect(markup).toContain('href="/resources/mcp-security-controls.csv"');
+    expect(markup).toContain('href="/resources/mcp-security-controls.json"');
     expect(markup).toContain("MCP security review template");
   });
 
@@ -151,10 +170,13 @@ describe("McpSecurityControls", () => {
       expect(screen.getByRole("heading", { name: threat.title })).toBeTruthy();
     }
     for (const control of mcpSecurityControls) {
-      expect(screen.getByText(control.title, { selector: "li > strong" })).toBeTruthy();
+      expect(screen.getByRole("rowheader", { name: new RegExp(control.title, "i") })).toBeTruthy();
     }
     for (const row of mcpSecurityPermissionMatrix) {
       expect(screen.getByRole("rowheader", { name: row.capability })).toBeTruthy();
+    }
+    for (const row of mcpSecurityAuthenticationMatrix) {
+      expect(screen.getByRole("rowheader", { name: row.option })).toBeTruthy();
     }
     expect(
       screen.getByRole("link", { name: /download mcp-security-review\.md/i }).getAttribute("href"),
@@ -170,21 +192,29 @@ describe("MCP security guide integration", () => {
 
     expect(guide).toMatchObject({
       resourceIds: ["mcp-security"],
-      updatedAt: "2026-06-14",
+      updatedAt: "2026-09-08",
     });
-    expect(guide!.title).toMatch(/MCP security checklist/i);
-    expect(guide!.metaTitle).toMatch(/MCP security checklist/i);
+    expect(guide!.title).toMatch(/MCP Server Security Checklist: 25 Controls/i);
+    expect(guide!.metaTitle).toMatch(/MCP Server Security Checklist: 25 Controls/i);
     expect(guide!.summary).toMatch(/MCP server security/i);
+    expect(guide!.sections[0].body[0]).toMatch(/token audience/i);
+    expect(guide!.sections[0].body[0]).toMatch(/least-privilege/i);
     expect(JSON.stringify(guide)).toMatch(/how to secure an MCP server/i);
     expect(JSON.stringify(guide)).toMatch(/MCP authentication/i);
     expect(JSON.stringify(guide)).toMatch(/MCP permissions/i);
-    expect(JSON.stringify(guide)).toMatch(/AI agent tool security/i);
+    expect(JSON.stringify(guide)).toMatch(/OAuth, API keys, and mTLS/i);
+    expect(JSON.stringify(guide)).toMatch(/security config example/i);
+    expect(JSON.stringify(guide)).toMatch(/MCP tool permissions boundaries/i);
     expect(editorial).toMatchObject({
-      primaryKeyword: "MCP security checklist",
+      priority: "P1",
+      primaryKeyword: "MCP server security checklist",
       gscWatchQueries: [
         "mcp security",
         "mcp server security",
         "how to secure an mcp server",
+        "secure mcp server connection to ai agent",
+        "securing connection between ai agents and mcp servers",
+        "ai coding agent credentials",
         "mcp authentication",
         "mcp permissions",
         "ai agent tool security",
@@ -248,6 +278,7 @@ describe("generated MCP security review", () => {
       "Data classes",
       "Methods / capabilities",
       "Credentials / authentication",
+      "Authentication choice",
       "Network reach",
       "Approval gates",
       "Logging",
@@ -265,9 +296,14 @@ describe("generated MCP security review", () => {
     for (const row of mcpSecurityPermissionMatrix) {
       expect(markdown).toContain(row.capability);
     }
+    for (const row of mcpSecurityAuthenticationMatrix) {
+      expect(markdown).toContain(row.option);
+    }
     for (const source of mcpSecuritySources) {
       expect(markdown).toContain(source.url);
     }
+    expect(markdown).toContain("## Security config example");
+    expect(markdown).toContain("token_audience");
     expect(markdown).toContain("KyenAI operational recommendation");
     expect(markdown).toContain("Official MCP requirement or guidance");
   });
@@ -296,5 +332,29 @@ describe("generated MCP security review", () => {
     expect(renderedRow).toContain("Log path C:\\\\repo\\\\file");
     expect(renderedRow).toContain("No wildcard \\| root<br>delete");
     expect(row).toEqual(before);
+  });
+});
+
+describe("downloadable MCP security assets", () => {
+  const resourcesDir = fs.existsSync(path.resolve("public/resources"))
+    ? path.resolve("public/resources")
+    : path.resolve("frontend/public/resources");
+
+  it("keeps JSON and CSV downloads aligned to the 25 source records", () => {
+    const json = JSON.parse(fs.readFileSync(path.join(resourcesDir, "mcp-security-controls.json"), "utf8"));
+    const csv = fs.readFileSync(path.join(resourcesDir, "mcp-security-controls.csv"), "utf8").trim().split("\n");
+
+    expect(json.verifiedAt).toBe(mcpSecurityVerifiedAt);
+    expect(json.controlCount).toBe(25);
+    expect(json.controls.map((control: { id: string }) => control.id)).toEqual(
+      mcpSecurityControls.map((control) => control.id),
+    );
+    expect(csv).toHaveLength(26);
+  });
+
+  it("ships a real PDF download rather than a renamed text file", () => {
+    const pdf = fs.readFileSync(path.join(resourcesDir, "mcp-security-controls.pdf"));
+    expect(pdf.subarray(0, 5).toString("ascii")).toBe("%PDF-");
+    expect(pdf.length).toBeGreaterThan(15_000);
   });
 });

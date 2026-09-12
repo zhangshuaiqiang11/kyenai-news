@@ -23,6 +23,8 @@ const privateGuideFields = [
   "attackabilityScore",
   "fitScore",
   "gscWatchQueries",
+  "gscBaseline",
+  "emergencyPriority",
 ] as const;
 
 const privateScoringLabels = [
@@ -40,6 +42,8 @@ const targetGuideSlugs = [
   "agents-md-vs-claude-md-cursorrules-copilot-instructions",
   "secure-mcp-servers-ai-coding-agents",
   "loop-engineering-ai-coding-agents",
+  "does-github-copilot-read-claude-md-support-matrix",
+  "agents-md-examples-codex-node-python-monorepos",
 ] as const;
 
 vi.mock("next/router", () => ({
@@ -63,8 +67,10 @@ describe("public guide SEO copy", () => {
     const homepageSource = readFileSync(resolve(testDirectory, "../pages/index.tsx"), "utf8");
 
     expect(homepageSource).toContain(
-      "Compare Codex, Claude Code, Copilot, Cursor, and other AI coding agents with source-backed setup, security, migration, and workflow guides.",
+      "Configure, compare, and secure Codex, Claude Code, Copilot, Cursor, and MCP workflows with source-backed templates, checklists, and browser tools.",
     );
+    expect(homepageSource).toContain("Evidence-Backed Templates and Security Playbooks for AI Coding Agents");
+    expect(homepageSource).toContain('/tools/instruction-file-checker');
     expect(homepageSource).not.toMatch(/Search-demand-tested/i);
     expect(homepageSource).not.toMatch(/Validated demand pages/i);
     expect(homepageSource).not.toMatch(/Prioritized by real demand/i);
@@ -204,6 +210,8 @@ describe("public guide SEO copy", () => {
     const resourceMarkup = renderToStaticMarkup(<InstructionResources />);
 
     expect(resourceMarkup).toContain("Instruction file compatibility");
+    expect(resourceMarkup).toContain("Audit your instruction file before rollout");
+    expect(resourceMarkup).toContain("/tools/instruction-file-checker");
     expect(resourceMarkup).toContain("Instruction scope guide");
     expect(resourceMarkup).toContain("Repository instruction tree");
     expect(resourceMarkup).toContain("Instruction template downloads");
@@ -219,17 +227,24 @@ describe("public guide SEO copy", () => {
     expect(answerPanel?.textContent).toMatch(
       /GitHub Copilot support for CLAUDE\.md depends on the Copilot surface/i,
     );
-    expect(answerPanel?.textContent).toMatch(/selected cloud-agent surfaces support it/i);
-    expect(answerPanel?.textContent).toMatch(/many Copilot Chat, code-review, and CLI surfaces do not/i);
+    expect(answerPanel?.textContent).toMatch(/selected cloud-agent surfaces and Copilot CLI support it/i);
+    expect(answerPanel?.textContent).toMatch(/many Copilot Chat and code-review surfaces do not/i);
     expect(answerPanel?.textContent).toContain(".github/copilot-instructions.md");
 
     expect(screen.getByRole("heading", { name: /instruction file compatibility/i })).toBeTruthy();
+    expect(screen.getByRole("link", { name: /open the instruction file checker/i }).getAttribute("href")).toBe(
+      "/tools/instruction-file-checker",
+    );
     expect(screen.getByRole("heading", { name: /instruction scope guide/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /repository instruction tree/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /instruction template downloads/i })).toBeTruthy();
     expect(screen.getByRole("heading", { name: /same-repository benchmark/i })).toBeTruthy();
-    expect(screen.getAllByRole("link", { name: /download/i })).toHaveLength(4);
+    const templateDownloadLinks = screen.getAllByRole("link", { name: /download/i }).filter((link) =>
+      link.getAttribute("href")?.startsWith("/resources/instruction-files/"),
+    );
+    expect(templateDownloadLinks).toHaveLength(4);
     expect(screen.getAllByText(/\.cursor\/rules\//i, { selector: "code" }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("link", { name: /publisher source/i }).length).toBeGreaterThanOrEqual(8);
     expect(screen.getByText(/benchmark not yet run/i)).toBeTruthy();
     expect(screen.queryByRole("table", { name: /benchmark results/i })).toBeNull();
     const quickAnswerHeading = screen.getByRole("heading", { name: /^quick answer$/i });
@@ -252,6 +267,22 @@ describe("public guide SEO copy", () => {
     expect(screen.queryByRole("heading", { name: /instruction file compatibility/i })).toBeNull();
     expect(screen.queryByRole("heading", { name: /instruction template downloads/i })).toBeNull();
     expect(screen.queryByRole("heading", { name: /same-repository benchmark/i })).toBeNull();
+  });
+
+  it("gives the broad comparison unambiguous AGENTS.md vs CLAUDE.md query ownership", () => {
+    const guide = getGuide("agents-md-vs-claude-md-cursorrules-copilot-instructions")!;
+    render(<GuidePage guide={guide} relatedGuides={getInternalLinkedGuides(guide)} relatedArticles={[]} />);
+
+    expect(document.title).toBe("AGENTS.md vs CLAUDE.md vs Copilot Instructions | KyenAI");
+    expect(document.querySelector<HTMLMetaElement>('meta[name="description"]')?.content).toBe(
+      "Compare CLAUDE.md, .github/copilot-instructions.md, AGENTS.md, and Cursor rules by tool surface, scope, and safe sync policy.",
+    );
+    expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(
+      "AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?",
+    );
+    expect(document.querySelector(".instruction-evidence-refresh")?.textContent).toMatch(
+      /Evidence refresh:\s*GitHub's current support matrix/i,
+    );
   });
 
   it("keeps public benchmark JSON and visible benchmark status in agreement without zero or estimate claims", () => {
@@ -315,6 +346,8 @@ describe("public guide SEO copy", () => {
 
     expect(resourceMarkup).toContain("Loop engineering pattern matrix");
     expect(resourceMarkup).toContain("Five loop building blocks");
+    expect(resourceMarkup).toContain("Evidence gate for an AI coding agent loop");
+    expect(resourceMarkup).toContain("/resources/loop-engineering/proof-of-done-contract.json");
     expect(resourceMarkup).toContain("Plan → execute → verify");
     expect(resourceMarkup).not.toContain('type="application/ld+json"');
 
@@ -323,7 +356,25 @@ describe("public guide SEO copy", () => {
 
     const answerPanel = screen.getByRole("heading", { name: /^quick answer$/i }).closest("section");
     expect(answerPanel?.textContent).toMatch(/act → observe → reason/i);
-    expect(answerPanel?.textContent).toMatch(/stop rule/i);
+    expect(answerPanel?.textContent).toMatch(/token or cost caps/i);
+    expect(answerPanel?.textContent).toMatch(/human checkpoint/i);
+  });
+
+  it("renders page-specific evidence and methodology blocks on guide pages", () => {
+    const guide = getGuide("codex-vs-claude-code");
+
+    expect(guide).toBeDefined();
+    render(<GuidePage guide={guide!} relatedGuides={getInternalLinkedGuides(guide!)} relatedArticles={[]} />);
+
+    const summaryPanel = screen.getByRole("heading", { name: /Evidence reviewed/i }).closest("section");
+    const methodologyPanel = screen.getByRole("heading", { name: /Methodology and disclosure/i }).closest("section");
+
+    expect(summaryPanel?.textContent).toMatch(/Codex|Claude Code/i);
+    expect(summaryPanel?.textContent).toMatch(/remain unverified/i);
+    expect(screen.queryByRole("heading", { name: /AI citation summary/i })).toBeNull();
+    expect(summaryPanel?.textContent).not.toMatch(/answer engines|hidden JavaScript/i);
+    expect(methodologyPanel?.textContent).toMatch(/independent editorial reference/i);
+    expect(methodologyPanel?.textContent).toMatch(/rechecked against the linked sources/i);
   });
 
   it("keeps static resource downloads as ordinary links and out of guide JSON-LD", async () => {
@@ -371,10 +422,18 @@ describe("public guide SEO copy", () => {
       expect.soft(screen.queryAllByText(internalLabel), internalLabel).toHaveLength(0);
     }
 
-    const guideCards = screen.getAllByRole("article");
+    const guideCards = Array.from(document.querySelectorAll<HTMLElement>(".guide-card"));
     expect.soft(guideCards).toHaveLength(2);
     for (const guideCard of guideCards) {
       expect.soft(within(guideCard).queryAllByText(/^Who it helps:$/i)).toHaveLength(1);
     }
+
+    expect(screen.getByRole("heading", { name: /Guide overview/i })).toBeTruthy();
+    expect(screen.getByText(/make practical decisions about AI coding agents/i)).toBeTruthy();
+    expect(screen.queryByRole("heading", { name: /AI citation summary/i })).toBeNull();
+    expect(screen.queryByText(/GSC Opportunity Hubs|High-impression pages|Google visibility|impressions|clicks|query cluster/i)).toBeNull();
+    expect(screen.getByRole("heading", { name: /Comparison pages/i })).toBeTruthy();
+    expect(screen.getAllByText(/Support matrix/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Workflow comparison/i)).toBeTruthy();
   });
 });

@@ -1,0 +1,13 @@
+{
+  "name": "KyenAI",
+  "short_name": "KyenAI",
+  "description": "Evidence-led playbooks for AI coding agents.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#090b0f",
+  "icons": [
+    { "src": "/icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

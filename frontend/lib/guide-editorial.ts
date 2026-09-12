@@ -1,22 +1,29 @@
 import { getGuides } from "./guides";
+import { priorityPageBaselines } from "./search-baseline";
 import type { Guide, GuideEditorialSignals } from "./types";
 
 const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
   "agents-md-vs-claude-md-cursorrules-copilot-instructions": {
     priority: "P0",
-    primaryKeyword: "AGENTS.md vs CLAUDE.md vs .cursorrules",
+    primaryKeyword: "AGENTS.md vs CLAUDE.md",
     demandScore: 9,
     attackabilityScore: 9,
     fitScore: 9.2,
     gscWatchQueries: [
+      "claude md vs copilot instructions",
+      "claude.md vs copilot-instructions.md",
+      "agents md vs claude md vs copilot instructions md",
       "agents.md vs claude.md",
       "claude.md vs cursorrules",
+      "\".cursor/rules\" \".mdc\" \"agents.md\" priority precedence behavior",
       "copilot instructions vs cursor rules",
       "ai coding agent instructions",
     ],
+    gscBaseline: priorityPageBaselines["/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions"],
+    emergencyPriority: 105,
   },
   "claude-code-subagents-examples": {
-    priority: "P0",
+    priority: "P2",
     primaryKeyword: "Claude Code subagents examples",
     demandScore: 9,
     attackabilityScore: 8.5,
@@ -29,7 +36,7 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
     ],
   },
   "claude-code-hooks-mcp-setup": {
-    priority: "P0",
+    priority: "P2",
     primaryKeyword: "Claude Code hooks MCP setup",
     demandScore: 8,
     attackabilityScore: 8,
@@ -42,8 +49,8 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
     ],
   },
   "secure-mcp-servers-ai-coding-agents": {
-    priority: "P0",
-    primaryKeyword: "MCP security checklist",
+    priority: "P1",
+    primaryKeyword: "MCP server security checklist",
     demandScore: 8,
     attackabilityScore: 7.5,
     fitScore: 9.4,
@@ -51,13 +58,36 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
       "mcp security",
       "mcp server security",
       "how to secure an mcp server",
+      "secure mcp server connection to ai agent",
+      "securing connection between ai agents and mcp servers",
+      "ai coding agent credentials",
       "mcp authentication",
       "mcp permissions",
       "ai agent tool security",
     ],
+    gscBaseline: priorityPageBaselines["/guides/secure-mcp-servers-ai-coding-agents"],
+    emergencyPriority: 80,
+  },
+  "mcp-server-not-showing-tools": {
+    priority: "P0",
+    primaryKeyword: "MCP server not showing tools",
+    demandScore: 8.4,
+    attackabilityScore: 9.2,
+    fitScore: 9.7,
+    gscWatchQueries: [
+      "mcp server not showing tools",
+      "mcp tools not appearing",
+      "mcp server connected but no tools",
+      "mcp tools list debugging",
+      "claude code mcp zero tools",
+      "cursor mcp tools missing",
+      "github copilot mcp tools missing",
+    ],
+    gscBaseline: priorityPageBaselines["/guides/mcp-server-not-showing-tools"],
+    emergencyPriority: 120,
   },
   "antigravity-cli-gemini-cli-migration": {
-    priority: "P1",
+    priority: "P2",
     primaryKeyword: "Antigravity CLI migration from Gemini CLI",
     demandScore: 8,
     attackabilityScore: 9.5,
@@ -70,21 +100,66 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
     ],
   },
   "codex-vs-claude-code": {
-    priority: "P0",
+    priority: "P2",
     primaryKeyword: "Codex vs Claude Code",
     demandScore: 9,
     attackabilityScore: 8,
     fitScore: 9.4,
     gscWatchQueries: [
       "codex vs claude code",
+      "claude code vs codex",
       "openai codex vs claude code",
       "codex alternatives",
+    ],
+  },
+  "claude-code-alternatives": {
+    priority: "P2",
+    primaryKeyword: "Claude Code alternatives",
+    demandScore: 9.2,
+    attackabilityScore: 8.8,
+    fitScore: 9.8,
+    gscWatchQueries: [
       "claude code alternatives",
+      "alternatives to claude code",
+      "claude code alternative",
+      "free claude code alternative",
+      "open source claude code alternative",
+      "claude code alternatives for teams",
+    ],
+  },
+  "codex-vs-github-copilot": {
+    priority: "P2",
+    primaryKeyword: "Codex vs GitHub Copilot",
+    demandScore: 8.8,
+    attackabilityScore: 8.7,
+    fitScore: 9.5,
+    gscWatchQueries: [
+      "codex vs github copilot",
+      "github copilot vs codex",
+      "openai codex vs github copilot",
+      "codex cli vs copilot cli",
+      "codex alternative github copilot",
+      "github copilot alternative codex",
+    ],
+  },
+  "ai-coding-agents-comparison": {
+    priority: "P2",
+    primaryKeyword: "AI coding agents comparison",
+    demandScore: 9.1,
+    attackabilityScore: 8.4,
+    fitScore: 9.8,
+    gscWatchQueries: [
+      "ai coding agents comparison",
+      "ai coding agent comparison",
+      "codex vs claude code vs cursor vs copilot",
+      "coding agents comparison 2026",
+      "ai coding tools for teams",
+      "enterprise ai coding agent comparison",
     ],
   },
   "agents-md-template-for-ai-coding-agents": {
     priority: "P0",
-    primaryKeyword: "AGENTS.md template for AI coding agents",
+    primaryKeyword: "AGENTS.md template",
     demandScore: 8.8,
     attackabilityScore: 9.2,
     fitScore: 9.5,
@@ -94,9 +169,40 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
       "codex agents.md example",
       "ai coding agent instructions template",
     ],
+    gscBaseline: priorityPageBaselines["/guides/agents-md-template-for-ai-coding-agents"],
+    emergencyPriority: 80,
+  },
+  "does-github-copilot-read-claude-md-support-matrix": {
+    priority: "P0",
+    primaryKeyword: "Does GitHub Copilot read CLAUDE.md",
+    demandScore: 7.6,
+    attackabilityScore: 9.1,
+    fitScore: 9.2,
+    gscWatchQueries: [
+      "does github copilot read claude.md",
+      "github copilot claude.md support",
+      "copilot claude.md support matrix",
+      ".github/copilot-instructions.md vs claude.md",
+    ],
+    gscBaseline: priorityPageBaselines["/guides/does-github-copilot-read-claude-md-support-matrix"],
+    emergencyPriority: 105,
+  },
+  "agents-md-examples-codex-node-python-monorepos": {
+    priority: "P1",
+    primaryKeyword: "AGENTS.md examples",
+    demandScore: 8.1,
+    attackabilityScore: 9.3,
+    fitScore: 9.5,
+    gscWatchQueries: [
+      "agents.md examples",
+      "codex agents.md examples",
+      "agents.md node.js example",
+      "agents.md python example",
+      "agents.md monorepo example",
+    ],
   },
   "agent-mode-vs-chat-mode-in-ide": {
-    priority: "P0",
+    priority: "P1",
     primaryKeyword: "agent mode vs chat mode in IDE",
     demandScore: 8.4,
     attackabilityScore: 8.6,
@@ -109,7 +215,7 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
     ],
   },
   "local-vs-cloud-ai-coding-agent": {
-    priority: "P0",
+    priority: "P1",
     primaryKeyword: "local vs cloud AI coding agent",
     demandScore: 8.2,
     attackabilityScore: 8.8,
@@ -122,7 +228,7 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
     ],
   },
   "agent-governance-checklist-for-software-teams": {
-    priority: "P0",
+    priority: "P1",
     primaryKeyword: "agent governance checklist for software teams",
     demandScore: 8.1,
     attackabilityScore: 8.6,
@@ -135,18 +241,34 @@ const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
     ],
   },
   "loop-engineering-ai-coding-agents": {
-    priority: "P0",
-    primaryKeyword: "loop engineering",
+    priority: "P2",
+    primaryKeyword: "What is loop engineering",
     demandScore: 8.7,
     attackabilityScore: 9.1,
     fitScore: 9.6,
     gscWatchQueries: [
       "what is loop engineering",
+      "what is loop engineering addy osmani",
       "loop engineering ai coding agents",
       "cursor loop automation",
       "claude code loop command",
       "loop engineering vs prompt engineering",
       "how to design agent loops",
+    ],
+  },
+  "ai-coding-agent-instruction-file-adoption-report-2026": {
+    priority: "P2",
+    primaryKeyword: "AI coding agent instruction file adoption",
+    demandScore: 8.3,
+    attackabilityScore: 9.4,
+    fitScore: 9.8,
+    gscWatchQueries: [
+      "agents.md adoption",
+      "claude.md adoption",
+      "ai coding agent instruction file statistics",
+      "github agents.md report",
+      "copilot-instructions.md examples",
+      "cursor mdc rules examples",
     ],
   },
 };
@@ -168,5 +290,20 @@ function guideRank(slug: string): number {
   }
 
   const priorityBoost = signals.priority === "P0" ? 2 : signals.priority === "P1" ? 1 : 0;
-  return signals.demandScore + signals.attackabilityScore + signals.fitScore + priorityBoost;
+  const baseline = signals.gscBaseline;
+  const impressionScore = baseline ? Math.min(baseline.impressions / 25, 20) : 0;
+  const nearPageOneScore = baseline ? Math.max(0, 20 - Math.abs(baseline.averagePosition - 10)) : 0;
+  const zeroClickBoost = baseline && baseline.clicks === 0 && baseline.impressions > 40 ? 8 : 0;
+  const emergencyBoost = signals.emergencyPriority ? signals.emergencyPriority / 5 : 0;
+
+  return (
+    signals.demandScore +
+    signals.attackabilityScore +
+    signals.fitScore +
+    priorityBoost +
+    impressionScore +
+    nearPageOneScore +
+    zeroClickBoost +
+    emergencyBoost
+  );
 }

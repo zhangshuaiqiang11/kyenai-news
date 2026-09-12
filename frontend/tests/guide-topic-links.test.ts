@@ -33,10 +33,60 @@ describe("guide topic links", () => {
     );
   });
 
+  it("routes Cursor Enterprise security topics to the canonical evidence article", () => {
+    expect(resolveIndexableGuideTopicHref("Cursor Enterprise security")).toBe(
+      "/articles/cursor-enterprise-organizations-governance",
+    );
+    expect(resolveIndexableGuideTopicHref("Cursor data retention")).toBe(
+      "/articles/cursor-enterprise-organizations-governance",
+    );
+    expect(resolveIndexableGuideTopicHref("Cursor data retention", "cursor-enterprise-organizations-governance")).toBeNull();
+  });
+
+  it("routes P2 AGENTS.md support topics to the narrow support pages", () => {
+    expect(resolveIndexableGuideTopicHref("github copilot claude.md support")).toBe(
+      "/guides/does-github-copilot-read-claude-md-support-matrix",
+    );
+    expect(resolveIndexableGuideTopicHref("does github copilot read claude.md")).toBe(
+      "/guides/does-github-copilot-read-claude-md-support-matrix",
+    );
+    expect(resolveIndexableGuideTopicHref("agents.md examples")).toBe(
+      "/guides/agents-md-examples-codex-node-python-monorepos",
+    );
+    expect(resolveIndexableGuideTopicHref("agents.md python example")).toBe(
+      "/guides/agents-md-examples-codex-node-python-monorepos",
+    );
+  });
+
+  it("does not link P2 support topics back to their current guide", () => {
+    expect(
+      resolveIndexableGuideTopicHref(
+        "github copilot claude.md support",
+        "does-github-copilot-read-claude-md-support-matrix",
+      ),
+    ).toBeNull();
+    expect(
+      resolveIndexableGuideTopicHref(
+        "agents.md examples",
+        "agents-md-examples-codex-node-python-monorepos",
+      ),
+    ).toBeNull();
+  });
+
   it("does not link a topic back to the current guide", () => {
     expect(resolveIndexableGuideTopicHref("Codex alternatives", "codex-vs-claude-code")).toBeNull();
     expect(resolveIndexableGuideTopicHref("Codex alternatives", "some-other-guide")).toBe(
       "/guides/codex-vs-claude-code",
     );
+  });
+
+  it("assigns Claude Code alternatives intent to the dedicated guide", () => {
+    expect(resolveIndexableGuideTopicHref("Claude Code alternatives", "codex-vs-claude-code")).toBe(
+      "/guides/claude-code-alternatives",
+    );
+    expect(resolveIndexableGuideTopicHref("open source Claude Code alternative")).toBe(
+      "/guides/claude-code-alternatives",
+    );
+    expect(resolveIndexableGuideTopicHref("Claude Code alternatives", "claude-code-alternatives")).toBeNull();
   });
 });

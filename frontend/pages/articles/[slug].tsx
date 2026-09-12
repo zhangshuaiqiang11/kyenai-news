@@ -1,9 +1,12 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import Link from "next/link";
 
+import { AuthorityPathPanel } from "../../components/AuthorityPathPanel";
 import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import { SourceList } from "../../components/SourceList";
+import { SpacexCursorDealTracker } from "../../components/SpacexCursorDealTracker";
+import { CursorEnterpriseSecurityControls } from "../../components/CursorEnterpriseSecurityControls";
 import { getArticle, getArticles } from "../../lib/api";
 import { getVisibleArticleFaqs } from "../../lib/article-faqs";
 import { getRelatedGuidesForArticle } from "../../lib/article-guide-links";
@@ -12,15 +15,17 @@ import { getArticleEntities } from "../../lib/entities";
 import { resolveIndexableGuideTopicHref } from "../../lib/guide-topic-links";
 import { getPublishedArticles, isPublishedArticle } from "../../lib/publication";
 import {
-  buildArticleJsonLd,
-  buildBreadcrumbJsonLd,
-  buildFaqPageJsonLd,
+  buildArticleGraphJsonLd,
   buildMetaDescription,
   formatDate,
   slugify,
 } from "../../lib/seo";
 import { EDITORIAL_AUTHOR_PATH } from "../../lib/editorial";
-import type { Article, ArticleBlock, Guide } from "../../lib/types";
+import {
+  shouldShowArticleAuthorityPath,
+  shouldShowArticleChecker,
+} from "../../lib/authority-paths";
+import type { Article, ArticleBlock, EvidenceSource, Guide } from "../../lib/types";
 
 type ArticlePageProps = {
   article: Article;
@@ -30,16 +35,15 @@ type ArticlePageProps = {
 
 export default function ArticlePage({ article, relatedArticles, relatedGuides }: ArticlePageProps) {
   const metaDescription = buildMetaDescription(article);
-  const articleJsonLd = buildArticleJsonLd(article);
   const categoryPath = buildCategoryPath(article.category);
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+  const breadcrumbItems = [
     { name: "Home", path: "/" },
     { name: article.category, path: categoryPath },
     { name: article.title, path: `/articles/${article.slug}` },
-  ]);
+  ];
   const primarySource = article.sources[0];
   const faqs = getVisibleArticleFaqs(article);
-  const faqJsonLd = buildFaqPageJsonLd(faqs);
+  const articleGraphJsonLd = buildArticleGraphJsonLd(article, breadcrumbItems, faqs);
   const entities = getArticleEntities(article);
 
   return (
@@ -51,9 +55,7 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
         {article.tags.slice(0, 5).map((tag) => (
           <meta property="article:tag" content={tag} key={tag} />
         ))}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleGraphJsonLd) }} />
       </SeoHead>
       <article className="article-page">
         <div className="article-header">
@@ -76,18 +78,29 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
           <p>{article.summary}</p>
           <dl>
             <div><dt>Topic</dt><dd>{article.category}</dd></div>
-            <div><dt>Primary Source</dt><dd>{primarySource ? primarySource.publisher : "Source listed below"}</dd></div>
+            <div><dt>Primary Source</dt><dd>{primarySource ? <a href={primarySource.url} rel="noreferrer" target="_blank">{primarySource.publisher}</a> : "Source listed below"}</dd></div>
             <div><dt>Source Date</dt><dd>{primarySource ? formatDate(primarySource.publishedAt) : "Not available"}</dd></div>
           </dl>
         </section>
+        {article.slug === "spacex-cursor-acquisition-2026" ? <SpacexCursorDealTracker /> : null}
+        {article.slug === "cursor-enterprise-organizations-governance" ? <CursorEnterpriseSecurityControls /> : null}
+        {shouldShowArticleAuthorityPath(article.slug) ? (
+          <AuthorityPathPanel
+            currentPath={`/articles/${article.slug}`}
+            includeChecker={shouldShowArticleChecker(article.slug)}
+          />
+        ) : null}
         <div className="article-content-grid">
           <div className="article-body">
-            {article.blocks.map((block) => <ArticleBlockView block={block} key={block.id} />)}
+            {article.blocks.map((block) => (
+              <ArticleBlockView block={block} key={block.id} sources={article.sources} />
+            ))}
             <section className="article-faqs" aria-labelledby="article-faq-heading">
               <h2 id="article-faq-heading">Questions This Update Answers</h2>
               {faqs.map((faq) => (
                 <section className="faq-block" key={faq.question}>
                   <h3>{faq.question}</h3><p>{faq.answer}</p>
+                  <SourceCitations sourceIds={faq.sourceIds} sources={article.sources} label="Sources for this answer" />
                 </section>
               ))}
             </section>
@@ -101,7 +114,7 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
               <h2>Topics</h2>
               <div className="keyword-list">
                 {article.keywords.map((keyword) => {
-                  const href = resolveIndexableGuideTopicHref(keyword);
+                  const href = resolveIndexableGuideTopicHref(keyword, article.slug);
                   return href ? <Link href={href} key={keyword}>{keyword}</Link> : <span key={keyword}>{keyword}</span>;
                 })}
               </div>
@@ -170,30 +183,71 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
   );
 }
 
-function ArticleBlockView({ block }: { block: ArticleBlock }) {
+function ArticleBlockView({ block, sources }: { block: ArticleBlock; sources: EvidenceSource[] }) {
   if (block.type === "faq") return null;
+  if (block.type === "heading") return <h2>{block.content}</h2>;
+
+  const citations = <BlockCitations block={block} sources={sources} />;
   if (block.type === "fact_table") {
     const [header, ...rows] = block.content.split("\n").map((row) => row.split("|").map((cell) => cell.trim()));
     return (
-      <table className="fact-table">
-        <thead><tr>{header.map((cell) => <th key={cell} scope="col">{cell}</th>)}</tr></thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.join("-")}>
-              {row.map((cell, index) => index === 0 ? (
-                <th key={`${row.join("-")}-${header[index]}`} scope="row" data-label={header[index]}>{cell}</th>
-              ) : (
-                <td key={`${row.join("-")}-${header[index]}`} data-label={header[index]}>{cell}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="article-block-with-citations">
+        <table className="fact-table">
+          <thead><tr>{header.map((cell) => <th key={cell} scope="col">{cell}</th>)}</tr></thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.join("-")}>
+                {row.map((cell, index) => index === 0 ? (
+                  <th key={`${row.join("-")}-${header[index]}`} scope="row" data-label={header[index]}>{cell}</th>
+                ) : (
+                  <td key={`${row.join("-")}-${header[index]}`} data-label={header[index]}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {citations}
+      </div>
     );
   }
-  if (block.type === "source_note") return <p className="source-note-block">{block.content}</p>;
-  if (block.type === "heading") return <h2>{block.content}</h2>;
-  return <p>{block.content}</p>;
+  return (
+    <div className="article-block-with-citations">
+      <p className={block.type === "source_note" ? "source-note-block" : undefined}>{block.content}</p>
+      {citations}
+    </div>
+  );
+}
+
+function BlockCitations({ block, sources }: { block: ArticleBlock; sources: EvidenceSource[] }) {
+  return <SourceCitations sourceIds={block.sourceIds} sources={sources} label="Sources for this passage" />;
+}
+
+function SourceCitations({
+  sourceIds,
+  sources,
+  label,
+}: {
+  sourceIds: string[];
+  sources: EvidenceSource[];
+  label: string;
+}) {
+  const sourceById = new Map(sources.map((source) => [source.id, source]));
+  const citedSources = Array.from(new Set(sourceIds))
+    .map((sourceId) => sourceById.get(sourceId))
+    .filter((source): source is EvidenceSource => Boolean(source));
+
+  if (citedSources.length === 0) return null;
+
+  return (
+    <span aria-label={label} className="passage-citations">
+      <span>Sources:</span>{" "}
+      {citedSources.map((source, index) => (
+        <a href={source.url} key={source.id} rel="noreferrer" target="_blank">
+          [{index + 1}] {source.publisher}
+        </a>
+      ))}
+    </span>
+  );
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

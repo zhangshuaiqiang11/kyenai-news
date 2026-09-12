@@ -15,6 +15,7 @@ const compatibilityHeader = [
   "tool",
   "path",
   "status",
+  "surfaces",
   "scopes",
   "priority",
   "nesting",
@@ -95,6 +96,7 @@ export function renderCompatibilityCsv(records: ToolInstructionSupport[]): strin
     record.toolName,
     record.path,
     record.status,
+    record.surfaces.join("|"),
     record.scopes.join("|"),
     record.priority,
     record.nesting,
@@ -129,7 +131,7 @@ export function renderGithubReadme(input: {
 }): string {
   const sourceRows = input.records.map(
     (record) =>
-      `| ${escapeMarkdownTableCell(record.toolName)} | ${renderMarkdownTableCodeCell(record.path)} | ${escapeMarkdownTableCell(record.status)} | [${escapeMarkdownTableCell(record.publisher)}](${renderMarkdownLinkDestination(record.sourceUrl)}) |`,
+      `| ${escapeMarkdownTableCell(record.toolName)} | ${renderMarkdownTableCodeCell(record.path)} | ${escapeMarkdownTableCell(record.surfaces.join("; "))} | ${escapeMarkdownTableCell(record.status)} | [${escapeMarkdownTableCell(record.publisher)}](${renderMarkdownLinkDestination(record.sourceUrl)}) |`,
   );
   const templateRows = input.templates.map(
     (template) =>
@@ -152,8 +154,8 @@ The package also includes JSON and CSV compatibility data, a benchmark protocol,
 
 ## Compatibility sources
 
-| Tool | Instruction path | Status | Source |
-| --- | --- | --- | --- |
+| Tool | Instruction path | Surfaces | Status | Source |
+| --- | --- | --- | --- | --- |
 ${sourceRows.join("\n")}
 
 Compatibility claims are limited to the linked publisher documentation and the verified date above.

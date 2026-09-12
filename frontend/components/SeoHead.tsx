@@ -27,6 +27,7 @@ export function SeoHead({ title, description, path, type, robots, ogImage, child
       <link rel="icon" type="image/png" sizes="512x512" href="/icon.png" />
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       <link rel="alternate" type="application/rss+xml" title="KyenAI RSS Feed" href={buildCanonicalUrl("/feed.xml")} />
+      <link rel="alternate" type="text/plain" title="KyenAI llms.txt" href={buildCanonicalUrl("/llms.txt")} />
       <meta property="og:title" content={seo.openGraph.title} />
       <meta property="og:description" content={seo.openGraph.description} />
       <meta property="og:type" content={seo.openGraph.type} />

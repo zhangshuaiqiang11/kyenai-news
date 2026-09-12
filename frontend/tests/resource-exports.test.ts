@@ -19,6 +19,7 @@ const csvHeader = [
   "tool",
   "path",
   "status",
+  "surfaces",
   "scopes",
   "priority",
   "nesting",
@@ -120,6 +121,7 @@ describe("resource export renderers", () => {
       record.toolName,
       record.path,
       record.status,
+      record.surfaces.join("|"),
       record.scopes.join("|"),
       record.priority,
       record.nesting,
@@ -182,7 +184,7 @@ describe("resource export renderers", () => {
     expect(templateRow).toBeDefined();
     expect(sourceRow).toBeDefined();
     expect(parseMarkdownTableRow(templateRow!)).toHaveLength(3);
-    expect(parseMarkdownTableRow(sourceRow!)).toHaveLength(4);
+    expect(parseMarkdownTableRow(sourceRow!)).toHaveLength(5);
     expect(templateRow).toContain("````AG`ENTS```\\|copy.md````");
     expect(templateRow).toContain("`apps\\web/<br>AGENTS.md`");
     expect(templateRow).toContain("One \\| purpose<br>with a backslash \\");

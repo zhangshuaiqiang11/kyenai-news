@@ -1,4 +1,4 @@
-export const mcpSecurityVerifiedAt = "2026-06-14" as const;
+export const mcpSecurityVerifiedAt = "2026-09-08" as const;
 
 export const mcpSecuritySourceUrls = {
   bestPractices:
@@ -36,18 +36,12 @@ export type McpSecurityThreat = {
 };
 
 export type McpSecurityControl = {
-  id:
-    | "authentication-authorization"
-    | "least-privilege"
-    | "secure-secret-token-storage-rotation"
-    | "read-write-separation"
-    | "human-approval-destructive-production"
-    | "attributable-audit-logs"
-    | "isolation-network-allowlists"
-    | "revocation-incident-response";
+  id: string;
   title: string;
+  risk: "Critical" | "High" | "Medium";
   guidance: string;
-  launchCheck: string;
+  verificationMethod: string;
+  passCriteria: string;
   claimType: McpClaimType;
   sourceUrls: string[];
   verifiedAt: typeof mcpSecurityVerifiedAt;
@@ -66,6 +60,14 @@ export type McpPermissionRow = {
   dataRisk: string;
   approval: string;
   logging: string;
+  launchGate: string;
+};
+
+export type McpAuthenticationRow = {
+  id: "oauth" | "api-key" | "mtls";
+  option: string;
+  useWhen: string;
+  mainRisk: string;
   launchGate: string;
 };
 
@@ -175,12 +177,13 @@ export const mcpSecurityThreats: McpSecurityThreat[] = [
 
 export const mcpSecurityControls: McpSecurityControl[] = [
   {
-    id: "authentication-authorization",
-    title: "Authentication and authorization",
+    id: "token-audience-validation",
+    title: "Validate access-token audience",
+    risk: "Critical",
     guidance:
-      "For HTTP transports, implement the MCP authorization flow, validate access-token audience, reject token passthrough, and return scope challenges without silently widening access.",
-    launchCheck:
-      "Document the authorization server, protected resource metadata, token audience, scopes, and deny-path tests.",
+      "For HTTP transports, accept only access tokens explicitly issued for the MCP server and validate their audience before every protected request.",
+    verificationMethod: "Send valid, wrong-audience, expired, and unsigned tokens to each protected endpoint.",
+    passCriteria: "Only the valid audience-bound token is accepted; every other token is rejected without reaching a tool.",
     claimType: "official-mcp",
     sourceUrls: [
       mcpSecuritySourceUrls.authorization,
@@ -189,89 +192,276 @@ export const mcpSecurityControls: McpSecurityControl[] = [
     verifiedAt: mcpSecurityVerifiedAt,
   },
   {
-    id: "least-privilege",
-    title: "Least privilege",
+    id: "per-client-consent",
+    title: "Require per-client consent",
+    risk: "Critical",
     guidance:
-      "Request the minimum initial scopes and capabilities needed for the declared workflow, then elevate incrementally only when a specific operation requires it.",
-    launchCheck:
-      "Every enabled method, filesystem root, API scope, and environment has a documented use case.",
+      "MCP proxy servers that reuse a third-party OAuth client must record consent per user and MCP client before forwarding authorization.",
+    verificationMethod: "Authorize one client, then initiate the same flow from a new client ID while the original consent cookie remains present.",
+    passCriteria: "The new client receives its own consent screen and cannot inherit the first client's approval.",
     claimType: "official-mcp",
     sourceUrls: [
       mcpSecuritySourceUrls.bestPractices,
-      mcpSecuritySourceUrls.authorization,
     ],
     verifiedAt: mcpSecurityVerifiedAt,
   },
   {
-    id: "secure-secret-token-storage-rotation",
-    title: "Secure secret and token storage with rotation",
+    id: "redirect-state-csrf",
+    title: "Validate redirect URIs, state, and CSRF",
+    risk: "Critical",
     guidance:
-      "Keep credentials out of prompts, configuration committed to source control, tool output, and ordinary logs. Use managed secret storage, short-lived credentials where practical, and a tested rotation path.",
-    launchCheck:
-      "Record storage location, redaction behavior, token lifetime, rotation owner, and emergency revocation procedure.",
+      "Use exact redirect URI matching, single-use short-lived state values, CSRF protection, and secure consent cookies in OAuth flows.",
+    verificationMethod: "Replay state values and try wildcard, changed, missing, and attacker-controlled redirect URIs.",
+    passCriteria: "Every mismatch or replay is rejected and approved redirects use exact registered values.",
     claimType: "official-mcp",
-    sourceUrls: [
-      mcpSecuritySourceUrls.bestPractices,
-      mcpSecuritySourceUrls.authorizationSecurity,
-    ],
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices],
     verifiedAt: mcpSecurityVerifiedAt,
   },
   {
-    id: "read-write-separation",
-    title: "Read and write separation",
+    id: "reject-token-passthrough",
+    title: "Reject token passthrough",
+    risk: "Critical",
     guidance:
-      "Expose read-only methods separately from mutation and deletion methods so teams can grant useful access without bundling consequential capabilities. This is a KyenAI operational recommendation.",
-    launchCheck:
-      "A read-only profile can be enabled without write, delete, secret, or production permissions.",
+      "Do not accept an upstream token and forward it to another service without verifying that it was issued for the MCP server.",
+    verificationMethod: "Present a token issued only for a downstream API and trace whether it can cross the MCP boundary.",
+    passCriteria: "The MCP server rejects the token and never forwards it downstream.",
+    claimType: "official-mcp",
+    sourceUrls: [mcpSecuritySourceUrls.authorization, mcpSecuritySourceUrls.bestPractices],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "scope-minimization",
+    title: "Minimize scopes and elevate incrementally",
+    risk: "High",
+    guidance:
+      "Request the smallest initial scope set and add access only when a specific operation requires it.",
+    verificationMethod: "Map every requested scope to one enabled method and run the workflow with optional scopes removed.",
+    passCriteria: "No unused wildcard or admin scope remains and elevation is explicit and operation-specific.",
+    claimType: "official-mcp",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices, mcpSecuritySourceUrls.authorization],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "secret-storage-rotation",
+    title: "Protect and rotate secrets and tokens",
+    risk: "Critical",
+    guidance:
+      "Keep credentials out of prompts, source control, tool output, screenshots, and ordinary logs; use managed storage and short-lived credentials where practical.",
+    verificationMethod: "Scan configuration, prompts, logs, errors, screenshots, and source history, then rotate a test credential.",
+    passCriteria: "No plaintext credential appears and the old credential stops working after rotation.",
+    claimType: "kyenai-operational",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices, mcpSecuritySourceUrls.authorizationSecurity],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "session-auth-separation",
+    title: "Never use sessions as authentication",
+    risk: "Critical",
+    guidance:
+      "Authorize every inbound request independently; a session identifier must not substitute for an access token or user identity.",
+    verificationMethod: "Reuse a captured session ID without valid authorization and attempt calls against another server instance.",
+    passCriteria: "The request is rejected and the session ID alone grants no capability.",
+    claimType: "official-mcp",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "session-id-security",
+    title: "Secure, bind, rotate, and expire session IDs",
+    risk: "High",
+    guidance:
+      "Generate non-deterministic session IDs, bind them to authorized user context, and rotate or expire them to limit hijacking.",
+    verificationMethod: "Test predictable IDs, cross-user reuse, cross-instance replay, and expired-session behavior.",
+    passCriteria: "IDs are unguessable, user-bound, time-bounded, and rejected outside their authorized context.",
+    claimType: "official-mcp",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "authorization-url-schemes",
+    title: "Allow only safe authorization URL schemes",
+    risk: "Critical",
+    guidance: "Accept HTTPS authorization URLs in production and reject javascript:, data:, file:, vbscript:, and other executable schemes.",
+    verificationMethod: "Return authorization endpoints using unsafe schemes, encoded variants, and HTTP on non-loopback hosts.",
+    passCriteria: "Only HTTPS production URLs and explicitly allowed loopback development URLs open.",
+    claimType: "official-mcp",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "safe-url-opening",
+    title: "Open authorization URLs without a shell",
+    risk: "Critical",
+    guidance: "Use platform URL APIs rather than cmd, sh, PowerShell, or interpolated shell commands when opening authorization links.",
+    verificationMethod: "Supply URLs containing shell metacharacters, quotes, spaces, and encoded command separators.",
+    passCriteria: "The URL is parsed as data, no shell starts, and suspicious values are rejected and logged.",
+    claimType: "official-mcp",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "ssrf-private-ranges",
+    title: "Block SSRF to private and metadata ranges",
+    risk: "Critical",
+    guidance: "Validate OAuth discovery URLs and block loopback, private, link-local, reserved, and cloud metadata destinations outside explicit development exceptions.",
+    verificationMethod: "Try IPv4, IPv6, encoded, hostname, and cloud-metadata targets through every URL-fetching path.",
+    passCriteria: "All private or reserved destinations are blocked before connection and responses are not reflected.",
+    claimType: "official-mcp",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices, mcpSecuritySourceUrls.authorizationSecurity],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "redirect-dns-validation",
+    title: "Revalidate redirects and DNS results",
+    risk: "High",
+    guidance: "Apply URL and IP validation to every redirect hop and defend against DNS rebinding or time-of-check/time-of-use changes.",
+    verificationMethod: "Use redirect chains and a test hostname that changes from a public to a private address.",
+    passCriteria: "Every hop is revalidated and a destination change to a blocked address terminates the request.",
+    claimType: "official-mcp",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "egress-allowlist",
+    title: "Enforce an outbound network allowlist",
+    risk: "High",
+    guidance: "Route server-side discovery and tool traffic through network policy or an egress proxy that permits only declared destinations.",
+    verificationMethod: "Attempt direct IP, undeclared domain, private range, redirect, and DNS-rebinding egress from the runtime.",
+    passCriteria: "Only reviewed destinations succeed and bypass paths cannot reach undeclared networks.",
+    claimType: "official-mcp",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "local-install-consent",
+    title: "Require consent before local server installation",
+    risk: "Critical",
+    guidance: "Before one-click local setup, show the exact command and explain that it executes with the client's local privileges.",
+    verificationMethod: "Start installation from a deep link or imported configuration and inspect the complete pre-execution consent flow.",
+    passCriteria: "No command runs before explicit approval and the user can cancel without side effects.",
+    claimType: "official-mcp",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "command-visibility-warnings",
+    title: "Display full commands and dangerous-pattern warnings",
+    risk: "High",
+    guidance: "Do not truncate local startup commands; highlight sudo, destructive deletion, network calls, and access to sensitive paths.",
+    verificationMethod: "Test long, multiline, obfuscated, and destructive commands in the installation dialog.",
+    passCriteria: "The entire command is visible and dangerous patterns produce a clear warning before approval.",
+    claimType: "official-mcp",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "local-server-sandbox",
+    title: "Sandbox local MCP servers",
+    risk: "Critical",
+    guidance: "Run local servers with minimal filesystem, process, and network privileges and require explicit grants for additional access.",
+    verificationMethod: "Attempt to read outside allowed roots, spawn child processes, reach the network, and access system credentials.",
+    passCriteria: "Default-denied actions fail and each additional privilege requires a narrow explicit grant.",
+    claimType: "official-mcp",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices, mcpSecuritySourceUrls.authorizationSecurity],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "stdio-proxy-restrictions",
+    title: "Restrict stdio proxy process spawning",
+    risk: "Critical",
+    guidance: "When a proxy can spawn stdio servers, isolate the proxy, authorize dangerous commands separately, and log process creation.",
+    verificationMethod: "Use a compromised-client test to request an arbitrary executable, unexpected arguments, and access outside the sandbox.",
+    passCriteria: "Unapproved commands and arguments are denied and allowed process creation is attributable and contained.",
+    claimType: "official-mcp",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "tool-level-permissions",
+    title: "Inventory and scope every exposed tool",
+    risk: "High",
+    guidance: "Decide visibility, callability, target scope, owner, rollback path, and approval policy for each tool rather than trusting one server-wide grant.",
+    verificationMethod: "Enumerate tools with MCP Inspector and compare them with the approved capability inventory.",
+    passCriteria: "Every exposed tool has a declared workflow and no undeclared or wildcard capability remains.",
     claimType: "kyenai-operational",
     sourceUrls: [mcpSecuritySourceUrls.inspector],
     verifiedAt: mcpSecurityVerifiedAt,
   },
   {
-    id: "human-approval-destructive-production",
-    title: "Human approval for destructive or production actions",
-    guidance:
-      "Require an informed human decision immediately before delete, irreversible write, secret use, or production execution. This is a KyenAI operational recommendation, not an MCP specification mandate.",
-    launchCheck:
-      "Approval prompts identify the actor, target, action, data, environment, and rollback limits.",
+    id: "read-write-delete-separation",
+    title: "Separate read, write, and delete capabilities",
+    risk: "High",
+    guidance: "Offer a useful read-only profile without bundling mutation, deletion, secret, network, or production permissions.",
+    verificationMethod: "Run the read-only workflow and attempt every mutation and deletion method with the same identity.",
+    passCriteria: "Reads work within declared roots while all write and delete attempts are denied.",
     claimType: "kyenai-operational",
     sourceUrls: [mcpSecuritySourceUrls.inspector],
     verifiedAt: mcpSecurityVerifiedAt,
   },
   {
-    id: "attributable-audit-logs",
-    title: "Attributable audit logs",
-    guidance:
-      "Record actor, session, server and version, method, target, approval, timestamp, and outcome while redacting secrets and minimizing sensitive payloads. This is a KyenAI operational recommendation, not an MCP specification mandate.",
-    launchCheck:
-      "A reviewer can reconstruct a consequential call and its approval without exposing credentials.",
+    id: "prompt-injection-containment",
+    title: "Contain prompt-injection-triggered tool calls",
+    risk: "Critical",
+    guidance: "Treat repository text, webpages, issues, and tool output as untrusted data that cannot widen tool permissions or bypass approval gates.",
+    verificationMethod: "Place malicious instructions in each untrusted input source and observe requested tool calls and permission changes.",
+    passCriteria: "Untrusted content cannot expand authority, reveal credentials, or execute a consequential call without policy approval.",
+    claimType: "kyenai-operational",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "human-approval",
+    title: "Require human approval for consequential actions",
+    risk: "Critical",
+    guidance: "Pause immediately before destructive writes, secret use, production access, irreversible external messages, or permission expansion.",
+    verificationMethod: "Simulate each consequential action and inspect the approval prompt, actor, target, rollback limits, and timeout behavior.",
+    passCriteria: "The action cannot proceed without an informed, current, target-specific approval.",
     claimType: "kyenai-operational",
     sourceUrls: [mcpSecuritySourceUrls.inspector],
     verifiedAt: mcpSecurityVerifiedAt,
   },
   {
-    id: "isolation-network-allowlists",
-    title: "Isolation and network allowlists",
-    guidance:
-      "Sandbox local servers and restrict filesystem roots, processes, and outbound destinations. Validate URLs and redirects to reduce SSRF exposure. The isolation profile is a KyenAI operational control informed by official MCP security guidance.",
-    launchCheck:
-      "The server cannot reach undeclared private addresses, metadata endpoints, filesystem roots, or child processes.",
+    id: "attributable-redacted-logs",
+    title: "Keep attributable, secret-redacted audit logs",
+    risk: "High",
+    guidance: "Record actor, session, server version, method, target, approval, timestamp, and outcome while excluding tokens and unnecessary payloads.",
+    verificationMethod: "Run allowed and denied calls, then reconstruct them from logs and scan the records for credential patterns.",
+    passCriteria: "A reviewer can reconstruct consequential calls and no secret or sensitive payload is exposed.",
     claimType: "kyenai-operational",
-    sourceUrls: [
-      mcpSecuritySourceUrls.bestPractices,
-      mcpSecuritySourceUrls.authorizationSecurity,
-    ],
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices, mcpSecuritySourceUrls.inspector],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "supply-chain-pinning",
+    title: "Pin and review server supply-chain inputs",
+    risk: "High",
+    guidance: "Use trusted distribution sources, pin reviewed versions or integrity records, inventory dependencies, and avoid unattended latest-version execution.",
+    verificationMethod: "Rebuild from a clean environment and compare resolved packages, checksums, publisher identity, and startup command with the review record.",
+    passCriteria: "The reviewed artifact is reproducible and an unexpected publisher, version, or dependency blocks launch.",
+    claimType: "kyenai-operational",
+    sourceUrls: [mcpSecuritySourceUrls.bestPractices, mcpSecuritySourceUrls.authorizationSecurity],
     verifiedAt: mcpSecurityVerifiedAt,
   },
   {
     id: "revocation-incident-response",
-    title: "Revocation and incident response",
-    guidance:
-      "Maintain a fast way to disable the server, revoke credentials, remove client registration, preserve relevant logs, notify owners, and reassess affected data. This is a KyenAI operational recommendation.",
-    launchCheck:
-      "The owner has tested disablement and credential revocation, with named incident and escalation contacts.",
+    title: "Test revocation and incident response",
+    risk: "Critical",
+    guidance: "Maintain a fast path to disable the server, revoke credentials and client access, preserve relevant records, and assess affected systems.",
+    verificationMethod: "Run a tabletop incident, disable the server, revoke a test credential, and attempt the former workflow again.",
+    passCriteria: "Old access fails immediately, owners receive evidence, and restoration requires a documented decision.",
     claimType: "kyenai-operational",
     sourceUrls: [mcpSecuritySourceUrls.bestPractices],
+    verifiedAt: mcpSecurityVerifiedAt,
+  },
+  {
+    id: "inspector-allow-deny-validation",
+    title: "Validate allow and deny paths with MCP Inspector",
+    risk: "Medium",
+    guidance: "Enumerate resources, prompts, tools, notifications, and protocol exchanges, then test both expected success and expected failure behavior.",
+    verificationMethod: "Run the Inspector against the exact reviewed server version and preserve results for every enabled capability.",
+    passCriteria: "The exposed surface matches inventory, allow cases work, deny cases stay denied, and errors reveal no secrets.",
+    claimType: "kyenai-operational",
+    sourceUrls: [mcpSecuritySourceUrls.inspector],
     verifiedAt: mcpSecurityVerifiedAt,
   },
 ];
@@ -333,12 +523,92 @@ export const mcpSecurityPermissionMatrix: McpPermissionRow[] = [
   },
 ];
 
+export const mcpSecurityAuthenticationMatrix: McpAuthenticationRow[] = [
+  {
+    id: "oauth",
+    option: "OAuth / MCP authorization flow",
+    useWhen: "HTTP-based servers need user or client authorization with audience-bound access tokens and scopes.",
+    mainRisk: "Token passthrough, wrong audience, excessive scopes, confused-deputy behavior, and stale refresh paths.",
+    launchGate:
+      "Protected resource metadata exists, token audience is validated, scopes are minimal, and deny-path tests reject wrong-audience tokens.",
+  },
+  {
+    id: "api-key",
+    option: "API key or service token",
+    useWhen: "A server wraps a backend service that already uses scoped service credentials or short-lived runtime tokens.",
+    mainRisk: "Long-lived secrets in prompts, logs, repo files, local config, screenshots, or broad environment injection.",
+    launchGate:
+      "The key is stored in managed secret storage, injected only at runtime, redacted from logs, scoped narrowly, and revocable by an owner.",
+  },
+  {
+    id: "mtls",
+    option: "mTLS or private network identity",
+    useWhen: "A production or internal server needs strong service-to-service identity inside a controlled network boundary.",
+    mainRisk: "Certificate lifecycle drift, over-trusted network zones, unclear client identity, and missing emergency disablement.",
+    launchGate:
+      "Client identity is mapped to allowed methods, certificate rotation is documented, network allowlists are tested, and break-glass revocation works.",
+  },
+];
+
 export const mcpSecurityReviewPolicy = {
   cadence:
     "Review at least quarterly and whenever the server owner, publisher, version, dependencies, scopes, credentials, methods, data classes, network reach, or deployment environment materially changes.",
   revocation:
     "Disable the server, revoke tokens and secrets, remove client access, preserve attributable records, assess affected systems and data, rotate downstream credentials, and document the decision to restore or retire access.",
 } as const;
+
+export const mcpSecurityConfigExample = `# Example MCP server security profile
+
+server:
+  name: repo-inspector
+  owner: platform-security
+  transport: http
+  default_capability: read-only
+
+authorization:
+  mode: oauth
+  token_audience: https://mcp.example.com/repo-inspector
+  required_scopes:
+    - repo.read
+  reject_token_passthrough: true
+
+permissions:
+  filesystem_roots:
+    - /workspace/repo
+  blocked_paths:
+    - .env
+    - secrets/
+    - production/
+  outbound_network_allowlist:
+    - https://api.github.com
+  write_methods: []
+  destructive_methods: []
+
+approvals:
+  require_human_for:
+    - secret_access
+    - production_access
+    - write_methods
+    - delete_methods
+
+audit:
+  log_fields:
+    - actor
+    - session_id
+    - server_version
+    - method
+    - target
+    - approval_id
+    - outcome
+  redact:
+    - tokens
+    - secrets
+    - file_contents
+
+revocation:
+  disable_server_command: platformctl mcp disable repo-inspector
+  rotate_credentials_owner: platform-security
+  incident_channel: "#security-incidents"`;
 
 const claimTypeLabel: Record<McpClaimType, string> = {
   "official-mcp": "Official MCP requirement or guidance",
@@ -372,6 +642,14 @@ Use this template for one named server and deployment context.
 - Logging:
 - Dependency / supply-chain review:
 - Revocation / incident response:
+
+## Authentication choice
+
+| Option | Use when | Main risk | Launch gate |
+| --- | --- | --- | --- |
+| OAuth / MCP authorization flow | HTTP-based servers need user or client authorization with audience-bound tokens and scopes | Token passthrough, wrong audience, excessive scopes, and confused-deputy behavior | Protected resource metadata exists, token audience is validated, scopes are minimal, and deny-path tests reject wrong-audience tokens |
+| API key or service token | A server wraps a backend service that already uses scoped service credentials | Long-lived secrets in prompts, logs, repo files, local config, screenshots, or broad environment injection | The key is in managed storage, injected only at runtime, redacted from logs, scoped narrowly, and revocable |
+| mTLS or private network identity | A production or internal server needs strong service-to-service identity | Certificate lifecycle drift, over-trusted network zones, unclear client identity, and missing emergency disablement | Client identity maps to allowed methods, certificate rotation is documented, and break-glass revocation works |
 
 ## Threat model
 
@@ -412,6 +690,12 @@ Use this template for one named server and deployment context.
 - [ ] Confirm errors and logs do not expose tokens or unnecessary sensitive payloads.
 - [ ] Record evidence links and unresolved findings.
 
+## Security config example
+
+\`\`\`yaml
+${mcpSecurityConfigExample}
+\`\`\`
+
 ## Sign-off
 
 - Reviewer:
@@ -431,13 +715,19 @@ export function renderMcpSecurityReviewMarkdown(
   const controlChecklist = mcpSecurityControls
     .map(
       (control) =>
-        `- [ ] **${control.title}** - ${control.launchCheck} _${claimTypeLabel[control.claimType]}._`,
+        `- [ ] **${control.title} (${control.risk})** - Verify: ${control.verificationMethod} Pass: ${control.passCriteria} _${claimTypeLabel[control.claimType]}._`,
     )
     .join("\n");
   const permissionRows = permissionMatrix
     .map(
       (row) =>
         `| ${escapeMarkdownTableCell(row.capability)} | ${escapeMarkdownTableCell(row.default)} | ${escapeMarkdownTableCell(row.dataRisk)} | ${escapeMarkdownTableCell(row.approval)} | ${escapeMarkdownTableCell(row.logging)} | ${escapeMarkdownTableCell(row.launchGate)} |`,
+    )
+    .join("\n");
+  const authenticationRows = mcpSecurityAuthenticationMatrix
+    .map(
+      (row) =>
+        `| ${escapeMarkdownTableCell(row.option)} | ${escapeMarkdownTableCell(row.useWhen)} | ${escapeMarkdownTableCell(row.mainRisk)} | ${escapeMarkdownTableCell(row.launchGate)} |`,
     )
     .join("\n");
   const sourceList = mcpSecuritySources
@@ -465,6 +755,12 @@ Use this template for one named server and deployment context. It combines offic
 - Dependency / supply-chain review:
 - Revocation / incident response:
 
+## Authentication choice
+
+| Option | Use when | Main risk | Launch gate |
+| --- | --- | --- | --- |
+${authenticationRows}
+
 ## Threat model
 
 ${threatChecklist}
@@ -486,6 +782,12 @@ ${permissionRows}
 - [ ] Exercise expected allow and deny cases for every enabled capability.
 - [ ] Confirm errors and logs do not expose tokens, secrets, or unnecessary sensitive payloads.
 - [ ] Record evidence links and unresolved findings.
+
+## Security config example
+
+\`\`\`yaml
+${mcpSecurityConfigExample}
+\`\`\`
 
 ## Review cadence and revocation
 
