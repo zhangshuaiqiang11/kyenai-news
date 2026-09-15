@@ -10,6 +10,8 @@ import {
   cursorEnterpriseResponsibilityMatrix,
   cursorEnterpriseSecurityControls,
   cursorEnterpriseSecurityDownloads,
+  cursorEnterpriseProcurementMatrix,
+  cursorEnterpriseSecurityRisk,
 } from "../lib/cursor-enterprise-security-resource";
 
 (globalThis as typeof globalThis & { React: typeof React }).React = React;
@@ -26,18 +28,25 @@ describe("Cursor Enterprise security assessment", () => {
     expect(new Set(cursorEnterpriseSecurityControls.map((control) => control.id)).size).toBe(30);
     expect(cursorEnterpriseSecurityControls.some((control) => control.claimBasis === "official-public")).toBe(true);
     expect(cursorEnterpriseSecurityControls.some((control) => control.claimBasis === "kyenai-recommendation")).toBe(true);
+    expect(cursorEnterpriseProcurementMatrix).toHaveLength(30);
+    expect(cursorEnterpriseProcurementMatrix.every((row) => row.cursorBehavior && row.enterpriseSetting && row.risk && row.evidence.length > 0 && row.verified)).toBe(true);
+    expect(cursorEnterpriseSecurityRisk(cursorEnterpriseSecurityControls[0])).toMatch(/account takeover/i);
   });
 
   it("server-renders the 30-row checklist and all downloads", () => {
     render(<CursorEnterpriseSecurityControls />);
-    const table = screen.getByRole("table", { name: /30 cursor enterprise security controls/i });
+    const table = screen.getByRole("table", { name: /cursor enterprise procurement review matrix/i });
     expect(within(table).getAllByRole("row")).toHaveLength(31);
+    expect(within(table).getByRole("columnheader", { name: /cursor behavior/i })).toBeTruthy();
+    expect(within(table).getByRole("columnheader", { name: /risk if skipped/i })).toBeTruthy();
     for (const [name, href] of Object.entries(cursorEnterpriseSecurityDownloads)) {
-      const link = screen.getByRole("link", { name: new RegExp(name, "i") });
+      const link = screen.getAllByRole("link").find((candidate) => candidate.getAttribute("href") === href);
+      if (!link) throw new Error(`missing download link for ${name}`);
       expect(link.getAttribute("href")).toBe(href);
       expect(link.hasAttribute("download")).toBe(true);
     }
     expect(document.body.textContent).toMatch(/contract or console verification/i);
+    expect(screen.getByRole("link", { name: /procurement matrix json/i }).getAttribute("href")).toBe(cursorEnterpriseSecurityDownloads.procurementJson);
   });
 
   it("ships aligned JSON CSV Markdown and PDF editions", () => {

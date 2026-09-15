@@ -43,6 +43,7 @@ const requiredPackagePaths = [
   "templates/cursor-project-rule.mdc",
   "benchmark/benchmark-protocol.json",
   "benchmark/benchmark-results.json",
+  "benchmark/benchmark-manifest.json",
   "verifier/verify-instructions.mjs",
   "example-repository/AGENTS.md",
   "example-repository/CLAUDE.md",

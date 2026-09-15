@@ -3,12 +3,23 @@ import { useMemo, useState } from "react";
 import {
   diagnoseMcpDiscovery,
   mcpDiscoveryChecks,
+  mcpDiscoveryCompatibilityMatrix,
+  mcpDiscoveryCompatibilityScope,
+  mcpDiscoveryCompatibilityStatusLegend,
   mcpDiscoveryVerifiedAt,
   type McpDiscoveryClient,
+  type McpDiscoveryCompatibilityStatus,
   type McpDiscoverySymptom,
   type McpDiscoveryTransport,
 } from "../lib/mcp-tool-discovery";
 import { getCurrentPagePath, trackGrowthEvent } from "../lib/analytics";
+import { ARTICLE_REVIEW_OWNER } from "../lib/reviewer";
+
+function formatCompatibilityStatus(status: McpDiscoveryCompatibilityStatus | "not-measured"): string {
+  if (status === "documented") return "Documented entry point";
+  if (status === "test-required") return "Test required";
+  return "Not measured";
+}
 
 export function McpToolDiscoveryDebugger() {
   const [symptom, setSymptom] = useState<McpDiscoverySymptom>("connected-zero-tools");
@@ -89,10 +100,79 @@ export function McpToolDiscoveryDebugger() {
           <a href="/resources/mcp-tool-discovery-debug-checklist.md" download>
             Download debug worksheet
           </a>
+          <a href="/resources/mcp-tool-discovery-compatibility.json" download>
+            Download compatibility JSON
+          </a>
+          <a href="/resources/mcp-tool-discovery-compatibility.csv" download>
+            Download compatibility CSV
+          </a>
           <a href="https://modelcontextprotocol.io/docs/tools/inspector">
             Open official MCP Inspector guide
           </a>
         </div>
+      </section>
+
+      <section className="instruction-resource-section" aria-labelledby="mcp-compatibility-heading">
+        <div className="instruction-resource-heading">
+          <div>
+            <p className="instruction-resource-eyebrow">Client compatibility · live behavior not measured</p>
+            <h2 id="mcp-compatibility-heading">MCP multi-client compatibility matrix</h2>
+          </div>
+          <p>{mcpDiscoveryCompatibilityScope}</p>
+        </div>
+        <div className="instruction-table-scroll">
+          <table aria-label="MCP multi-client compatibility matrix">
+            <thead>
+              <tr>
+                <th scope="col">Client</th>
+                <th scope="col">Documented surface</th>
+                <th scope="col">Config scope</th>
+                <th scope="col">stdio</th>
+                <th scope="col">Streamable HTTP</th>
+                <th scope="col">tools/list</th>
+                <th scope="col">Client policy</th>
+                <th scope="col">Live behavior</th>
+                <th scope="col">Test required</th>
+                <th scope="col">Sources</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mcpDiscoveryCompatibilityMatrix.map((row) => (
+                <tr key={row.id}>
+                  <th scope="row" data-label="Client">{row.clientName}</th>
+                  <td data-label="Documented surface">{row.documentedSurface}</td>
+                  <td data-label="Config scope">{formatCompatibilityStatus(row.configScope)}</td>
+                  <td data-label="stdio">{formatCompatibilityStatus(row.stdio)}</td>
+                  <td data-label="Streamable HTTP">{formatCompatibilityStatus(row.streamableHttp)}</td>
+                  <td data-label="tools/list">{formatCompatibilityStatus(row.toolsList)}</td>
+                  <td data-label="Client policy">{formatCompatibilityStatus(row.clientPolicy)}</td>
+                  <td data-label="Live behavior">{formatCompatibilityStatus(row.liveBehavior)}</td>
+                  <td data-label="Test required">{row.testRequired}</td>
+                  <td data-label="Sources">
+                    {row.sourceUrls.map((sourceUrl, index) => (
+                      <span key={sourceUrl}>
+                        {index > 0 ? " · " : ""}
+                        <a href={sourceUrl}>Source {index + 1}</a>
+                      </span>
+                    ))}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <details>
+          <summary>Status definitions</summary>
+          <ul>
+            {Object.entries(mcpDiscoveryCompatibilityStatusLegend).map(([status, description]) => (
+              <li key={status}><strong>{formatCompatibilityStatus(status as McpDiscoveryCompatibilityStatus)}</strong>: {description}</li>
+            ))}
+          </ul>
+        </details>
+        <aside className="resource-citation-note" aria-label="Human review and testing boundary">
+          <strong>Human reviewer: <a href={ARTICLE_REVIEW_OWNER.profileUrl} rel="noreferrer" target="_blank">{ARTICLE_REVIEW_OWNER.handle}</a></strong>
+          <p>The reviewer checked the protocol and evidence mapping. Tested by: not claimed until a version-pinned client run and redacted log are linked.</p>
+        </aside>
       </section>
 
       <section className="instruction-resource-section" aria-labelledby="mcp-minimal-repro-heading">

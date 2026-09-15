@@ -5,6 +5,9 @@
 ## Site
 - Canonical: https://www.kyenai.com
 - Guides index: https://www.kyenai.com/guides
+- Agent instructions cluster: https://www.kyenai.com/agent-instructions (instruction-file compatibility, templates, and adoption evidence)
+- MCP cluster: https://www.kyenai.com/mcp (tool discovery, setup, security, and dated MCP updates)
+- Governance cluster: https://www.kyenai.com/governance (approvals, auditability, and enterprise operating controls)
 - Research and resources: https://www.kyenai.com/research (versioned datasets, runbooks, security assessments, citation files, and templates)
 - Instruction file checker: https://www.kyenai.com/tools/instruction-file-checker (deterministic, browser-only audit; no instruction text is uploaded)
 - Editorial policy: https://www.kyenai.com/editorial-policy

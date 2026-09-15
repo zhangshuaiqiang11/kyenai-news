@@ -597,7 +597,7 @@ const notMeasuredRun = (toolId: BenchmarkRun["toolId"]): BenchmarkRun => ({
 
 export const benchmarkProtocol = {
   repository: "KyenAI public instruction example repository",
-  revision: null,
+  revision: "kyenai-agent-benchmark-2026-v1",
   taskId: "instruction-drift-fix-001",
   task:
     "Correct one stale test command in repository instructions and make all tool-specific files consistent without changing application code.",
@@ -611,7 +611,16 @@ export const benchmarkProtocol = {
     "Record values only from a completed controlled run.",
     "Attach an evidence URL or artifact for every completed run.",
     "Leave every numeric metric null when a run is not measured; never estimate.",
+    "Publish redacted raw logs and the exact tool version before comparing results.",
   ],
+  publicEvidence: {
+    methodology: "/resources/data/kyenai-agent-benchmark-2026-v1-methodology.md",
+    tasks: "/resources/data/kyenai-agent-benchmark-2026-v1-tasks.json",
+    results: "/resources/data/kyenai-agent-benchmark-2026-v1-results.json",
+    manifest: "/resources/data/kyenai-agent-benchmark-2026-v1-manifest.json",
+    rawLogs: "/resources/data/kyenai-agent-benchmark-2026-v1-raw-logs/README.md",
+    citation: "/resources/data/kyenai-agent-benchmark-2026-v1-citation.bib",
+  },
   runs: [
     notMeasuredRun("openai-codex"),
     notMeasuredRun("claude-code"),

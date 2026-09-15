@@ -6,6 +6,25 @@ import { buildCanonicalUrl } from "../lib/seo";
 
 const assets = [
   {
+    id: "agent-benchmark",
+    kind: "Dataset",
+    label: "Reproducible benchmark protocol",
+    title: "KyenAI Agent Benchmark 2026 v1 — Instruction Drift Correction",
+    description: "A citable task manifest, methodology, unmeasured result schema, raw-log publication template, and citation record. No vendor performance values are claimed until controlled runs are completed.",
+    page: "/research#agent-benchmark",
+    downloads: [
+      ["Tasks", "/resources/data/kyenai-agent-benchmark-2026-v1-tasks.json"],
+      ["Methodology", "/resources/data/kyenai-agent-benchmark-2026-v1-methodology.md"],
+      ["Results", "/resources/data/kyenai-agent-benchmark-2026-v1-results.json"],
+      ["Manifest", "/resources/data/kyenai-agent-benchmark-2026-v1-manifest.json"],
+      ["Raw-log template", "/resources/data/kyenai-agent-benchmark-2026-v1-raw-logs/README.md"],
+      ["Citation", "/resources/data/kyenai-agent-benchmark-2026-v1-citation.bib"],
+    ],
+    version: "1.0.0",
+    license: "CC BY 4.0",
+    dateModified: "2026-09-15",
+  },
+  {
     id: "instruction-dataset",
     kind: "Dataset",
     label: "Original research dataset",
@@ -64,6 +83,8 @@ const assets = [
       ["PDF", "/resources/cursor-enterprise-security-controls.pdf"],
       ["CSV", "/resources/cursor-enterprise-security-controls.csv"],
       ["JSON", "/resources/cursor-enterprise-security-controls.json"],
+      ["Procurement matrix CSV", "/resources/cursor-enterprise-procurement-matrix.csv"],
+      ["Procurement matrix JSON", "/resources/cursor-enterprise-procurement-matrix.json"],
     ],
     version: "1.2.0",
     license: "CC BY 4.0",
@@ -134,7 +155,7 @@ export default function ResearchPage() {
     <Layout>
       <SeoHead
         title="AI Coding Agent Research, Datasets & Security Resources"
-        description="Download KyenAI's versioned AI coding agent datasets, Loop Engineering runbook, Cursor security assessment, SpaceX–Cursor status tracker, and AGENTS.md templates."
+        description="Download KyenAI's versioned AI coding agent datasets, reproducible benchmark protocol, Loop Engineering runbook, Cursor security assessment, SpaceX–Cursor status tracker, and AGENTS.md templates."
         path={path}
       >
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }} />

@@ -28,6 +28,54 @@ const payload = {
   sources: cursorEnterpriseSecuritySources,
 };
 
+const riskByDomain = {
+  Identity: "Account takeover, orphaned access, or local-login bypass.",
+  Authorization: "Privilege creep or an unreviewed user gaining administrative scope.",
+  "Data governance": "Unapproved retention, training, provider, subprocessor, or residency exposure.",
+  "Data protection": "Protected code or prompts exposed without the required encryption boundary.",
+  "Repository access": "Sensitive repositories or files become available to an agent unexpectedly.",
+  "Model governance": "An unapproved model or provider receives company code or prompts.",
+  "Tool governance": "An unreviewed MCP server or credential can perform an external action.",
+  "Agent governance": "Autonomous commands, network access, or prompt injection cross the approval boundary.",
+  Logging: "The organization cannot attribute, investigate, or prove a high-risk action.",
+  Assurance: "Contractual or control gaps remain invisible until an incident or assessment.",
+  Lifecycle: "Stale access, data, or configuration survives offboarding or a material change.",
+};
+
+const procurementMatrix = payload.controls.map((control) => ({
+  number: control.number,
+  id: control.id,
+  domain: control.domain,
+  control: control.title,
+  cursorBehavior: control.guidance,
+  enterpriseSetting: control.contractOrConsoleCheck,
+  risk: riskByDomain[control.domain] || "The control gap creates an unassessed enterprise risk.",
+  evidence: control.sourceUrls,
+  verified: payload.verifiedAt,
+  claimBasis: control.claimBasis,
+  owner: control.owner,
+  verificationMethod: control.verificationMethod,
+  passCriteria: control.passCriteria,
+}));
+
+fs.writeFileSync(path.join(resourcesDir, "cursor-enterprise-procurement-matrix.json"), `${JSON.stringify({
+  title: "Cursor Enterprise procurement review matrix",
+  version: payload.version,
+  verifiedAt: payload.verifiedAt,
+  status: "Evidence-backed control questions; buyer-specific behavior remains contract/console test-required.",
+  columns: ["Control", "Cursor behavior", "Enterprise setting / check", "Risk", "Evidence", "Verified"],
+  rows: procurementMatrix,
+}, null, 2)}\n`);
+
+const procurementCsvHeaders = [
+  "number", "id", "domain", "control", "cursor_behavior", "enterprise_setting", "risk", "evidence", "verified", "claim_basis", "owner", "verification_method", "pass_criteria",
+];
+const procurementCsv = [procurementCsvHeaders, ...procurementMatrix.map((row) => [
+  row.number, row.id, row.domain, row.control, row.cursorBehavior, row.enterpriseSetting, row.risk,
+  row.evidence.join(" | "), row.verified, row.claimBasis, row.owner, row.verificationMethod, row.passCriteria,
+])].map((row) => row.map(escapeCsvCell).join(",")).join("\n");
+fs.writeFileSync(path.join(resourcesDir, "cursor-enterprise-procurement-matrix.csv"), `${procurementCsv}\n`);
+
 if (payload.controlCount !== 30) throw new Error(`Expected 30 controls, found ${payload.controlCount}`);
 
 fs.writeFileSync(path.join(resourcesDir, "cursor-enterprise-security-controls.json"), `${JSON.stringify(payload, null, 2)}\n`);

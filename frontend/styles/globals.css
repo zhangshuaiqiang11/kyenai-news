@@ -808,6 +808,42 @@ dd {
   padding: 20px;
 }
 
+.article-editorial-note {
+  background: #f8fbfa;
+  border: 1px solid #b9d9d2;
+  border-radius: 8px;
+  margin-top: 20px;
+  padding: 18px 20px;
+}
+
+.article-editorial-note > div {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+
+.article-editorial-note h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.article-editorial-tier {
+  color: var(--teal-dark);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.article-editorial-note p {
+  color: #37414b;
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 10px 0 0;
+  max-width: 900px;
+}
+
 .answer-panel h2 {
   font-size: 20px;
   margin: 0 0 10px;

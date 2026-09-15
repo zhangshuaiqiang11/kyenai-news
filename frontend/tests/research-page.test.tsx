@@ -16,10 +16,12 @@ vi.mock("next/router", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 afterEach(cleanup);
 
 describe("research resource center", () => {
-  it("renders five versioned assets with direct downloads and citation guidance", () => {
+  it("renders versioned assets with direct downloads and citation guidance", () => {
     render(<ResearchPage />);
     expect(screen.getByRole("heading", { name: /KyenAI Research & Resource Center/i })).toBeTruthy();
-    expect(screen.getAllByRole("article")).toHaveLength(6);
+    expect(screen.getAllByRole("article")).toHaveLength(7);
+    expect(screen.getAllByRole("link").find((link) => link.getAttribute("href") === "/resources/data/kyenai-agent-benchmark-2026-v1-methodology.md"))
+      .toBeTruthy();
     expect(screen.getByRole("link", { name: /Complete ZIP/i }).getAttribute("href"))
       .toBe("/resources/instruction-files/kyenai-agents-md-starter-pack.zip");
     expect(screen.getByRole("link", { name: /PDF/i }).getAttribute("href"))

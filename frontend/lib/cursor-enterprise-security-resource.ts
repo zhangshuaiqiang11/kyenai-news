@@ -66,6 +66,33 @@ export type CursorSecurityControl = {
   sourceUrls: string[];
 };
 
+const cursorRiskByDomain: Record<string, string> = {
+  Identity: "Account takeover, orphaned access, or local-login bypass.",
+  Authorization: "Privilege creep or an unreviewed user gaining administrative scope.",
+  "Data governance": "Unapproved retention, training, provider, subprocessor, or residency exposure.",
+  "Data protection": "Protected code or prompts exposed without the required encryption boundary.",
+  "Repository access": "Sensitive repositories or files become available to an agent unexpectedly.",
+  "Model governance": "An unapproved model or provider receives company code or prompts.",
+  "Tool governance": "An unreviewed MCP server or credential can perform an external action.",
+  "Agent governance": "Autonomous commands, network access, or prompt injection cross the approval boundary.",
+  Logging: "The organization cannot attribute, investigate, or prove a high-risk action.",
+  Assurance: "Contractual or control gaps remain invisible until an incident or assessment.",
+  Lifecycle: "Stale access, data, or configuration survives offboarding or a material change.",
+};
+
+export function cursorEnterpriseSecurityRisk(control: Pick<CursorSecurityControl, "domain">): string {
+  return cursorRiskByDomain[control.domain] || "The control gap creates an unassessed enterprise risk.";
+}
+
+export type CursorProcurementMatrixRow = CursorSecurityControl & {
+  number: number;
+  cursorBehavior: string;
+  enterpriseSetting: string;
+  risk: string;
+  evidence: string[];
+  verified: string;
+};
+
 const official = (
   id: string,
   domain: string,
@@ -133,6 +160,16 @@ if (cursorEnterpriseSecurityControls.length !== 30) {
   throw new Error(`Expected 30 Cursor enterprise security controls, found ${cursorEnterpriseSecurityControls.length}`);
 }
 
+export const cursorEnterpriseProcurementMatrix: CursorProcurementMatrixRow[] = cursorEnterpriseSecurityControls.map((control, index) => ({
+  ...control,
+  number: index + 1,
+  cursorBehavior: control.guidance,
+  enterpriseSetting: control.contractOrConsoleCheck,
+  risk: cursorEnterpriseSecurityRisk(control),
+  evidence: control.sourceUrls,
+  verified: cursorEnterpriseSecurityVerifiedAt,
+}));
+
 export const cursorEnterpriseResponsibilityMatrix = [
   { role: "Cursor workspace owner", accountableFor: "Organization settings, roles, groups, and feature enablement" },
   { role: "Identity admin", accountableFor: "SSO, SCIM, MFA, lifecycle, and emergency access" },
@@ -146,4 +183,6 @@ export const cursorEnterpriseSecurityDownloads = {
   csv: "/resources/cursor-enterprise-security-controls.csv",
   json: "/resources/cursor-enterprise-security-controls.json",
   review: "/resources/cursor-enterprise-security-review.md",
+  procurementJson: "/resources/cursor-enterprise-procurement-matrix.json",
+  procurementCsv: "/resources/cursor-enterprise-procurement-matrix.csv",
 } as const;

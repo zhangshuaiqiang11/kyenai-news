@@ -148,6 +148,17 @@ export default function Home({ articles, guides, entities = [] }: HomeProps) {
               </p>
             </div>
           </section>
+          <section className="guide-strip" aria-labelledby="content-clusters-heading">
+            <div>
+              <h2 id="content-clusters-heading">Explore by operating decision</h2>
+              <p>Follow a focused cluster when you need the evidence, guides, and updates for one implementation question.</p>
+            </div>
+            <div className="guide-strip-grid">
+              <Link href="/agent-instructions"><strong>Agent Instructions</strong><small>Files, support, and templates</small></Link>
+              <Link href="/mcp"><strong>MCP</strong><small>Discovery, setup, and security</small></Link>
+              <Link href="/governance"><strong>Governance</strong><small>Approvals, logs, and controls</small></Link>
+            </div>
+          </section>
           <div className="section-heading latest-evidence-heading">
             <div>
               <h2>Latest Evidence Updates</h2>

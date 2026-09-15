@@ -68,6 +68,16 @@ function renderBenchmarkProtocolJson() {
   return `${JSON.stringify(benchmarkProtocol, null, 2)}\n`;
 }
 
+function renderBenchmarkManifest() {
+  return `${JSON.stringify({
+    benchmarkId: "kyenai-agent-benchmark-2026-v1",
+    version: "1.0.0",
+    status: "protocol-published-not-measured",
+    files: ["benchmark-protocol.json", "benchmark-results.json"],
+    limitation: "No client performance value is published until a controlled, version-pinned run has a redacted raw log and reviewable diff.",
+  }, null, 2)}\n`;
+}
+
 function renderVerifier() {
   return `#!/usr/bin/env node
 import { readFileSync, statSync } from "node:fs";
@@ -164,6 +174,7 @@ export function main() {
   );
   writeGeneratedFile(packageRoot, "benchmark/benchmark-protocol.json", renderBenchmarkProtocolJson());
   writeGeneratedFile(packageRoot, "benchmark/benchmark-results.json", benchmarkResultsJson);
+  writeGeneratedFile(packageRoot, "benchmark/benchmark-manifest.json", renderBenchmarkManifest());
   writeGeneratedFile(packageRoot, "verifier/verify-instructions.mjs", renderVerifier(), 0o755);
 
   console.log(`Generated public resources in ${publicRoot}`);

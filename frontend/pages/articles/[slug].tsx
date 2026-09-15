@@ -12,8 +12,10 @@ import { getVisibleArticleFaqs } from "../../lib/article-faqs";
 import { getRelatedGuidesForArticle } from "../../lib/article-guide-links";
 import { buildCategoryPath } from "../../lib/categories";
 import { getArticleEntities } from "../../lib/entities";
+import { getArticleEditorialPolicy } from "../../lib/article-policy";
 import { resolveIndexableGuideTopicHref } from "../../lib/guide-topic-links";
 import { getPublishedArticles, isPublishedArticle } from "../../lib/publication";
+import { getArticleReviewNote } from "../../lib/reviewer";
 import {
   buildArticleGraphJsonLd,
   buildMetaDescription,
@@ -45,6 +47,8 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
   const faqs = getVisibleArticleFaqs(article);
   const articleGraphJsonLd = buildArticleGraphJsonLd(article, breadcrumbItems, faqs);
   const entities = getArticleEntities(article);
+  const editorialPolicy = getArticleEditorialPolicy(article);
+  const reviewNote = getArticleReviewNote(article);
 
   return (
     <Layout>
@@ -73,6 +77,19 @@ export default function ArticlePage({ article, relatedArticles, relatedGuides }:
             <div><dt>Version</dt><dd>{article.version}</dd></div>
           </dl>
         </div>
+        <section className="article-editorial-note" aria-labelledby="article-editorial-note-heading">
+          <div>
+            <span className="article-editorial-tier">{editorialPolicy.label}</span>
+            <h2 id="article-editorial-note-heading">Editorial review scope</h2>
+          </div>
+          <p>{editorialPolicy.purpose}</p>
+          <p>{reviewNote.scope}</p>
+          <p>
+            {reviewNote.role}: <a href={reviewNote.ownerUrl} rel="noreferrer" target="_blank">{reviewNote.ownerHandle}</a>.
+          </p>
+          <p>Tested by: {reviewNote.testedBy}</p>
+          <p>{reviewNote.boundary}</p>
+        </section>
         <section className="answer-panel" aria-labelledby="quick-answer-heading">
           <h2 id="quick-answer-heading">Quick Answer</h2>
           <p>{article.summary}</p>

@@ -1,0 +1,12 @@
+{
+  "benchmarkId": "kyenai-agent-benchmark-2026-v1",
+  "title": "Instruction drift correction across AI coding agents",
+  "version": "1.0.0",
+  "taskId": "instruction-drift-fix-001",
+  "repository": "KyenAI public instruction example repository",
+  "task": "Correct one stale test command in repository instructions and make all tool-specific files consistent without changing application code.",
+  "fixtures": ["AGENTS.md", "CLAUDE.md", ".github/copilot-instructions.md", ".cursor/rules/project-guidance.mdc", "packages/api/README.md"],
+  "successCriteria": ["All instruction files name the same test command.", "The repository verification command passes.", "No application source file changes."],
+  "verificationCommand": "node scripts/verify-instructions.mjs",
+  "redaction": "Do not include private prompts, tokens, repository URLs, or customer data in published runs."
+}

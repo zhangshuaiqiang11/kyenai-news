@@ -140,6 +140,10 @@ describe("SpaceX Cursor acquisition article", () => {
     );
 
     expect(screen.getByRole("heading", { name: spacexCursorAcquisitionArticle.title })).toBeTruthy();
+    expect(screen.getByText(/Tier B — dated source-backed update/i, { selector: "span" })).toBeTruthy();
+    expect(screen.getByRole("link", { name: "@zhangshuaiqiang11" }).getAttribute("href")).toBe(
+      "https://github.com/zhangshuaiqiang11",
+    );
     expect(screen.getByRole("heading", { name: /deal status: closed/i })).toBeTruthy();
     expect(screen.getByRole("heading", { level: 2, name: /current spacex-cursor deal status/i })).toBeTruthy();
     expect(screen.getByText(/product collaboration is separate evidence from the legal closing record/i)).toBeTruthy();

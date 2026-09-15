@@ -11,6 +11,7 @@
     "audit:seo-drift": "bash scripts/run-node-script.sh scripts/seo-drift-check.mjs",
     "generate:resources": "bash scripts/run-node-script.sh --experimental-strip-types scripts/generate-instruction-resources.mjs && npm run generate:agents-template-pack",
     "generate:mcp-data": "bash scripts/run-node-script.sh --experimental-strip-types scripts/generate-mcp-security-assets.mjs",
+    "generate:mcp-discovery-assets": "bash scripts/run-node-script.sh --experimental-strip-types scripts/generate-mcp-tool-discovery-assets.mjs",
     "generate:mcp-pdf": "uv run scripts/generate_mcp_security_pdf.py",
     "generate:mcp-assets": "npm run generate:mcp-data && npm run generate:mcp-pdf",
     "generate:cursor-security-data": "bash scripts/run-node-script.sh --experimental-strip-types scripts/generate-cursor-enterprise-security-assets.mjs",

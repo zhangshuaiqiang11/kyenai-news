@@ -156,3 +156,150 @@ export function diagnoseMcpDiscovery(
     transportNote: transportNotes[transport],
   };
 }
+
+export type McpDiscoveryCompatibilityStatus = "documented" | "not-measured" | "test-required";
+
+export type McpDiscoveryCompatibilityRow = {
+  id: McpDiscoveryClient;
+  clientName: string;
+  documentedSurface: string;
+  configScope: McpDiscoveryCompatibilityStatus;
+  stdio: McpDiscoveryCompatibilityStatus;
+  streamableHttp: McpDiscoveryCompatibilityStatus;
+  toolsList: McpDiscoveryCompatibilityStatus;
+  clientPolicy: McpDiscoveryCompatibilityStatus;
+  liveBehavior: "not-measured";
+  testRequired: string;
+  sourceUrls: readonly string[];
+};
+
+export const mcpDiscoveryCompatibilityUpdatedAt = "2026-09-15" as const;
+
+export const mcpDiscoveryCompatibilityScope =
+  "This matrix records documented client entry points and a repeatable test plan. It is not a live compatibility certification: no multi-client run has been measured in this repository, so transport, discovery, policy, and runtime behavior remain not-measured or test-required for the named client version, server version, operating system, configuration, and authorization.";
+
+export const mcpDiscoveryCompatibilityStatusLegend = {
+  documented: "The cited documentation names the entry point or configuration surface; it is not proof of a current live run.",
+  "not-measured": "No controlled live run is recorded for this client and context.",
+  "test-required": "Run the listed client-specific test before making a compatibility claim.",
+} as const;
+
+const mcpDiscoveryCompatibilitySourceUrls = {
+  inspector: "https://modelcontextprotocol.io/docs/tools/inspector",
+  claudeCode: "https://code.claude.com/docs/en/mcp",
+  cursorMcp: "https://docs.cursor.com/context/mcp",
+  githubCopilot: "https://docs.github.com/en/copilot/how-tos/copilot-sdk/troubleshooting/mcp-debugging",
+} as const;
+
+export const mcpDiscoveryCompatibilityMatrix: McpDiscoveryCompatibilityRow[] = [
+  {
+    id: "claude-code",
+    clientName: "Claude Code",
+    documentedSurface: "Claude Code /mcp status panel and tool count",
+    configScope: "documented",
+    stdio: "not-measured",
+    streamableHttp: "not-measured",
+    toolsList: "test-required",
+    clientPolicy: "test-required",
+    liveBehavior: "not-measured",
+    testRequired:
+      "Record the Claude Code version; connect the same server in MCP Inspector and Claude Code, compare initialize, tools/list, tool count, authentication, scope, and deferred Tool Search behavior.",
+    sourceUrls: [mcpDiscoveryCompatibilitySourceUrls.claudeCode, mcpDiscoveryCompatibilitySourceUrls.inspector],
+  },
+  {
+    id: "cursor",
+    clientName: "Cursor",
+    documentedSurface: "Cursor MCP settings and installed-version logs; interface labels can vary",
+    configScope: "test-required",
+    stdio: "not-measured",
+    streamableHttp: "not-measured",
+    toolsList: "test-required",
+    clientPolicy: "test-required",
+    liveBehavior: "not-measured",
+    testRequired:
+      "Record the Cursor version and client surface; compare the same server and authorization in Inspector and Cursor settings/logs, including enabled-tool filters, refresh, and invocation.",
+    sourceUrls: [mcpDiscoveryCompatibilitySourceUrls.cursorMcp, mcpDiscoveryCompatibilitySourceUrls.inspector],
+  },
+  {
+    id: "github-copilot",
+    clientName: "GitHub Copilot",
+    documentedSurface: "Copilot CLI /mcp or copilot mcp get <name>",
+    configScope: "documented",
+    stdio: "not-measured",
+    streamableHttp: "not-measured",
+    toolsList: "test-required",
+    clientPolicy: "test-required",
+    liveBehavior: "not-measured",
+    testRequired:
+      "Record the Copilot surface and version; compare the same server in Inspector and Copilot, then check enabled-tool filters, custom-agent policy, authentication, refresh, and schema errors.",
+    sourceUrls: [mcpDiscoveryCompatibilitySourceUrls.githubCopilot, mcpDiscoveryCompatibilitySourceUrls.inspector],
+  },
+  {
+    id: "other",
+    clientName: "Other MCP client",
+    documentedSurface: "Client-specific connection status, logs, policy, and refresh controls",
+    configScope: "test-required",
+    stdio: "not-measured",
+    streamableHttp: "not-measured",
+    toolsList: "test-required",
+    clientPolicy: "test-required",
+    liveBehavior: "not-measured",
+    testRequired:
+      "Record client and server versions, OS, transport, authorization, config scope, and expected tools; compare the client result with the same server in Inspector.",
+    sourceUrls: [mcpDiscoveryCompatibilitySourceUrls.inspector],
+  },
+];
+
+const mcpDiscoveryCompatibilityCsvHeader = [
+  "id",
+  "client_name",
+  "documented_surface",
+  "config_scope",
+  "stdio",
+  "streamable_http",
+  "tools_list",
+  "client_policy",
+  "live_behavior",
+  "test_required",
+  "source_urls",
+] as const;
+
+function quoteMcpCompatibilityCsv(value: string): string {
+  return `"${value.replace(/"/g, '""')}"`;
+}
+
+export function renderMcpDiscoveryCompatibilityJson(): string {
+  return `${JSON.stringify(
+    {
+      title: "MCP Multi-Client Compatibility Matrix",
+      updatedAt: mcpDiscoveryCompatibilityUpdatedAt,
+      liveBehavior: "Not measured",
+      scope: mcpDiscoveryCompatibilityScope,
+      statusLegend: mcpDiscoveryCompatibilityStatusLegend,
+      rows: mcpDiscoveryCompatibilityMatrix,
+    },
+    null,
+    2,
+  )}\n`;
+}
+
+export function renderMcpDiscoveryCompatibilityCsv(): string {
+  const rows = mcpDiscoveryCompatibilityMatrix.map((row) => [
+    row.id,
+    row.clientName,
+    row.documentedSurface,
+    row.configScope,
+    row.stdio,
+    row.streamableHttp,
+    row.toolsList,
+    row.clientPolicy,
+    row.liveBehavior,
+    row.testRequired,
+    row.sourceUrls.join(" | "),
+  ]);
+
+  return [
+    mcpDiscoveryCompatibilityCsvHeader.join(","),
+    ...rows.map((row) => row.map(quoteMcpCompatibilityCsv).join(",")),
+  ].join("\n") + "\n";
+}

@@ -1,4 +1,7 @@
 /** @vitest-environment jsdom */
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
@@ -10,7 +13,11 @@ import { getGuide, getInternalLinkedGuides } from "../lib/guides";
 import {
   diagnoseMcpDiscovery,
   mcpDiscoveryChecks,
+  mcpDiscoveryCompatibilityMatrix,
+  mcpDiscoveryCompatibilityUpdatedAt,
   mcpDiscoveryVerifiedAt,
+  renderMcpDiscoveryCompatibilityCsv,
+  renderMcpDiscoveryCompatibilityJson,
 } from "../lib/mcp-tool-discovery";
 import { buildGuideGraphJsonLd } from "../lib/seo";
 import GuidePage, { loadMcpToolDiscoveryResources } from "../pages/guides/[slug]";
@@ -40,6 +47,51 @@ describe("MCP tool discovery fault tree", () => {
     expect(mcpDiscoveryChecks.every((check) => check.test && check.passCondition && check.fix)).toBe(true);
   });
 
+  it("publishes a multi-client matrix with honest live-test status", () => {
+    expect(mcpDiscoveryCompatibilityUpdatedAt).toBe("2026-09-15");
+    expect(mcpDiscoveryCompatibilityMatrix.map((row) => row.id)).toEqual([
+      "claude-code",
+      "cursor",
+      "github-copilot",
+      "other",
+    ]);
+    for (const row of mcpDiscoveryCompatibilityMatrix) {
+      expect(row.liveBehavior).toBe("not-measured");
+      expect(row.testRequired).toBeTruthy();
+      expect(row.toolsList).toBe("test-required");
+      expect(row.clientPolicy).toBe("test-required");
+    }
+    expect(mcpDiscoveryCompatibilityMatrix.find((row) => row.id === "claude-code")?.documentedSurface).toMatch(/\/mcp/i);
+    expect(mcpDiscoveryCompatibilityMatrix.find((row) => row.id === "github-copilot")?.documentedSurface).toMatch(/copilot mcp/i);
+  });
+
+  it("renders deterministic JSON and CSV compatibility resources", () => {
+    const json = renderMcpDiscoveryCompatibilityJson();
+    const csv = renderMcpDiscoveryCompatibilityCsv();
+
+    expect(JSON.parse(json)).toMatchObject({
+      updatedAt: mcpDiscoveryCompatibilityUpdatedAt,
+      liveBehavior: "Not measured",
+      rows: mcpDiscoveryCompatibilityMatrix,
+    });
+    expect(csv.split("\n")[0]).toBe(
+      "id,client_name,documented_surface,config_scope,stdio,streamable_http,tools_list,client_policy,live_behavior,test_required,source_urls",
+    );
+    expect(csv).toContain("claude-code");
+    expect(csv).toContain("not-measured");
+    expect(csv.endsWith("\n")).toBe(true);
+  });
+
+  it("keeps public JSON and CSV resources synchronized with the matrix", () => {
+    const resourcesDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../public/resources");
+    expect(fs.readFileSync(path.join(resourcesDir, "mcp-tool-discovery-compatibility.json"), "utf8")).toBe(
+      renderMcpDiscoveryCompatibilityJson(),
+    );
+    expect(fs.readFileSync(path.join(resourcesDir, "mcp-tool-discovery-compatibility.csv"), "utf8")).toBe(
+      renderMcpDiscoveryCompatibilityCsv(),
+    );
+  });
+
   it("keeps discovery and selection diagnoses separate", () => {
     const discovery = diagnoseMcpDiscovery("connected-zero-tools", "claude-code", "stdio");
     const selection = diagnoseMcpDiscovery("tools-visible-not-called", "github-copilot", "http");
@@ -61,6 +113,10 @@ describe("McpToolDiscoveryDebugger", () => {
     expect(markup).toContain("Prove tools/list outside the client");
     expect(markup).toContain("8 checks from config to invocation");
     expect(markup).toContain('href="/resources/mcp-tool-discovery-debug-checklist.md"');
+    expect(markup).toContain("MCP multi-client compatibility matrix");
+    expect(markup).toContain('href="/resources/mcp-tool-discovery-compatibility.json"');
+    expect(markup).toContain('href="/resources/mcp-tool-discovery-compatibility.csv"');
+    expect(markup).toContain("Not measured");
     for (const check of mcpDiscoveryChecks) {
       expect(markup).toContain(check.layer);
     }

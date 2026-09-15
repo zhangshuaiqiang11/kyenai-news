@@ -382,6 +382,17 @@ export default function GuidesPage({ guides }: GuidesPageProps) {
             ))}
           </div>
         </section>
+        <section className="featured-guide-paths" aria-labelledby="content-cluster-paths-heading">
+          <div>
+            <h2 id="content-cluster-paths-heading">Content clusters</h2>
+            <p>Use the dedicated cluster page when you need the full evidence path, not one isolated guide.</p>
+          </div>
+          <div className="featured-guide-path-grid">
+            <Link href="/agent-instructions"><strong>Agent Instructions</strong><span>Compatibility, templates, adoption evidence, and verification.</span></Link>
+            <Link href="/mcp"><strong>MCP Operations &amp; Security</strong><span>Discovery, client policy, setup, credentials, and revocation.</span></Link>
+            <Link href="/governance"><strong>Agent Workflow &amp; Governance</strong><span>Approvals, audit logs, loops, enterprise controls, and evidence.</span></Link>
+          </div>
+        </section>
         <div className="guide-grid">
           {guides.map((guide) => (
             <article className="guide-card" key={guide.id}>
