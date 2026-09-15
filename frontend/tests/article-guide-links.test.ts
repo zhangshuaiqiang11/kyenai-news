@@ -37,7 +37,8 @@ describe("article to guide links", () => {
     expect(guides.map((guide) => guide.slug)).toEqual([
       "agent-governance-checklist-for-software-teams",
       "secure-mcp-servers-ai-coding-agents",
-      "local-vs-cloud-ai-coding-agent",
+      "mcp-server-not-showing-tools",
     ]);
   });
+
 });

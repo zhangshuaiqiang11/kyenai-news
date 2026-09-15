@@ -10,7 +10,7 @@ const ARTICLE_GUIDE_OVERRIDES: Record<string, string[]> = {
   "cursor-enterprise-organizations-governance": [
     "agent-governance-checklist-for-software-teams",
     "secure-mcp-servers-ai-coding-agents",
-    "local-vs-cloud-ai-coding-agent",
+    "mcp-server-not-showing-tools",
   ],
 };
 

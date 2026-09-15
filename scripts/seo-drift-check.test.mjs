@@ -10,17 +10,17 @@ const pageContracts = [
   ["/guides/agents-md-template-for-ai-coding-agents", "AGENTS.md Template for Codex", "AGENTS.md Template for Codex and Monorepos"],
   ["/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions", "AGENTS.md vs CLAUDE.md vs Copilot Instructions", "AGENTS.md vs CLAUDE.md vs Copilot Instructions"],
   ["/guides/secure-mcp-servers-ai-coding-agents", "MCP Server Security Checklist: 25 Controls", "MCP Server Security Checklist: 25 Controls"],
-  ["/guides/mcp-server-not-showing-tools", "MCP Server Not Showing Tools? 8 Checks", "MCP Server Not Showing Tools? Diagnose tools/list in 8 Checks"],
+  ["/guides/mcp-server-not-showing-tools", "MCP Server Connected but No Tools? 8 Checks", "MCP Server Not Showing Tools? Diagnose tools/list in 8 Checks"],
   ["/guides/codex-vs-claude-code", "Codex vs Claude Code", "Codex vs Claude Code"],
   ["/guides/codex-vs-github-copilot", "Codex vs GitHub Copilot", "Codex vs GitHub Copilot"],
   ["/guides/ai-coding-agents-comparison", "AI Coding Agent Comparison", "AI Coding Agents Comparison"],
   ["/guides/claude-code-alternatives", "7 Claude Code Alternatives", "7 Claude Code Alternatives"],
-  ["/guides/loop-engineering-ai-coding-agents", "What Is Loop Engineering?", "What Is Loop Engineering for AI Coding Agents?"],
+  ["/guides/loop-engineering-ai-coding-agents", "Loop Engineering for AI Coding Agents", "What Is Loop Engineering for AI Coding Agents?"],
   ["/guides/ai-coding-agent-instruction-file-adoption-report-2026", "AI Agent Instruction File Adoption", "AI Coding Agent Instruction File Adoption Report"],
   ["/tools/instruction-file-checker", "Instruction File Checker", "AI Coding Agent Instruction File Checker"],
   ["/sources", "Source & Verification Ledger", "Source & Verification Ledger"],
-  ["/articles/spacex-cursor-acquisition-2026", "Did SpaceX Buy Cursor? $60B Deal Closed", "Did SpaceX Buy Cursor? $60B Deal Status and Timeline"],
-  ["/articles/cursor-enterprise-organizations-governance", "Cursor Enterprise Security: Privacy Mode, Retention & Admin Controls", "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions"],
+  ["/articles/spacex-cursor-acquisition-2026", "Did SpaceX Buy Cursor? Official Aug. 14, 2026 SEC Closing", "Did SpaceX Buy Cursor? $60B Deal Status and Timeline"],
+  ["/articles/cursor-enterprise-organizations-governance", "Cursor Enterprise Security: Privacy Mode & Retention Exceptions", "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions"],
 ];
 
 function html(path, title, h1) {

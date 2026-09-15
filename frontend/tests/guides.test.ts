@@ -259,7 +259,7 @@ describe("guide SEO data", () => {
 
     expect(guide).toBeDefined();
     expect(guide!.resourceIds).toEqual(["loop-engineering"]);
-    expect(guide!.updatedAt).toBe("2026-07-30");
+    expect(guide!.updatedAt).toBe("2026-09-15");
 
     const quickAnswer = guide!.sections[0].body[0];
     expect(guide!.title).toMatch(/What Is Loop Engineering for AI Coding Agents/i);

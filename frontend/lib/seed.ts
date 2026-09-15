@@ -289,7 +289,7 @@ const rawSeedArticles: Article[] = [
         id: "body-1",
         type: "paragraph",
         content:
-          "Cursor Enterprise security is not one setting. Current Cursor documentation points buyers toward a connected bundle of controls: organization administration, role permissions, repository allowlists or blocklists, model and MCP server controls, SSO and SCIM, audit logs, subprocessors, and Privacy Mode data-handling choices.",
+          "There is no universal Cursor Enterprise zero-retention result that applies to every model, feature, workspace, or contract. Current Cursor documentation points buyers toward a connected bundle of controls: organization administration, role permissions, repository allowlists or blocklists, model and MCP server controls, SSO and SCIM, audit logs, subprocessors, and Privacy Mode data-handling choices.",
         sourceIds: ["src-cursor-enterprise-orgs", "src-cursor-security", "src-cursor-data-use"],
       },
       {
@@ -319,7 +319,7 @@ const rawSeedArticles: Article[] = [
         id: "cursor-security-faq-retention",
         type: "faq",
         content:
-          "Does Cursor Enterprise have zero data retention?\nPrivacy Mode prevents customer data from being used for training and Cursor documents zero-data-retention arrangements for covered providers, but exceptions remain. Some models require provider retention and admin approval, and Cloud Agents store encrypted repository copies while an agent runs. Enterprise buyers should verify the exact model, feature, workspace, and contract terms.",
+          "Which Cursor Enterprise retention exceptions should admins verify?\nPrivacy Mode prevents customer data from being used for training and Cursor documents zero-data-retention arrangements for covered providers, but exceptions remain. Some models require provider retention and admin approval, and Cloud Agents store encrypted repository copies while an agent runs. Enterprise buyers should verify the exact model, feature, workspace, and contract terms.",
         sourceIds: ["src-cursor-data-use"],
       },
       {
@@ -373,11 +373,11 @@ const rawSeedArticles: Article[] = [
       },
     ],
     publishedAt: "2026-06-03T09:00:00Z",
-    updatedAt: "2026-09-12T00:00:00Z",
+    updatedAt: "2026-09-15T00:00:00Z",
     version: 5,
-    metaTitle: "Cursor Enterprise Security: Privacy Mode, Retention & Admin Controls",
+    metaTitle: "Cursor Enterprise Security: Privacy Mode & Retention Exceptions",
     metaDescription:
-      "Cursor Enterprise security checklist with 30 controls for Privacy Mode, retention, SSO, SCIM, repositories, models, MCP, sandbox, hooks, and audit logs.",
+      "Cursor Enterprise security checklist for Privacy Mode, retention exceptions, SSO/SCIM, MCP, Cloud Agents, and audit controls before rollout.",
   },
   {
     id: "article-gpt-53-codex",

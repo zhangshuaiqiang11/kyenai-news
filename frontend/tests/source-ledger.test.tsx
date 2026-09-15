@@ -5,7 +5,12 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { getGuides } from "../lib/guides";
 import { seedArticles } from "../lib/seed";
-import { buildSourceLedger, getSourceLedgerCoverage, type SourceLedgerEntry } from "../lib/source-ledger";
+import {
+  buildSourceLedger,
+  getSourceLedgerCoverage,
+  getSourceLedgerInvariantIssues,
+  type SourceLedgerEntry,
+} from "../lib/source-ledger";
 import type { Article, Guide } from "../lib/types";
 import SourcesPage from "../pages/sources";
 
@@ -34,6 +39,40 @@ describe("source verification ledger", () => {
     expect(coverage.guides).toBe(guides.length);
     expect(coverage.articles).toBe(sourcedPublishedArticles.length);
     expect(coverage.publishers).toBeGreaterThan(0);
+    expect(getSourceLedgerInvariantIssues(entries)).toEqual([]);
+  });
+
+  it("flags a review date that predates the last source check", () => {
+    const invalid: SourceLedgerEntry = {
+      title: "Invalid fixture",
+      url: "https://example.com/source",
+      publisher: "OpenAI",
+      sourceType: "Official documentation",
+      confidence: "High",
+      publishedAt: null,
+      lastVerifiedAt: "2026-09-12",
+      nextReviewAt: "2026-09-01",
+      reviewCadenceDays: 14,
+      status: "Current",
+      supersededBy: null,
+      usedBy: [{
+        kind: "Guide",
+        path: "/guides/example",
+        slug: "example",
+        title: "Example",
+        passages: null,
+        verifiedAt: "2026-09-12",
+        nextReviewAt: "2026-09-01",
+        status: "Current",
+        verificationConclusion: null,
+        verificationChangeNote: null,
+        note: "Fixture",
+      }],
+    };
+
+    expect(getSourceLedgerInvariantIssues([invalid])).toEqual([
+      { scope: "usage", url: invalid.url, path: "/guides/example", issue: "next_review_before_last_checked" },
+    ]);
   });
 
   it("normalizes duplicate URLs and assigns a deterministic review status", () => {

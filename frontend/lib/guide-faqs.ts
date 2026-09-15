@@ -31,6 +31,11 @@ const guideFaqsBySlug: Record<string, FaqItem[]> = {
         "Loop engineering means designing the operating loop around the agent instead of writing one better prompt. For coding agents, the practical loop is Plan → Act → Observe → Verify → Stop: give the agent a bounded goal, inspect tests or diffs, retry only with a changed strategy, and stop on token caps, repeated failure, or a required human checkpoint.",
     },
     {
+      question: "How does loop engineering work in Cursor?",
+      answer:
+        "Use the same bounded Plan → Act → Observe → Verify → Stop loop in Cursor: define the task and allowed scope, let the agent make a small change, inspect the diff and checks, retry only with a changed hypothesis, and stop before permissions, cost, or scope drift. Cursor's editor, cloud-agent, and automation surfaces differ, so attach the loop to repository evidence rather than assuming a product surface proves completion.",
+    },
+    {
       question: "When should an AI coding agent stop the loop?",
       answer:
         "Stop when verification passes, when an iteration cap is reached, when the same failure repeats, when the next action needs wider permissions, when cost crosses the budget, or when the agent can no longer tie its next action to observed evidence. Document stop rules in AGENTS.md, CLAUDE.md, Copilot instructions, or the workflow file that launches the loop.",
@@ -117,6 +122,11 @@ const guideFaqsBySlug: Record<string, FaqItem[]> = {
       question: "How do I test MCP tools/list?",
       answer:
         "Connect the server with the official MCP Inspector and open its Tools tab. Confirm the expected names, descriptions, and input schemas appear, then run one safe test call. This gives client-independent proof before you troubleshoot Claude Code, Cursor, GitHub Copilot, or another client's policy and loading behavior.",
+    },
+    {
+      question: "How do I fix tools/list returning an empty result?",
+      answer:
+        "Start with the server in MCP Inspector: confirm initialize completes, the server advertises the tools capability, tools/list returns valid names and schemas, and stdout is reserved for JSON-RPC. If Inspector works, compare the target client's enabled-tool filters, authentication, workspace policy, and refresh behavior.",
     },
     {
       question: "Why is an MCP tool visible but never called?",

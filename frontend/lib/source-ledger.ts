@@ -39,6 +39,13 @@ export type SourceLedgerEntry = {
   usedBy: SourceLedgerUsage[];
 };
 
+export type SourceLedgerInvariantIssue = {
+  scope: "entry" | "usage";
+  url: string;
+  path?: string;
+  issue: "next_review_before_last_checked" | "current_without_verification";
+};
+
 const OFFICIAL_PUBLISHERS = new Set([
   "Aider",
   "Anthropic",
@@ -138,6 +145,46 @@ export function getSourceLedgerCoverage(entries: SourceLedgerEntry[]) {
     verificationNeeded: entries.filter((entry) => entry.status === "Verification needed").length,
     superseded: entries.filter((entry) => entry.status === "Superseded").length,
   };
+}
+
+/**
+ * Check the dates and status fields that make the verification ledger safe to
+ * publish. This is intentionally pure so CI can fail on malformed fixtures or
+ * future hand-authored evidence without mutating the generated ledger.
+ */
+export function getSourceLedgerInvariantIssues(entries: SourceLedgerEntry[]): SourceLedgerInvariantIssue[] {
+  const issues: SourceLedgerInvariantIssue[] = [];
+
+  for (const entry of entries) {
+    if ((entry.status === "Current" || entry.status === "Review due") && !entry.lastVerifiedAt) {
+      issues.push({
+        scope: "entry",
+        url: entry.url,
+        issue: "current_without_verification",
+      });
+    }
+
+    for (const usage of entry.usedBy) {
+      if (usage.verifiedAt && usage.nextReviewAt && compareDates(usage.nextReviewAt, usage.verifiedAt) < 0) {
+        issues.push({
+          scope: "usage",
+          url: entry.url,
+          path: usage.path,
+          issue: "next_review_before_last_checked",
+        });
+      }
+      if ((usage.status === "Current" || usage.status === "Review due") && !usage.verifiedAt) {
+        issues.push({
+          scope: "usage",
+          url: entry.url,
+          path: usage.path,
+          issue: "current_without_verification",
+        });
+      }
+    }
+  }
+
+  return issues;
 }
 
 function mergeSource(

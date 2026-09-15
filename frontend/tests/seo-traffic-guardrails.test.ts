@@ -22,9 +22,9 @@ const protectedGuides = [
   {
     slug: "loop-engineering-ai-coding-agents",
     title: "What Is Loop Engineering for AI Coding Agents?",
-    metaTitle: "What Is Loop Engineering? Addy Osmani, AI Agent Loops, Stop Rules",
+    metaTitle: "Loop Engineering for AI Coding Agents: Addy Osmani, Stop Rules",
     publishedAt: "2026-06-15",
-    updatedAt: "2026-07-30",
+    updatedAt: "2026-09-15",
   },
 ] as const;
 
@@ -32,16 +32,16 @@ const protectedArticles = [
   {
     slug: "spacex-cursor-acquisition-2026",
     title: "Did SpaceX Buy Cursor? $60B Deal Status and Timeline",
-    metaTitle: "Did SpaceX Buy Cursor? $60B Deal Closed",
+    metaTitle: "Did SpaceX Buy Cursor? Official Aug. 14, 2026 SEC Closing",
     publishedAt: "2026-06-16T10:35:00Z",
-    updatedAt: "2026-09-12",
+    updatedAt: "2026-09-15",
   },
   {
     slug: "cursor-enterprise-organizations-governance",
     title: "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions",
-    metaTitle: "Cursor Enterprise Security: Privacy Mode, Retention & Admin Controls",
+    metaTitle: "Cursor Enterprise Security: Privacy Mode & Retention Exceptions",
     publishedAt: "2026-06-03T09:00:00Z",
-    updatedAt: "2026-09-12T00:00:00Z",
+    updatedAt: "2026-09-15T00:00:00Z",
   },
 ] as const;
 

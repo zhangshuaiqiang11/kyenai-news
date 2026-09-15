@@ -278,11 +278,11 @@ export const spacexCursorAcquisitionArticle: Article = {
     },
   ],
   publishedAt: "2026-06-16T10:35:00Z",
-  updatedAt: "2026-09-12",
+  updatedAt: "2026-09-15",
   version: 6,
-  metaTitle: "Did SpaceX Buy Cursor? $60B Deal Closed",
+  metaTitle: "Did SpaceX Buy Cursor? Official Aug. 14, 2026 SEC Closing",
   metaDescription:
-    "Yes. SpaceX completed its $60B all-stock acquisition of Cursor maker Anysphere on August 14, 2026. Read the SEC completion filing, timeline, user impact, and source-linked data.",
+    "SpaceX completed its $60B all-stock acquisition of Anysphere on August 14, 2026. Read the SEC closing record, timeline, and Cursor user impact.",
 };
 
 export const featuredArticles: Article[] = [spacexCursorAcquisitionArticle];

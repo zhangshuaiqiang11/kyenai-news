@@ -81,8 +81,8 @@ describe("MCP missing-tools guide integration", () => {
 
     expect(guide).toMatchObject({
       resourceIds: ["mcp-tool-discovery"],
-      updatedAt: "2026-09-08",
-      metaTitle: "MCP Server Not Showing Tools? 8 Checks That Fix It",
+      updatedAt: "2026-09-15",
+      metaTitle: "MCP Server Connected but No Tools? 8 Checks for tools/list",
     });
     expect(guide!.sections[0].body[0]).toMatch(/tools\/list in MCP Inspector/i);
     expect(guide!.sections[0].body[0]).toMatch(/selection or permission problem, not a discovery problem/i);

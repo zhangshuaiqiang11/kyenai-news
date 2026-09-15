@@ -1124,10 +1124,10 @@ const coreGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["visual-studio-agent-mode-mcp-general-availability"],
     publishedAt: "2026-07-19",
-    updatedAt: "2026-09-08",
-    metaTitle: "MCP Server Not Showing Tools? 8 Checks That Fix It",
+    updatedAt: "2026-09-15",
+    metaTitle: "MCP Server Connected but No Tools? 8 Checks for tools/list",
     metaDescription:
-      "Fix missing MCP tools by checking config, transport, initialize, tools/list, client filters, refresh behavior, and invocation. Includes a debugger.",
+      "Diagnose an MCP server connected with zero tools using initialize, tools/list, Inspector, client filters, refresh, and invocation checks.",
     resourceIds: ["mcp-tool-discovery"],
   },
   {

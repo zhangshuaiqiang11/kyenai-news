@@ -1691,10 +1691,10 @@ export const expansionGuides: Guide[] = [
       "github-copilot-cloud-local-sandboxes-preview",
     ],
     publishedAt: "2026-06-15",
-    updatedAt: "2026-07-30",
-    metaTitle: "What Is Loop Engineering? Addy Osmani, AI Agent Loops, Stop Rules",
+    updatedAt: "2026-09-15",
+    metaTitle: "Loop Engineering for AI Coding Agents: Addy Osmani, Stop Rules",
     metaDescription:
-      "Design AI agent loops around goals, tools, verification, retries, and stop rules. Estimate token cost, tool calls, and risk with the free budget calculator.",
+      "Loop engineering guide for AI coding agents: Plan-Act-Observe-Verify-Stop, retry caps, proof-of-done examples, and a budget calculator.",
     resourceIds: ["loop-engineering"],
   },
   {

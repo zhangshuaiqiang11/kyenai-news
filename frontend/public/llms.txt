@@ -27,7 +27,7 @@
   Use this support matrix to decide whether CLAUDE.md, Copilot instructions, AGENTS.md, or Cursor rules should carry repository guidance for each tool surface. Last substantively updated: 2026-09-08.
   Markdown: https://www.kyenai.com/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions.md
 - [What Is Loop Engineering for AI Coding Agents?](https://www.kyenai.com/guides/loop-engineering-ai-coding-agents)
-  Learn loop engineering for AI coding agents through Addy Osmani's workflow context, a budget calculator, stop rules, and a downloadable proof-of-done JSON contract. Last substantively updated: 2026-07-30.
+  Learn loop engineering for AI coding agents through Addy Osmani's workflow context, a budget calculator, stop rules, and a downloadable proof-of-done JSON contract. Last substantively updated: 2026-09-15.
   Markdown: https://www.kyenai.com/guides/loop-engineering-ai-coding-agents.md
 - [AGENTS.md Template for Codex and Monorepos](https://www.kyenai.com/guides/agents-md-template-for-ai-coding-agents)
   Build, audit, copy, and download concise AGENTS.md starters for Codex, Node.js, Python, and monorepos with commands, boundaries, and review checks. Last substantively updated: 2026-09-08.
@@ -47,9 +47,9 @@
 
 ## Priority evidence articles
 - [Did SpaceX Buy Cursor? $60B Deal Status and Timeline](https://www.kyenai.com/articles/spacex-cursor-acquisition-2026)
-  Yes. SpaceX completed its $60 billion all-stock acquisition of Anysphere, the company behind Cursor, on August 14, 2026. Track the official closing record, post-close changes, and what Cursor users should review. Last substantively updated: 2026-09-12.
+  Yes. SpaceX completed its $60 billion all-stock acquisition of Anysphere, the company behind Cursor, on August 14, 2026. Track the official closing record, post-close changes, and what Cursor users should review. Last substantively updated: 2026-09-15.
 - [Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions](https://www.kyenai.com/articles/cursor-enterprise-organizations-governance)
-  Cursor Enterprise security depends on Privacy Mode, model-provider retention exceptions, SSO and SCIM, repository and model controls, MCP governance, audit logs, and agent permissions. Last substantively updated: 2026-09-12T00:00:00Z.
+  Cursor Enterprise security depends on Privacy Mode, model-provider retention exceptions, SSO and SCIM, repository and model controls, MCP governance, audit logs, and agent permissions. Last substantively updated: 2026-09-15T00:00:00Z.
 
 ## All guides
 - [AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?](https://www.kyenai.com/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions): Use this support matrix to decide whether CLAUDE.md, Copilot instructions, AGENTS.md, or Cursor rules should carry repository guidance for each tool surface.

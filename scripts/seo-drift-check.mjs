@@ -24,7 +24,7 @@ const pageContracts = [
   },
   {
     path: "/guides/mcp-server-not-showing-tools",
-    titleIncludes: "MCP Server Not Showing Tools? 8 Checks",
+    titleIncludes: "MCP Server Connected but No Tools? 8 Checks",
     h1Includes: "MCP Server Not Showing Tools? Diagnose tools/list in 8 Checks",
   },
   {
@@ -49,7 +49,7 @@ const pageContracts = [
   },
   {
     path: "/guides/loop-engineering-ai-coding-agents",
-    titleIncludes: "What Is Loop Engineering?",
+    titleIncludes: "Loop Engineering for AI Coding Agents",
     h1Includes: "What Is Loop Engineering for AI Coding Agents?",
   },
   {
@@ -69,12 +69,12 @@ const pageContracts = [
   },
   {
     path: "/articles/spacex-cursor-acquisition-2026",
-    titleIncludes: "Did SpaceX Buy Cursor? $60B Deal Closed",
+    titleIncludes: "Did SpaceX Buy Cursor? Official Aug. 14, 2026 SEC Closing",
     h1Includes: "Did SpaceX Buy Cursor? $60B Deal Status and Timeline",
   },
   {
     path: "/articles/cursor-enterprise-organizations-governance",
-    titleIncludes: "Cursor Enterprise Security: Privacy Mode, Retention & Admin Controls",
+    titleIncludes: "Cursor Enterprise Security: Privacy Mode & Retention Exceptions",
     h1Includes: "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions",
   },
 ];
