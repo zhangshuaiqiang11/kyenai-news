@@ -1,4 +1,4 @@
-import type { Article, EvidenceSource } from "./types";
+import type { Article, ArticleSummary, EvidenceSource } from "./types";
 
 export type ArticleFilters = {
   query?: string;
@@ -8,7 +8,12 @@ export type ArticleFilters = {
 
 export type ArticleSort = "newest" | "source-credibility" | "title";
 
-export function filterArticles(articles: Article[], filters: ArticleFilters): Article[] {
+export function toArticleSummary(article: Article): ArticleSummary {
+  const { id, title, slug, summary, category, tags, keywords, sources, updatedAt } = article;
+  return { id, title, slug, summary, category, tags, keywords, sources, updatedAt };
+}
+
+export function filterArticles<T extends ArticleSummary>(articles: T[], filters: ArticleFilters): T[] {
   const query = normalize(filters.query || "");
   return articles.filter((article) => {
     const matchesQuery =
@@ -29,7 +34,7 @@ export function filterArticles(articles: Article[], filters: ArticleFilters): Ar
   });
 }
 
-export function sortArticles(articles: Article[], sort: ArticleSort): Article[] {
+export function sortArticles<T extends ArticleSummary>(articles: T[], sort: ArticleSort): T[] {
   const copy = [...articles];
   if (sort === "title") {
     return copy.sort((left, right) => left.title.localeCompare(right.title));
@@ -40,14 +45,14 @@ export function sortArticles(articles: Article[], sort: ArticleSort): Article[] 
   return copy.sort((left, right) => new Date(right.updatedAt).getTime() - new Date(left.updatedAt).getTime());
 }
 
-export function getCategoryCounts(articles: Article[]): Record<string, number> {
+export function getCategoryCounts(articles: ArticleSummary[]): Record<string, number> {
   return articles.reduce<Record<string, number>>((counts, article) => {
     counts[article.category] = (counts[article.category] || 0) + 1;
     return counts;
   }, {});
 }
 
-export function getAllSources(articles: Article[]): EvidenceSource[] {
+export function getAllSources(articles: ArticleSummary[]): EvidenceSource[] {
   const byUrl = new Map<string, EvidenceSource>();
   for (const article of articles) {
     for (const source of article.sources) {
@@ -59,15 +64,14 @@ export function getAllSources(articles: Article[]): EvidenceSource[] {
   });
 }
 
-export function getPublishers(articles: Article[]): string[] {
+export function getPublishers(articles: ArticleSummary[]): string[] {
   return Array.from(new Set(getAllSources(articles).map((source) => source.publisher))).sort();
 }
 
-function maxCredibility(article: Article): number {
+function maxCredibility(article: ArticleSummary): number {
   return Math.max(...article.sources.map((source) => source.credibility), 0);
 }
 
 function normalize(value: string): string {
   return value.toLowerCase().trim();
 }
-

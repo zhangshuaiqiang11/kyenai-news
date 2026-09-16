@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this dataset, cite the version and snapshot date and preserve the sampling limitation."
+type: dataset
+title: "AI Coding Agent Instruction File Adoption Report — Q3 2026"
+version: "2026-Q3"
+date-released: "2026-07-19"
+authors:
+  - name: "KyenAI"
+url: "https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026"
+keywords:
+  - AGENTS.md
+  - CLAUDE.md
+  - GitHub Copilot instructions
+  - Cursor rules
+  - AI coding agents

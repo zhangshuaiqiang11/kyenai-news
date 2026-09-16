@@ -27,7 +27,7 @@ export function BenchmarkPanel() {
           <p className="instruction-resource-eyebrow">Controlled comparison</p>
           <h2 id="benchmark-heading">Same-repository benchmark</h2>
         </div>
-        <p>{benchmarkProtocol.repository}</p>
+        <p>{benchmarkProtocol.repository} · {benchmarkProtocol.revision}</p>
       </div>
 
       <div className="instruction-benchmark-protocol">
@@ -83,12 +83,20 @@ export function BenchmarkPanel() {
           <strong>Benchmark not yet run</strong>
           <p>
             No controlled run has been completed for this protocol. Numeric metrics stay null until
-            a run finishes; this panel does not publish placeholder numbers. Use the task and
-            success criteria above, then publish measured results in{" "}
+            a run finishes; this panel does not publish placeholder numbers and supports no performance
+            conclusion yet. Use the task and success criteria above, then publish measured results in{" "}
             <a href={benchmarkResultsUrl}>benchmark-results.json</a>.
           </p>
         </aside>
       )}
+      <div className="mcp-download-links" aria-label="Public benchmark evidence package">
+        <a href={benchmarkProtocol.publicEvidence.methodology} download>Methodology</a>
+        <a href={benchmarkProtocol.publicEvidence.tasks} download>Task manifest</a>
+        <a href={benchmarkProtocol.publicEvidence.results} download>Results JSON</a>
+        <a href={benchmarkProtocol.publicEvidence.manifest} download>Manifest</a>
+        <a href={benchmarkProtocol.publicEvidence.rawLogs} download>Raw-log schema</a>
+        <a href={benchmarkProtocol.publicEvidence.citation} download>Citation</a>
+      </div>
     </section>
   );
 }

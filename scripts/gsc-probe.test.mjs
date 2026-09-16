@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import {
   buildOauthAuthorizationUrl,
   buildSearchAnalyticsBody,
+  formatSearchAnalyticsRow,
   hasSearchData,
   normalizeGscSiteUrl,
   parseArgs,
@@ -39,6 +40,25 @@ describe("hasSearchData", () => {
     assert.equal(hasSearchData([{ clicks: 0, impressions: 1 }]), true);
     assert.equal(hasSearchData([{ clicks: 3, impressions: 0 }]), false);
     assert.equal(hasSearchData([]), false);
+  });
+});
+
+describe("formatSearchAnalyticsRow", () => {
+  it("preserves the query/page dimensions and nullable metrics", () => {
+    assert.deepEqual(formatSearchAnalyticsRow({
+      keys: ["mcp server not showing tools", "https://www.kyenai.com/guides/mcp-server-not-showing-tools"],
+      clicks: 4,
+      impressions: 80,
+      ctr: 0.05,
+      position: 6.5,
+    }), {
+      query: "mcp server not showing tools",
+      page: "https://www.kyenai.com/guides/mcp-server-not-showing-tools",
+      clicks: 4,
+      impressions: 80,
+      ctr: 0.05,
+      position: 6.5,
+    });
   });
 });
 

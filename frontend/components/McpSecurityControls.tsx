@@ -1,6 +1,8 @@
 import React from "react";
 
 import {
+  mcpSecurityAuthenticationMatrix,
+  mcpSecurityConfigExample,
   mcpSecurityControls,
   mcpSecurityPermissionMatrix,
   mcpSecurityReviewPolicy,
@@ -42,22 +44,44 @@ export function McpSecurityControls() {
       <section className="instruction-resource-section" aria-labelledby="mcp-controls-heading">
         <div className="instruction-resource-heading">
           <div>
-            <p className="instruction-resource-eyebrow">Launch controls</p>
-            <h2 id="mcp-controls-heading">MCP security control checklist</h2>
+            <p className="instruction-resource-eyebrow">25 launch controls</p>
+            <h2 id="mcp-controls-heading">MCP server security checklist</h2>
           </div>
+          <p>Each control includes its risk, verification method, and an observable pass condition.</p>
         </div>
-        <ul className="guide-checklist">
-          {mcpSecurityControls.map((control) => (
-            <li key={control.id}>
-              <strong>{control.title}</strong>
-              <p>{control.guidance}</p>
-              <p>
-                <strong>Launch check:</strong> {control.launchCheck}
-              </p>
-              <small>{claimLabels[control.claimType]}</small>
-            </li>
-          ))}
-        </ul>
+        <div className="mcp-download-links" aria-label="Download the MCP security checklist">
+          <a href="/resources/mcp-security-controls.pdf" download>Download PDF</a>
+          <a href="/resources/mcp-security-controls.csv" download>Download CSV</a>
+          <a href="/resources/mcp-security-controls.json" download>Download JSON</a>
+        </div>
+        <div className="instruction-table-scroll">
+          <table aria-label="25 MCP server security controls">
+            <thead>
+              <tr>
+                <th scope="col">Control</th>
+                <th scope="col">Risk</th>
+                <th scope="col">Verification method</th>
+                <th scope="col">Pass criteria</th>
+                <th scope="col">Claim basis</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mcpSecurityControls.map((control, index) => (
+                <tr key={control.id}>
+                  <th scope="row" data-label="Control">
+                    <span className="mcp-control-number">{String(index + 1).padStart(2, "0")}</span>
+                    {control.title}
+                    <small>{control.guidance}</small>
+                  </th>
+                  <td data-label="Risk"><strong>{control.risk}</strong></td>
+                  <td data-label="Verification method">{control.verificationMethod}</td>
+                  <td data-label="Pass criteria">{control.passCriteria}</td>
+                  <td data-label="Claim basis">{claimLabels[control.claimType]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section className="instruction-resource-section" aria-labelledby="mcp-permission-matrix-heading">
@@ -97,6 +121,39 @@ export function McpSecurityControls() {
         </div>
       </section>
 
+      <section className="instruction-resource-section" aria-labelledby="mcp-authentication-matrix-heading">
+        <div className="instruction-resource-heading">
+          <div>
+            <p className="instruction-resource-eyebrow">Authentication choices</p>
+            <h2 id="mcp-authentication-matrix-heading">OAuth, API key, and mTLS comparison</h2>
+          </div>
+        </div>
+        <div className="instruction-table-scroll">
+          <table aria-label="MCP authentication comparison">
+            <thead>
+              <tr>
+                <th scope="col">Option</th>
+                <th scope="col">Use when</th>
+                <th scope="col">Main risk</th>
+                <th scope="col">Launch gate</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mcpSecurityAuthenticationMatrix.map((row) => (
+                <tr key={row.id}>
+                  <th scope="row" data-label="Option">
+                    {row.option}
+                  </th>
+                  <td data-label="Use when">{row.useWhen}</td>
+                  <td data-label="Main risk">{row.mainRisk}</td>
+                  <td data-label="Launch gate">{row.launchGate}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section className="instruction-resource-section" aria-labelledby="mcp-review-heading">
         <div className="instruction-resource-heading">
           <div>
@@ -116,6 +173,27 @@ export function McpSecurityControls() {
             ]}
             downloadHref="/resources/mcp-security-review.md"
             downloadName="mcp-security-review.md"
+          />
+        </div>
+      </section>
+
+      <section className="instruction-resource-section" aria-labelledby="mcp-config-example-heading">
+        <div className="instruction-resource-heading">
+          <div>
+            <p className="instruction-resource-eyebrow">Configuration example</p>
+            <h2 id="mcp-config-example-heading">MCP security config example</h2>
+          </div>
+          <p>Copy the shape, not the literal values. Replace commands, domains, scopes, paths, and owners.</p>
+        </div>
+        <div className="instruction-template-grid instruction-template-grid-single">
+          <CodeExampleCard
+            title="Read-only MCP security profile"
+            purpose="Show one conservative launch profile with token audience, blocked paths, network allowlist, approvals, audit fields, and revocation."
+            body={mcpSecurityConfigExample}
+            cautions={[
+              "Do not copy example domains, commands, owners, or paths into production without review.",
+              "Keep write, delete, secret, and production capabilities disabled until a separate approval path exists.",
+            ]}
           />
         </div>
       </section>

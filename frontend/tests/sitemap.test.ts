@@ -20,9 +20,6 @@ describe("sitemap helpers", () => {
   ];
   const utilityNoindexPaths = [
     "/contact",
-    "/sources",
-    "/entities",
-    "/authors/editorial-automation-desk",
   ];
   const archiveNoindexPaths = [
     "/tags/claude-code",
@@ -40,9 +37,23 @@ describe("sitemap helpers", () => {
     expect(locations).toContain("https://www.kyenai.com");
     expect(locations).toContain("https://www.kyenai.com/about");
     expect(locations).toContain("https://www.kyenai.com/editorial-policy");
+    expect(locations).toContain("https://www.kyenai.com/sources");
+    expect(locations).toContain("https://www.kyenai.com/entities");
+    expect(locations).toContain("https://www.kyenai.com/authors/editorial-automation-desk");
+    expect(locations).toContain("https://www.kyenai.com/tools/instruction-file-checker");
+    expect(locations).toContain("https://www.kyenai.com/research");
     expect(locations).toContain("https://www.kyenai.com/guides");
     expect(entries.find((entry) => entry.loc.endsWith("/about"))?.lastmod).toBe("2026-06-06");
     expect(entries.find((entry) => entry.loc.endsWith("/editorial-policy"))?.lastmod).toBe("2026-06-06");
+    const latestContentUpdate = [...publishedArticles, ...guides]
+      .map((item) => item.updatedAt.slice(0, 10))
+      .sort()
+      .at(-1);
+    expect(entries.find((entry) => entry.loc.endsWith("/sources"))?.lastmod).toBe(latestContentUpdate);
+    expect(entries.find((entry) => entry.loc.endsWith("/entities"))?.lastmod).toBe("2026-07-14");
+    expect(entries.find((entry) => entry.loc.endsWith("/authors/editorial-automation-desk"))?.lastmod).toBe("2026-06-27");
+    expect(entries.find((entry) => entry.loc.endsWith("/tools/instruction-file-checker"))?.lastmod).toBe("2026-07-14");
+    expect(entries.find((entry) => entry.loc.endsWith("/research"))?.lastmod).toBe("2026-07-30");
 
     for (const article of publishedArticles) {
       expect(locations).toContain(`https://www.kyenai.com/articles/${article.slug}`);
@@ -97,7 +108,7 @@ describe("sitemap helpers", () => {
     expect(locations).toContain(`https://www.kyenai.com${buildCategoryPath(category)}`);
   });
 
-  it("renders sitemap XML without utility or downloadable resource URLs", () => {
+  it("renders sitemap XML without noindex utility or downloadable resource URLs", () => {
     const xml = renderSitemapXml(buildSitemapEntries(seedArticles.slice(0, 1)));
 
     expect(xml).toContain("<urlset");

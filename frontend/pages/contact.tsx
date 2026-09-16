@@ -4,7 +4,11 @@ import { Layout } from "../components/Layout";
 import { SeoHead } from "../components/SeoHead";
 import { buildBreadcrumbJsonLd } from "../lib/seo";
 
-const editorialEmail = process.env.NEXT_PUBLIC_EDITORIAL_EMAIL || "";
+const configuredEditorialEmail = (process.env.NEXT_PUBLIC_EDITORIAL_EMAIL || "").trim();
+const editorialEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(configuredEditorialEmail) &&
+  !/(?:your-production-domain|example\.(?:com|org)|localhost)/i.test(configuredEditorialEmail)
+  ? configuredEditorialEmail
+  : "editorial@kyenai.com";
 
 export default function ContactPage() {
   const description =
@@ -36,17 +40,10 @@ export default function ContactPage() {
           </section>
           <section>
             <h2>Editorial Inbox</h2>
-            {editorialEmail ? (
-              <p>
-                Email <a href={`mailto:${editorialEmail}`}>{editorialEmail}</a>. Production deployments should route
-                this inbox to a monitored editorial queue.
-              </p>
-            ) : (
-              <p>
-                This local MVP has no public inbox configured. Before launch, set NEXT_PUBLIC_EDITORIAL_EMAIL to a
-                monitored address and verify that correction requests create an auditable review item.
-              </p>
-            )}
+            <p>
+              Email <a href={`mailto:${editorialEmail}`}>{editorialEmail}</a> with the page URL, disputed claim, and
+              strongest available source. High-risk accuracy reports are triaged before routine optimization work.
+            </p>
           </section>
           <section>
             <h2>Response Standard</h2>

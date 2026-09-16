@@ -1,10 +1,14 @@
 import { EDITORIAL_AUTHOR_NAME } from "./editorial";
-import type { Article, Guide } from "./types";
+import { spacexCursorDealResource } from "./spacex-cursor-deal-resource";
+import type { Article, ArticleSummary, Guide } from "./types";
 import { getArticleEntities } from "./entities";
 
 export const SITE_NAME = "KyenAI";
 export const SITE_URL = normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL || "https://www.kyenai.com");
 export const OG_IMAGE_URL = `${SITE_URL}/og-image.svg`;
+export const ORGANIZATION_LOGO_URL = `${SITE_URL}/icon.png`;
+export const ORGANIZATION_ID = `${SITE_URL}#organization`;
+export const WEBSITE_ID = `${SITE_URL}#website`;
 
 type PageSeoInput = {
   title: string;
@@ -17,6 +21,8 @@ type BreadcrumbItem = {
   name: string;
   path: string;
 };
+
+type JsonLdNode = Record<string, unknown>;
 
 export type FaqItem = {
   question: string;
@@ -77,15 +83,18 @@ export function buildMetaDescription(article: Article): string {
 
 export function buildArticleJsonLd(article: Article) {
   const canonical = buildCanonicalUrl(`/articles/${article.slug}`);
-  return {
+  const articleJsonLd = {
     "@context": "https://schema.org",
-    "@type": "NewsArticle",
+    "@type": article.category === "Security & Governance" ? "TechArticle" : "NewsArticle",
+    "@id": `${canonical}#article`,
     headline: article.title,
     description: buildMetaDescription(article),
     url: canonical,
     image: {
       "@type": "ImageObject",
-      url: OG_IMAGE_URL,
+      url: buildOgImageUrl(article.metaTitle || article.title),
+      width: 1200,
+      height: 630,
     },
     inLanguage: "en",
     articleSection: article.category,
@@ -93,15 +102,7 @@ export function buildArticleJsonLd(article: Article) {
     datePublished: article.publishedAt,
     dateModified: article.updatedAt,
     author: buildAuthorJsonLd(article.authorName, false),
-    publisher: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: buildCanonicalUrl("/"),
-      logo: {
-        "@type": "ImageObject",
-        url: OG_IMAGE_URL,
-      },
-    },
+    publisher: buildPublisherJsonLd(),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonical,
@@ -128,6 +129,10 @@ export function buildArticleJsonLd(article: Article) {
       },
     })),
   };
+
+  return article.slug === "spacex-cursor-acquisition-2026"
+    ? { ...articleJsonLd, hasPart: { "@id": `${canonical}#deal-status-dataset` } }
+    : articleJsonLd;
 }
 
 export function buildGuideJsonLd(guide: Guide) {
@@ -137,6 +142,7 @@ export function buildGuideJsonLd(guide: Guide) {
   return {
     "@context": "https://schema.org",
     "@type": "TechArticle",
+    "@id": `${canonical}#techarticle`,
     headline: guide.title,
     description: guide.metaDescription,
     url: canonical,
@@ -145,20 +151,16 @@ export function buildGuideJsonLd(guide: Guide) {
       url: buildOgImageUrl(guide.metaTitle || guide.title),
     },
     inLanguage: "en",
+    datePublished: guide.publishedAt,
     dateModified: guide.updatedAt,
     author: buildAuthorJsonLd(EDITORIAL_AUTHOR_NAME, false),
-    publisher: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: buildCanonicalUrl("/"),
-      logo: {
-        "@type": "ImageObject",
-        url: OG_IMAGE_URL,
-      },
-    },
+    publisher: buildPublisherJsonLd(),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonical,
+    },
+    isPartOf: {
+      "@id": WEBSITE_ID,
     },
     keywords: topics,
     about: topics.map((keyword) => ({
@@ -175,6 +177,156 @@ export function buildGuideJsonLd(guide: Guide) {
         name: source.publisher,
       },
     })),
+  };
+}
+
+export function buildGuideGraphJsonLd(guide: Guide, breadcrumbItems: BreadcrumbItem[], faqs: FaqItem[]) {
+  const nodes: JsonLdNode[] = [
+    buildOrganizationJsonLd(false),
+    buildWebsiteJsonLd(false),
+    buildGuideJsonLd(guide),
+    buildBreadcrumbJsonLd(breadcrumbItems, false),
+    buildFaqPageJsonLd(faqs, false),
+  ];
+
+  if (guide.resourceIds?.includes("loop-engineering")) {
+    nodes.push(
+      buildWebApplicationJsonLd({
+        title: "Agent Loop Budget Calculator",
+        description: "Estimate maximum token use, tool calls, token cost, risk level, and a recommended stop rule for an AI coding agent loop.",
+        path: `/guides/${guide.slug}`,
+      }),
+    );
+  }
+
+  if (guide.resourceIds?.includes("mcp-tool-discovery")) {
+    nodes.push(
+      buildWebApplicationJsonLd({
+        title: "MCP Tool Discovery Debugger",
+        description: "Diagnose why an MCP server or tool is missing, connected with zero tools, stale, filtered, or visible but never called.",
+        path: `/guides/${guide.slug}`,
+      }),
+    );
+  }
+
+  if (guide.resourceIds?.includes("agents-md-template")) {
+    nodes.push(
+      buildWebApplicationJsonLd({
+        title: "AGENTS.md Starter Builder",
+        description: "Build, copy, download, and rule-check a concise AGENTS.md starter for Node.js, Python, or monorepo projects in the browser.",
+        path: `/guides/${guide.slug}`,
+      }),
+    );
+  }
+
+  if (guide.resourceIds?.includes("codex-claude-decision")) {
+    nodes.push(
+      buildWebApplicationJsonLd({
+        title: "Codex vs Claude Code Decision Tool",
+        description: "Score workflow fit for Codex or Claude Code by workspace, instruction files, parallelism, automation, and enterprise deployment controls.",
+        path: `/guides/${guide.slug}`,
+      }),
+    );
+  }
+
+  if (guide.resourceIds?.includes("codex-copilot-decision")) {
+    nodes.push(
+      buildWebApplicationJsonLd({
+        title: "Codex vs GitHub Copilot Decision Tool",
+        description: "Score Codex or GitHub Copilot workflow fit by starting surface, instructions, parallel work, model choice, billing, and governance.",
+        path: `/guides/${guide.slug}`,
+      }),
+    );
+  }
+
+  if (guide.resourceIds?.includes("coding-agent-comparison")) {
+    nodes.push(
+      buildWebApplicationJsonLd({
+        title: "AI Coding Agent Comparison Tool",
+        description: "Build a Codex, Claude Code, GitHub Copilot, or Cursor pilot shortlist from starting surface, instructions, parallel work, model boundary, and administration fit.",
+        path: `/guides/${guide.slug}`,
+      }),
+    );
+  }
+
+  if (guide.resourceIds?.includes("claude-code-alternatives")) {
+    nodes.push(
+      buildWebApplicationJsonLd({
+        title: "Claude Code Alternatives Selector",
+        description: "Choose a Claude Code alternative pilot by workflow constraint, control plane, interface, provider boundary, permissions, and migration cost.",
+        path: `/guides/${guide.slug}`,
+      }),
+    );
+  }
+
+  if (guide.resourceIds?.includes("instruction-adoption-report")) {
+    nodes.push(buildInstructionAdoptionDatasetJsonLd(guide));
+  }
+
+  return buildJsonLdGraph(nodes);
+}
+
+export function buildArticleGraphJsonLd(article: Article, breadcrumbItems: BreadcrumbItem[], faqs: FaqItem[]) {
+  const nodes: JsonLdNode[] = [
+    buildOrganizationJsonLd(false),
+    buildWebsiteJsonLd(false),
+    buildArticleJsonLd(article),
+    buildBreadcrumbJsonLd(breadcrumbItems, false),
+    buildFaqPageJsonLd(faqs, false),
+  ];
+
+  if (article.slug === "spacex-cursor-acquisition-2026") {
+    nodes.push(buildSpacexCursorDealDatasetJsonLd(article));
+  }
+
+  return buildJsonLdGraph(nodes);
+}
+
+export function buildSpacexCursorDealDatasetJsonLd(article: Article) {
+  const canonical = buildCanonicalUrl(`/articles/${article.slug}`);
+  const resource = spacexCursorDealResource;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "@id": `${canonical}#deal-status-dataset`,
+    name: "SpaceX-Cursor Acquisition Status and Evidence Timeline",
+    description:
+      "A dated, source-linked record separating the signed SpaceX-Anysphere merger agreement, product collaboration, and legal closing status.",
+    url: canonical,
+    datePublished: article.publishedAt,
+    dateModified: resource.verifiedAt,
+    temporalCoverage: `${resource.announcedAt}/${resource.verifiedAt}`,
+    creator: { "@id": ORGANIZATION_ID },
+    publisher: { "@id": ORGANIZATION_ID },
+    isAccessibleForFree: true,
+    measurementTechnique:
+      "Manual verification against the SpaceX Form 8-K, filed merger agreement, and dated Cursor product announcement",
+    variableMeasured: [
+      "Agreement status",
+      "Closing status",
+      "Expected closing window",
+      "Transaction consideration",
+      "Product collaboration milestones",
+    ],
+    isBasedOn: [
+      resource.officialFilingUrl,
+      resource.mergerAgreementUrl,
+      resource.completionFilingUrl,
+      resource.cursorUpdateUrl,
+    ],
+    distribution: [
+      {
+        "@type": "DataDownload",
+        encodingFormat: "application/json",
+        contentUrl: buildCanonicalUrl(resource.downloads.json),
+      },
+      {
+        "@type": "DataDownload",
+        encodingFormat: "text/csv",
+        contentUrl: buildCanonicalUrl(resource.downloads.csv),
+      },
+    ],
   };
 }
 
@@ -241,9 +393,9 @@ function getArticleTeamLabel(category: string): string {
   return labels[category] ?? category.toLowerCase();
 }
 
-export function buildFaqPageJsonLd(faqs: FaqItem[]) {
+export function buildFaqPageJsonLd(faqs: FaqItem[], includeContext = true) {
   return {
-    "@context": "https://schema.org",
+    ...(includeContext ? { "@context": "https://schema.org" } : {}),
     "@type": "FAQPage",
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
@@ -260,19 +412,21 @@ export function buildAuthorJsonLd(name: string, includeContext = true) {
   return {
     ...(includeContext ? { "@context": "https://schema.org" } : {}),
     "@type": "Organization",
+    "@id": `${buildCanonicalUrl("/authors/editorial-automation-desk")}#organization`,
     name,
     url: buildCanonicalUrl("/authors/editorial-automation-desk"),
     parentOrganization: {
       "@type": "Organization",
+      "@id": ORGANIZATION_ID,
       name: SITE_NAME,
       url: buildCanonicalUrl("/"),
     },
   };
 }
 
-export function buildBreadcrumbJsonLd(items: BreadcrumbItem[]) {
+export function buildBreadcrumbJsonLd(items: BreadcrumbItem[], includeContext = true) {
   return {
-    "@context": "https://schema.org",
+    ...(includeContext ? { "@context": "https://schema.org" } : {}),
     "@type": "BreadcrumbList",
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
@@ -283,7 +437,7 @@ export function buildBreadcrumbJsonLd(items: BreadcrumbItem[]) {
   };
 }
 
-export function buildItemListJsonLd(articles: Article[], name: string, path: string) {
+export function buildItemListJsonLd(articles: Array<Pick<ArticleSummary, "title" | "slug">>, name: string, path: string) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -299,7 +453,7 @@ export function buildItemListJsonLd(articles: Article[], name: string, path: str
   };
 }
 
-export function buildGuideItemListJsonLd(guides: Guide[], name: string, path: string) {
+export function buildGuideItemListJsonLd(guides: Array<Pick<Guide, "title" | "slug">>, name: string, path: string) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -315,32 +469,161 @@ export function buildGuideItemListJsonLd(guides: Guide[], name: string, path: st
   };
 }
 
-export function buildWebsiteJsonLd() {
+export function buildCollectionPageJsonLd({ title, description, path }: PageSeoInput) {
+  const canonical = buildCanonicalUrl(path);
+
   return {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: SITE_NAME,
-    url: buildCanonicalUrl("/"),
+    "@type": "CollectionPage",
+    "@id": canonical,
+    url: canonical,
+    name: title,
+    description,
+    inLanguage: "en",
+    isPartOf: {
+      "@id": WEBSITE_ID,
+    },
     publisher: {
       "@type": "Organization",
+      "@id": ORGANIZATION_ID,
       name: SITE_NAME,
       url: buildCanonicalUrl("/"),
     },
   };
 }
 
-export function buildOrganizationJsonLd() {
-  const editorialEmail = process.env.NEXT_PUBLIC_EDITORIAL_EMAIL;
+export function buildWebApplicationJsonLd({ title: name, description, path }: PageSeoInput) {
+  const canonical = buildCanonicalUrl(path);
 
   return {
     "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "@id": `${canonical}#webapplication`,
+    name,
+    description,
+    url: canonical,
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript; all analysis runs locally in the browser.",
+    isAccessibleForFree: true,
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": ORGANIZATION_ID,
+      name: SITE_NAME,
+      url: buildCanonicalUrl("/"),
+    },
+  };
+}
+
+export function buildInstructionAdoptionDatasetJsonLd(guide: Guide) {
+  const canonical = buildCanonicalUrl(`/guides/${guide.slug}`);
+  return {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "@id": `${canonical}#dataset`,
+    name: "AI Coding Agent Instruction File Adoption Report — Q3 2026",
+    description: "Public GitHub code-search snapshot and 400-file content sample covering AGENTS.md, CLAUDE.md, Copilot instructions, and Cursor rules.",
+    url: canonical,
+    identifier: canonical,
+    version: "2026-Q3",
+    keywords: [
+      "AGENTS.md adoption",
+      "CLAUDE.md adoption",
+      "GitHub Copilot instructions",
+      "Cursor rules",
+      "AI coding agent instruction files",
+    ],
+    datePublished: guide.publishedAt,
+    dateModified: guide.updatedAt,
+    temporalCoverage: "2026-07-19",
+    creator: { "@id": ORGANIZATION_ID },
+    publisher: { "@id": ORGANIZATION_ID },
+    isAccessibleForFree: true,
+    measurementTechnique: "GitHub REST API public code search, best-match sampling, and deterministic text-pattern detection",
+    variableMeasured: [
+      "GitHub indexed file matches",
+      "unique repositories within each sample",
+      "repository primary language",
+      "explicit test commands",
+      "security rules",
+      "missing configuration categories",
+    ],
+    distribution: [
+      {
+        "@type": "DataDownload",
+        name: "AI coding agent instruction-file sample (CSV)",
+        encodingFormat: "text/csv",
+        contentUrl: buildCanonicalUrl("/resources/data/instruction-file-adoption-report-2026-q3.csv"),
+      },
+      {
+        "@type": "DataDownload",
+        name: "AI coding agent instruction-file report and methodology (JSON)",
+        encodingFormat: "application/json",
+        contentUrl: buildCanonicalUrl("/resources/data/instruction-file-adoption-report-2026-q3.json"),
+      },
+    ],
+  };
+}
+
+export function buildWebsiteJsonLd(includeContext = true) {
+  return {
+    ...(includeContext ? { "@context": "https://schema.org" } : {}),
+    "@type": "WebSite",
+    "@id": WEBSITE_ID,
+    name: SITE_NAME,
+    alternateName: "kyenai.com",
+    url: buildCanonicalUrl("/"),
+    inLanguage: "en",
+    description:
+      "Evidence-led AI coding agent playbooks for instruction files, loop engineering, MCP security, and tool comparisons.",
+    publisher: {
+      "@type": "Organization",
+      "@id": ORGANIZATION_ID,
+      name: SITE_NAME,
+      url: buildCanonicalUrl("/"),
+    },
+  };
+}
+
+const PLACEHOLDER_EMAIL_PATTERNS = ["your-production-domain", "example.com", "example.org", "localhost"];
+
+function isPlaceholderEmail(email: string): boolean {
+  const normalized = email.trim().toLowerCase();
+  if (!normalized) {
+    return true;
+  }
+  const domain = normalized.split("@")[1] || "";
+  return PLACEHOLDER_EMAIL_PATTERNS.some((pattern) => domain.includes(pattern));
+}
+
+export function buildOrganizationJsonLd(includeContext = true) {
+  const rawEmail = process.env.NEXT_PUBLIC_EDITORIAL_EMAIL || "editorial@kyenai.com";
+  const editorialEmail = isPlaceholderEmail(rawEmail) ? "" : rawEmail.trim();
+
+  return {
+    ...(includeContext ? { "@context": "https://schema.org" } : {}),
     "@type": "Organization",
+    "@id": ORGANIZATION_ID,
     name: SITE_NAME,
     url: buildCanonicalUrl("/"),
     logo: {
       "@type": "ImageObject",
-      url: OG_IMAGE_URL,
+      "@id": `${SITE_URL}#logo`,
+      url: ORGANIZATION_LOGO_URL,
+      width: 512,
+      height: 512,
     },
+    subjectOf: [
+      { "@type": "WebPage", url: buildCanonicalUrl("/about") },
+      { "@type": "WebPage", url: buildCanonicalUrl("/editorial-policy") },
+      { "@type": "WebPage", url: buildCanonicalUrl("/sources") },
+      { "@type": "WebPage", url: buildCanonicalUrl("/entities") },
+    ],
     ...(editorialEmail
       ? {
           contactPoint: {
@@ -350,6 +633,29 @@ export function buildOrganizationJsonLd() {
           },
         }
       : {}),
+  };
+}
+
+function buildJsonLdGraph(nodes: JsonLdNode[]) {
+  return {
+    "@context": "https://schema.org",
+    "@graph": nodes.map(({ "@context": _context, ...node }) => node),
+  };
+}
+
+function buildPublisherJsonLd() {
+  return {
+    "@type": "Organization",
+    "@id": ORGANIZATION_ID,
+    name: SITE_NAME,
+    url: buildCanonicalUrl("/"),
+    logo: {
+      "@type": "ImageObject",
+      "@id": `${SITE_URL}#logo`,
+      url: ORGANIZATION_LOGO_URL,
+      width: 512,
+      height: 512,
+    },
   };
 }
 

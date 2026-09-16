@@ -27,4 +27,18 @@ describe("article to guide links", () => {
     expect(new Set(slugs).size).toBe(slugs.length);
     expect(slugs.every((slug) => slug.length > 0)).toBe(true);
   });
+
+  it("routes Cursor Enterprise security coverage into governance and MCP evergreen guides", () => {
+    const article = seedArticles.find((item) => item.slug === "cursor-enterprise-organizations-governance");
+
+    expect(article).toBeDefined();
+    const guides = getRelatedGuidesForArticle(article!);
+
+    expect(guides.map((guide) => guide.slug)).toEqual([
+      "agent-governance-checklist-for-software-teams",
+      "secure-mcp-servers-ai-coding-agents",
+      "mcp-server-not-showing-tools",
+    ]);
+  });
+
 });

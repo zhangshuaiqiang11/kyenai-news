@@ -3,10 +3,10 @@ import React from "react";
 import { ArrowUpRight, FileText } from "lucide-react";
 
 import { formatDate } from "../lib/seo";
-import type { Article } from "../lib/types";
+import type { ArticleSummary } from "../lib/types";
 
 type ArticleCardProps = {
-  article: Article;
+  article: ArticleSummary;
   index: number;
 };
 

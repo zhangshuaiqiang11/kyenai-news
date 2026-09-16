@@ -26,6 +26,9 @@ class EvidenceSource(BaseModel):
     publisher: str
     published_at: str
     credibility: int = Field(ge=1, le=5)
+    verified_at: str | None = None
+    verification_conclusion: str | None = None
+    verification_change_note: str | None = None
 
 
 class Article(BaseModel):

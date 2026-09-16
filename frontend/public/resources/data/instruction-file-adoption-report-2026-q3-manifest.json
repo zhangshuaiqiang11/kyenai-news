@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026#dataset",
+  "name": "AI Coding Agent Instruction File Adoption Report — Q3 2026",
+  "version": "2026-Q3",
+  "snapshotDate": "2026-07-19",
+  "collectedAt": "2026-07-18T19:23:58.995Z",
+  "source": "GitHub REST API public code search and repository metadata",
+  "sample": {
+    "queryCount": 4,
+    "sampledFiles": 400,
+    "ordering": "GitHub best-match ordering; this is not a random sample"
+  },
+  "citation": "KyenAI. (2026). AI Coding Agent Instruction File Adoption Report — Q3 2026 (Version 2026-Q3) [Data set]. https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026",
+  "doi": null,
+  "artifacts": {
+    "json": {
+      "url": "https://www.kyenai.com/resources/data/instruction-file-adoption-report-2026-q3.json",
+      "mediaType": "application/json",
+      "bytes": 330913,
+      "sha256": "5bc47091b4c30e197d345cdbbcf1bf785baed200a32bff6c56eb7f563e26f193"
+    },
+    "csv": {
+      "url": "https://www.kyenai.com/resources/data/instruction-file-adoption-report-2026-q3.csv",
+      "mediaType": "text/csv",
+      "bytes": 139348,
+      "sha256": "de8154955fc63f68bc4d73195adfb990f93baf8de2f365453ea7acd19555cae9"
+    },
+    "generator": {
+      "url": "https://www.kyenai.com/resources/data/instruction-file-adoption-report-2026-q3-generator.mjs",
+      "mediaType": "text/javascript",
+      "bytes": 12550,
+      "sha256": "c5fa98a12f8b6412a7996dd22169bb0b4d74b14d0caeb5c8618fc742201469d4"
+    }
+  }
+}

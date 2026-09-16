@@ -27,7 +27,6 @@ export default function AuthorPage({ articles }: AuthorPageProps) {
         title="Editorial Automation Desk"
         description={description}
         path="/authors/editorial-automation-desk"
-        robots="noindex,follow"
       >
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(authorJsonLd) }} />
@@ -43,6 +42,11 @@ export default function AuthorPage({ articles }: AuthorPageProps) {
           Content is maintained by a documented editorial workflow that uses trusted sources,
           search performance data, validation checks, and rollback logs.
         </p>
+        <dl>
+          <div><dt>Role</dt><dd>Editorial workflow owner for KyenAI AI coding agent coverage</dd></div>
+          <div><dt>Review model</dt><dd>Source validation, structured edits, test checks, and rollback notes before publication</dd></div>
+          <div><dt>Scope</dt><dd>AI coding agents, IDE and CLI updates, MCP security, governance, and workflow guides</dd></div>
+        </dl>
         <div className="article-list">
           {articles.map((article, index) => <ArticleCard article={article} index={index} key={article.id} />)}
         </div>

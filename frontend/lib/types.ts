@@ -12,6 +12,9 @@ export type EvidenceSource = {
   publisher: string;
   publishedAt: string;
   credibility: number;
+  verifiedAt?: string;
+  verificationConclusion?: string;
+  verificationChangeNote?: string;
 };
 
 export type Article = {
@@ -33,6 +36,11 @@ export type Article = {
   metaTitle?: string;
   metaDescription?: string;
 };
+
+export type ArticleSummary = Pick<
+  Article,
+  "id" | "title" | "slug" | "summary" | "category" | "tags" | "keywords" | "sources" | "updatedAt"
+>;
 
 export type SearchSignal = {
   label: string;
@@ -73,12 +81,21 @@ export type GuideEvidence = {
   url: string;
   publisher: string;
   note: string;
+  verifiedAt?: string;
+  verificationConclusion?: string;
+  verificationChangeNote?: string;
 };
 
 export type GuideInternalLink = {
   slug: string;
   anchor: string;
   reason: string;
+};
+
+export type GuidePrimaryAction = {
+  href: string;
+  label: string;
+  note: string;
 };
 
 export type SupportStatus = "documented" | "legacy" | "observed" | "unsupported" | "unknown";
@@ -127,10 +144,17 @@ export type BenchmarkRun = {
 
 export type GuideResourceId =
   | "instruction-files"
+  | "copilot-surface-matrix"
   | "mcp-security"
   | "agents-md-template"
   | "claude-code-setup"
-  | "loop-engineering";
+  | "codex-claude-decision"
+  | "codex-copilot-decision"
+  | "coding-agent-comparison"
+  | "claude-code-alternatives"
+  | "loop-engineering"
+  | "mcp-tool-discovery"
+  | "instruction-adoption-report";
 
 export type Guide = {
   id: string;
@@ -150,11 +174,19 @@ export type Guide = {
   checklist: string[];
   evidence: GuideEvidence[];
   relatedArticleSlugs: string[];
+  publishedAt: string;
   updatedAt: string;
   metaTitle: string;
   metaDescription: string;
   resourceIds?: GuideResourceId[];
+  decisionTablePlacement?: "above-fold" | "body";
+  primaryAction?: GuidePrimaryAction;
 };
+
+export type GuideSummary = Pick<
+  Guide,
+  "id" | "title" | "slug" | "summary" | "pageType" | "audience" | "updatedAt"
+>;
 
 export type GuideEditorialSignals = {
   priority: "P0" | "P1" | "P2";
@@ -163,4 +195,39 @@ export type GuideEditorialSignals = {
   attackabilityScore: number;
   fitScore: number;
   gscWatchQueries: string[];
+  gscBaseline?: {
+    source: "Google Search Console";
+    dimension: "page" | "query";
+    startDate: string;
+    endDate: string;
+    clicks: number;
+    impressions: number;
+    ctr: number;
+    averagePosition: number;
+  };
+  emergencyPriority?: number;
+  /**
+   * Stable reporting bucket used by the Month 4 scorecard. This is editorial
+   * ownership metadata, not evidence that a GSC query converted on this page.
+   */
+  searchCluster?: SearchCluster;
 };
+
+/** Search themes used consistently by GSC baselines and editorial planning. */
+export type SearchCluster =
+  | "agent-instructions"
+  | "agent-workflows"
+  | "mcp-security"
+  | "cursor-governance"
+  | "cursor-market";
+
+/**
+ * Evidence level for a query-to-page relationship.
+ *
+ * `editorial-target` is a planning mapping only. It must never be reported as
+ * Query × Page attribution when Search Console did not export that dimension.
+ */
+export type SearchQueryMappingBasis =
+  | "observed-query"
+  | "editorial-target"
+  | "query-page-confirmed";

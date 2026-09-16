@@ -43,7 +43,7 @@ export function SignalPanel() {
           </li>
           <li>
             <b>Bing Webmaster Blog</b>
-            <span>IndexNow and AI citation signals tracked.</span>
+            <span>IndexNow, source, and indexing guidance tracked.</span>
           </li>
           <li>
             <b>IndexNow Docs</b>
@@ -58,4 +58,3 @@ export function SignalPanel() {
     </aside>
   );
 }
-

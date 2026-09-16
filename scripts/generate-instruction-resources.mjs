@@ -10,6 +10,7 @@ import {
   renderTemplateFile,
 } from "../frontend/lib/resource-exports.ts";
 import {
+  agentsMdVariantTemplates,
   benchmarkProtocol,
   instructionResourceVerifiedAt,
   instructionTemplates,
@@ -67,6 +68,16 @@ function renderBenchmarkProtocolJson() {
   return `${JSON.stringify(benchmarkProtocol, null, 2)}\n`;
 }
 
+function renderBenchmarkManifest() {
+  return `${JSON.stringify({
+    benchmarkId: "kyenai-agent-benchmark-2026-v1",
+    version: "1.0.0",
+    status: "protocol-published-not-measured",
+    files: ["benchmark-protocol.json", "benchmark-results.json"],
+    limitation: "No client performance value is published until a controlled, version-pinned run has a redacted raw log and reviewable diff.",
+  }, null, 2)}\n`;
+}
+
 function renderVerifier() {
   return `#!/usr/bin/env node
 import { readFileSync, statSync } from "node:fs";
@@ -110,12 +121,20 @@ export function main() {
     resolveGeneratedPath(packageRoot, template.downloadName);
     resolveGeneratedPath(packageRoot, template.targetPath);
   }
+  for (const template of agentsMdVariantTemplates) {
+    resolveGeneratedPath(publicInstructionRoot, template.downloadName);
+    resolveGeneratedPath(packageRoot, template.downloadName);
+    resolveGeneratedPath(packageRoot, template.targetPath);
+  }
 
   removeGeneratedPath(publicInstructionRoot, ".", { recursive: true, force: true });
   writeGeneratedFile(publicInstructionRoot, "compatibility.json", compatibilityJson);
   writeGeneratedFile(publicInstructionRoot, "compatibility.csv", compatibilityCsv);
   writeGeneratedFile(publicInstructionRoot, "benchmark-results.json", benchmarkResultsJson);
   for (const template of instructionTemplates) {
+    writeGeneratedFile(publicInstructionRoot, template.downloadName, renderTemplateFile(template));
+  }
+  for (const template of agentsMdVariantTemplates) {
     writeGeneratedFile(publicInstructionRoot, template.downloadName, renderTemplateFile(template));
   }
   const mcpSecurityReview = renderMcpSecurityReviewMarkdown();
@@ -127,7 +146,7 @@ export function main() {
     "README.md",
     renderGithubReadme({
       records: toolInstructionSupport,
-      templates: instructionTemplates,
+      templates: [...instructionTemplates, ...agentsMdVariantTemplates],
       repositoryTree,
       verifiedAt: instructionResourceVerifiedAt,
     }),
@@ -143,6 +162,11 @@ export function main() {
       writeGeneratedFile(packageRoot, "example-repository/apps/web/AGENTS.md", rendered);
     }
   }
+  for (const template of agentsMdVariantTemplates) {
+    const rendered = renderTemplateFile(template);
+    writeGeneratedFile(packageRoot, `templates/${template.downloadName}`, rendered);
+    writeGeneratedFile(packageRoot, template.targetPath, rendered);
+  }
   writeGeneratedFile(
     packageRoot,
     "example-repository/packages/api/README.md",
@@ -150,6 +174,7 @@ export function main() {
   );
   writeGeneratedFile(packageRoot, "benchmark/benchmark-protocol.json", renderBenchmarkProtocolJson());
   writeGeneratedFile(packageRoot, "benchmark/benchmark-results.json", benchmarkResultsJson);
+  writeGeneratedFile(packageRoot, "benchmark/benchmark-manifest.json", renderBenchmarkManifest());
   writeGeneratedFile(packageRoot, "verifier/verify-instructions.mjs", renderVerifier(), 0o755);
 
   console.log(`Generated public resources in ${publicRoot}`);

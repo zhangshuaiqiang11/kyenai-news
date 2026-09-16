@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { filterArticles, getAllSources, getCategoryCounts, sortArticles } from "../lib/catalog";
+import { filterArticles, getAllSources, getCategoryCounts, sortArticles, toArticleSummary } from "../lib/catalog";
 import { seedArticles } from "../lib/seed";
 
 describe("catalog helpers", () => {
@@ -49,5 +49,16 @@ describe("catalog helpers", () => {
       expect(article?.blocks.some((block) => block.type === "source_note")).toBe(true);
     }
   });
-});
 
+  it("projects homepage article summaries without full article blocks or editorial-only detail fields", () => {
+    const summary = toArticleSummary(seedArticles[0]);
+    const serialized = JSON.stringify(summary);
+
+    expect(summary.title).toBe(seedArticles[0].title);
+    expect(summary.sources).toEqual(seedArticles[0].sources);
+    expect(serialized).not.toContain('"blocks"');
+    expect(serialized).not.toContain('"authorName"');
+    expect(serialized).not.toContain('"metaDescription"');
+    expect(serialized.length).toBeLessThan(JSON.stringify(seedArticles[0]).length / 2);
+  });
+});

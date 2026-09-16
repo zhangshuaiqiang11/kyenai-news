@@ -1,0 +1,3 @@
+5bc47091b4c30e197d345cdbbcf1bf785baed200a32bff6c56eb7f563e26f193  instruction-file-adoption-report-2026-q3.json
+de8154955fc63f68bc4d73195adfb990f93baf8de2f365453ea7acd19555cae9  instruction-file-adoption-report-2026-q3.csv
+c5fa98a12f8b6412a7996dd22169bb0b4d74b14d0caeb5c8618fc742201469d4  instruction-file-adoption-report-2026-q3-generator.mjs
