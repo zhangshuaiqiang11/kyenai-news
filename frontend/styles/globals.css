@@ -1398,6 +1398,19 @@ dd {
   color: #39414a;
 }
 
+.guide-code-block {
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: #20262d;
+  font: 0.9rem/1.55 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  margin: 14px 0 0;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 16px;
+  white-space: pre;
+}
+
 .guide-table-wrap {
   border: 1px solid var(--border);
   border-radius: 8px;

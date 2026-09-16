@@ -9,10 +9,10 @@ import {
 const coreGuides: Guide[] = [
   {
     id: "guide-agent-instructions-comparison",
-    title: "AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?",
+    title: "AGENTS.md vs copilot-instructions.md: Which File Should You Use?",
     slug: INSTRUCTION_COMPARISON_GUIDE_SLUG,
     summary:
-      "Use this support matrix to decide whether CLAUDE.md, Copilot instructions, AGENTS.md, or Cursor rules should carry repository guidance for each tool surface.",
+      "Choose between AGENTS.md, copilot-instructions.md, CLAUDE.md, and Cursor rules by tool surface, scope, precedence, and the workflow you need to support.",
     intent:
       "Choose compatible instruction files, migrate Cursor rules carefully, and test AI coding tools without unsupported benchmark claims.",
     audience: "Developer tools teams, staff engineers, platform teams, and AI coding adopters.",
@@ -29,7 +29,7 @@ const coreGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "AGENTS.md vs CLAUDE.md is a reader-support question, not a choice between interchangeable filenames. Use AGENTS.md for Codex and as an open shared policy for other documented readers; use CLAUDE.md for Claude Code, where it can import @AGENTS.md; use .github/copilot-instructions.md for broad GitHub Copilot repository guidance; and use .cursor/rules/*.mdc for current Cursor project rules. GitHub Copilot support for CLAUDE.md depends on the Copilot surface: selected cloud-agent surfaces and Copilot CLI support it, while many Copilot Chat and code-review surfaces do not. No single filename is a universal baseline across every agent surface.",
+          "If you need one practical default, use AGENTS.md for Codex, CLAUDE.md for Claude Code, .github/copilot-instructions.md for broad GitHub Copilot coverage, and .cursor/rules/*.mdc for current Cursor project rules. The files are adapters, not interchangeable names: Copilot support for CLAUDE.md depends on the Copilot surface—selected cloud-agent surfaces and Copilot CLI support it, while many Copilot Chat and code-review surfaces do not. Choose the documented reader first, then synchronize only the rules that must agree.",
         ],
       },
       {
@@ -343,10 +343,16 @@ const coreGuides: Guide[] = [
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
     publishedAt: "2026-06-14",
     updatedAt: "2026-09-08",
-    metaTitle: "AGENTS.md vs CLAUDE.md vs Copilot Instructions",
+    metaTitle: "AGENTS.md vs Copilot Instructions vs CLAUDE.md vs Cursor Rules (2026)",
     metaDescription:
-      "Compare CLAUDE.md, .github/copilot-instructions.md, AGENTS.md, and Cursor rules by tool surface, scope, and safe sync policy.",
+      "Compare AGENTS.md, copilot-instructions.md, CLAUDE.md, and Cursor rules by supported tool surface, scope, precedence, and safe sync policy.",
     resourceIds: ["instruction-files"],
+    decisionTablePlacement: "above-fold",
+    primaryAction: {
+      href: "/guides/agents-md-template-for-ai-coding-agents",
+      label: "Copy an AGENTS.md template",
+      note: "Start with a concise root policy, then add tool-specific adapters only where a documented surface requires them.",
+    },
   },
   {
     id: "guide-claude-code-subagents",
@@ -672,10 +678,10 @@ const coreGuides: Guide[] = [
   },
   {
     id: "guide-secure-mcp-servers",
-    title: "MCP Server Security Checklist: 25 Controls for AI Agents",
+    title: "MCP Server Security Checklist: 25 Controls for AI Agents — OAuth, Least Privilege",
     slug: MCP_SECURITY_GUIDE_SLUG,
     summary:
-      "Audit MCP server security with 25 source-backed controls covering authentication, permissions, prompt injection, secrets, sandboxing, logging, revocation, and allow-or-deny tests.",
+      "MCP server security starts with a source-backed checklist for OAuth, token audience validation, least privilege, secrets, network boundaries, logging, and revocation.",
     intent:
       "Answer how to secure an MCP server with source-backed protocol checks and clearly labeled operational controls.",
     audience: "Engineering leaders, security reviewers, platform teams, and developer tooling owners.",
@@ -691,7 +697,7 @@ const coreGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Secure MCP server connections to AI agents before any tool can act. Validate authentication and token audience, avoid token passthrough, grant least-privilege read-only access first, block secrets and undeclared network destinations, log high-impact calls without sensitive payloads, and prove revocation works. Human approval and attributable audit logs are KyenAI operational recommendations for destructive or production actions, not requirements imposed by the MCP specification.",
+          "Before an MCP tool can act, validate OAuth or the documented authorization flow, token audience, scopes, least-privilege access, secret and network boundaries, and emergency revocation. Launch read-only first; test both allowed and denied calls in MCP Inspector. Human approval, attributable audit logs, and read/write separation are KyenAI operational recommendations for destructive or production actions—not universal MCP requirements.",
         ],
       },
       {
@@ -908,17 +914,22 @@ const coreGuides: Guide[] = [
     relatedArticleSlugs: ["github-copilot-cloud-local-sandboxes-preview", "visual-studio-agent-mode-mcp-general-availability"],
     publishedAt: "2026-06-14",
     updatedAt: "2026-09-08",
-    metaTitle: "MCP Server Security Checklist: 25 Controls for AI Agents",
+    metaTitle: "MCP Server Security Checklist: 25 Controls — Least Privilege & Revocation",
     metaDescription:
-      "Audit MCP server security across authentication, permissions, prompt injection, secrets, logging, sandboxing, and revocation. Download PDF, CSV, or JSON.",
+      "Secure MCP servers with OAuth, token audience checks, least privilege, secret and network boundaries, logging, and revocation. Download the checklist.",
     resourceIds: ["mcp-security"],
+    primaryAction: {
+      href: "/resources/mcp-security-review.md",
+      label: "Download the MCP security checklist",
+      note: "Run the launch gates against one named server and version before adding write, network, secret, or production access.",
+    },
   },
   {
     id: "guide-mcp-tool-discovery",
-    title: "MCP Server Not Showing Tools? Diagnose tools/list in 8 Checks",
+    title: "MCP Server Connected but No Tools? 8 tools/list Checks",
     slug: MCP_TOOL_DISCOVERY_GUIDE_SLUG,
     summary:
-      "Fix an MCP server that is missing, connected with zero tools, stale, filtered, or visible but never called across Claude Code, Cursor, GitHub Copilot, and other clients.",
+      "Fix an MCP server that is connected but exposes zero tools, is stale or filtered, or is visible but never called across Claude Code, Cursor, GitHub Copilot, and other clients.",
     intent:
       "Diagnose why an MCP server is not showing tools and identify the first failing layer without widening permissions or reinstalling everything.",
     audience: "Developers, MCP server authors, platform teams, and AI coding tool administrators.",
@@ -935,7 +946,7 @@ const coreGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "If an MCP server is not showing tools, do not start by reinstalling the client. Prove each layer in order: confirm the client loaded the server config, reproduce the process or HTTP transport, complete initialization, and inspect tools/list in MCP Inspector. If Inspector lists the tools, the server works and the remaining fault is usually client scope, authentication, a tool allowlist or denylist, stale discovery, or on-demand tool loading. A visible tool that is never called is a selection or permission problem, not a discovery problem.",
+          "Connected but no tools? Start with the first failing layer, not a reinstall: confirm the active config, reproduce the transport, complete initialize, inspect tools/list in MCP Inspector, then check client scope, authentication, filters, refresh, and on-demand loading. If Inspector lists the tools, the server is exposing them and the remaining fault is client policy or invocation. If Inspector is empty, fix the server or registration before changing permissions. A visible tool that is never called is a selection or permission problem, not a discovery problem.",
         ],
       },
       {
@@ -1127,8 +1138,13 @@ const coreGuides: Guide[] = [
     updatedAt: "2026-09-15",
     metaTitle: "MCP Server Connected but No Tools? 8 Checks for tools/list",
     metaDescription:
-      "Diagnose an MCP server connected with zero tools using initialize, tools/list, Inspector, client filters, refresh, and invocation checks.",
+      "MCP server connected but no tools? Diagnose initialize, tools/list, Inspector, client filters, refresh, authentication, and invocation in 8 checks.",
     resourceIds: ["mcp-tool-discovery"],
+    primaryAction: {
+      href: "/resources/mcp-tool-discovery-debug-checklist.md",
+      label: "Download the 8-check debugger",
+      note: "Capture the first failing layer and the client/server versions before widening permissions.",
+    },
   },
   {
     id: "guide-antigravity-cli-migration",

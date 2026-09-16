@@ -47,7 +47,7 @@ describe("guide Markdown API", () => {
     if (method === "HEAD") {
       expect(response.body).toBe("");
     } else {
-      expect(response.body).toContain("# What Is Loop Engineering");
+      expect(response.body).toContain("# Loop Engineering for AI Coding Agents: Stop Rules & Verification");
     }
   });
 

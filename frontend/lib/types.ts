@@ -92,6 +92,12 @@ export type GuideInternalLink = {
   reason: string;
 };
 
+export type GuidePrimaryAction = {
+  href: string;
+  label: string;
+  note: string;
+};
+
 export type SupportStatus = "documented" | "legacy" | "observed" | "unsupported" | "unknown";
 
 export type ToolInstructionSupport = {
@@ -173,6 +179,8 @@ export type Guide = {
   metaTitle: string;
   metaDescription: string;
   resourceIds?: GuideResourceId[];
+  decisionTablePlacement?: "above-fold" | "body";
+  primaryAction?: GuidePrimaryAction;
 };
 
 export type GuideSummary = Pick<

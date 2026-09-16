@@ -268,10 +268,10 @@ const rawSeedArticles: Article[] = [
   },
   {
     id: "article-cursor-enterprise-orgs",
-    title: "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions",
+    title: "Cursor Enterprise Data Retention & Security: What Admins Must Verify",
     slug: "cursor-enterprise-organizations-governance",
     summary:
-      "Cursor Enterprise security depends on Privacy Mode, model-provider retention exceptions, SSO and SCIM, repository and model controls, MCP governance, audit logs, and agent permissions.",
+      "Cursor Enterprise retention is not one universal number. Verify Privacy Mode, model-provider exceptions, Cloud Agent storage, SSO/SCIM, repository and model controls, MCP governance, audit logs, and contract terms before rollout.",
     category: "Security & Governance",
     tags: ["cursor", "enterprise", "security", "privacy-mode", "agent-permissions"],
     authorName: "Editorial Automation Desk",
@@ -282,14 +282,14 @@ const rawSeedArticles: Article[] = [
       {
         id: "cursor-security-heading",
         type: "heading",
-        content: "Cursor Enterprise Security Controls to Check First",
+        content: "Cursor Enterprise Data Retention and Security Controls to Check First",
         sourceIds: ["src-cursor-enterprise-orgs", "src-cursor-security", "src-cursor-data-use"],
       },
       {
         id: "body-1",
         type: "paragraph",
         content:
-          "There is no universal Cursor Enterprise zero-retention result that applies to every model, feature, workspace, or contract. Current Cursor documentation points buyers toward a connected bundle of controls: organization administration, role permissions, repository allowlists or blocklists, model and MCP server controls, SSO and SCIM, audit logs, subprocessors, and Privacy Mode data-handling choices.",
+          "There is no single default retention period that applies to every Cursor model, feature, workspace, Cloud Agent run, or contract. Treat the answer as Unknown until the admin verifies the exact model and feature path. Current Cursor documentation points buyers toward a connected bundle of controls: organization administration, role permissions, repository allowlists or blocklists, model and MCP server controls, SSO and SCIM, audit logs, subprocessors, Privacy Mode, and contract-specific data terms.",
         sourceIds: ["src-cursor-enterprise-orgs", "src-cursor-security", "src-cursor-data-use"],
       },
       {
@@ -375,9 +375,9 @@ const rawSeedArticles: Article[] = [
     publishedAt: "2026-06-03T09:00:00Z",
     updatedAt: "2026-09-15T00:00:00Z",
     version: 5,
-    metaTitle: "Cursor Enterprise Security: Privacy Mode & Retention Exceptions",
+    metaTitle: "Cursor Data Retention & Enterprise Security: Privacy Mode, ZDR",
     metaDescription:
-      "Cursor Enterprise security checklist for Privacy Mode, retention exceptions, SSO/SCIM, MCP, Cloud Agents, and audit controls before rollout.",
+      "Verify Cursor Enterprise Privacy Mode, ZDR exceptions, model and Cloud Agent retention, SSO/SCIM, MCP controls, audit evidence, and contract terms before rollout.",
   },
   {
     id: "article-gpt-53-codex",

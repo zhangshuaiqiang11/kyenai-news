@@ -225,7 +225,7 @@ describe("public guide SEO copy", () => {
 
     const answerPanel = screen.getByRole("heading", { name: /^quick answer$/i }).closest("section");
     expect(answerPanel?.textContent).toMatch(
-      /GitHub Copilot support for CLAUDE\.md depends on the Copilot surface/i,
+      /Copilot support for CLAUDE\.md depends on the Copilot surface/i,
     );
     expect(answerPanel?.textContent).toMatch(/selected cloud-agent surfaces and Copilot CLI support it/i);
     expect(answerPanel?.textContent).toMatch(/many Copilot Chat and code-review surfaces do not/i);
@@ -273,12 +273,12 @@ describe("public guide SEO copy", () => {
     const guide = getGuide("agents-md-vs-claude-md-cursorrules-copilot-instructions")!;
     render(<GuidePage guide={guide} relatedGuides={getInternalLinkedGuides(guide)} relatedArticles={[]} />);
 
-    expect(document.title).toBe("AGENTS.md vs CLAUDE.md vs Copilot Instructions | KyenAI");
+    expect(document.title).toBe("AGENTS.md vs Copilot Instructions vs CLAUDE.md vs Cursor Rules (2026) | KyenAI");
     expect(document.querySelector<HTMLMetaElement>('meta[name="description"]')?.content).toBe(
-      "Compare CLAUDE.md, .github/copilot-instructions.md, AGENTS.md, and Cursor rules by tool surface, scope, and safe sync policy.",
+      "Compare AGENTS.md, copilot-instructions.md, CLAUDE.md, and Cursor rules by supported tool surface, scope, precedence, and safe sync policy.",
     );
     expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(
-      "AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?",
+      "AGENTS.md vs copilot-instructions.md: Which File Should You Use?",
     );
     expect(document.querySelector(".instruction-evidence-refresh")?.textContent).toMatch(
       /Evidence refresh:\s*GitHub's current support matrix/i,
@@ -355,7 +355,7 @@ describe("public guide SEO copy", () => {
     await screen.findByRole("heading", { name: /loop engineering pattern matrix/i });
 
     const answerPanel = screen.getByRole("heading", { name: /^quick answer$/i }).closest("section");
-    expect(answerPanel?.textContent).toMatch(/act → observe → reason/i);
+    expect(answerPanel?.textContent).toMatch(/Plan → Act → Observe → Verify → Stop/i);
     expect(answerPanel?.textContent).toMatch(/token or cost caps/i);
     expect(answerPanel?.textContent).toMatch(/human checkpoint/i);
   });

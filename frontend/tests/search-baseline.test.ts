@@ -19,7 +19,7 @@ describe("search growth baseline", () => {
 
   it("keeps page metrics separate from editorial query mappings", () => {
     expect(Object.keys(priorityPageBaselines)).toHaveLength(8);
-    expect(prioritySearchTargets).toHaveLength(30);
+    expect(prioritySearchTargets).toHaveLength(34);
     expect(prioritySearchTargets.every((target) => target.mappingBasis === "editorial-target")).toBe(true);
     expect(prioritySearchTargets.some((target) => target.observedQueryMetric === null)).toBe(true);
     expect(prioritySearchTargets.filter((target) => target.observedQueryMetric !== null)

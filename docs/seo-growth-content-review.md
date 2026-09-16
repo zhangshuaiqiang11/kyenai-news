@@ -6,12 +6,12 @@ This ledger records the September 2026 on-site optimization pass. It is an edito
 
 | Priority | Primary intent | Canonical path | Change in this pass | Evidence boundary |
 | --- | --- | --- | --- | --- |
-| P0 | Choose an instruction file | `/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions` | Moved the direct selection answer, support matrix, and migration path forward. | Product support is stated by surface and tied to current official documentation. |
-| P0 | Get an AGENTS.md template | `/guides/agents-md-template-for-ai-coding-agents` | Shortened the path to the builder and verified deterministic Node.js, Python, and monorepo outputs. | Template output is locally tested; it is not represented as product certification. |
-| P0 | Diagnose missing MCP tools | `/guides/mcp-server-not-showing-tools` | Added symptom-led diagnosis and a crawlable minimal `tools/list` reproduction beside the existing debugger. | Protocol claims use the MCP specification; product-specific behavior is kept separate. |
-| P0 | Check Copilot CLAUDE.md support | `/guides/does-github-copilot-read-claude-md-support-matrix` | Clarified the surface-specific answer and separated it from the broad comparison intent. | The support matrix is date-sensitive; unsupported surfaces are not inferred. |
-| P1 | Review Cursor enterprise controls | `/articles/cursor-enterprise-organizations-governance` | Updated Privacy Mode, retention, permission, and audit caveats; retained the existing control matrix and download. | Vendor claims are labeled as vendor-documented. Customer configuration and contracts still require verification. |
-| P1 | Secure an MCP server | `/guides/secure-mcp-servers-ai-coding-agents` | Strengthened authentication, least privilege, revocation, failure handling, and troubleshooting links. | Checklist controls are recommendations unless the protocol documentation defines the behavior. |
+| P0 | Choose an instruction file | `/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions` | Reframed the title around `AGENTS.md` vs `copilot-instructions.md`, moved the decision table above the fold, and added a template action. | Product support is stated by surface and tied to current official documentation; the GSC mapping remains editorial because Query x Page was not exported. |
+| P0 | Get an AGENTS.md template | `/guides/agents-md-template-for-ai-coding-agents` | Keep the page focused on copy, download, and validation for Codex, Node.js, Python, and monorepos. | Template output is locally tested; it is not represented as product certification. |
+| P0 | Diagnose missing MCP tools | `/guides/mcp-server-not-showing-tools` | Reframed the title and first answer around the connected-but-empty `tools/list` symptom and linked the eight-check debugger. | Protocol claims use the MCP specification; product-specific behavior is kept separate. |
+| P0 | Check Copilot CLAUDE.md support | `/guides/does-github-copilot-read-claude-md-support-matrix` | Keep the exact-question page surface-specific and separate from broad instruction-file comparison intent. | The support matrix is date-sensitive; unsupported surfaces are not inferred. |
+| P1 | Review Cursor enterprise controls | `/articles/cursor-enterprise-organizations-governance` | Put the retention boundary in the title and answer: no universal default period; admins must verify model, feature, Cloud Agent, workspace, and contract terms. | Vendor claims are labeled as vendor-documented. Customer configuration and contracts still require verification. |
+| P1 | Secure an MCP server | `/guides/secure-mcp-servers-ai-coding-agents` | Reframed the title and first answer around OAuth, token audience, least privilege, network and secret boundaries, and revocation. | Checklist controls are recommendations unless the protocol documentation defines the behavior. |
 
 ## Journey design
 
@@ -35,6 +35,13 @@ This ledger records the September 2026 on-site optimization pass. It is an edito
 - The same source URL keeps separate verification state for every page that uses it.
 - Every checked source records a conclusion and change note in the content data. Historical datasets retain their original sampling date and stated limitations.
 - Recheck the six pages against official product documentation before changing volatile security, retention, permission, audit, or support claims.
+
+## CTR experiment notes
+
+- `frontend/lib/search-baseline.ts` keeps page and query metrics from the same exported window and adds `priorityIntentNotes` for editorial ownership.
+- The target-query list is not a Query x Page report. Do not claim that an individual query caused a page click, template copy, debugger use, or security download.
+- Compare complete 7-, 14-, 28-, and (for low samples) 56-day windows only after the revised pages are live. Keep one title/meta experiment family at a time.
+- Calculate CTR as clicks divided by impressions for the same GSC row. Do not sum separate dimensions or average average-position values across pages.
 
 ## Observation window
 

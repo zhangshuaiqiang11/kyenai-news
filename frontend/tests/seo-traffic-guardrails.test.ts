@@ -7,22 +7,22 @@ import { seedArticles } from "../lib/seed";
 const protectedGuides = [
   {
     slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
-    title: "AGENTS.md vs CLAUDE.md vs Copilot Instructions: Which File Should You Use?",
-    metaTitle: "AGENTS.md vs CLAUDE.md vs Copilot Instructions",
+    title: "AGENTS.md vs copilot-instructions.md: Which File Should You Use?",
+    metaTitle: "AGENTS.md vs Copilot Instructions vs CLAUDE.md vs Cursor Rules (2026)",
     publishedAt: "2026-06-14",
     updatedAt: "2026-09-08",
   },
   {
     slug: "agents-md-template-for-ai-coding-agents",
-    title: "AGENTS.md Template for Codex and Monorepos",
+    title: "AGENTS.md Template for Codex, Node.js, Python & Monorepos",
     metaTitle: "AGENTS.md Template for Codex: Node.js, Python & Monorepos",
     publishedAt: "2026-06-14",
     updatedAt: "2026-09-08",
   },
   {
     slug: "loop-engineering-ai-coding-agents",
-    title: "What Is Loop Engineering for AI Coding Agents?",
-    metaTitle: "Loop Engineering for AI Coding Agents: Addy Osmani, Stop Rules",
+    title: "Loop Engineering for AI Coding Agents: Stop Rules & Verification",
+    metaTitle: "Loop Engineering for AI Coding Agents: Stop Rules & Verification",
     publishedAt: "2026-06-15",
     updatedAt: "2026-09-15",
   },
@@ -38,8 +38,8 @@ const protectedArticles = [
   },
   {
     slug: "cursor-enterprise-organizations-governance",
-    title: "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions",
-    metaTitle: "Cursor Enterprise Security: Privacy Mode & Retention Exceptions",
+    title: "Cursor Enterprise Data Retention & Security: What Admins Must Verify",
+    metaTitle: "Cursor Data Retention & Enterprise Security: Privacy Mode, ZDR",
     publishedAt: "2026-06-03T09:00:00Z",
     updatedAt: "2026-09-15T00:00:00Z",
   },

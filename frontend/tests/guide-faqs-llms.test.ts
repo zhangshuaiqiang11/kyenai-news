@@ -54,7 +54,7 @@ describe("llms.txt", () => {
     expect(publicBody).toContain("# KyenAI");
     expect(publicBody).toContain("## All guides");
     expect(publicBody).toContain("https://www.kyenai.com/tools/instruction-file-checker");
-    expect(publicBody).toContain("[What Is Loop Engineering for AI Coding Agents?");
+    expect(publicBody).toContain("[Loop Engineering for AI Coding Agents: Stop Rules & Verification]");
     expect(publicBody).toContain("[Codex vs Claude Code](https://www.kyenai.com/guides/codex-vs-claude-code):");
     expect(publicBody).toContain("https://www.kyenai.com/articles/spacex-cursor-acquisition-2026");
     expect(publicBody).toContain("https://www.kyenai.com/articles/cursor-enterprise-organizations-governance");

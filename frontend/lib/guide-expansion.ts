@@ -305,10 +305,10 @@ export const expansionGuides: Guide[] = [
   },
   {
     id: "guide-agents-md-template",
-    title: "AGENTS.md Template for Codex and Monorepos",
+    title: "AGENTS.md Template for Codex, Node.js, Python & Monorepos",
     slug: "agents-md-template-for-ai-coding-agents",
     summary:
-      "Build, audit, copy, and download concise AGENTS.md starters for Codex, Node.js, Python, and monorepos with commands, boundaries, and review checks.",
+      "Copy, download, and validate concise AGENTS.md templates for Codex, Node.js, Python, and monorepos with commands, boundaries, and review checks.",
     intent: "Developers want a copyable AGENTS.md template instead of another explanation of what instruction files are.",
     audience: "Developers setting up Codex-compatible agents, team leads standardizing repo instructions, and maintainers cleaning stale agent rules.",
     pageType: "Template and checklist",
@@ -317,7 +317,7 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "A useful AGENTS.md template gives Codex copyable repo instructions: project purpose, install command, test command, safe edit boundaries, forbidden files, and review expectations. Start with one root file, then add nested AGENTS.md files only for Node.js, Python, or monorepo packages that need different commands, ownership, or safety boundaries.",
+          "Need an AGENTS.md you can use today? Copy a root template, replace its commands with the ones that pass in your repository, then validate it before committing. The template covers project purpose, install and test commands, safe edit boundaries, forbidden files, and review expectations; add nested files only for Node.js, Python, or monorepo packages with genuinely different commands or ownership.",
         ],
       },
       {
@@ -499,13 +499,19 @@ export const expansionGuides: Guide[] = [
     metaDescription:
       "Copy tested AGENTS.md templates for Codex, Node.js, Python and monorepos. Includes setup commands, test rules, safe edit boundaries and review checks.",
     resourceIds: ["agents-md-template"],
+    decisionTablePlacement: "above-fold",
+    primaryAction: {
+      href: "/resources/instruction-files/kyenai-agents-md-starter-pack.zip",
+      label: "Download the AGENTS.md starter pack",
+      note: "Replace placeholders, run the listed commands, and use the validator before merging the file.",
+    },
   },
   {
     id: "guide-copilot-claude-md-support",
     title: "Does GitHub Copilot Read CLAUDE.md? Support Matrix by Surface",
     slug: "does-github-copilot-read-claude-md-support-matrix",
     summary:
-      "GitHub Copilot support for CLAUDE.md is surface-specific. Use the GitHub support matrix before relying on it, and keep .github/copilot-instructions.md as the broad Copilot baseline.",
+      "Does GitHub Copilot read CLAUDE.md? It depends on the surface. Check Chat, CLI, cloud-agent, and code-review support, then keep .github/copilot-instructions.md as the broad Copilot baseline.",
     intent:
       "Developers want a direct answer about whether GitHub Copilot reads CLAUDE.md in Chat, cloud-agent, code-review, CLI, or IDE workflows.",
     audience: "Maintainers standardizing Copilot, Claude Code, and Codex repository instruction files.",
@@ -520,7 +526,7 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "GitHub Copilot does not have one universal answer for CLAUDE.md. GitHub documents instruction-file support by Copilot surface, so CLAUDE.md should be treated as a surface-specific input. For broad Copilot repository guidance, use .github/copilot-instructions.md and keep CLAUDE.md for Claude Code.",
+          "Does GitHub Copilot read CLAUDE.md? There is no universal yes or no. GitHub documents support by surface, so check the exact Chat, CLI, cloud-agent, or code-review workflow before relying on it. For broad Copilot repository guidance, use .github/copilot-instructions.md and keep CLAUDE.md for Claude Code.",
         ],
       },
       {
@@ -692,13 +698,19 @@ export const expansionGuides: Guide[] = [
     metaDescription:
       "Check when GitHub Copilot reads CLAUDE.md, when to use copilot-instructions.md, and which Copilot surfaces need each file.",
     resourceIds: ["copilot-surface-matrix"],
+    decisionTablePlacement: "above-fold",
+    primaryAction: {
+      href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
+      label: "Compare all instruction files",
+      note: "Use the broad comparison after checking the exact Copilot surface that your team deploys.",
+    },
   },
   {
     id: "guide-agents-md-examples-codex",
-    title: "AGENTS.md Examples for Codex: Node.js, Python and Monorepos",
+    title: "AGENTS.md Examples for Codex: Node.js, Python & Monorepos",
     slug: "agents-md-examples-codex-node-python-monorepos",
     summary:
-      "Copy practical AGENTS.md patterns for Codex projects, including Node.js apps, Python services, and monorepos with nested package instructions.",
+      "Copy practical AGENTS.md examples for Codex projects, including Node.js apps, Python services, and monorepos with nested package instructions and test commands.",
     intent:
       "Developers want concrete AGENTS.md examples for Codex instead of only a checklist or conceptual comparison.",
     audience: "Developers and maintainers writing Codex repository instructions for real projects.",
@@ -714,7 +726,7 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "A good AGENTS.md example gives Codex the repo purpose, allowed edit scope, setup commands, verification commands, generated-file boundaries, secret policy, and review expectations. Start with one root file, then add nested AGENTS.md files only where Node.js, Python, or monorepo packages need different commands.",
+          "Start from the example that matches your repository: Node.js, Python, or monorepo. Each copyable AGENTS.md example names the repo purpose, allowed edit scope, setup and verification commands, generated-file boundaries, secret policy, and review expectations. Use one root file first; add nested files only where package commands or ownership actually differ.",
         ],
       },
       {
@@ -873,6 +885,12 @@ export const expansionGuides: Guide[] = [
     metaTitle: "AGENTS.md Examples for Codex, Node.js, Python",
     metaDescription:
       "Copy AGENTS.md examples for Codex projects, including Node.js apps, Python services, monorepos, nested files, commands, and review rules.",
+    decisionTablePlacement: "above-fold",
+    primaryAction: {
+      href: "/guides/agents-md-template-for-ai-coding-agents",
+      label: "Start from the AGENTS.md template",
+      note: "Use these Node.js, Python, and monorepo examples to replace placeholders with tested repository commands.",
+    },
   },
   {
     id: "guide-agent-mode-vs-chat-mode",
@@ -1400,10 +1418,10 @@ export const expansionGuides: Guide[] = [
   },
   {
     id: "guide-loop-engineering",
-    title: "What Is Loop Engineering for AI Coding Agents?",
+    title: "Loop Engineering for AI Coding Agents: Stop Rules & Verification",
     slug: "loop-engineering-ai-coding-agents",
     summary:
-      "Learn loop engineering for AI coding agents through Addy Osmani's workflow context, a budget calculator, stop rules, and a downloadable proof-of-done JSON contract.",
+      "Design bounded AI coding-agent loops with Plan-Act-Observe-Verify-Stop, retry caps, proof-of-done checks, and explicit escalation rules.",
     intent:
       "Developers want to move from prompting agents task-by-task to designing durable loops that plan, change code, verify results, and stop safely.",
     audience: "Developers, staff engineers, and platform teams adopting agentic coding workflows in Cursor, Claude Code, Codex, or custom CI agents.",
@@ -1421,7 +1439,7 @@ export const expansionGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "Loop engineering for AI coding agents means designing the repeatable control loop around the agent, not writing one better prompt. Addy Osmani's loop engineering approach is useful context, but the practical repo loop is Plan → Act → Observe → Verify → Stop, a stricter version of the act → observe → reason cycle: give the agent a bounded goal, inspect tests or diffs, retry only with a changed strategy, and stop on token or cost caps, repeated failure, risky permission changes, or a required human checkpoint.",
+          "Loop engineering means designing the repeatable control loop around an AI coding agent—not writing one better prompt. Use Plan → Act → Observe → Verify → Stop: give the agent a bounded goal, inspect tests or diffs, retry only with a changed strategy, and stop on token or cost caps, repeated failure, risky permission changes, or a required human checkpoint. Addy Osmani's framing is useful context; this page turns it into repository-level proof and stop rules.",
         ],
       },
       {
@@ -1692,10 +1710,16 @@ export const expansionGuides: Guide[] = [
     ],
     publishedAt: "2026-06-15",
     updatedAt: "2026-09-15",
-    metaTitle: "Loop Engineering for AI Coding Agents: Addy Osmani, Stop Rules",
+    metaTitle: "Loop Engineering for AI Coding Agents: Stop Rules & Verification",
     metaDescription:
-      "Loop engineering guide for AI coding agents: Plan-Act-Observe-Verify-Stop, retry caps, proof-of-done examples, and a budget calculator.",
+      "Design AI coding-agent loops with Plan-Act-Observe-Verify-Stop, retry caps, proof-of-done checks, budgets, and safe escalation rules.",
     resourceIds: ["loop-engineering"],
+    decisionTablePlacement: "above-fold",
+    primaryAction: {
+      href: "/resources/loop-engineering/proof-of-done-contract.json",
+      label: "Download the proof-of-done contract",
+      note: "Bind each verification result to the exact source revision and stop when evidence is stale or incomplete.",
+    },
   },
   {
     id: "guide-ai-coding-agents-comparison",
@@ -2396,5 +2420,307 @@ export const expansionGuides: Guide[] = [
     metaDescription:
       "Compare Codex, Copilot, Cursor, Gemini CLI, Cline, Aider, and OpenCode by interface, model choice, permissions, cost model, and team fit.",
     resourceIds: ["claude-code-alternatives"],
+  },
+  {
+    id: "guide-ai-coding-config-files",
+    title: "AI Coding Config Files Guide: AGENTS.md, CLAUDE.md, Gemini, Copilot, Cursor & Windsurf (2026)",
+    slug: "ai-coding-config-files-guide",
+    summary:
+      "Choose and organize AGENTS.md, CLAUDE.md, GEMINI.md, GitHub Copilot instructions, Cursor Rules, and Windsurf Rules with a surface-aware support matrix, copyable repository layout, and safe synchronization policy.",
+    intent:
+      "Developers and platform teams want one practical map of AI coding configuration files before they add repository instructions or migrate between coding agents.",
+    audience:
+      "Developers, platform engineers, staff engineers, and engineering managers standardizing AI coding-agent instructions across repositories.",
+    pageType: "AI coding configuration hub",
+    secondaryKeywords: [
+      "AI coding config files",
+      "AI coding configuration files",
+      "coding agent instruction files",
+      "AI assistant config files",
+      "AGENTS.md CLAUDE.md GEMINI.md",
+      "Copilot instructions Cursor rules Windsurf rules",
+      "repository instructions for AI coding agents",
+    ],
+    sections: [
+      {
+        heading: "Quick answer",
+        body: [
+          "There is no universal AI coding config filename. Use AGENTS.md for documented Codex and cross-agent repository guidance, CLAUDE.md for Claude Code project memory, GEMINI.md for Gemini CLI guidance, .github/copilot-instructions.md for broad GitHub Copilot repository instructions, .cursor/rules/*.mdc for current Cursor project rules, and .windsurf/rules/*.md for Windsurf rules. Keep one canonical policy and maintain short tool-specific adapters; verify support by product surface before assuming a file is loaded.",
+          "If a repository uses several agents, start with the matrix below, choose the smallest set of files that covers the actual surfaces, then test one real task with the same commands and permissions. Do not copy a large prompt into every file: duplicated instructions drift, consume context, and can give different agents contradictory safety rules.",
+        ],
+      },
+      {
+        heading: "Which file should you use?",
+        body: [
+          "Use the file that the intended agent surface documents. AGENTS.md is a readable Markdown convention for agent instructions and is the repository instruction file documented by Codex. CLAUDE.md is Claude Code's project memory file. GEMINI.md is the project context file documented by Gemini CLI. GitHub Copilot uses .github/copilot-instructions.md for repository-wide instructions and also has separate path-specific instruction files.",
+          "Cursor and Windsurf use their own rule systems for the features that need metadata, file globs, activation mode, or editor-specific behavior. A shared AGENTS.md can still be useful where a product documents support, but a shared filename should not be treated as proof of identical discovery, scope, precedence, or context behavior.",
+        ],
+      },
+      {
+        heading: "Configuration file support matrix",
+        body: [
+          "The matrix is a decision aid, not a promise that every plan, editor, CLI, or cloud surface behaves the same way. Follow the linked official documentation for the exact product version and surface, and mark an unverified claim Unknown instead of inferring support from a filename.",
+        ],
+      },
+      {
+        heading: "A copyable repository layout",
+        body: [
+          "Start with a short root policy, then add only the scoped adapters and nested rules that a real package or tool needs. The example below keeps shared commands and boundaries visible while leaving tool-specific metadata in the file format that owns it.",
+          "```text\nrepository/\n├── AGENTS.md                         # canonical shared policy (if your team chooses it)\n├── CLAUDE.md                         # Claude Code adapter or @AGENTS.md import\n├── GEMINI.md                         # Gemini CLI adapter\n├── .github/\n│   ├── copilot-instructions.md       # broad Copilot repository guidance\n│   └── instructions/                 # optional path-specific Copilot rules\n│       └── tests.instructions.md\n├── .cursor/\n│   └── rules/                        # focused Cursor project rules\n│       └── testing.mdc\n├── .windsurf/\n│   └── rules/                        # focused Windsurf rules\n│       └── review.md\n└── packages/\n    └── api/\n        └── AGENTS.md                 # local exception only when needed\n```",
+        ],
+      },
+      {
+        heading: "One canonical policy, several adapters",
+        body: [
+          "Choose one maintained source for facts that must agree everywhere: setup commands, architecture boundaries, test commands, generated-file rules, secrets policy, review expectations, and stop conditions. That source may be AGENTS.md, CLAUDE.md, or an internal policy document; the choice is a maintenance decision, not a claim about universal reader support.",
+          "Keep adapters short. An adapter can point maintainers to the canonical policy, express the local file's scope and precedence, and add the few settings that only its tool understands. If an agent cannot follow links or the policy contains security-critical rules, copy the critical rule into the adapter and review it as a synchronized change.",
+        ],
+      },
+      {
+        heading: "What should not go in an AI coding config file?",
+        body: [
+          "Do not commit API keys, access tokens, private certificates, customer data, production credentials, or copied incident transcripts. Do not use a config file as a dumping ground for the entire architecture, every historical decision, or a vendor's marketing text. Long context reduces the chance that the agent notices the command and safety rule that actually matters.",
+          "Do not grant permission merely by writing 'you may deploy' or 'skip review'. State the allowed directories, required approval, proof command, rollback boundary, and escalation owner. Keep secrets in the approved secret manager and keep destructive operations behind an explicit human checkpoint.",
+        ],
+      },
+      {
+        heading: "How to write instructions that agents can verify",
+        body: [
+          "Write commands and acceptance criteria that a reviewer can run: install, lint, test, build, migration check, or a focused smoke test. Pair every risky operation with its boundary and stop condition. Prefer a small table of commands and expected results over a paragraph that says 'follow best practices'.",
+          "Separate repository facts from preferences. A fact names the current package manager or test command; a preference explains review style. Add an owner or update date when a rule is likely to become stale, and remove instructions that no longer match the repository.",
+        ],
+      },
+      {
+        heading: "Copilot support is surface-specific",
+        body: [
+          "GitHub documents .github/copilot-instructions.md as the repository-wide Copilot instruction path and documents additional scoped instruction files. CLAUDE.md support is not a universal Copilot guarantee: the exact support depends on the Copilot surface, such as CLI, cloud agent, Chat, or code review. Use the dedicated Copilot support matrix linked below when that distinction changes the rollout decision.",
+          "The safest broad Copilot baseline is still .github/copilot-instructions.md. Keep CLAUDE.md for Claude Code, and add a Copilot adapter even when a selected Copilot surface happens to read CLAUDE.md.",
+        ],
+      },
+      {
+        heading: "When should you use nested rules?",
+        body: [
+          "Add nested AGENTS.md or scoped editor rules only when a directory has a real local difference: a package-specific test command, generated files, a separate language toolchain, a different owner, or a stricter permission boundary. Keep the nested file shorter than the root and state only the exception.",
+          "Before adding another file, ask whether the difference belongs in the build system, editor settings, CI, or a human-owned policy instead. More files are not more governance when nobody can explain which file wins or which agent reads it.",
+        ],
+      },
+      {
+        heading: "Safe migration checklist",
+        body: [
+          "Inventory the current files, exact product surfaces, version or plan, and observed discovery behavior. Make one small adapter change, run the same task before and after, inspect the resulting diff, and keep the old file during comparison when a vendor labels it legacy or deprecated.",
+          "Record what was actually verified. If you did not measure context loading, precedence, elapsed time, cost, or human interventions, write Not measured. Do not convert a successful demo into a universal compatibility or benchmark claim.",
+        ],
+      },
+    ],
+    recommendedPlay: [
+      "List the agent surfaces the repository actually uses before choosing filenames.",
+      "Choose one canonical policy and create short adapters for documented readers.",
+      "Use .github/copilot-instructions.md for broad Copilot coverage and verify CLAUDE.md support by surface.",
+      "Put package-specific commands in nested files only when the package really differs.",
+      "Run one controlled task with the same repository state, permissions, and verification command after each migration.",
+    ],
+    decisionTable: {
+      title: "AI coding config files by reader and scope",
+      intro:
+        "Use this table to choose a starting file. Support, nesting, and precedence can change by product surface, plan, and version; use the official source before standardizing a repository policy.",
+      columns: ["File or rule system", "Best documented use", "Scope and caution"],
+      rows: [
+        {
+          label: "AGENTS.md",
+          values: [
+            "Codex repository instructions and a readable shared policy for tools that document support",
+            "Root or nested repository guidance can be useful, but every reader must be checked separately",
+            "Do not assume AGENTS.md is loaded by every editor, CLI, cloud agent, or review surface",
+          ],
+        },
+        {
+          label: "CLAUDE.md",
+          values: [
+            "Claude Code project memory, setup, workflow, and repository guidance",
+            "Project and user scope are documented by Claude Code; import or synchronize shared policy intentionally",
+            "Selected Copilot surfaces may support it, but it is not a universal Copilot baseline",
+          ],
+        },
+        {
+          label: "GEMINI.md",
+          values: [
+            "Gemini CLI project context and repository instructions",
+            "Use the scope and discovery rules documented by the Gemini CLI version in use",
+            "Keep Gemini-specific guidance separate from generic policy when commands or tools differ",
+          ],
+        },
+        {
+          label: ".github/copilot-instructions.md",
+          values: [
+            "Broad repository-wide GitHub Copilot instructions",
+            "Add path-specific .instructions.md files when a folder needs different guidance",
+            "Check Chat, CLI, coding-agent, and code-review support separately",
+          ],
+        },
+        {
+          label: ".cursor/rules/*.mdc",
+          values: [
+            "Current Cursor project rules with metadata and file matching",
+            "Rules can be always-on, file-matched, requested, or manual depending on metadata",
+            "Keep legacy .cursorrules during migration until observed behavior and checks pass",
+          ],
+        },
+        {
+          label: ".windsurf/rules/*.md",
+          values: [
+            "Windsurf project rules for editor-specific behavior and workflows",
+            "Use documented activation and scope settings for the Windsurf version in use",
+            "Do not treat Windsurf rule discovery as proof that another agent reads the same file",
+          ],
+        },
+      ],
+    },
+    actionSteps: [
+      {
+        title: "Inventory the readers",
+        body: "List every IDE, CLI, cloud agent, review surface, and automation that must use repository guidance. Record the product version or plan when support is surface-specific.",
+      },
+      {
+        title: "Choose the canonical policy",
+        body: "Put shared commands, architecture, security boundaries, and completion criteria in one maintained source, then identify the adapters that must stay synchronized.",
+      },
+      {
+        title: "Add only documented adapters",
+        body: "Use AGENTS.md, CLAUDE.md, GEMINI.md, Copilot instructions, Cursor Rules, and Windsurf Rules according to each publisher's documented reader and scope.",
+      },
+      {
+        title: "Add a local exception only when needed",
+        body: "A nested file should describe a real package-specific command, owner, generated-file boundary, or stricter safety rule. Remove duplicate paragraphs from the root policy.",
+      },
+      {
+        title: "Verify one real task",
+        body: "Run the same task with the same clean repository state, permissions, and proof command. Record measured results and write Not measured for values you did not capture.",
+      },
+    ],
+    pitfalls: [
+      {
+        title: "Treating one filename as a universal standard",
+        fix: "Map each file to a documented reader and surface. Keep a small adapter when a tool needs a different filename or metadata format.",
+      },
+      {
+        title: "Assuming Copilot reads CLAUDE.md everywhere",
+        fix: "Use .github/copilot-instructions.md for broad coverage and consult the Copilot surface matrix for exceptions.",
+      },
+      {
+        title: "Duplicating a giant policy across six files",
+        fix: "Choose one canonical source, synchronize only the critical rules, and keep adapters short enough to review for drift.",
+      },
+      {
+        title: "Putting secrets or deployment authority in Markdown",
+        fix: "Use approved secret storage and explicit human approvals. Config files should describe boundaries, not contain credentials or silently widen access.",
+      },
+      {
+        title: "Calling unmeasured behavior a benchmark",
+        fix: "Run a controlled task and publish only measured outcomes, versions, limitations, and the exact verification command.",
+      },
+    ],
+    internalLinks: [
+      {
+        slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
+        anchor: "compare AGENTS.md, CLAUDE.md, Copilot instructions, and Cursor Rules",
+        reason: "Use the evidence-backed comparison when the repository must choose a file by tool surface and precedence.",
+      },
+      {
+        slug: "agents-md-template-for-ai-coding-agents",
+        anchor: "copy an AGENTS.md starter template",
+        reason: "Start from a concise policy template after choosing the repository instruction boundary.",
+      },
+      {
+        slug: "agents-md-examples-codex-node-python-monorepos",
+        anchor: "adapt AGENTS.md examples for Node.js, Python, or monorepos",
+        reason: "Use concrete directory, command, and safety examples instead of copying a generic policy unchanged.",
+      },
+      {
+        slug: "does-github-copilot-read-claude-md-support-matrix",
+        anchor: "check whether GitHub Copilot reads CLAUDE.md by surface",
+        reason: "Resolve Copilot CLI, cloud-agent, Chat, and code-review support before claiming compatibility.",
+      },
+      {
+        slug: "ai-coding-agent-instruction-file-adoption-report-2026",
+        anchor: "review the instruction-file adoption dataset and limitations",
+        reason: "Inspect the sampled public files and evidence boundaries before generalizing configuration patterns.",
+      },
+      {
+        slug: "secure-mcp-servers-ai-coding-agents",
+        anchor: "secure MCP credentials and tool permissions",
+        reason: "Repository instructions should define the approval and revocation boundaries around external agent tools.",
+      },
+    ],
+    checklist: [
+      "List every agent surface and version that must read repository guidance.",
+      "Choose one canonical policy source and name synchronized adapters.",
+      "Use .github/copilot-instructions.md for broad Copilot coverage.",
+      "Verify CLAUDE.md, AGENTS.md, GEMINI.md, Cursor Rules, and Windsurf Rules by surface.",
+      "Keep secrets, tokens, and unrestricted deployment authority out of config files.",
+      "Use nested files only for real local exceptions.",
+      "Run the same task and proof command after a migration.",
+      "Publish Not measured instead of invented benchmark values.",
+    ],
+    evidence: [
+      {
+        title: "AGENTS.md documentation",
+        url: "https://agents.md/",
+        publisher: "agents.md",
+        note: "Project overview for the Markdown convention and its use across coding agents; verify each product's own discovery behavior.",
+      },
+      {
+        title: "Codex coding-agent instructions",
+        url: "https://developers.openai.com/codex/guides/agents-md/",
+        publisher: "OpenAI",
+        note: "Official AGENTS.md discovery and repository-instruction behavior for Codex.",
+      },
+      {
+        title: "Claude Code memory",
+        url: "https://docs.anthropic.com/en/docs/claude-code/memory",
+        publisher: "Anthropic",
+        note: "Official CLAUDE.md project-memory and scope guidance for Claude Code.",
+      },
+      {
+        title: "Customize GitHub Copilot with custom instructions",
+        url: "https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-custom-instructions",
+        publisher: "GitHub",
+        note: "Official Copilot instruction-file paths and surface-specific support, including repository-wide and path-specific guidance.",
+      },
+      {
+        title: "Gemini CLI repository context",
+        url: "https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/gemini-md.md",
+        publisher: "Google",
+        note: "Gemini CLI documentation for GEMINI.md context and instruction behavior.",
+      },
+      {
+        title: "Cursor rules",
+        url: "https://docs.cursor.com/context/rules",
+        publisher: "Cursor",
+        note: "Official Cursor project rules, metadata, scopes, and legacy .cursorrules migration context.",
+      },
+      {
+        title: "Windsurf rules",
+        url: "https://docs.windsurf.com/windsurf/cascade/memories",
+        publisher: "Windsurf",
+        note: "Official Windsurf Cascade memories and rules documentation; verify current activation and scope behavior before rollout.",
+      },
+    ],
+    relatedArticleSlugs: [
+      "github-copilot-sdk-general-availability",
+      "openai-codex-plugins-sites-annotations",
+      "cursor-enterprise-organizations-governance",
+    ],
+    publishedAt: "2026-09-15",
+    updatedAt: "2026-09-15",
+    metaTitle: "AI Coding Config Files: AGENTS.md, CLAUDE.md, Copilot & Cursor (2026)",
+    metaDescription:
+      "Compare AGENTS.md, CLAUDE.md, GEMINI.md, Copilot instructions, Cursor Rules, and Windsurf Rules by scope, support, and copyable repo examples.",
+    resourceIds: ["instruction-files"],
+    decisionTablePlacement: "above-fold",
+    primaryAction: {
+      href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
+      label: "Compare instruction files by tool surface",
+      note: "Use the evidence-backed matrix before standardizing repository guidance.",
+    },
   },
 ];

@@ -71,6 +71,10 @@ const target = (
 ): SearchTarget => ({ query, path, cluster, intent, mappingBasis: "editorial-target", observedQueryMetric });
 
 export const prioritySearchTargets: SearchTarget[] = [
+  target("ai coding config files", "/guides/ai-coding-config-files-guide", "agent-instructions", "comparison"),
+  target("ai coding configuration files", "/guides/ai-coding-config-files-guide", "agent-instructions", "comparison"),
+  target("coding agent instruction files", "/guides/ai-coding-config-files-guide", "agent-instructions", "comparison"),
+  target("ai assistant config files", "/guides/ai-coding-config-files-guide", "agent-instructions", "comparison"),
   target("agents.md vs claude.md", "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions", "agent-instructions", "comparison"),
   target("claude md vs copilot instructions", "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions", "agent-instructions", "comparison", queryMetric(3, 36, 0.0833, 7.61)),
   target("agents.md vs copilot-instructions.md", "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions", "agent-instructions", "comparison", queryMetric(1, 32, 0.0312, 11.53)),
@@ -103,6 +107,28 @@ export const prioritySearchTargets: SearchTarget[] = [
   target("cursor loop engineering", "/guides/loop-engineering-ai-coding-agents", "agent-workflows", "comparison", queryMetric(0, 13, 0, 14)),
 ];
 
+/**
+ * Editorial intent ownership is a planning aid, not observed Query x Page attribution.
+ * Keep this separate from GSC metrics so a title experiment cannot be reported as a
+ * query-level causal result when the export contains independent dimensions only.
+ */
+export const priorityIntentNotes: Record<string, string> = {
+  "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions":
+    "Broad comparison and exact-file choice: AGENTS.md, copilot-instructions.md, CLAUDE.md, and Cursor rules. Use the page baseline for CTR; query targets are editorial mappings because Query x Page was not exported.",
+  "/guides/agents-md-template-for-ai-coding-agents":
+    "Template action intent: copy, download, and validate a concise AGENTS.md for Codex, Node.js, Python, or monorepos. Template-page clicks do not prove a specific query caused a copy event.",
+  "/guides/does-github-copilot-read-claude-md-support-matrix":
+    "Exact support question by Copilot surface. Keep separate from the broad comparison page and recheck the dated GitHub matrix before interpreting changes.",
+  "/guides/mcp-server-not-showing-tools":
+    "Troubleshooting intent: connected-but-empty tools/list, Inspector, client scope, authentication, and invocation. Do not infer server failure from a client-only zero-tool view.",
+  "/guides/secure-mcp-servers-ai-coding-agents":
+    "Security checklist intent: OAuth or authorization, token audience, least privilege, secrets, network boundaries, logging, and revocation. Operational recommendations are not protocol requirements.",
+  "/articles/cursor-enterprise-organizations-governance":
+    "Enterprise verification intent: Privacy Mode, model and feature retention exceptions, Cloud Agent storage, MCP controls, and contracts. No universal default retention period is asserted.",
+  "/guides/loop-engineering-ai-coding-agents":
+    "Workflow concept and implementation intent: bounded Plan-Act-Observe-Verify-Stop loops, proof, retry caps, and stop rules. Average position is supporting context, not a causal measure of the rewrite.",
+};
+
 export const searchObservationPolicy = {
   primaryWindowDays: 28,
   lowSampleWindowDays: 56,
@@ -110,5 +136,5 @@ export const searchObservationPolicy = {
   plannedReleaseDate: "2026-09-13",
   compareBy: ["page", "query", "country", "device"] as const,
   primaryOutcomes: ["non-brand organic clicks", "tool use", "template copy", "resource download click"] as const,
-  caveat: "The export has separate query, page, country, and device tables. Editorial target mappings are not observed Query x Page attribution, and the query export is row-limited.",
+  caveat: "The export has separate query, page, country, and device tables. Editorial target mappings are not observed Query x Page attribution, and the query export is row-limited. CTR is clicks divided by impressions for the same GSC row; do not reconcile dimensions by summing or averaging average position.",
 };

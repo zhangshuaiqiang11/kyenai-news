@@ -3,6 +3,21 @@ import { priorityPageBaselines } from "./search-baseline";
 import type { Guide, GuideEditorialSignals } from "./types";
 
 const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
+  "ai-coding-config-files-guide": {
+    priority: "P0",
+    primaryKeyword: "AI coding config files",
+    demandScore: 8.8,
+    attackabilityScore: 8.9,
+    fitScore: 9.6,
+    gscWatchQueries: [
+      "ai coding config files",
+      "ai coding configuration files",
+      "coding agent instruction files",
+      "ai assistant config files",
+      "agents.md claude.md gemini.md",
+      "copilot instructions cursor rules windsurf rules",
+    ],
+  },
   "agents-md-vs-claude-md-cursorrules-copilot-instructions": {
     priority: "P0",
     primaryKeyword: "AGENTS.md vs CLAUDE.md",

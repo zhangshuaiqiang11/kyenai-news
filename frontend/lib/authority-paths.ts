@@ -1,6 +1,7 @@
 export const COMMERCIAL_PILLAR_PATH = "/guides/ai-coding-agents-comparison";
 export const AUTHORITY_PILLAR_PATH =
   "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions";
+export const CONFIG_FILES_HUB_PATH = "/guides/ai-coding-config-files-guide";
 export const RESEARCH_HUB_PATH = "/research";
 export const INSTRUCTION_CHECKER_PATH = "/tools/instruction-file-checker";
 export const INSTRUCTION_TEMPLATE_PATH = "/guides/agents-md-template-for-ai-coding-agents";
@@ -10,6 +11,7 @@ export const MCP_SECURITY_PATH = "/guides/secure-mcp-servers-ai-coding-agents";
 export const CURSOR_ENTERPRISE_PATH = "/articles/cursor-enterprise-organizations-governance";
 
 const GUIDE_AUTHORITY_PATH_SLUGS = new Set([
+  "ai-coding-config-files-guide",
   "ai-coding-agents-comparison",
   "agents-md-vs-claude-md-cursorrules-copilot-instructions",
   "agents-md-template-for-ai-coding-agents",
