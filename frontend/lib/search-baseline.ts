@@ -1,14 +1,37 @@
-import type { GuideEditorialSignals } from "./types";
+import type { GuideEditorialSignals, SearchCluster, SearchQueryMappingBasis } from "./types";
 
 export type GscMetric = NonNullable<GuideEditorialSignals["gscBaseline"]>;
 
 export type SearchTarget = {
   query: string;
   path: string;
-  cluster: "agent-instructions" | "mcp-security" | "cursor-market" | "agent-workflows";
-  intent: "comparison" | "template" | "troubleshooting" | "security" | "enterprise";
-  mappingBasis: "editorial-target";
+  cluster: SearchCluster;
+  intent: "comparison" | "template" | "examples" | "troubleshooting" | "security" | "enterprise" | "workflow";
+  mappingBasis: SearchQueryMappingBasis;
   observedQueryMetric: GscMetric | null;
+};
+
+export type GscBaselineSnapshot = {
+  baselineId: string;
+  windowStart: string;
+  windowEnd: string;
+  exportedAt: string;
+  releaseId: string | null;
+  productionReleaseDate: string | null;
+  hasQueryPageDimension: boolean;
+  requestedRowLimit: number | null;
+  returnedRowCount: number | null;
+  sourceFile: string;
+  property: string;
+  searchType: "Web";
+  dimensions: readonly ("page" | "query" | "country" | "device" | "query-page")[];
+  metrics: {
+    clicks: number | null;
+    impressions: number | null;
+    ctr: number | null;
+    averagePosition: number | null;
+  } | null;
+  limitations: readonly string[];
 };
 
 export const searchBaselineScope = {
@@ -21,6 +44,59 @@ export const searchBaselineScope = {
   sourceFile: "artifacts/gsc/kyenai.com-Performance-on-Search-2026-09-12.zip",
   hasQueryPageDimension: false,
 };
+
+/** Historical three-month cohort; keep it immutable for later comparisons. */
+export const historicalSearchBaseline: GscBaselineSnapshot = {
+  baselineId: "gsc-2026-06-10-to-2026-09-09-history",
+  windowStart: searchBaselineScope.startDate,
+  windowEnd: searchBaselineScope.endDate,
+  exportedAt: searchBaselineScope.exportedAt,
+  releaseId: null,
+  productionReleaseDate: null,
+  hasQueryPageDimension: searchBaselineScope.hasQueryPageDimension,
+  requestedRowLimit: null,
+  returnedRowCount: 1000,
+  sourceFile: searchBaselineScope.sourceFile,
+  property: searchBaselineScope.property,
+  searchType: "Web",
+  dimensions: ["page", "query", "country", "device"],
+  metrics: { clicks: 97, impressions: 25_271, ctr: 0.0038, averagePosition: null },
+  limitations: [
+    "Separate GSC dimension tables; no Query x Page export.",
+    "returnedRowCount is the parsed query-table data-row count (1,000), not a Query x Page count; query rows remain subject to anonymization and export limits.",
+  ],
+};
+
+/**
+ * Latest 28-day control metadata from the 2026-09-15 archive. Page values
+ * remain in the human-readable report until normalized import; null metrics
+ * must not be interpreted as zero or as an observed API value.
+ */
+export const latestControlBaseline: GscBaselineSnapshot = {
+  baselineId: "gsc-control-2026-08-19-to-2026-09-15",
+  windowStart: "2026-08-19",
+  windowEnd: "2026-09-15",
+  exportedAt: "2026-09-15",
+  releaseId: null,
+  productionReleaseDate: null,
+  hasQueryPageDimension: false,
+  requestedRowLimit: null,
+  returnedRowCount: 932,
+  sourceFile: "kyenai.com-Performance-on-Search-2026-09-15.zip",
+  property: "sc-domain:kyenai.com",
+  searchType: "Web",
+  dimensions: ["page", "query", "country", "device"],
+  metrics: null,
+  limitations: [
+    "Control archive is not a live Search Console API response.",
+    "The CSV query table contains 932 data rows after parsing quoted multiline fields; this is a query-table row count, not Query x Page data.",
+    "No Query x Page table was exported; query-to-URL attribution and cannibalization remain unknown.",
+    "Page, country, and device tables have separate row counts and are not represented as zero here.",
+    "Import normalized page/query rows before calculating Month 4 scorecards.",
+  ],
+};
+
+export const searchBaselineSnapshots = [historicalSearchBaseline, latestControlBaseline] as const;
 
 export const siteSearchBaseline = {
   ...searchBaselineScope,
@@ -68,7 +144,16 @@ const target = (
   cluster: SearchTarget["cluster"],
   intent: SearchTarget["intent"],
   observedQueryMetric: GscMetric | null = null,
-): SearchTarget => ({ query, path, cluster, intent, mappingBasis: "editorial-target", observedQueryMetric });
+): SearchTarget => ({
+  query,
+  path,
+  cluster,
+  intent,
+  // A query-table metric is observed, but it cannot prove page attribution
+  // until Search Console exports the Query x Page dimension.
+  mappingBasis: observedQueryMetric ? "observed-query" : "editorial-target",
+  observedQueryMetric,
+});
 
 export const prioritySearchTargets: SearchTarget[] = [
   target("ai coding config files", "/guides/ai-coding-config-files-guide", "agent-instructions", "comparison"),
@@ -81,8 +166,8 @@ export const prioritySearchTargets: SearchTarget[] = [
   target("copilot instructions vs cursor rules", "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions", "agent-instructions", "comparison"),
   target("agents.md template", "/guides/agents-md-template-for-ai-coding-agents", "agent-instructions", "template"),
   target("agents.md template for codex", "/guides/agents-md-template-for-ai-coding-agents", "agent-instructions", "template"),
-  target("agents.md node.js example", "/guides/agents-md-template-for-ai-coding-agents", "agent-instructions", "template"),
-  target("agents.md monorepo template", "/guides/agents-md-template-for-ai-coding-agents", "agent-instructions", "template"),
+  target("agents.md node.js example", "/guides/agents-md-examples-codex-node-python-monorepos", "agent-instructions", "examples"),
+  target("agents.md monorepo template", "/guides/agents-md-examples-codex-node-python-monorepos", "agent-instructions", "examples"),
   target("does github copilot read claude.md", "/guides/does-github-copilot-read-claude-md-support-matrix", "agent-instructions", "comparison"),
   target("github copilot claude.md support", "/guides/does-github-copilot-read-claude-md-support-matrix", "agent-instructions", "comparison"),
   target("copilot cli claude.md", "/guides/does-github-copilot-read-claude-md-support-matrix", "agent-instructions", "comparison"),
@@ -95,16 +180,16 @@ export const prioritySearchTargets: SearchTarget[] = [
   target("how to secure an mcp server", "/guides/secure-mcp-servers-ai-coding-agents", "mcp-security", "security"),
   target("mcp authentication security", "/guides/secure-mcp-servers-ai-coding-agents", "mcp-security", "security"),
   target("mcp token passthrough", "/guides/secure-mcp-servers-ai-coding-agents", "mcp-security", "security"),
-  target("cursor enterprise security", "/articles/cursor-enterprise-organizations-governance", "mcp-security", "enterprise", queryMetric(0, 428, 0, 42.36)),
-  target("cursor privacy mode retention", "/articles/cursor-enterprise-organizations-governance", "mcp-security", "enterprise"),
-  target("cursor enterprise mcp controls", "/articles/cursor-enterprise-organizations-governance", "mcp-security", "enterprise"),
-  target("cursor agent default retention", "/articles/cursor-enterprise-organizations-governance", "mcp-security", "enterprise", queryMetric(0, 279, 0, 2.92)),
+  target("cursor enterprise security", "/articles/cursor-enterprise-organizations-governance", "cursor-governance", "enterprise", queryMetric(0, 428, 0, 42.36)),
+  target("cursor privacy mode retention", "/articles/cursor-enterprise-organizations-governance", "cursor-governance", "enterprise"),
+  target("cursor enterprise mcp controls", "/articles/cursor-enterprise-organizations-governance", "cursor-governance", "enterprise"),
+  target("cursor agent default retention", "/articles/cursor-enterprise-organizations-governance", "cursor-governance", "enterprise", queryMetric(0, 279, 0, 2.92)),
   target("spacex cursor acquisition status july 2026", "/articles/spacex-cursor-acquisition-2026", "cursor-market", "enterprise", queryMetric(0, 49, 0, 8.78)),
   target("spacex cursor acquisition status 2026", "/articles/spacex-cursor-acquisition-2026", "cursor-market", "enterprise", queryMetric(0, 26, 0, 9.58)),
   target("spacex cursor acquisition anysphere 2026", "/articles/spacex-cursor-acquisition-2026", "cursor-market", "enterprise", queryMetric(0, 25, 0, 8.36)),
-  target("loop engineering", "/guides/loop-engineering-ai-coding-agents", "agent-workflows", "comparison", queryMetric(0, 91, 0, 61.42)),
-  target("loop engineering in cursor", "/guides/loop-engineering-ai-coding-agents", "agent-workflows", "comparison", queryMetric(1, 10, 0.1, 7.9)),
-  target("cursor loop engineering", "/guides/loop-engineering-ai-coding-agents", "agent-workflows", "comparison", queryMetric(0, 13, 0, 14)),
+  target("loop engineering", "/guides/loop-engineering-ai-coding-agents", "agent-workflows", "workflow", queryMetric(0, 91, 0, 61.42)),
+  target("loop engineering in cursor", "/guides/loop-engineering-ai-coding-agents", "agent-workflows", "workflow", queryMetric(1, 10, 0.1, 7.9)),
+  target("cursor loop engineering", "/guides/loop-engineering-ai-coding-agents", "agent-workflows", "workflow", queryMetric(0, 13, 0, 14)),
 ];
 
 /**
@@ -116,7 +201,9 @@ export const priorityIntentNotes: Record<string, string> = {
   "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions":
     "Broad comparison and exact-file choice: AGENTS.md, copilot-instructions.md, CLAUDE.md, and Cursor rules. Use the page baseline for CTR; query targets are editorial mappings because Query x Page was not exported.",
   "/guides/agents-md-template-for-ai-coding-agents":
-    "Template action intent: copy, download, and validate a concise AGENTS.md for Codex, Node.js, Python, or monorepos. Template-page clicks do not prove a specific query caused a copy event.",
+    "Template action intent: copy, download, and validate a concise AGENTS.md starter. Node.js and monorepo examples belong to the dedicated examples page; template-page clicks do not prove a specific query caused a copy event.",
+  "/guides/agents-md-examples-codex-node-python-monorepos":
+    "Examples intent: show Node.js, Python, and monorepo instruction layouts, test commands, and generated-file boundaries. Keep this separate from the downloadable template starter.",
   "/guides/does-github-copilot-read-claude-md-support-matrix":
     "Exact support question by Copilot surface. Keep separate from the broad comparison page and recheck the dated GitHub matrix before interpreting changes.",
   "/guides/mcp-server-not-showing-tools":
@@ -124,7 +211,7 @@ export const priorityIntentNotes: Record<string, string> = {
   "/guides/secure-mcp-servers-ai-coding-agents":
     "Security checklist intent: OAuth or authorization, token audience, least privilege, secrets, network boundaries, logging, and revocation. Operational recommendations are not protocol requirements.",
   "/articles/cursor-enterprise-organizations-governance":
-    "Enterprise verification intent: Privacy Mode, model and feature retention exceptions, Cloud Agent storage, MCP controls, and contracts. No universal default retention period is asserted.",
+    "Cursor governance intent: Privacy Mode, model and feature retention exceptions, Cloud Agent storage, MCP controls, and contracts. No universal default retention period is asserted; this is separate from the MCP security checklist.",
   "/guides/loop-engineering-ai-coding-agents":
     "Workflow concept and implementation intent: bounded Plan-Act-Observe-Verify-Stop loops, proof, retry caps, and stop rules. Average position is supporting context, not a causal measure of the rewrite.",
 };

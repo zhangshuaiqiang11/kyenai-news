@@ -206,4 +206,28 @@ export type GuideEditorialSignals = {
     averagePosition: number;
   };
   emergencyPriority?: number;
+  /**
+   * Stable reporting bucket used by the Month 4 scorecard. This is editorial
+   * ownership metadata, not evidence that a GSC query converted on this page.
+   */
+  searchCluster?: SearchCluster;
 };
+
+/** Search themes used consistently by GSC baselines and editorial planning. */
+export type SearchCluster =
+  | "agent-instructions"
+  | "agent-workflows"
+  | "mcp-security"
+  | "cursor-governance"
+  | "cursor-market";
+
+/**
+ * Evidence level for a query-to-page relationship.
+ *
+ * `editorial-target` is a planning mapping only. It must never be reported as
+ * Query × Page attribution when Search Console did not export that dimension.
+ */
+export type SearchQueryMappingBasis =
+  | "observed-query"
+  | "editorial-target"
+  | "query-page-confirmed";

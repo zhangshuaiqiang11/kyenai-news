@@ -19,10 +19,19 @@ The planned release date is 2026-09-13. If the production release occurs on anot
 
 ## Experiment records
 
-| ID | Page | Target query cohort | Baseline window | Planned release | Production release | Article updated | Sources verified | Freeze days | Review status |
-|---|---|---|---|---:|---:|---:|---:|---:|---|
-| `space-cursor-close-status-2026-09` | `/articles/spacex-cursor-acquisition-2026` | SpaceX Cursor acquisition status; did SpaceX buy Cursor | 2026-06-10 to 2026-09-09 | 2026-09-13 | pending | 2026-09-12 | 2026-09-12 | 14 | planned |
-| `cursor-enterprise-security-2026-09` | `/articles/cursor-enterprise-organizations-governance` | cursor enterprise security; privacy mode; retention; permissions | 2026-06-10 to 2026-09-09 | 2026-09-13 | pending | 2026-09-12 | 2026-09-12 | 14 | planned |
+`pending` and `null` are intentional until a production deployment and matching
+GSC export are recorded. The current title/description values are repository
+copy; the old values and release evidence must be filled from the deployed
+HTML, not reconstructed from memory.
+
+| Experiment ID | Page | Cluster | Old title | Current title | Old description | Current description | Target queries | Release commit | Production release date | 14-day freeze | 28-day primary window | 56-day low-sample window | Decision | Failure reason |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| `cursor-enterprise-security-2026-09` | `/articles/cursor-enterprise-organizations-governance` | `cursor-governance` | `pending` | `Cursor Enterprise Data Retention & Security: What Admins Must Verify` | `pending` | `Verify Cursor Enterprise Privacy Mode, ZDR exceptions, model and Cloud Agent retention, SSO/SCIM, MCP controls, audit evidence, and contract terms before rollout.` | cursor enterprise security; cursor privacy mode retention; cursor agent default retention | `pending` | `pending` | `pending` | `pending` | `pending` | `pending` | `pending` |
+| `space-cursor-close-status-2026-09` | `/articles/spacex-cursor-acquisition-2026` | `cursor-market` | `pending` | `pending` | `pending` | `pending` | SpaceX Cursor acquisition status; did SpaceX buy Cursor | `pending` | `pending` | `pending` | `pending` | `pending` | `pending` | `pending` |
+| `agents-comparison-2026-09` | `/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions` | `agent-instructions` | `pending` | `AGENTS.md vs copilot-instructions.md: Which File Should You Use?` | `pending` | `Compare AGENTS.md, copilot-instructions.md, CLAUDE.md, and Cursor rules by supported tool surface, scope, precedence, and safe sync policy.` | agents.md vs copilot-instructions.md; agents.md vs claude.md; copilot instructions vs cursor rules | `pending` | `pending` | `pending` | `pending` | `pending` | `pending` | `pending` |
+| `agents-template-2026-09` | `/guides/agents-md-template-for-ai-coding-agents` | `agent-instructions` | `pending` | `AGENTS.md Template for Codex, Node.js, Python & Monorepos` | `pending` | `Copy, download, and validate a practical AGENTS.md template for Codex, Node.js, Python, and monorepos with nested instructions and safe generation boundaries.` | agents.md template; agents.md template for codex | `pending` | `pending` | `pending` | `pending` | `pending` | `pending` | `pending` |
+| `loop-engineering-2026-09` | `/guides/loop-engineering-ai-coding-agents` | `agent-workflows` | `pending` | `Loop Engineering for AI Coding Agents: Stop Rules & Verification` | `pending` | `Design bounded Plan-Act-Observe-Verify-Stop loops with retry caps, proof-of-done checks, and explicit escalation rules.` | loop engineering; loop engineering in cursor; cursor loop engineering | `pending` | `pending` | `pending` | `pending` | `pending` | `pending` | `pending` |
+| `mcp-discovery-2026-09` | `/guides/mcp-server-not-showing-tools` | `mcp-security` | `pending` | `MCP Server Connected but No Tools? 8 tools/list Checks` | `pending` | `MCP server connected but no tools? Diagnose initialize, tools/list, Inspector, client filters, refresh, authentication, and invocation in 8 checks.` | mcp server not showing tools; mcp server connected but no tools; mcp tools not appearing | `pending` | `pending` | `pending` | `pending` | `pending` | `pending` | `pending` |
 
 ## Measurement rules
 
@@ -32,3 +41,4 @@ The planned release date is 2026-09-13. If the production release occurs on anot
 - Do not interpret missing metrics as zero.
 - Do not change a title because of one or two days of movement.
 - Record any rollback as a new release event rather than overwriting the original experiment.
+- Change one experiment family at a time: SERP metadata, above-fold answer, internal links, content increment, or external citation. Do not claim causality when several families moved in the same window.

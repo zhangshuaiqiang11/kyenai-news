@@ -1,6 +1,35 @@
 import { getGuides } from "./guides";
 import { priorityPageBaselines } from "./search-baseline";
-import type { Guide, GuideEditorialSignals } from "./types";
+import type { Guide, GuideEditorialSignals, SearchCluster } from "./types";
+
+/** Canonical topic ownership used by the Month 4 scorecard and editorial map. */
+const guideSearchClusters: Record<string, SearchCluster> = {
+  "ai-coding-config-files-guide": "agent-instructions",
+  "agents-md-vs-claude-md-cursorrules-copilot-instructions": "agent-instructions",
+  "agents-md-template-for-ai-coding-agents": "agent-instructions",
+  "agents-md-examples-codex-node-python-monorepos": "agent-instructions",
+  "does-github-copilot-read-claude-md-support-matrix": "agent-instructions",
+  "ai-coding-agent-instruction-file-adoption-report-2026": "agent-instructions",
+  "antigravity-cli-gemini-cli-migration": "agent-workflows",
+  "codex-vs-claude-code": "agent-workflows",
+  "claude-code-alternatives": "agent-workflows",
+  "codex-vs-github-copilot": "agent-workflows",
+  "ai-coding-agents-comparison": "agent-workflows",
+  "claude-code-subagents-examples": "agent-workflows",
+  "claude-code-hooks-mcp-setup": "agent-workflows",
+  "agent-mode-vs-chat-mode-in-ide": "agent-workflows",
+  "local-vs-cloud-ai-coding-agent": "agent-workflows",
+  "agent-governance-checklist-for-software-teams": "agent-workflows",
+  "loop-engineering-ai-coding-agents": "agent-workflows",
+  "mcp-server-not-showing-tools": "mcp-security",
+  "secure-mcp-servers-ai-coding-agents": "mcp-security",
+  "cursor-enterprise-organizations-governance": "cursor-governance",
+  "spacex-cursor-acquisition-2026": "cursor-market",
+};
+
+export function getGuideSearchCluster(slug: string): SearchCluster | undefined {
+  return guideSearchClusters[slug];
+}
 
 const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
   "ai-coding-config-files-guide": {

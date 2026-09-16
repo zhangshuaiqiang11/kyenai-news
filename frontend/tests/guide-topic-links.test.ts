@@ -31,6 +31,9 @@ describe("guide topic links", () => {
     expect(resolveIndexableGuideTopicHref("cursor loop automation", "claude-code-hooks-mcp-setup")).toBe(
       "/guides/loop-engineering-ai-coding-agents",
     );
+    expect(resolveIndexableGuideTopicHref("loop engineering in cursor")).toBe(
+      "/guides/loop-engineering-ai-coding-agents",
+    );
   });
 
   it("routes Cursor Enterprise security topics to the canonical evidence article", () => {
@@ -38,6 +41,9 @@ describe("guide topic links", () => {
       "/articles/cursor-enterprise-organizations-governance",
     );
     expect(resolveIndexableGuideTopicHref("Cursor data retention")).toBe(
+      "/articles/cursor-enterprise-organizations-governance",
+    );
+    expect(resolveIndexableGuideTopicHref("Cursor Enterprise MCP controls")).toBe(
       "/articles/cursor-enterprise-organizations-governance",
     );
     expect(resolveIndexableGuideTopicHref("Cursor data retention", "cursor-enterprise-organizations-governance")).toBeNull();
@@ -54,6 +60,12 @@ describe("guide topic links", () => {
       "/guides/agents-md-examples-codex-node-python-monorepos",
     );
     expect(resolveIndexableGuideTopicHref("agents.md python example")).toBe(
+      "/guides/agents-md-examples-codex-node-python-monorepos",
+    );
+    expect(resolveIndexableGuideTopicHref("agents.md node.js example")).toBe(
+      "/guides/agents-md-examples-codex-node-python-monorepos",
+    );
+    expect(resolveIndexableGuideTopicHref("agents.md monorepo template")).toBe(
       "/guides/agents-md-examples-codex-node-python-monorepos",
     );
   });

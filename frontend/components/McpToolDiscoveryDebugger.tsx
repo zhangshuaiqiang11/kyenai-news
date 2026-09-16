@@ -33,6 +33,7 @@ export function McpToolDiscoveryDebugger() {
     page_path: getCurrentPagePath(),
     tool_id: "mcp_tool_discovery_debugger",
     action_id: actionId,
+    search_cluster: "mcp-security",
   });
 
   return (

@@ -8,6 +8,7 @@
     "build": "npm run build --prefix frontend",
     "audit:pagespeed": "bash scripts/run-node-script.sh scripts/pagespeed-audit.mjs",
     "audit:gsc": "bash scripts/run-node-script.sh scripts/gsc-probe.mjs",
+    "audit:gsc-scorecard": "bash scripts/run-node-script.sh scripts/gsc-scorecard.mjs",
     "audit:seo-drift": "bash scripts/run-node-script.sh scripts/seo-drift-check.mjs",
     "generate:resources": "bash scripts/run-node-script.sh --experimental-strip-types scripts/generate-instruction-resources.mjs && npm run generate:agents-template-pack",
     "generate:mcp-data": "bash scripts/run-node-script.sh --experimental-strip-types scripts/generate-mcp-security-assets.mjs",

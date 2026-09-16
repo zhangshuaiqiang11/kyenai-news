@@ -1,10 +1,15 @@
 import { describe, expect, it } from "vitest";
 
-import { getGuideEditorialSignals, getPriorityGuides } from "../lib/guide-editorial";
+import { getGuideEditorialSignals, getGuideSearchCluster, getPriorityGuides } from "../lib/guide-editorial";
 import { getGuide, getGuides, getInternalLinkedGuides } from "../lib/guides";
 import { buildGuideFaqs, buildGuideItemListJsonLd, buildGuideJsonLd } from "../lib/seo";
 
 describe("guide SEO data", () => {
+  it("assigns every guide a single Month 4 search cluster", () => {
+    for (const guide of getGuides()) {
+      expect(getGuideSearchCluster(guide.slug), guide.slug).toBeDefined();
+    }
+  });
   it("keeps immutable publication dates at or before substantive updates", () => {
     for (const guide of getGuides()) {
       expect(new Date(guide.publishedAt).getTime(), guide.slug).toBeLessThanOrEqual(

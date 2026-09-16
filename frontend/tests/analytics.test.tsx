@@ -57,6 +57,7 @@ describe("GA4 configuration", () => {
       page_path: "/tools/instruction-file-checker",
       tool_id: "instruction_file_checker",
       action_id: "audit",
+      search_cluster: "agent-instructions",
     })).toBe(true);
     expect(trackGrowthEvent("tool_use", {
       page_path: "/tools/instruction-file-checker?content=secret",
@@ -64,6 +65,25 @@ describe("GA4 configuration", () => {
     })).toBe(false);
     expect(gtag).toHaveBeenCalledTimes(1);
     expect(JSON.stringify(gtag.mock.calls)).not.toContain("secret");
+  });
+
+  it("accepts only the canonical measurement clusters and rejects free-form values", () => {
+    process.env.NEXT_PUBLIC_GA_ID = "G-ABC1234XYZ";
+    const gtag = vi.fn();
+    window.gtag = gtag;
+
+    expect(trackGrowthEvent("tool_use", {
+      page_path: "/guides/mcp-server-not-showing-tools",
+      tool_id: "mcp_tool_discovery_debugger",
+      search_cluster: "mcp-security",
+    })).toBe(true);
+    expect(trackGrowthEvent("tool_use", {
+      page_path: "/guides/mcp-server-not-showing-tools",
+      tool_id: "mcp_tool_discovery_debugger",
+      search_cluster: "query supplied by user" as never,
+    })).toBe(false);
+    expect(gtag).toHaveBeenCalledTimes(1);
+    expect(JSON.stringify(gtag.mock.calls)).not.toContain("query supplied by user");
   });
 
   it("fails closed when analytics is blocked without breaking the caller", () => {

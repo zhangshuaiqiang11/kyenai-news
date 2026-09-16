@@ -39,6 +39,7 @@ const TOPIC_GUIDE_OVERRIDES: Record<string, string> = {
   "agents.md node.js example": "agents-md-examples-codex-node-python-monorepos",
   "agents.md python example": "agents-md-examples-codex-node-python-monorepos",
   "agents.md monorepo example": "agents-md-examples-codex-node-python-monorepos",
+  "agents.md monorepo template": "agents-md-examples-codex-node-python-monorepos",
   "repository instructions template": "agents-md-template-for-ai-coding-agents",
   "claude code subagents workflow": "claude-code-subagents-examples",
   "claude code sub-agents": "claude-code-subagents-examples",
@@ -57,6 +58,8 @@ const TOPIC_GUIDE_OVERRIDES: Record<string, string> = {
   "plan-execute-verify agent loop": "loop-engineering-ai-coding-agents",
   "loop engineering vs prompt engineering": "loop-engineering-ai-coding-agents",
   "how to design agent loops": "loop-engineering-ai-coding-agents",
+  "loop engineering in cursor": "loop-engineering-ai-coding-agents",
+  "cursor loop engineering": "loop-engineering-ai-coding-agents",
   "gemini cli migration": "antigravity-cli-gemini-cli-migration",
   "antigravity cli": "antigravity-cli-gemini-cli-migration",
   "gemini cli transition": "antigravity-cli-gemini-cli-migration",
@@ -68,6 +71,8 @@ const TOPIC_PATH_OVERRIDES: Record<string, string> = {
   "cursor privacy mode": "/articles/cursor-enterprise-organizations-governance",
   "cursor data retention": "/articles/cursor-enterprise-organizations-governance",
   "cursor agent permissions": "/articles/cursor-enterprise-organizations-governance",
+  "cursor enterprise mcp controls": "/articles/cursor-enterprise-organizations-governance",
+  "cursor agent default retention": "/articles/cursor-enterprise-organizations-governance",
 };
 
 export function resolveIndexableGuideTopicHref(keyword: string, currentGuideSlug?: string): string | null {

@@ -8,7 +8,7 @@ This baseline preserves the scope of the Google Search Console export used for t
 - Exported: 2026-09-12
 - Daily/device total: 97 clicks, 25,271 impressions, 0.38% CTR
 - Page-table total: 97 clicks, 26,171 impressions; dimension totals do not reconcile with the daily/device export and are used for prioritization only.
-- Query export: 1,000 parsed rows and 3,517 impressions; it is row-limited and is not a site total.
+- Query export: 1,000 parsed data rows and 3,517 impressions; this is the query-table row count, is row-limited, and is not a site total or Query x Page export.
 - Search appearance export: no usable data rows.
 - Source file: `kyenai.com-Performance-on-Search-2026-09-12.zip`
 
@@ -16,4 +16,4 @@ The export contains separate query, page, country, and device tables. It does no
 
 The eight priority URLs cover Agent Instructions, MCP/security, Cursor market coverage, and loop workflows. The strongest immediate opportunities are SpaceX/Cursor (5,884 impressions, position 7.44, 0.07% CTR), Cursor Enterprise (5,278 impressions, position 11.18, 0% CTR), and Loop Engineering (2,073 impressions, position 13.49, 0.29% CTR). Protect the AGENTS comparison page (2,937 impressions, position 8.98, 1.33% CTR) and MCP troubleshooting page (439 impressions, position 6.82, 2.51% CTR).
 
-Compare complete 28-day windows after the production release; use 56 days where the sample is too small. Compare the same page, query, country, and device dimensions rather than the site-wide average alone. The previous 2026-06-06 through 2026-09-05 export remains a historical baseline and must not be treated as the same window.
+Compare complete 28-day windows after the production release; use 56 days where the sample is too small. Compare the same page, query, country, and device dimensions rather than the site-wide average alone. The current historical baseline is 2026-06-10 through 2026-09-09. The previous 2026-06-06 through 2026-09-05 export is an older comparison snapshot and must not be treated as the current window.

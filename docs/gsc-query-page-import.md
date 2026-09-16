@@ -23,7 +23,7 @@ npm run audit:gsc -- \
   > /tmp/kyenai-gsc-query-page-20260813-20260909.json
 ```
 
-The JSON contains `dimensions: ["query", "page"]` and a complete `rows` array. Each row preserves `query`, `page`, `clicks`, `impressions`, `ctr`, and `position`. The API response is still subject to Search Console row limits; record the requested row limit and returned row count with the export.
+The JSON contains `dimensions: ["query", "page"]`, `hasQueryPageDimension: true`, and a complete `rows` array. Each row preserves `query`, `page`, `clicks`, `impressions`, `ctr`, and `position`. The API response is still subject to Search Console row limits; record the requested row limit and returned row count with the export.
 
 ## Review filter
 

@@ -47,6 +47,7 @@ export function AgentsMdStarterBuilder() {
       page_path: getCurrentPagePath(),
       tool_id: "agents_md_starter_builder",
       resource_id: "generated_agents_md",
+      search_cluster: "agent-instructions",
     });
   };
 
@@ -118,6 +119,7 @@ export function AgentsMdStarterBuilder() {
               onClick={() => trackGrowthEvent("resource_download_click", {
                 page_path: getCurrentPagePath(),
                 resource_id: "generated_agents_md",
+                search_cluster: "agent-instructions",
               })}
             >Download AGENTS.md</a>
             <Link href="/tools/instruction-file-checker">Open the full instruction checker</Link>

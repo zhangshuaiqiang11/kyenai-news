@@ -56,6 +56,7 @@ export function InstructionFileChecker() {
       page_path: getCurrentPagePath(),
       tool_id: "instruction_file_checker",
       action_id: "audit",
+      search_cluster: "agent-instructions",
     });
   };
 
@@ -67,6 +68,7 @@ export function InstructionFileChecker() {
       page_path: getCurrentPagePath(),
       tool_id: "instruction_file_checker",
       resource_id: "recommended_instruction_path",
+      search_cluster: "agent-instructions",
     });
   };
 
