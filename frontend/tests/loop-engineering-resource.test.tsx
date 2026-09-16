@@ -30,7 +30,7 @@ describe("loop engineering resource components", () => {
     expect(within(table).getAllByRole("row")).toHaveLength(loopPatterns.length + 1);
 
     const directAnswer = screen.getByRole("note", { name: /direct answer/i });
-    expect(directAnswer.textContent).toMatch(/act → observe → reason/i);
+    expect(directAnswer.textContent).toMatch(/plan → act → observe → verify → stop/i);
     expect(directAnswer.textContent).toMatch(/stop rules/i);
 
     for (const pattern of ["Plan → execute → verify", "Human-in-the-loop checkpoint"]) {

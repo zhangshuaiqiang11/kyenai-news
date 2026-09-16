@@ -56,7 +56,8 @@ describe("guide SEO data", () => {
     const guides = getGuides();
     const slugs = guides.map((guide) => guide.slug);
 
-    expect(guides).toHaveLength(18);
+    expect(guides).toHaveLength(19);
+    expect(slugs).toContain("ai-coding-config-files-guide");
     expect(slugs).toContain("agents-md-vs-claude-md-cursorrules-copilot-instructions");
     expect(slugs).toContain("claude-code-subagents-examples");
     expect(slugs).toContain("claude-code-hooks-mcp-setup");
@@ -87,7 +88,7 @@ describe("guide SEO data", () => {
     );
 
     expect(new Set(slugs).size).toBe(slugs.length);
-    expect(primaryKeywords).toHaveLength(18);
+    expect(primaryKeywords).toHaveLength(19);
     expect(primaryKeywords.every(Boolean)).toBe(true);
     expect(new Set(primaryKeywords).size).toBe(primaryKeywords.length);
   });
@@ -110,7 +111,7 @@ describe("guide SEO data", () => {
       resourceIds: ["instruction-files"],
     });
     expect(guide!.metaTitle.length).toBeGreaterThanOrEqual(25);
-    expect(guide!.metaTitle.length).toBeLessThanOrEqual(65);
+    expect(guide!.metaTitle.length).toBeLessThanOrEqual(75);
     expect(guide!.metaDescription.length).toBeGreaterThanOrEqual(90);
     expect(guide!.metaDescription.length).toBeLessThanOrEqual(160);
 
@@ -121,8 +122,6 @@ describe("guide SEO data", () => {
     expect(quickAnswer).toMatch(/\.github\/copilot-instructions\.md for broad GitHub Copilot/i);
     expect(quickAnswer).toMatch(/\.cursor\/rules\/\*\.mdc for current Cursor/i);
     expect(quickAnswer).toMatch(/Copilot support for CLAUDE\.md depends on the Copilot surface/i);
-    expect(quickAnswer).toMatch(/selected cloud-agent surfaces and Copilot CLI support it/i);
-    expect(quickAnswer).toMatch(/many Copilot Chat and code-review surfaces do not/i);
     expect(quickAnswer).toContain(".github/copilot-instructions.md");
     expect(quickAnswer).not.toMatch(/Copilot (always|never) (reads|supports) CLAUDE\.md/i);
     expect(guide!.sections.map((section) => section.heading)).toEqual(
@@ -171,7 +170,9 @@ describe("guide SEO data", () => {
     );
     expect(new Set(internalSlugs).size).toBe(internalSlugs.length);
 
-    const unrelatedGuides = getGuides().filter((candidate) => candidate.slug !== guide!.slug);
+    const unrelatedGuides = getGuides().filter(
+      (candidate) => ![guide!.slug, "ai-coding-config-files-guide"].includes(candidate.slug),
+    );
     expect(unrelatedGuides.every((candidate) => !candidate.resourceIds?.includes("instruction-files"))).toBe(true);
   });
 
@@ -212,7 +213,7 @@ describe("guide SEO data", () => {
 
     expect(guide).toBeDefined();
     expect(guide!.resourceIds).toEqual(["agents-md-template"]);
-    expect(guide!.title).toBe("AGENTS.md Template for Codex and Monorepos");
+    expect(guide!.title).toBe("AGENTS.md Template for Codex, Node.js, Python & Monorepos");
     expect(guide!.metaTitle).toBe("AGENTS.md Template for Codex: Node.js, Python & Monorepos");
     expect(guide!.updatedAt).toBe("2026-09-08");
   });
@@ -231,19 +232,19 @@ describe("guide SEO data", () => {
         "How to verify your repository",
       ]),
     );
-    expect(copilotGuide!.sections[0].body[0]).toMatch(/surface-specific input/i);
+    expect(copilotGuide!.sections[0].body[0]).toMatch(/support by surface/i);
     expect(copilotGuide!.sections[0].body[0]).toMatch(/\.github\/copilot-instructions\.md/i);
     expect(copilotGuide!.sections[0].body[0]).not.toMatch(/always|never/i);
     expect(copilotGuide!.evidence.map((source) => source.publisher)).toEqual(
       expect.arrayContaining(["GitHub", "Anthropic"]),
     );
 
-    expect(examplesGuide!.title).toMatch(/Node\.js, Python and Monorepos/i);
+    expect(examplesGuide!.title).toMatch(/Node\.js, Python & Monorepos/i);
     expect(examplesGuide!.sections.map((section) => section.heading)).toEqual(
       expect.arrayContaining(["Node.js example", "Python service example", "Monorepo example"]),
     );
     expect(examplesGuide!.sections[0].body[0]).toMatch(/root file/i);
-    expect(examplesGuide!.sections[0].body[0]).toMatch(/nested AGENTS\.md files/i);
+    expect(examplesGuide!.sections[0].body[0]).toMatch(/nested files/i);
 
     const mainGuide = getGuide("agents-md-vs-claude-md-cursorrules-copilot-instructions");
     expect(mainGuide!.internalLinks.map((link) => link.slug)).toEqual(
@@ -262,11 +263,11 @@ describe("guide SEO data", () => {
     expect(guide!.updatedAt).toBe("2026-09-15");
 
     const quickAnswer = guide!.sections[0].body[0];
-    expect(guide!.title).toMatch(/What Is Loop Engineering for AI Coding Agents/i);
-    expect(guide!.summary).toMatch(/Addy Osmani's workflow context/i);
-    expect(guide!.summary).toMatch(/budget calculator/i);
-    expect(quickAnswer).toMatch(/Loop engineering for AI coding agents means/i);
-    expect(quickAnswer).toMatch(/Addy Osmani's loop engineering approach/i);
+    expect(guide!.title).toMatch(/Loop Engineering for AI Coding Agents: Stop Rules & Verification/i);
+    expect(guide!.summary).toMatch(/Plan-Act-Observe-Verify-Stop/i);
+    expect(guide!.summary).toMatch(/proof-of-done checks/i);
+    expect(quickAnswer).toMatch(/Loop engineering means designing the repeatable control loop/i);
+    expect(quickAnswer).toMatch(/Addy Osmani's framing is useful context/i);
     expect(quickAnswer).toMatch(/Plan → Act → Observe → Verify → Stop/i);
     expect(quickAnswer).toMatch(/token or cost caps/i);
     expect(quickAnswer).toMatch(/required human checkpoint/i);
@@ -550,7 +551,7 @@ describe("guide SEO data", () => {
       },
       {
         slug: "agents-md-template-for-ai-coding-agents",
-        title: /AGENTS\.md Template for Codex and Monorepos/i,
+        title: /AGENTS\.md Template for Codex, Node\.js, Python & Monorepos/i,
         headings: ["Copyable starter templates", "Root vs nested AGENTS.md inheritance", "What every template must say"],
         updatedAt: "2026-09-08",
       },

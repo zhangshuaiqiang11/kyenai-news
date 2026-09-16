@@ -271,6 +271,16 @@ function buildGuideMethodologyDisclosure(guide: Guide): string {
   return `KyenAI writes this guide as an independent editorial reference, not as an endorsement page for any third-party tool. The comparison, checklist, or workflow advice is based on visible source material${sourceNames ? ` from ${sourceNames}` : ""}, plus the operational constraints named on the page. Product behavior, pricing, availability, and enterprise controls can change after the listed update date, so vendor-specific claims should be rechecked against the linked sources before procurement, migration, or production rollout.`;
 }
 
+function GuideBodyParagraph({ text }: { text: string }) {
+  const codeBlock = text.match(/^```[^\n]*\n([\s\S]*?)\n```$/);
+
+  return codeBlock ? (
+    <pre className="guide-code-block"><code>{codeBlock[1]}</code></pre>
+  ) : (
+    <p>{text}</p>
+  );
+}
+
 export default function GuidePage({ guide, relatedGuides, relatedArticles }: GuidePageProps) {
   const guidePath = `/guides/${guide.slug}`;
   const internalLinkCopy = new Map(guide.internalLinks.map((link) => [link.slug, link]));
@@ -285,6 +295,43 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
   const faqs = getVisibleGuideFaqs(guide);
   const guideGraphJsonLd = buildGuideGraphJsonLd(guide, breadcrumbItems, faqs);
   const bestNextStep = bestNextStepsByGuideSlug[guide.slug];
+  const decisionTableSection = (
+    <section className="guide-table-section" aria-labelledby="guide-decision-table-heading">
+      <h2 id="guide-decision-table-heading">{guide.decisionTable.title}</h2>
+      <p>{guide.decisionTable.intro}</p>
+      <div className="guide-table-wrap">
+        <table aria-labelledby="guide-decision-table-heading">
+          <thead>
+            <tr>
+              <th scope="col">Area</th>
+              {guide.decisionTable.columns.map((column) => (
+                <th key={column} scope="col">
+                  {column}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {guide.decisionTable.rows.map((row) => (
+              <tr key={row.label}>
+                <th scope="row" data-label="Area">
+                  {row.label}
+                </th>
+                {row.values.map((value, index) => (
+                  <td
+                    key={`${row.label}-${guide.decisionTable.columns[index]}`}
+                    data-label={guide.decisionTable.columns[index]}
+                  >
+                    {value}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
 
   return (
     <Layout>
@@ -328,6 +375,15 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
           <h2 id="guide-answer-heading">Quick Answer</h2>
           <p>{quickAnswer}</p>
         </section>
+        {guide.decisionTablePlacement === "above-fold" ? decisionTableSection : null}
+        {guide.primaryAction ? (
+          <section className="answer-panel guide-primary-action" aria-labelledby="guide-primary-action-heading">
+            <h2 id="guide-primary-action-heading">Start here</h2>
+            <p>
+              <Link href={guide.primaryAction.href}>{guide.primaryAction.label}</Link>. {guide.primaryAction.note}
+            </p>
+          </section>
+        ) : null}
         <GuideResources guide={guide} />
         {shouldShowGuideAuthorityPath(guide.slug) ? (
           <AuthorityPathPanel
@@ -356,8 +412,8 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
             {bodySections.map((section) => (
               <section key={section.heading}>
                 <h2>{section.heading}</h2>
-                {section.body.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
+                {section.body.map((paragraph, index) => (
+                  <GuideBodyParagraph key={`${section.heading}-${index}`} text={paragraph} />
                 ))}
               </section>
             ))}
@@ -369,41 +425,7 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
                 ))}
               </ol>
             </section>
-            <section className="guide-table-section" aria-labelledby="guide-decision-table-heading">
-              <h2 id="guide-decision-table-heading">{guide.decisionTable.title}</h2>
-              <p>{guide.decisionTable.intro}</p>
-              <div className="guide-table-wrap">
-                <table aria-labelledby="guide-decision-table-heading">
-                  <thead>
-                    <tr>
-                      <th scope="col">Area</th>
-                      {guide.decisionTable.columns.map((column) => (
-                        <th key={column} scope="col">
-                          {column}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {guide.decisionTable.rows.map((row) => (
-                      <tr key={row.label}>
-                        <th scope="row" data-label="Area">
-                          {row.label}
-                        </th>
-                        {row.values.map((value, index) => (
-                          <td
-                            key={`${row.label}-${guide.decisionTable.columns[index]}`}
-                            data-label={guide.decisionTable.columns[index]}
-                          >
-                            {value}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
+            {guide.decisionTablePlacement !== "above-fold" ? decisionTableSection : null}
             <section>
               <h2>Execution steps</h2>
               <div className="guide-action-list">

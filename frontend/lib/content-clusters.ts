@@ -19,6 +19,7 @@ export const contentClusters: ContentCluster[] = [
       "Start with the support matrix, then adapt a template and verify it in the repository. Keep security boundaries, setup commands, and completion criteria explicit; keep tool-specific adapters short enough to review when a vendor changes its behavior.",
     ],
     guideSlugs: [
+      "ai-coding-config-files-guide",
       "agents-md-vs-claude-md-cursorrules-copilot-instructions",
       "agents-md-template-for-ai-coding-agents",
       "agents-md-examples-codex-node-python-monorepos",

@@ -6,6 +6,7 @@ import {
   CLAUDE_CODE_ALTERNATIVES_GUIDE_HREF,
   CODEX_COPILOT_GUIDE_HREF,
   CODING_AGENT_COMPARISON_GUIDE_HREF,
+  AI_CODING_CONFIG_FILES_GUIDE_HREF,
   INSTRUCTION_COMPARISON_GUIDE_HREF,
   LOOP_ENGINEERING_GUIDE_HREF,
   MCP_SECURITY_GUIDE_HREF,
@@ -153,6 +154,11 @@ const guideTopicHubs: GuideTopicHub[] = [
 
 const startingGuides = [
   {
+    href: AI_CODING_CONFIG_FILES_GUIDE_HREF,
+    label: "AI coding config files guide",
+    note: "Map AGENTS.md, CLAUDE.md, GEMINI.md, Copilot instructions, Cursor Rules, and Windsurf Rules by tool surface.",
+  },
+  {
     href: INSTRUCTION_COMPARISON_GUIDE_HREF,
     label: "CLAUDE.md vs Copilot Instructions support matrix",
     note: "Use this when the team is deciding where shared repository instructions should live.",
@@ -246,7 +252,7 @@ const comparisonPages = [
 ];
 
 const guideOverview =
-  "KyenAI guides help software teams make practical decisions about AI coding agents. Start with the four-tool comparison hub when choosing among Codex, Claude Code, Cursor, and GitHub Copilot. Use the instruction-file support matrix when the problem is repository guidance. Use the loop engineering guide when agent work needs verification commands, retry limits, and stop rules. Use the MCP security and governance guides before adding tool access, secrets, logs, approvals, or revocation. Each guide gives the answer first, then adds source notes, decision tables, checklists, and next steps for implementation.";
+  "KyenAI guides help software teams make practical decisions about AI coding agents. Start with the AI coding config files guide when you need to map AGENTS.md, CLAUDE.md, GEMINI.md, Copilot instructions, Cursor Rules, and Windsurf Rules. Use the four-tool comparison hub when choosing among Codex, Claude Code, Cursor, and GitHub Copilot. Use the instruction-file support matrix when the problem is repository guidance. Use the loop engineering guide when agent work needs verification commands, retry limits, and stop rules. Use the MCP security and governance guides before adding tool access, secrets, logs, approvals, or revocation. Each guide gives the answer first, then adds source notes, decision tables, checklists, and next steps for implementation.";
 
 export const guidesPageSeo = {
   title: "AI Coding Agent Guides: Templates, Security & Workflows",
