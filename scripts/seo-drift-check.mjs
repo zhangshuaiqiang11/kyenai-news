@@ -10,12 +10,12 @@ const pageContracts = [
   {
     path: "/guides/agents-md-template-for-ai-coding-agents",
     titleIncludes: "AGENTS.md Template for Codex",
-    h1Includes: "AGENTS.md Template for Codex and Monorepos",
+    h1Includes: "AGENTS.md Template for Codex, Node.js, Python & Monorepos",
   },
   {
     path: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
-    titleIncludes: "AGENTS.md vs CLAUDE.md vs Copilot Instructions",
-    h1Includes: "AGENTS.md vs CLAUDE.md vs Copilot Instructions",
+    titleIncludes: "AGENTS.md vs Copilot Instructions vs CLAUDE.md vs Cursor Rules",
+    h1Includes: "AGENTS.md vs copilot-instructions.md: Which File Should You Use?",
   },
   {
     path: "/guides/secure-mcp-servers-ai-coding-agents",
@@ -25,7 +25,7 @@ const pageContracts = [
   {
     path: "/guides/mcp-server-not-showing-tools",
     titleIncludes: "MCP Server Connected but No Tools? 8 Checks",
-    h1Includes: "MCP Server Not Showing Tools? Diagnose tools/list in 8 Checks",
+    h1Includes: "MCP Server Connected but No Tools? 8 tools/list Checks",
   },
   {
     path: "/guides/codex-vs-claude-code",
@@ -50,7 +50,7 @@ const pageContracts = [
   {
     path: "/guides/loop-engineering-ai-coding-agents",
     titleIncludes: "Loop Engineering for AI Coding Agents",
-    h1Includes: "What Is Loop Engineering for AI Coding Agents?",
+    h1Includes: "Loop Engineering for AI Coding Agents: Stop Rules & Verification",
   },
   {
     path: "/guides/ai-coding-agent-instruction-file-adoption-report-2026",
@@ -74,8 +74,8 @@ const pageContracts = [
   },
   {
     path: "/articles/cursor-enterprise-organizations-governance",
-    titleIncludes: "Cursor Enterprise Security: Privacy Mode & Retention Exceptions",
-    h1Includes: "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions",
+    titleIncludes: "Cursor Data Retention & Enterprise Security: Privacy Mode, ZDR",
+    h1Includes: "Cursor Enterprise Data Retention & Security: What Admins Must Verify",
   },
 ];
 
@@ -86,7 +86,7 @@ function readOption(name, fallback) {
 
 function normalizeOrigin(value, label) {
   const url = new URL(value);
-  if (!['http:', 'https:'].includes(url.protocol)) {
+  if (!["http:", "https:"].includes(url.protocol)) {
     throw new Error(`${label} must use http or https`);
   }
   return url.origin;
