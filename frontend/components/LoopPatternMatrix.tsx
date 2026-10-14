@@ -16,8 +16,8 @@ export function LoopPatternMatrix() {
       <aside className="instruction-direct-answer" role="note" aria-label="Direct answer">
         <strong>Direct answer</strong>
         <p>
-          Loop engineering is not one cron script. It is a repeating <strong>act → observe → reason</strong> cycle
-          with explicit stop rules. Pick the pattern by task shape, then add termination before you add parallelism.
+          Loop engineering is not one cron script. It is a repeating <strong>plan → act → observe → verify → stop</strong>
+          cycle with explicit stop rules. Pick the pattern by task shape, then add termination before you add parallelism.
         </p>
       </aside>
 

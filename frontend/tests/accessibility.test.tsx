@@ -5,13 +5,16 @@ import { cleanup, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ArticleExplorer } from "../components/ArticleExplorer";
+import { AgentsMdStarterBuilder } from "../components/AgentsMdStarterBuilder";
 import { BenchmarkPanel } from "../components/BenchmarkPanel";
 import { InstructionCompatibilityMatrix } from "../components/InstructionCompatibilityMatrix";
+import { InstructionFileChecker } from "../components/InstructionFileChecker";
 import { Layout } from "../components/Layout";
 import { LoopPatternMatrix } from "../components/LoopPatternMatrix";
 import { McpSecurityControls } from "../components/McpSecurityControls";
 import { SiteSearch } from "../components/SiteSearch";
 import { SignalPanel } from "../components/SignalPanel";
+import { SpacexCursorDealTracker } from "../components/SpacexCursorDealTracker";
 import { seedArticles } from "../lib/seed";
 
 (globalThis as typeof globalThis & { React: typeof React }).React = React;
@@ -70,6 +73,18 @@ describe("accessibility", () => {
     await expectNoAxeViolations(container);
   });
 
+  it("keeps the browser-only instruction checker free of axe violations", async () => {
+    const { container } = render(<InstructionFileChecker />);
+
+    await expectNoAxeViolations(container);
+  });
+
+  it("keeps the AGENTS.md starter builder free of axe violations", async () => {
+    const { container } = render(<AgentsMdStarterBuilder />);
+
+    await expectNoAxeViolations(container);
+  });
+
   it("keeps MCP security resource tables free of axe violations", async () => {
     const { container } = render(<McpSecurityControls />);
 
@@ -78,6 +93,12 @@ describe("accessibility", () => {
 
   it("keeps loop engineering resource tables free of axe violations", async () => {
     const { container } = render(<LoopPatternMatrix />);
+
+    await expectNoAxeViolations(container);
+  });
+
+  it("keeps the SpaceX-Cursor deal tracker free of axe violations", async () => {
+    const { container } = render(<SpacexCursorDealTracker />);
 
     await expectNoAxeViolations(container);
   });

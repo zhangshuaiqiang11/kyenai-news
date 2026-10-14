@@ -14,6 +14,7 @@ services:
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://www.kyenai.com}
       NEXT_PUBLIC_GA_ID: ${NEXT_PUBLIC_GA_ID:-}
       NEXT_PUBLIC_EDITORIAL_EMAIL: ${NEXT_PUBLIC_EDITORIAL_EMAIL:-}
+      INDEXNOW_SUBMIT_TOKEN: ${INDEXNOW_SUBMIT_TOKEN:-}
     depends_on:
       - backend
     restart: unless-stopped
@@ -35,6 +36,7 @@ services:
       BING_SITE_URL: ${BING_SITE_URL:-https://www.kyenai.com}
       INDEXNOW_KEY: ${INDEXNOW_KEY:-}
       INDEXNOW_HOST: ${INDEXNOW_HOST:-www.kyenai.com}
+      INDEXNOW_SUBMIT_TOKEN: ${INDEXNOW_SUBMIT_TOKEN:-}
       PAGESPEED_API_KEY: ${PAGESPEED_API_KEY:-}
     volumes:
       - ${GOOGLE_APPLICATION_CREDENTIALS_HOST_PATH:-/opt/seo/secrets/google-application-credentials.json}:${GOOGLE_APPLICATION_CREDENTIALS:-/run/secrets/google-application-credentials.json}:ro

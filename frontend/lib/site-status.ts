@@ -32,15 +32,37 @@ function parseBuildTimestamp(value: string | undefined): number | null {
   return Number.isFinite(timestamp) ? timestamp : null;
 }
 
+function formatDateInTimeZone(timestamp: number, timeZone: string): string | null {
+  try {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).formatToParts(new Date(timestamp));
+    const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+    return `${values.year}-${values.month}-${values.day}`;
+  } catch {
+    return null;
+  }
+}
+
 export function getVisibleEditorialUpdate(): string | null {
   const update = process.env.NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE;
   const updateTimestamp = parseEditorialDate(update);
   const buildTimestamp = parseBuildTimestamp(process.env.NEXT_PUBLIC_BUILD_TIMESTAMP);
+  const buildDate = buildTimestamp === null
+    ? null
+    : formatDateInTimeZone(
+        buildTimestamp,
+        process.env.NEXT_PUBLIC_EDITORIAL_TIME_ZONE || "Asia/Shanghai",
+      );
 
   if (
     updateTimestamp === null ||
     buildTimestamp === null ||
-    updateTimestamp > buildTimestamp
+    buildDate === null ||
+    update! > buildDate
   ) {
     return null;
   }

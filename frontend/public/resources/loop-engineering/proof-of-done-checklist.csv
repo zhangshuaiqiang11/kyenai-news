@@ -1,0 +1,13 @@
+phase,control,required,evidence,pass_criteria
+plan,Bounded observable goal,yes,task contract,One outcome and one done signal are named
+plan,Immutable source revision,yes,git SHA or immutable revision,Every receipt can be tied to this revision
+plan,Allowed and forbidden paths,yes,task contract,Scope and protected paths are explicit
+budget,Maximum iterations,yes,budget record,Positive finite cap is configured
+budget,Repeated failure cap,yes,budget record,Run stops after two same-root-cause failures
+budget,Time token cost and concurrency limits,yes,budget record,Each applicable limit has an owner-approved ceiling
+policy,Permission boundary,yes,policy record,Production destructive secret and network actions require approval
+act,Smallest useful change,yes,diff,Change stays inside allowed paths
+observe,Fresh command receipts,yes,test or build output,Receipt postdates and matches source revision
+verify,Independent verdict,yes,review receipt,Reviewer or policy is separate from the authoring claim
+stop,Allowed terminal state,yes,final receipt,State is verified review-required blocked stopped-by-budget or stopped-by-policy
+handoff,Failure and next action,conditional,handoff note,Blocked runs explain evidence root cause and owner

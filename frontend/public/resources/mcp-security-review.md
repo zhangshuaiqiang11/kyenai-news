@@ -1,6 +1,6 @@
 # MCP security review
 
-Verified: 2026-06-14
+Verified: 2026-09-08
 
 Use this template for one named server and deployment context. It combines official MCP security requirements and guidance with clearly labeled KyenAI operational recommendations.
 
@@ -19,6 +19,14 @@ Use this template for one named server and deployment context. It combines offic
 - Dependency / supply-chain review:
 - Revocation / incident response:
 
+## Authentication choice
+
+| Option | Use when | Main risk | Launch gate |
+| --- | --- | --- | --- |
+| OAuth / MCP authorization flow | HTTP-based servers need user or client authorization with audience-bound access tokens and scopes. | Token passthrough, wrong audience, excessive scopes, confused-deputy behavior, and stale refresh paths. | Protected resource metadata exists, token audience is validated, scopes are minimal, and deny-path tests reject wrong-audience tokens. |
+| API key or service token | A server wraps a backend service that already uses scoped service credentials or short-lived runtime tokens. | Long-lived secrets in prompts, logs, repo files, local config, screenshots, or broad environment injection. | The key is stored in managed secret storage, injected only at runtime, redacted from logs, scoped narrowly, and revocable by an owner. |
+| mTLS or private network identity | A production or internal server needs strong service-to-service identity inside a controlled network boundary. | Certificate lifecycle drift, over-trusted network zones, unclear client identity, and missing emergency disablement. | Client identity is mapped to allowed methods, certificate rotation is documented, network allowlists are tested, and break-glass revocation works. |
+
 ## Threat model
 
 - [ ] **Prompt injection** - Untrusted repository, issue, webpage, or tool output can steer an agent toward a dangerous MCP call. Treat this as a general AI agent tool security threat and keep consequential capabilities independently constrained. _KyenAI operational recommendation._
@@ -30,14 +38,31 @@ Use this template for one named server and deployment context. It combines offic
 
 ## Control checklist
 
-- [ ] **Authentication and authorization** - Document the authorization server, protected resource metadata, token audience, scopes, and deny-path tests. _Official MCP requirement or guidance._
-- [ ] **Least privilege** - Every enabled method, filesystem root, API scope, and environment has a documented use case. _Official MCP requirement or guidance._
-- [ ] **Secure secret and token storage with rotation** - Record storage location, redaction behavior, token lifetime, rotation owner, and emergency revocation procedure. _Official MCP requirement or guidance._
-- [ ] **Read and write separation** - A read-only profile can be enabled without write, delete, secret, or production permissions. _KyenAI operational recommendation._
-- [ ] **Human approval for destructive or production actions** - Approval prompts identify the actor, target, action, data, environment, and rollback limits. _KyenAI operational recommendation._
-- [ ] **Attributable audit logs** - A reviewer can reconstruct a consequential call and its approval without exposing credentials. _KyenAI operational recommendation._
-- [ ] **Isolation and network allowlists** - The server cannot reach undeclared private addresses, metadata endpoints, filesystem roots, or child processes. _KyenAI operational recommendation._
-- [ ] **Revocation and incident response** - The owner has tested disablement and credential revocation, with named incident and escalation contacts. _KyenAI operational recommendation._
+- [ ] **Validate access-token audience (Critical)** - Verify: Send valid, wrong-audience, expired, and unsigned tokens to each protected endpoint. Pass: Only the valid audience-bound token is accepted; every other token is rejected without reaching a tool. _Official MCP requirement or guidance._
+- [ ] **Require per-client consent (Critical)** - Verify: Authorize one client, then initiate the same flow from a new client ID while the original consent cookie remains present. Pass: The new client receives its own consent screen and cannot inherit the first client's approval. _Official MCP requirement or guidance._
+- [ ] **Validate redirect URIs, state, and CSRF (Critical)** - Verify: Replay state values and try wildcard, changed, missing, and attacker-controlled redirect URIs. Pass: Every mismatch or replay is rejected and approved redirects use exact registered values. _Official MCP requirement or guidance._
+- [ ] **Reject token passthrough (Critical)** - Verify: Present a token issued only for a downstream API and trace whether it can cross the MCP boundary. Pass: The MCP server rejects the token and never forwards it downstream. _Official MCP requirement or guidance._
+- [ ] **Minimize scopes and elevate incrementally (High)** - Verify: Map every requested scope to one enabled method and run the workflow with optional scopes removed. Pass: No unused wildcard or admin scope remains and elevation is explicit and operation-specific. _Official MCP requirement or guidance._
+- [ ] **Protect and rotate secrets and tokens (Critical)** - Verify: Scan configuration, prompts, logs, errors, screenshots, and source history, then rotate a test credential. Pass: No plaintext credential appears and the old credential stops working after rotation. _KyenAI operational recommendation._
+- [ ] **Never use sessions as authentication (Critical)** - Verify: Reuse a captured session ID without valid authorization and attempt calls against another server instance. Pass: The request is rejected and the session ID alone grants no capability. _Official MCP requirement or guidance._
+- [ ] **Secure, bind, rotate, and expire session IDs (High)** - Verify: Test predictable IDs, cross-user reuse, cross-instance replay, and expired-session behavior. Pass: IDs are unguessable, user-bound, time-bounded, and rejected outside their authorized context. _Official MCP requirement or guidance._
+- [ ] **Allow only safe authorization URL schemes (Critical)** - Verify: Return authorization endpoints using unsafe schemes, encoded variants, and HTTP on non-loopback hosts. Pass: Only HTTPS production URLs and explicitly allowed loopback development URLs open. _Official MCP requirement or guidance._
+- [ ] **Open authorization URLs without a shell (Critical)** - Verify: Supply URLs containing shell metacharacters, quotes, spaces, and encoded command separators. Pass: The URL is parsed as data, no shell starts, and suspicious values are rejected and logged. _Official MCP requirement or guidance._
+- [ ] **Block SSRF to private and metadata ranges (Critical)** - Verify: Try IPv4, IPv6, encoded, hostname, and cloud-metadata targets through every URL-fetching path. Pass: All private or reserved destinations are blocked before connection and responses are not reflected. _Official MCP requirement or guidance._
+- [ ] **Revalidate redirects and DNS results (High)** - Verify: Use redirect chains and a test hostname that changes from a public to a private address. Pass: Every hop is revalidated and a destination change to a blocked address terminates the request. _Official MCP requirement or guidance._
+- [ ] **Enforce an outbound network allowlist (High)** - Verify: Attempt direct IP, undeclared domain, private range, redirect, and DNS-rebinding egress from the runtime. Pass: Only reviewed destinations succeed and bypass paths cannot reach undeclared networks. _Official MCP requirement or guidance._
+- [ ] **Require consent before local server installation (Critical)** - Verify: Start installation from a deep link or imported configuration and inspect the complete pre-execution consent flow. Pass: No command runs before explicit approval and the user can cancel without side effects. _Official MCP requirement or guidance._
+- [ ] **Display full commands and dangerous-pattern warnings (High)** - Verify: Test long, multiline, obfuscated, and destructive commands in the installation dialog. Pass: The entire command is visible and dangerous patterns produce a clear warning before approval. _Official MCP requirement or guidance._
+- [ ] **Sandbox local MCP servers (Critical)** - Verify: Attempt to read outside allowed roots, spawn child processes, reach the network, and access system credentials. Pass: Default-denied actions fail and each additional privilege requires a narrow explicit grant. _Official MCP requirement or guidance._
+- [ ] **Restrict stdio proxy process spawning (Critical)** - Verify: Use a compromised-client test to request an arbitrary executable, unexpected arguments, and access outside the sandbox. Pass: Unapproved commands and arguments are denied and allowed process creation is attributable and contained. _Official MCP requirement or guidance._
+- [ ] **Inventory and scope every exposed tool (High)** - Verify: Enumerate tools with MCP Inspector and compare them with the approved capability inventory. Pass: Every exposed tool has a declared workflow and no undeclared or wildcard capability remains. _KyenAI operational recommendation._
+- [ ] **Separate read, write, and delete capabilities (High)** - Verify: Run the read-only workflow and attempt every mutation and deletion method with the same identity. Pass: Reads work within declared roots while all write and delete attempts are denied. _KyenAI operational recommendation._
+- [ ] **Contain prompt-injection-triggered tool calls (Critical)** - Verify: Place malicious instructions in each untrusted input source and observe requested tool calls and permission changes. Pass: Untrusted content cannot expand authority, reveal credentials, or execute a consequential call without policy approval. _KyenAI operational recommendation._
+- [ ] **Require human approval for consequential actions (Critical)** - Verify: Simulate each consequential action and inspect the approval prompt, actor, target, rollback limits, and timeout behavior. Pass: The action cannot proceed without an informed, current, target-specific approval. _KyenAI operational recommendation._
+- [ ] **Keep attributable, secret-redacted audit logs (High)** - Verify: Run allowed and denied calls, then reconstruct them from logs and scan the records for credential patterns. Pass: A reviewer can reconstruct consequential calls and no secret or sensitive payload is exposed. _KyenAI operational recommendation._
+- [ ] **Pin and review server supply-chain inputs (High)** - Verify: Rebuild from a clean environment and compare resolved packages, checksums, publisher identity, and startup command with the review record. Pass: The reviewed artifact is reproducible and an unexpected publisher, version, or dependency blocks launch. _KyenAI operational recommendation._
+- [ ] **Test revocation and incident response (Critical)** - Verify: Run a tabletop incident, disable the server, revoke a test credential, and attempt the former workflow again. Pass: Old access fails immediately, owners receive evidence, and restoration requires a documented decision. _KyenAI operational recommendation._
+- [ ] **Validate allow and deny paths with MCP Inspector (Medium)** - Verify: Run the Inspector against the exact reviewed server version and preserve results for every enabled capability. Pass: The exposed surface matches inventory, allow cases work, deny cases stay denied, and errors reveal no secrets. _KyenAI operational recommendation._
 
 ## Permission matrix
 
@@ -57,6 +82,63 @@ Use this template for one named server and deployment context. It combines offic
 - [ ] Exercise expected allow and deny cases for every enabled capability.
 - [ ] Confirm errors and logs do not expose tokens, secrets, or unnecessary sensitive payloads.
 - [ ] Record evidence links and unresolved findings.
+
+## Security config example
+
+```yaml
+# Example MCP server security profile
+
+server:
+  name: repo-inspector
+  owner: platform-security
+  transport: http
+  default_capability: read-only
+
+authorization:
+  mode: oauth
+  token_audience: https://mcp.example.com/repo-inspector
+  required_scopes:
+    - repo.read
+  reject_token_passthrough: true
+
+permissions:
+  filesystem_roots:
+    - /workspace/repo
+  blocked_paths:
+    - .env
+    - secrets/
+    - production/
+  outbound_network_allowlist:
+    - https://api.github.com
+  write_methods: []
+  destructive_methods: []
+
+approvals:
+  require_human_for:
+    - secret_access
+    - production_access
+    - write_methods
+    - delete_methods
+
+audit:
+  log_fields:
+    - actor
+    - session_id
+    - server_version
+    - method
+    - target
+    - approval_id
+    - outcome
+  redact:
+    - tokens
+    - secrets
+    - file_contents
+
+revocation:
+  disable_server_command: platformctl mcp disable repo-inspector
+  rotate_credentials_owner: platform-security
+  incident_channel: "#security-incidents"
+```
 
 ## Review cadence and revocation
 

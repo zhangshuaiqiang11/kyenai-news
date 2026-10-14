@@ -16,6 +16,7 @@ describe("og image API", () => {
     handler({ query: { title: "Codex vs Claude Code <test>" } } as never, res as never);
 
     expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "image/svg+xml; charset=utf-8");
+    expect(res.setHeader).toHaveBeenCalledWith("X-Robots-Tag", "noindex, nofollow");
     expect(res.status).toHaveBeenCalledWith(200);
     expect(chunks[0]).toContain("Codex vs Claude Code &lt;test&gt;");
     expect(chunks[0]).toContain('width="1200"');

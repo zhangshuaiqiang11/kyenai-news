@@ -2,11 +2,11 @@ import React, { useMemo, useState } from "react";
 import { Filter, Search } from "lucide-react";
 
 import { filterArticles, getCategoryCounts, getPublishers, sortArticles, type ArticleSort } from "../lib/catalog";
-import type { Article } from "../lib/types";
+import type { ArticleSummary } from "../lib/types";
 import { ArticleCard } from "./ArticleCard";
 
 type ArticleExplorerProps = {
-  articles: Article[];
+  articles: ArticleSummary[];
 };
 
 export function ArticleExplorer({ articles }: ArticleExplorerProps) {
