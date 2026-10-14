@@ -9,7 +9,7 @@ const pageContracts = [
   },
   {
     path: "/guides/agents-md-template-for-ai-coding-agents",
-    titleIncludes: "AGENTS.md Template for Codex",
+    titleIncludes: "Free AGENTS.md Template for Codex: Copy + Validate",
     h1Includes: "AGENTS.md Template for Codex, Node.js, Python & Monorepos",
   },
   {
@@ -76,6 +76,11 @@ const pageContracts = [
     path: "/articles/cursor-enterprise-organizations-governance",
     titleIncludes: "Cursor Data Retention & Enterprise Security: Privacy Mode, ZDR",
     h1Includes: "Cursor Enterprise Data Retention & Security: What Admins Must Verify",
+  },
+  {
+    path: "/guides/harness-engineering-for-ai-coding-agents",
+    titleIncludes: "AI Coding Agent Harness Engineering",
+    h1Includes: "AI Coding Agent Harness Engineering: A Practical Integration Guide",
   },
 ];
 

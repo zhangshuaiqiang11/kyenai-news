@@ -8,9 +8,9 @@ const ARTICLE_GUIDE_OVERRIDES: Record<string, string[]> = {
     "loop-engineering-ai-coding-agents",
   ],
   "cursor-enterprise-organizations-governance": [
+    "harness-engineering-for-ai-coding-agents",
     "agent-governance-checklist-for-software-teams",
     "secure-mcp-servers-ai-coding-agents",
-    "mcp-server-not-showing-tools",
   ],
 };
 

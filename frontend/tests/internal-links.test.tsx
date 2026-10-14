@@ -203,7 +203,7 @@ describe("contextual internal links", () => {
     expect(centers!.textContent).toMatch(/Advanced page:/);
 
     const hrefs = expectValidUniqueGuideLinks(centers!, "guides-index", validHrefs);
-    expect(hrefs).toHaveLength(16);
+    expect(hrefs).toHaveLength(17);
     expect(hrefs).toEqual(
       expect.arrayContaining([
         `guides-index::${INSTRUCTION_COMPARISON_GUIDE_SLUG}`,
@@ -211,6 +211,7 @@ describe("contextual internal links", () => {
         "guides-index::agents-md-examples-codex-node-python-monorepos",
         "guides-index::does-github-copilot-read-claude-md-support-matrix",
         `guides-index::${LOOP_ENGINEERING_GUIDE_SLUG}`,
+        "guides-index::harness-engineering-for-ai-coding-agents",
         "guides-index::claude-code-subagents-examples",
         "guides-index::agent-mode-vs-chat-mode-in-ide",
         `guides-index::${MCP_SECURITY_GUIDE_SLUG}`,

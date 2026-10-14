@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   historicalSearchBaseline,
   latestControlBaseline,
+  octoberObservationBaseline,
   priorityPageBaselines,
   prioritySearchTargets,
   searchBaselineScope,
@@ -39,16 +40,39 @@ describe("search growth baseline", () => {
   });
 
   it("keeps the historical cohort and latest control window as separate snapshots", () => {
-    expect(searchBaselineSnapshots).toHaveLength(2);
+    expect(searchBaselineSnapshots).toHaveLength(3);
     expect(historicalSearchBaseline.baselineId).not.toBe(latestControlBaseline.baselineId);
     expect(historicalSearchBaseline.windowEnd).toBe("2026-09-09");
     expect(historicalSearchBaseline.returnedRowCount).toBe(1000);
+    expect(historicalSearchBaseline.rowCountDimension).toBe("query");
     expect(latestControlBaseline.windowStart).toBe("2026-08-19");
     expect(latestControlBaseline.windowEnd).toBe("2026-09-15");
     expect(latestControlBaseline.metrics).toBeNull();
     expect(latestControlBaseline.returnedRowCount).toBe(932);
+    expect(latestControlBaseline.rowCountDimension).toBe("query");
     expect(latestControlBaseline.releaseId).toBeNull();
     expect(latestControlBaseline.hasQueryPageDimension).toBe(false);
+    expect(octoberObservationBaseline).toMatchObject({
+      windowStart: "2026-09-13",
+      windowEnd: "2026-10-10",
+      exportedAt: "2026-10-13",
+      releaseId: "81f7530",
+      productionReleaseDate: "2026-09-16",
+      returnedRowCount: null,
+      rowCountDimension: null,
+      metricDimension: "date",
+      hasQueryPageDimension: false,
+      metrics: { clicks: 34, impressions: 6456, averagePosition: 9.5066 },
+      dimensionRowCounts: {
+        date: 28,
+        query: 255,
+        page: 37,
+        country: 121,
+        device: 3,
+        "search-appearance": 0,
+      },
+    });
+    expect(octoberObservationBaseline.limitations.join(" ")).toContain("No Query x Page");
   });
 
   it("corrects ownership without claiming Query x Page attribution", () => {

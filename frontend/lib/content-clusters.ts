@@ -53,16 +53,17 @@ export const contentClusters: ContentCluster[] = [
   },
   {
     slug: "governance",
-    title: "Governance",
-    description: "Controls for approving, auditing, and operating AI coding agents in software teams.",
+    title: "Agent Workflow & Governance",
+    description: "Harnesses, bounded loops, approvals, audit evidence, and controlled delivery for coding agents.",
     intro: [
-      "Agent governance is a capability and ownership question: which repositories, files, secrets, networks, and production-adjacent systems can an agent reach, and who can approve or revoke that access? This cluster turns those questions into checklists, policy boundaries, and evidence-backed enterprise updates.",
-      "Pair the governance checklist with your instruction and MCP policies. Record approvals, verification commands, logs, and stop conditions so a team can explain what happened after an agent run instead of relying on a green-looking transcript.",
+      "Agent workflow design starts with the harness around the model: repository context, tool boundaries, isolated execution, deterministic verification, review, and delivery. Governance answers who owns those capabilities and which repositories, files, secrets, networks, and production-adjacent systems an agent may reach.",
+      "Use loop engineering for retry and stop rules, the harness guide for editor-to-delivery integration, and the governance checklist for approvals, logs, and revocation. Record evidence so the team can explain what happened after a run instead of relying on a green-looking transcript.",
     ],
     guideSlugs: [
       "agent-governance-checklist-for-software-teams",
       "secure-mcp-servers-ai-coding-agents",
       "loop-engineering-ai-coding-agents",
+      "harness-engineering-for-ai-coding-agents",
       "claude-code-subagents-examples",
     ],
     articleSlugs: [

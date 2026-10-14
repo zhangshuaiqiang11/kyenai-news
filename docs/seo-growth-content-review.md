@@ -1,6 +1,6 @@
 # KyenAI priority content review
 
-This ledger records the September 2026 on-site optimization pass. It is an editorial record, not a claim that a page or query will reach a particular rank.
+This ledger records the September 2026 on-site optimization pass and the October 14, 2026 follow-up. It is an editorial record, not a claim that a page or query will reach a particular rank.
 
 ## Priority pages
 
@@ -12,6 +12,9 @@ This ledger records the September 2026 on-site optimization pass. It is an edito
 | P0 | Check Copilot CLAUDE.md support | `/guides/does-github-copilot-read-claude-md-support-matrix` | Keep the exact-question page surface-specific and separate from broad instruction-file comparison intent. | The support matrix is date-sensitive; unsupported surfaces are not inferred. |
 | P1 | Review Cursor enterprise controls | `/articles/cursor-enterprise-organizations-governance` | Put the retention boundary in the title and answer: no universal default period; admins must verify model, feature, Cloud Agent, workspace, and contract terms. | Vendor claims are labeled as vendor-documented. Customer configuration and contracts still require verification. |
 | P1 | Secure an MCP server | `/guides/secure-mcp-servers-ai-coding-agents` | Reframed the title and first answer around OAuth, token audience, least privilege, network and secret boundaries, and revocation. | Checklist controls are recommendations unless the protocol documentation defines the behavior. |
+| P0 | Improve AGENTS.md template SERP clicks | `/guides/agents-md-template-for-ai-coding-agents` | Changed only the SERP title and description to make copy/download/validate utility explicit; left the on-page heading and substantive guide date unchanged for this snippet-only test. | October GSC page row: 311 impressions, 0 clicks, average position 7.05; separate page dimension, not query-attributed. Production start and 14-day freeze remain pending. |
+| P1 | Explain current agent harness architecture | `/guides/harness-engineering-for-ai-coding-agents` | Added a guide separating model, agent, harness, decision model, verification, and delivery; covers editing/IDE workflows, Jev limits, and deterministic gates. | New-URL acquisition hypothesis; no Harness/Jev query was visible in the 255-row query export. Do not call it the cause of the traffic decline. |
+| P1 | Refresh workflow and enterprise facts | `/guides/loop-engineering-ai-coding-agents`, `/guides/ai-coding-agents-comparison`, `/articles/cursor-enterprise-organizations-governance` | Added the loop-versus-harness distinction, current IDE harness distinctions, and dated Cursor Enterprise workflow controls for Remote Control, Rollouts, and Security Review. | Cursor claims are vendor-documented, checked Oct 14; retention exceptions remain, and these features do not establish a universal default retention period. Content changes are bundled. |
 
 ## Journey design
 
@@ -22,6 +25,9 @@ This ledger records the September 2026 on-site optimization pass. It is an edito
 ## Measurement contract
 
 - The baseline scope and query-to-page map live in `frontend/lib/search-baseline.ts` and `docs/seo-growth-baseline.md`.
+- The October 13 export reports 34 clicks / 6,456 impressions for Sep 13–Oct 10. Its query table contains only 4 clicks / 947 impressions and is not a complete query inventory.
+- The template page's separate GSC page row shows 311 impressions, zero clicks, and position 7.05. The new title/description is a CTR hypothesis and has not yet been measured in production.
+- The harness guide's watch queries are editorial targets, not observed search demand until a later GSC query export shows them.
 - `tool_use` is emitted only after an explicit user action. A visible tool is not counted as use.
 - `template_copy` is emitted only after the clipboard operation succeeds.
 - `resource_download_click` records a same-origin `/resources/` path after a click. It does not claim that the browser completed a download.
@@ -46,3 +52,5 @@ This ledger records the September 2026 on-site optimization pass. It is an edito
 ## Observation window
 
 Compare complete pre- and post-release 28-day windows for the priority pages, visible non-brand queries, and explicit tool actions. Keep the same page, query, country, and device dimensions. Extend low-sample comparisons to 56 days. The current export has no Query x Page table, so an editorial mapping must not be presented as observed attribution.
+
+For the October 14 release, record the actual production timestamp and deployed commit before calculating the freeze or review dates. If production deploys later, shift every window by that delay. Treat 7-day movement as directional, use at least 14 days for the snippet check, 28 days for the primary CTR decision, and 56 days for sparse pages.

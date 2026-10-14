@@ -44,6 +44,7 @@ const targetGuideSlugs = [
   "loop-engineering-ai-coding-agents",
   "does-github-copilot-read-claude-md-support-matrix",
   "agents-md-examples-codex-node-python-monorepos",
+  "harness-engineering-for-ai-coding-agents",
 ] as const;
 
 vi.mock("next/router", () => ({

@@ -1,6 +1,7 @@
 import type { GuideEditorialSignals, SearchCluster, SearchQueryMappingBasis } from "./types";
 
 export type GscMetric = NonNullable<GuideEditorialSignals["gscBaseline"]>;
+export type GscDimension = "date" | "page" | "query" | "country" | "device" | "query-page" | "search-appearance";
 
 export type SearchTarget = {
   query: string;
@@ -19,12 +20,15 @@ export type GscBaselineSnapshot = {
   releaseId: string | null;
   productionReleaseDate: string | null;
   hasQueryPageDimension: boolean;
+  metricDimension: GscDimension | null;
   requestedRowLimit: number | null;
   returnedRowCount: number | null;
+  rowCountDimension: GscDimension | null;
+  dimensionRowCounts?: Partial<Record<GscDimension, number>>;
   sourceFile: string;
   property: string;
   searchType: "Web";
-  dimensions: readonly ("page" | "query" | "country" | "device" | "query-page")[];
+  dimensions: readonly GscDimension[];
   metrics: {
     clicks: number | null;
     impressions: number | null;
@@ -54,12 +58,15 @@ export const historicalSearchBaseline: GscBaselineSnapshot = {
   releaseId: null,
   productionReleaseDate: null,
   hasQueryPageDimension: searchBaselineScope.hasQueryPageDimension,
+  metricDimension: "date",
   requestedRowLimit: null,
   returnedRowCount: 1000,
+  rowCountDimension: "query",
+  dimensionRowCounts: { query: 1000 },
   sourceFile: searchBaselineScope.sourceFile,
   property: searchBaselineScope.property,
   searchType: "Web",
-  dimensions: ["page", "query", "country", "device"],
+  dimensions: ["date", "page", "query", "country", "device", "search-appearance"],
   metrics: { clicks: 97, impressions: 25_271, ctr: 0.0038, averagePosition: null },
   limitations: [
     "Separate GSC dimension tables; no Query x Page export.",
@@ -80,12 +87,15 @@ export const latestControlBaseline: GscBaselineSnapshot = {
   releaseId: null,
   productionReleaseDate: null,
   hasQueryPageDimension: false,
+  metricDimension: null,
   requestedRowLimit: null,
   returnedRowCount: 932,
+  rowCountDimension: "query",
+  dimensionRowCounts: { query: 932 },
   sourceFile: "kyenai.com-Performance-on-Search-2026-09-15.zip",
   property: "sc-domain:kyenai.com",
   searchType: "Web",
-  dimensions: ["page", "query", "country", "device"],
+  dimensions: ["date", "page", "query", "country", "device", "search-appearance"],
   metrics: null,
   limitations: [
     "Control archive is not a live Search Console API response.",
@@ -96,7 +106,52 @@ export const latestControlBaseline: GscBaselineSnapshot = {
   ],
 };
 
-export const searchBaselineSnapshots = [historicalSearchBaseline, latestControlBaseline] as const;
+/**
+ * First complete 28-day observation after the September CTR release. The
+ * window includes three pre-release days, so releaseId is context rather than
+ * evidence that the release caused any movement.
+ */
+export const octoberObservationBaseline: GscBaselineSnapshot = {
+  baselineId: "gsc-observation-2026-09-13-to-2026-10-10",
+  windowStart: "2026-09-13",
+  windowEnd: "2026-10-10",
+  exportedAt: "2026-10-13",
+  releaseId: "81f7530",
+  productionReleaseDate: "2026-09-16",
+  hasQueryPageDimension: false,
+  metricDimension: "date",
+  requestedRowLimit: null,
+  returnedRowCount: null,
+  rowCountDimension: null,
+  dimensionRowCounts: {
+    date: 28,
+    query: 255,
+    page: 37,
+    country: 121,
+    device: 3,
+    "search-appearance": 0,
+  },
+  sourceFile: "kyenai.com-Performance-on-Search-2026-10-13.zip",
+  property: "sc-domain:kyenai.com",
+  searchType: "Web",
+  dimensions: ["date", "page", "query", "country", "device", "search-appearance"],
+  metrics: { clicks: 34, impressions: 6_456, ctr: 34 / 6_456, averagePosition: 9.5066 },
+  limitations: [
+    "The chart/date table is the metric basis for the top-level 34 clicks, 6,456 impressions, 0.5266% CTR, and impression-weighted position 9.5066. The page table separately reports 34 clicks, 6,560 impressions, 0.5183% CTR, and weighted position 9.4888.",
+    "Row counts are stored by exported dimension: 28 dates, 255 queries, 37 pages, 121 countries, 3 devices, and 0 search-appearance data rows. The top-level returnedRowCount is null because this archive contains multiple independent dimension tables.",
+    "The query table exposes 255 rows, 4 clicks, and 947 impressions; anonymized and low-volume queries make it an incomplete subset rather than the site's complete query inventory.",
+    "The exported filter summary says Search type: Web (text-based) and Date: Previous 28 days; the chart supplies the exact dates 2026-09-13 through 2026-10-10. No other dimension filter is listed.",
+    "No Query x Page table was exported, so query-to-URL attribution, cannibalization, and release causality remain unknown.",
+    "The window includes 2026-09-13 through 2026-09-15 before release 81f7530 reached production; do not treat it as a clean post-release experiment.",
+    "Search appearance contains no data rows, and the archive does not state whether the final dates were fully settled when exported.",
+  ],
+};
+
+export const searchBaselineSnapshots = [
+  historicalSearchBaseline,
+  latestControlBaseline,
+  octoberObservationBaseline,
+] as const;
 
 export const siteSearchBaseline = {
   ...searchBaselineScope,

@@ -19,7 +19,7 @@ const staticPageDates = {
   "/research": "2026-07-30",
   "/agent-instructions": "2026-09-15",
   "/mcp": "2026-09-15",
-  "/governance": "2026-09-15",
+  "/governance": "2026-10-14",
 } as const;
 
 export const noindexUtilityPaths = [

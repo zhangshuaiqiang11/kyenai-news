@@ -7,20 +7,21 @@ import { test } from "node:test";
 const origin = "https://www.kyenai.com";
 const pageContracts = [
   ["/", "KyenAI | AI Coding Agent Templates & Security Playbooks", "Evidence-Backed Templates and Security Playbooks for AI Coding Agents"],
-  ["/guides/agents-md-template-for-ai-coding-agents", "AGENTS.md Template for Codex", "AGENTS.md Template for Codex and Monorepos"],
-  ["/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions", "AGENTS.md vs CLAUDE.md vs Copilot Instructions", "AGENTS.md vs CLAUDE.md vs Copilot Instructions"],
+  ["/guides/agents-md-template-for-ai-coding-agents", "Free AGENTS.md Template for Codex: Copy + Validate", "AGENTS.md Template for Codex, Node.js, Python & Monorepos"],
+  ["/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions", "AGENTS.md vs Copilot Instructions vs CLAUDE.md vs Cursor Rules", "AGENTS.md vs copilot-instructions.md: Which File Should You Use?"],
   ["/guides/secure-mcp-servers-ai-coding-agents", "MCP Server Security Checklist: 25 Controls", "MCP Server Security Checklist: 25 Controls"],
-  ["/guides/mcp-server-not-showing-tools", "MCP Server Connected but No Tools? 8 Checks", "MCP Server Not Showing Tools? Diagnose tools/list in 8 Checks"],
+  ["/guides/mcp-server-not-showing-tools", "MCP Server Connected but No Tools? 8 Checks for tools/list", "MCP Server Connected but No Tools? 8 tools/list Checks"],
   ["/guides/codex-vs-claude-code", "Codex vs Claude Code", "Codex vs Claude Code"],
   ["/guides/codex-vs-github-copilot", "Codex vs GitHub Copilot", "Codex vs GitHub Copilot"],
   ["/guides/ai-coding-agents-comparison", "AI Coding Agent Comparison", "AI Coding Agents Comparison"],
   ["/guides/claude-code-alternatives", "7 Claude Code Alternatives", "7 Claude Code Alternatives"],
-  ["/guides/loop-engineering-ai-coding-agents", "Loop Engineering for AI Coding Agents", "What Is Loop Engineering for AI Coding Agents?"],
+  ["/guides/loop-engineering-ai-coding-agents", "Loop Engineering for AI Coding Agents", "Loop Engineering for AI Coding Agents: Stop Rules & Verification"],
   ["/guides/ai-coding-agent-instruction-file-adoption-report-2026", "AI Agent Instruction File Adoption", "AI Coding Agent Instruction File Adoption Report"],
   ["/tools/instruction-file-checker", "Instruction File Checker", "AI Coding Agent Instruction File Checker"],
   ["/sources", "Source & Verification Ledger", "Source & Verification Ledger"],
   ["/articles/spacex-cursor-acquisition-2026", "Did SpaceX Buy Cursor? Official Aug. 14, 2026 SEC Closing", "Did SpaceX Buy Cursor? $60B Deal Status and Timeline"],
-  ["/articles/cursor-enterprise-organizations-governance", "Cursor Enterprise Security: Privacy Mode & Retention Exceptions", "Cursor Enterprise Security: Governance, Privacy Mode, and Agent Permissions"],
+  ["/articles/cursor-enterprise-organizations-governance", "Cursor Data Retention & Enterprise Security: Privacy Mode, ZDR", "Cursor Enterprise Data Retention & Security: What Admins Must Verify"],
+  ["/guides/harness-engineering-for-ai-coding-agents", "AI Coding Agent Harness Engineering: Guide (2026)", "AI Coding Agent Harness Engineering: A Practical Integration Guide"],
 ];
 
 function html(path, title, h1) {
@@ -82,7 +83,7 @@ test("SEO drift check passes the known-good contract", async (t) => {
   const result = await runCheck(`http://127.0.0.1:${address.port}`);
   assert.equal(result.code, 0, result.stderr || result.stdout);
   const report = JSON.parse(result.stdout);
-  assert.equal(report.pagesChecked, 18);
+  assert.equal(report.pagesChecked, 19);
   assert.equal(report.failures, 0);
 });
 

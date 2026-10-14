@@ -76,6 +76,11 @@ const guideTopicHubs: GuideTopicHub[] = [
         note: "Start with Addy Osmani context, coding-agent examples, stop rules, and token caps.",
       },
       {
+        href: "/guides/harness-engineering-for-ai-coding-agents",
+        label: "AI coding agent harness engineering",
+        note: "Connect repository context, editor execution, deterministic gates, review, and delivery without conflating models and harnesses.",
+      },
+      {
         href: "/guides/claude-code-hooks-mcp-setup",
         label: "Claude Code hooks and MCP setup",
         note: "Add deterministic checks and tool access safely.",
@@ -169,6 +174,11 @@ const startingGuides = [
     note: "Use this when agents need verification commands, retry limits, stop rules, and human checkpoints.",
   },
   {
+    href: "/guides/harness-engineering-for-ai-coding-agents",
+    label: "AI coding agent harness engineering",
+    note: "Integrate bounded editing and coding workflows with tests, review, and controlled delivery.",
+  },
+  {
     href: "/articles/spacex-cursor-acquisition-2026",
     label: "SpaceX Cursor acquisition",
     note: "Use this when you need deal status, timeline, and developer-tool impact in one place.",
@@ -252,12 +262,12 @@ const comparisonPages = [
 ];
 
 const guideOverview =
-  "KyenAI guides help software teams make practical decisions about AI coding agents. Start with the AI coding config files guide when you need to map AGENTS.md, CLAUDE.md, GEMINI.md, Copilot instructions, Cursor Rules, and Windsurf Rules. Use the four-tool comparison hub when choosing among Codex, Claude Code, Cursor, and GitHub Copilot. Use the instruction-file support matrix when the problem is repository guidance. Use the loop engineering guide when agent work needs verification commands, retry limits, and stop rules. Use the MCP security and governance guides before adding tool access, secrets, logs, approvals, or revocation. Each guide gives the answer first, then adds source notes, decision tables, checklists, and next steps for implementation.";
+  "KyenAI guides help software teams make practical decisions about AI coding agents. Start with the AI coding config files guide when you need to map AGENTS.md, CLAUDE.md, GEMINI.md, Copilot instructions, Cursor Rules, and Windsurf Rules. Use the four-tool comparison hub when choosing among Codex, Claude Code, Cursor, and GitHub Copilot. Use the instruction-file support matrix when the problem is repository guidance. Use the harness engineering guide to connect editor or IDE agents to repository context, isolated edits, deterministic tests, review, and delivery; use loop engineering for retry and stop rules. Use the MCP security and governance guides before adding tool access, secrets, logs, approvals, or revocation. Each guide gives the answer first, then adds source notes, decision tables, checklists, and next steps for implementation.";
 
 export const guidesPageSeo = {
   title: "AI Coding Agent Guides: Templates, Security & Workflows",
   description:
-    "Browse AGENTS.md templates, MCP security checklists, agent-loop workflows, governance guidance, and evidence-led implementation resources.",
+    "Browse AGENTS.md templates, MCP security checklists, agent harness and loop workflows, governance guidance, and evidence-led implementation resources.",
 } as const;
 
 export default function GuidesPage({ guides }: GuidesPageProps) {

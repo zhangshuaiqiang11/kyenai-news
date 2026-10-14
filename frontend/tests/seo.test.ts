@@ -46,6 +46,7 @@ describe("SEO helpers", () => {
     "agents-md-vs-claude-md-cursorrules-copilot-instructions",
     "secure-mcp-servers-ai-coding-agents",
     "loop-engineering-ai-coding-agents",
+    "harness-engineering-for-ai-coding-agents",
   ] as const;
 
   it("formats date-only editorial values in UTC", () => {

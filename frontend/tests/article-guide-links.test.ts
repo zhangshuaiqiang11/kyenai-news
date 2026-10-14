@@ -35,9 +35,9 @@ describe("article to guide links", () => {
     const guides = getRelatedGuidesForArticle(article!);
 
     expect(guides.map((guide) => guide.slug)).toEqual([
+      "harness-engineering-for-ai-coding-agents",
       "agent-governance-checklist-for-software-teams",
       "secure-mcp-servers-ai-coding-agents",
-      "mcp-server-not-showing-tools",
     ]);
   });
 

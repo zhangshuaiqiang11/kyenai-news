@@ -495,9 +495,9 @@ export const expansionGuides: Guide[] = [
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
     publishedAt: "2026-06-14",
     updatedAt: "2026-09-08",
-    metaTitle: "AGENTS.md Template for Codex: Node.js, Python & Monorepos",
+    metaTitle: "Free AGENTS.md Template for Codex: Copy + Validate (2026)",
     metaDescription:
-      "Copy tested AGENTS.md templates for Codex, Node.js, Python and monorepos. Includes setup commands, test rules, safe edit boundaries and review checks.",
+      "Download and copy a practical AGENTS.md template for Codex, Node.js, Python, and monorepos, with test commands, safe edit boundaries, and validation steps.",
     resourceIds: ["agents-md-template"],
     decisionTablePlacement: "above-fold",
     primaryAction: {
@@ -1450,6 +1450,13 @@ export const expansionGuides: Guide[] = [
         ],
       },
       {
+        heading: "Loop Engineering vs Agent Harness Engineering",
+        body: [
+          "A loop is the repeating plan-act-observe-verify-stop cycle. A harness is the wider system that makes that cycle usable: repository context, tool adapters, permissions, workspace isolation, session state, verification, observability, and recovery. Loop engineering describes the behavior; harness engineering designs and maintains the environment that enables it.",
+          "Start with a small loop and add harness components only when an observed failure justifies them. For the complete repository-to-review architecture—including editor work, deterministic gates, optional decision models, and delivery controls—see the AI coding agent harness engineering guide.",
+        ],
+      },
+      {
         heading: "What Is Addy Osmani's Loop Engineering Approach?",
         body: [
           "The useful reading of Osmani's idea is that engineers should stop babysitting every agent turn and start designing the operating loop around the agent. The prompt still matters, but it is only one part of a system that also includes tools, feedback, memory, cost limits, and termination.",
@@ -1619,6 +1626,11 @@ export const expansionGuides: Guide[] = [
         reason: "Subagents are a common way to split explore, implement, and verify inside a loop.",
       },
       {
+        slug: "harness-engineering-for-ai-coding-agents",
+        anchor: "AI coding agent harness engineering",
+        reason: "The harness guide places loop rules inside the wider context, permission, testing, review, and delivery system.",
+      },
+      {
         slug: "claude-code-hooks-mcp-setup",
         anchor: "Claude Code hooks and MCP setup",
         reason: "Hooks and MCP supply the observation and tool access loops need to act on real systems.",
@@ -1665,6 +1677,15 @@ export const expansionGuides: Guide[] = [
     ],
     evidence: [
       {
+        title: "Harness engineering: leveraging Codex in an agent-first world",
+        url: "https://openai.com/index/harness-engineering/",
+        publisher: "OpenAI",
+        note: "Official engineering account of repository context, legibility, architecture checks, UI/log feedback, and agent workflows.",
+        verifiedAt: "2026-10-14",
+        verificationConclusion: "The post frames harness work as designing environments, context, and feedback loops around agents; it is an internal case study, not a universal benchmark.",
+        verificationChangeNote: "Added as the primary source for the distinction between a repeating loop and the surrounding harness.",
+      },
+      {
         title: "Loop Engineering",
         url: "https://addyosmani.com/blog/loop-engineering/",
         publisher: "Addy Osmani",
@@ -1709,7 +1730,7 @@ export const expansionGuides: Guide[] = [
       "github-copilot-cloud-local-sandboxes-preview",
     ],
     publishedAt: "2026-06-15",
-    updatedAt: "2026-09-15",
+    updatedAt: "2026-10-14",
     metaTitle: "Loop Engineering for AI Coding Agents: Stop Rules & Verification",
     metaDescription:
       "Design AI coding-agent loops with Plan-Act-Observe-Verify-Stop, retry caps, proof-of-done checks, budgets, and safe escalation rules.",
@@ -1757,7 +1778,14 @@ export const expansionGuides: Guide[] = [
         heading: "Four product shapes at a glance",
         body: [
           "Codex is an OpenAI coding-agent environment whose app makes multiple delegated tasks and isolated worktrees visible. Claude Code is a terminal-centered agent that stays close to the shell, repository, and Anthropic model family. GitHub Copilot is a GitHub and editor ecosystem whose agent surfaces share organization policy and repository workflows. Cursor is a dedicated AI code editor whose agent experience extends into remote Cloud Agents.",
-          "These descriptions are starting shapes, not capability ceilings. Each vendor keeps adding adjacent surfaces, and availability can vary by plan, organization policy, operating system, editor, region, or preview status. This page was checked against official documentation on July 19, 2026; procurement decisions should recheck the linked sources.",
+          "These descriptions are starting shapes, not capability ceilings. Each vendor keeps adding adjacent surfaces, and availability can vary by plan, organization policy, operating system, editor, region, or preview status. The vendor-specific statements below remain tied to their linked source dates; recheck the current documentation before procurement.",
+        ],
+      },
+      {
+        heading: "What an agent harness changes in an IDE comparison",
+        body: [
+          "A product comparison should name the harness, not only the model. VS Code's current guide lists Copilot, Claude, and Codex harnesses plus a Cloud target, and notes that each can differ in tools, permissions, customizations, and review workflows. A shared editor surface does not make those harnesses behaviorally identical.",
+          "For a fair pilot, record the selected harness and model separately, then compare execution location, instruction discovery, available tools, approval mode, worktree or sandbox behavior, review artifacts, and verification commands. Use the harness engineering guide to translate those differences into a repository-level implementation plan.",
         ],
       },
       {
@@ -1826,7 +1854,7 @@ export const expansionGuides: Guide[] = [
     ],
     decisionTable: {
       title: "Codex vs Claude Code vs GitHub Copilot vs Cursor",
-      intro: "This workflow matrix uses official documentation reviewed July 19, 2026. It does not claim a quality winner or replace a controlled repository pilot.",
+      intro: "The product-comparison rows below are an evidence snapshot last reviewed July 19, 2026; they were not revalidated in the October 14 harness update. The new harness section is separately sourced and dated. This matrix does not claim a quality winner or replace a controlled repository pilot.",
       columns: ["Codex", "Claude Code", "GitHub Copilot", "Cursor"],
       rows: [
         { label: "Primary shape", values: ["OpenAI agent across app, CLI, IDE, cloud, and mobile handoff", "Terminal-first Anthropic coding agent", "GitHub and editor ecosystem with CLI and cloud agent", "AI-first editor with foreground and Cloud Agents"] },
@@ -1889,6 +1917,8 @@ export const expansionGuides: Guide[] = [
       { title: "Cursor Cloud Agents", url: "https://cursor.com/docs/cloud-agent", publisher: "Cursor", note: "Official isolated-VM workflow, supported source-control providers, parallel agents, environments, network controls, MCP, hooks, and billing notes." },
       { title: "Cursor rules", url: "https://cursor.com/docs/rules", publisher: "Cursor", note: "Official project, user, and team rules plus AGENTS.md and .cursor/rules guidance." },
       { title: "Cursor for iOS", url: "https://cursor.com/docs/cloud-agent/mobile", publisher: "Cursor", note: "Official Cloud Agent handoff, supervision, review, and availability across mobile, web, and desktop surfaces." },
+      { title: "Choose and use an agent harness", url: "https://code.visualstudio.com/docs/agents/run/agent-harnesses", publisher: "Microsoft Visual Studio Code", note: "Current official comparison of harness targets, execution locations, permissions, customizations, and review workflows in VS Code." },
+      { title: "Harness engineering: leveraging Codex in an agent-first world", url: "https://openai.com/index/harness-engineering/", publisher: "OpenAI", note: "Official engineering case study on repository context, tool feedback, verification, and increasing agent autonomy." },
     ],
     relatedArticleSlugs: [
       "openai-codex-plugins-sites-annotations",
@@ -1896,7 +1926,7 @@ export const expansionGuides: Guide[] = [
       "cursor-enterprise-organizations-governance",
     ],
     publishedAt: "2026-07-19",
-    updatedAt: "2026-07-19",
+    updatedAt: "2026-10-14",
     metaTitle: "AI Coding Agent Comparison: Codex, Claude, Cursor & Copilot",
     metaDescription:
       "Compare Codex, Claude Code, Cursor, and GitHub Copilot across app, CLI, agents, instructions, models, permissions, review, and team governance.",
@@ -2722,5 +2752,213 @@ export const expansionGuides: Guide[] = [
       label: "Compare instruction files by tool surface",
       note: "Use the evidence-backed matrix before standardizing repository guidance.",
     },
+  },
+  {
+    id: "guide-harness-engineering-coding-agents",
+    title: "AI Coding Agent Harness Engineering: A Practical Integration Guide",
+    slug: "harness-engineering-for-ai-coding-agents",
+    summary:
+      "Design the system around coding agents: repository context, editor integration, isolated execution, deterministic verification, optional Jev decisions, human review, and controlled delivery.",
+    intent:
+      "Developers and platform teams want to understand agent harness engineering and wire reliable coding and editing workflows into repositories, IDEs, tests, and delivery systems.",
+    audience: "Software engineers, platform teams, engineering leads, security reviewers, and developers integrating coding agents into editors or CI.",
+    pageType: "Architecture and implementation guide",
+    secondaryKeywords: [
+      "agent harness engineering",
+      "AI coding agent harness",
+      "harness engineering for coding agents",
+      "coding agent workflow architecture",
+      "Jev decision model coding agent",
+      "agent harness vs model",
+    ],
+    sections: [
+      {
+        heading: "Quick answer",
+        body: [
+          "An agent harness is the software and workflow around a model that supplies repository context, tools, permissions, state, execution, verification, and review. For coding or UI editing, keep the model replaceable, run edits in a bounded workspace, enforce tests and security checks in ordinary code, and require human approval for risky or subjective decisions. A decision model such as Jev can optionally classify or score a bounded state; it does not replace the coding agent, test suite, policy engine, or reviewer.",
+        ],
+      },
+      {
+        heading: "Model, agent, harness, and delivery platform are different layers",
+        body: [
+          "The model proposes reasoning or output. The agent decides which tool to call next. The harness owns the loop and its operating environment: context loading, tool adapters, permission checks, workspace lifecycle, session state, time and cost budgets, telemetry, verification, retries, and handoff. CI/CD and delivery platforms then build, test, secure, deploy, and observe reviewed changes.",
+          "The word Harness is also a vendor name. Harness.io sells software delivery products; that is distinct from the general engineering term agent harness. Do not treat a product page, a model, an IDE session target, and an orchestration architecture as interchangeable just because each uses the word agent.",
+        ],
+      },
+      {
+        heading: "A practical architecture for coding agents",
+        body: [
+          "Keep durable project facts in versioned repository docs and use AGENTS.md as a short map to the architecture, commands, task constraints, generated-file boundaries, and proof-of-done rules. Start each task from an issue or spec with acceptance criteria, then create an isolated branch or worktree. The harness should pass only the context and tools required for that task.",
+          "A useful flow is: task contract → context retrieval → permission check → isolated edit → deterministic checks → diff and evidence review → approval → CI/CD → post-release signals. Every transition should record the commit or source revision it concerns. If the tests, screenshots, or review evidence belong to a previous revision, the result is stale and must not authorize the next step.",
+          "Treat the following as a reference shape, not a required vendor stack:",
+          "```text\nAGENTS.md                 # entry map: commands, boundaries, completion criteria\ndocs/architecture/        # durable system facts and approved patterns\ndocs/specs/               # scoped task contracts and acceptance criteria\nscripts/                  # deterministic checks and safe helper commands\n.agent/                   # optional harness config, hooks, and bounded tools\nCI                         # test, typecheck, lint, SAST, review, release gates\n```",
+        ],
+      },
+      {
+        heading: "Integrate a harness into an editor or visual-design workflow",
+        body: [
+          "For UI work, give the agent a precise task contract: target route or component, supported viewport, existing design tokens, accessibility constraints, data states, and what must not change. Supply screenshots, DOM or component context only when authorized and relevant. Keep changes on a reviewable branch; let the harness run the app, inspect the rendered page, capture screenshots, and run browser or accessibility checks against the same revision.",
+          "A model can propose layout and code, but a passing build does not prove visual quality. Use measurable checks for overflow, responsive breakpoints, contrast, interaction states, and console errors; use a named human reviewer for brand fit, visual hierarchy, and product judgment. Store the reference screenshot and acceptance notes with the change when visual regression matters.",
+          "In an IDE, the selected harness can determine tool availability, permission modes, project context, session handling, and review flow. Current VS Code documentation separates harness from model and execution target, and lists Copilot, Claude, and Codex harnesses alongside a Cloud target. Their customizations and permissions remain provider-specific, so do not assume hooks, instructions, or MCP configuration are automatically portable.",
+        ],
+      },
+      {
+        heading: "Use Jev only for bounded decisions",
+        body: [
+          "Jev is TypeSafe AI's System One decision model: the vendor describes sending application state plus typed questions and receiving structured choices, scores, or yes/no probabilities rather than generated prose. That shape may help a harness classify a task, rank a test failure, route an issue, or flag a change for closer review. It is not a code-writing or visual-design model.",
+          "Treat the result as a signal, not authorization. Evaluate it on your own labeled, representative, held-out examples; set thresholds from measured false-allow and false-escalation costs; and route low-confidence or high-impact cases to a person. Keep exact permission decisions, test pass/fail, secret access, deployment approval, and rollback rules in deterministic code and platform policy. Do not put an API key in a browser bundle, repository file, or agent prompt.",
+          "For a first integration, add Jev behind a server-side interface with timeouts, schema validation, an explicit fallback, and logs that avoid sensitive source code. Compare the workflow with a rules-only baseline. If the signal does not improve measured routing or review effort on your own evaluation set, remove the extra model call.",
+        ],
+      },
+      {
+        heading: "What belongs in the deterministic verification gate?",
+        body: [
+          "Run repository-native checks that produce reproducible evidence: formatting and lint, type checking, unit and integration tests, build, dependency and secret scanning, and browser or visual checks for affected UI. The required gate depends on the task; do not make every small documentation edit run an expensive production-like suite, but never let an agent mark an unrun check as passed.",
+          "Bind each receipt to the commit, command, environment, timestamp, and result. Cap retries, change strategy after repeated identical failures, and stop when a permission request widens scope, a destructive action appears, or the required evidence is unavailable. Keep a human owner for merges and production deployment unless a separately reviewed policy explicitly delegates those actions.",
+        ],
+      },
+      {
+        heading: "Harness engineering vs. Harness.io",
+        body: [
+          "Harness engineering is the practice of making an agent's task, context, tools, feedback, and safety boundaries legible and testable. Harness.io is a software-delivery vendor whose platform spans build, test, security, deployment, and related lifecycle products. A team can apply harness engineering with GitHub Actions, Buildkite, GitLab CI, Harness.io, or another stack; the architecture should not depend on a vendor label.",
+          "If evaluating Harness.io, review its current product docs and your own procurement requirements separately from this generic design guide. Verify RBAC, secrets, approvals, audit evidence, environment isolation, rollout signals, and rollback behavior for the exact product and plan before connecting an agent to delivery actions.",
+        ],
+      },
+      {
+        heading: "A six-step implementation sequence",
+        body: [
+          "1. Choose one repetitive, low-risk repository task and write acceptance criteria. 2. Add or trim the repository map and list exact commands. 3. Run the agent in a branch, worktree, or sandbox with least-privilege tools. 4. Capture patch, command output, and revision-bound test evidence. 5. Require human review before merge or any production-adjacent action. 6. Measure pass rate, rework, reviewer time, permission escalations, and cost before adding autonomy.",
+          "Add components only to address a demonstrated failure. If agents cannot find the right code, improve the repository map. If they edit too broadly, tighten task boundaries and isolation. If they claim tests passed without evidence, make the check executable and required. If visual quality is inconsistent, add a reference, explicit criteria, and a human design review—not another vague instruction paragraph.",
+        ],
+      },
+    ],
+    recommendedPlay: [
+      "Start with one bounded task and a local or worktree-isolated agent run.",
+      "Keep instructions concise and point to versioned architecture and task documents.",
+      "Make tests, type checks, security checks, and visual review produce revision-bound evidence.",
+      "Use Jev only as an evaluated, optional decision signal; deterministic policy retains authority.",
+      "Keep production deployment and rollback behind explicit platform policy and named ownership.",
+    ],
+    decisionTable: {
+      title: "What belongs in the coding-agent harness?",
+      intro: "Use this layer map to place responsibilities correctly instead of asking one model to provide every control.",
+      columns: ["Responsibility", "Evidence or control"],
+      rows: [
+        { label: "Model", values: ["Reason or generate candidate edits", "Model and version; bounded task input"] },
+        { label: "Agent", values: ["Plan the next step and select available tools", "Tool-call trace and stop reason"] },
+        { label: "Harness", values: ["Context, sessions, permissions, workspace, budgets, retries, telemetry", "Config, logs, scope checks, timeout, isolated branch"] },
+        { label: "Decision model", values: ["Optional typed classification or score", "Held-out evaluation, thresholds, human fallback"] },
+        { label: "Verification", values: ["Determine whether required checks passed", "Revision-bound tests, typecheck, lint, SAST, browser evidence"] },
+        { label: "Delivery platform", values: ["Review, build, deploy, observe, or roll back", "RBAC, approvals, audit trail, health signals, rollback policy"] },
+      ],
+    },
+    actionSteps: [
+      { title: "Write a task contract", body: "Specify scope, acceptance criteria, allowed paths, commands, output artifacts, and stop conditions before invoking the agent." },
+      { title: "Prepare the repository map", body: "Keep AGENTS.md concise; point to current architecture, test, security, and design-system sources of truth." },
+      { title: "Choose a harness and execution boundary", body: "Select the actual IDE/CLI/cloud harness and run it in a branch, worktree, container, or remote sandbox matched to the risk." },
+      { title: "Make verification executable", body: "Automate the checks that matter and attach results to the exact source revision; do not accept a prose claim as a passing result." },
+      { title: "Add decision models only after evaluation", body: "If trying Jev, compare it with a deterministic baseline on sanitized, held-out examples and define confidence and human-review thresholds." },
+      { title: "Keep delivery separately governed", body: "Require platform identity, RBAC, explicit approval, audit logs, telemetry, and rollback rules before an agent can affect production." },
+    ],
+    pitfalls: [
+      { title: "Calling every model wrapper a harness", fix: "Name the separate model, agent loop, tool/control environment, and delivery plane." },
+      { title: "Giving the agent production authority to prove autonomy", fix: "Use an isolated test environment and make production writes require explicit policy and approval." },
+      { title: "Treating model confidence as proof", fix: "Use tests and policy checks for hard gates; route uncertain or high-impact decisions to humans." },
+      { title: "Adding a decision model without a benchmark", fix: "Evaluate against labeled, held-out examples and a rules-only baseline; remove it if it does not improve the measured workflow." },
+      { title: "Assuming IDE harnesses share configuration", fix: "Verify each harness's tools, hooks, permissions, instruction discovery, and MCP support from its own current docs." },
+    ],
+    internalLinks: [
+      { slug: "loop-engineering-ai-coding-agents", anchor: "design bounded loops with stop rules", reason: "The loop guide covers retry logic and proof-of-done behavior inside this wider harness architecture." },
+      { slug: "agents-md-template-for-ai-coding-agents", anchor: "copy and validate an AGENTS.md template", reason: "Use concise repository guidance as the harness context entry point." },
+      { slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions", anchor: "compare agent instruction files by tool surface", reason: "Harnesses load different repository instruction formats and scopes." },
+      { slug: "ai-coding-agents-comparison", anchor: "compare current coding-agent harnesses", reason: "Choose a product surface and review path before implementing the harness around it." },
+      { slug: "secure-mcp-servers-ai-coding-agents", anchor: "secure the MCP tools the harness can call", reason: "External tool access needs least privilege, credential handling, and revocation." },
+      { slug: "agent-governance-checklist-for-software-teams", anchor: "set ownership and approval rules", reason: "Team governance defines who owns logs, permissions, exceptions, and release approval." },
+    ],
+    checklist: [
+      "Specify acceptance criteria, scope, allowed paths, proof commands, and stop conditions.",
+      "Keep repository knowledge versioned and make AGENTS.md a map rather than an encyclopedia.",
+      "Isolate changes in a branch, worktree, container, or approved remote environment.",
+      "Make deterministic tests and policy checks enforce hard requirements.",
+      "Use revision-bound evidence and require human review for risky or subjective actions.",
+      "Evaluate any decision model on held-out, sanitized examples against a simple baseline.",
+      "Keep API keys server-side and avoid logging source code or user secrets unnecessarily.",
+      "Measure rework, reviewer effort, failures, escalations, and cost before increasing autonomy.",
+    ],
+    evidence: [
+      {
+        title: "Harness engineering: leveraging Codex in an agent-first world",
+        url: "https://openai.com/index/harness-engineering/",
+        publisher: "OpenAI",
+        note: "Official engineering case study on repository legibility, tools, feedback loops, mechanical architecture checks, and agent autonomy; company-reported results are not generalized benchmarks.",
+        verifiedAt: "2026-10-14",
+        verificationConclusion: "The source explicitly emphasizes repository knowledge, executable checks, and observable UI/log feedback as harness investments.",
+        verificationChangeNote: "Added as a primary reference for practical harness design.",
+      },
+      {
+        title: "Choose and use an agent harness",
+        url: "https://code.visualstudio.com/docs/agents/run/agent-harnesses",
+        publisher: "Microsoft Visual Studio Code",
+        note: "Current official guide distinguishes harness, model, permissions, and execution target, and documents Copilot, Claude, Codex, and Cloud targets in VS Code.",
+        verifiedAt: "2026-10-14",
+        verificationConclusion: "Harnesses remain distinct in tools, models, permissions, customizations, and review workflows; worktree isolation is not itself a security boundary.",
+        verificationChangeNote: "Added to anchor the IDE-specific integration and portability cautions.",
+      },
+      {
+        title: "Harness design for long-running application development",
+        url: "https://www.anthropic.com/engineering/harness-design-long-running-apps",
+        publisher: "Anthropic",
+        note: "Official case study on decomposing coding tasks, structured handoffs, and planner/generator/evaluator roles for long-running application work.",
+        verifiedAt: "2026-10-14",
+        verificationConclusion: "Anthropic presents a multi-agent approach as one case study and recommends testing harness assumptions and adding only load-bearing complexity.",
+        verificationChangeNote: "Added as an independent vendor perspective; not treated as a universal architecture mandate.",
+      },
+      {
+        title: "Scaling Managed Agents: Decoupling the brain from the hands",
+        url: "https://www.anthropic.com/engineering/managed-agents",
+        publisher: "Anthropic",
+        note: "Official description separates session history, the harness loop/tool router, and the sandbox execution environment.",
+        verifiedAt: "2026-10-14",
+        verificationConclusion: "Supports separating the model/harness/sandbox interfaces and revisiting assumptions as models improve.",
+        verificationChangeNote: "Added as a source for the architecture-layer definitions.",
+      },
+      {
+        title: "Introducing System One Models & Jev",
+        url: "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+        publisher: "TypeSafe AI",
+        note: "Vendor announcement describing Jev as a typed decision model; performance, reliability, and pricing claims are vendor claims and must be validated on the team's own workload.",
+        verifiedAt: "2026-10-14",
+        verificationConclusion: "The vendor describes structured decision outputs rather than code or prose generation; the guide treats outputs as probabilistic signals, not authorization.",
+        verificationChangeNote: "Added to distinguish optional decision-model use from coding-agent generation and deterministic controls.",
+      },
+      {
+        title: "Remote control for local agents; Rollouts and Security Review",
+        url: "https://cursor.com/en-US/changelog",
+        publisher: "Cursor",
+        note: "Official changelog dated October 6 and September 23, 2026 for Enterprise remote control, deployment health monitoring, and PR security review.",
+        verifiedAt: "2026-10-14",
+        verificationConclusion: "Enterprise remote control is opt-in by admin; Rollouts and Security Review are described as Teams/Enterprise features. Product behavior may vary by plan and rollout.",
+        verificationChangeNote: "Added current UI-to-review and delivery signals as vendor-specific examples, not generic harness guarantees.",
+      },
+      {
+        title: "Harness Software Delivery Platform",
+        url: "https://www.harness.io/products/platform",
+        publisher: "Harness",
+        note: "Vendor product page describing Harness's software-delivery platform; product claims and plan coverage require procurement verification.",
+        verifiedAt: "2026-10-14",
+        verificationConclusion: "Confirms the separate Harness product/company context; it is not evidence that generic harness engineering requires this vendor.",
+        verificationChangeNote: "Added only to disambiguate the company name from the engineering concept.",
+      },
+    ],
+    relatedArticleSlugs: [
+      "cursor-enterprise-organizations-governance",
+      "github-copilot-cloud-local-sandboxes-preview",
+      "claude-code-dynamic-workflows-parallel-subagents",
+    ],
+    publishedAt: "2026-10-14",
+    updatedAt: "2026-10-14",
+    metaTitle: "AI Coding Agent Harness Engineering: Guide (2026)",
+    metaDescription:
+      "Build coding-agent harnesses for editors and repos with isolated edits, deterministic checks, Jev decision signals, human review, and controlled delivery.",
   },
 ];

@@ -15,7 +15,7 @@ const protectedGuides = [
   {
     slug: "agents-md-template-for-ai-coding-agents",
     title: "AGENTS.md Template for Codex, Node.js, Python & Monorepos",
-    metaTitle: "AGENTS.md Template for Codex: Node.js, Python & Monorepos",
+    metaTitle: "Free AGENTS.md Template for Codex: Copy + Validate (2026)",
     publishedAt: "2026-06-14",
     updatedAt: "2026-09-08",
   },
@@ -24,7 +24,7 @@ const protectedGuides = [
     title: "Loop Engineering for AI Coding Agents: Stop Rules & Verification",
     metaTitle: "Loop Engineering for AI Coding Agents: Stop Rules & Verification",
     publishedAt: "2026-06-15",
-    updatedAt: "2026-09-15",
+    updatedAt: "2026-10-14",
   },
 ] as const;
 
@@ -41,7 +41,7 @@ const protectedArticles = [
     title: "Cursor Enterprise Data Retention & Security: What Admins Must Verify",
     metaTitle: "Cursor Data Retention & Enterprise Security: Privacy Mode, ZDR",
     publishedAt: "2026-06-03T09:00:00Z",
-    updatedAt: "2026-09-15T00:00:00Z",
+    updatedAt: "2026-10-14T00:00:00Z",
   },
 ] as const;
 

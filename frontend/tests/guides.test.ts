@@ -61,7 +61,7 @@ describe("guide SEO data", () => {
     const guides = getGuides();
     const slugs = guides.map((guide) => guide.slug);
 
-    expect(guides).toHaveLength(19);
+    expect(guides).toHaveLength(20);
     expect(slugs).toContain("ai-coding-config-files-guide");
     expect(slugs).toContain("agents-md-vs-claude-md-cursorrules-copilot-instructions");
     expect(slugs).toContain("claude-code-subagents-examples");
@@ -81,6 +81,7 @@ describe("guide SEO data", () => {
     expect(slugs).toContain("codex-vs-github-copilot");
     expect(slugs).toContain("ai-coding-agents-comparison");
     expect(slugs).toContain("claude-code-alternatives");
+    expect(slugs).toContain("harness-engineering-for-ai-coding-agents");
     expect(guides.every((guide) => guide.evidence.length >= 2)).toBe(true);
     expect(guides.every((guide) => guide.checklist.length >= 5)).toBe(true);
   });
@@ -93,7 +94,7 @@ describe("guide SEO data", () => {
     );
 
     expect(new Set(slugs).size).toBe(slugs.length);
-    expect(primaryKeywords).toHaveLength(19);
+    expect(primaryKeywords).toHaveLength(20);
     expect(primaryKeywords.every(Boolean)).toBe(true);
     expect(new Set(primaryKeywords).size).toBe(primaryKeywords.length);
   });
@@ -219,7 +220,7 @@ describe("guide SEO data", () => {
     expect(guide).toBeDefined();
     expect(guide!.resourceIds).toEqual(["agents-md-template"]);
     expect(guide!.title).toBe("AGENTS.md Template for Codex, Node.js, Python & Monorepos");
-    expect(guide!.metaTitle).toBe("AGENTS.md Template for Codex: Node.js, Python & Monorepos");
+    expect(guide!.metaTitle).toBe("Free AGENTS.md Template for Codex: Copy + Validate (2026)");
     expect(guide!.updatedAt).toBe("2026-09-08");
   });
 
@@ -265,7 +266,7 @@ describe("guide SEO data", () => {
 
     expect(guide).toBeDefined();
     expect(guide!.resourceIds).toEqual(["loop-engineering"]);
-    expect(guide!.updatedAt).toBe("2026-09-15");
+    expect(guide!.updatedAt).toBe("2026-10-14");
 
     const quickAnswer = guide!.sections[0].body[0];
     expect(guide!.title).toMatch(/Loop Engineering for AI Coding Agents: Stop Rules & Verification/i);
@@ -285,6 +286,7 @@ describe("guide SEO data", () => {
         "A Practical Loop Engineering Example",
         "When Should an AI Agent Stop the Loop?",
         "AI coding agent workflow checklist",
+        "Loop Engineering vs Agent Harness Engineering",
       ]),
     );
 
@@ -298,6 +300,7 @@ describe("guide SEO data", () => {
         "codex-vs-claude-code",
         "secure-mcp-servers-ai-coding-agents",
         "claude-code-subagents-examples",
+        "harness-engineering-for-ai-coding-agents",
         "agent-governance-checklist-for-software-teams",
       ]),
     );
@@ -317,6 +320,28 @@ describe("guide SEO data", () => {
         "agent-governance-checklist-for-software-teams",
       ]),
     );
+  });
+
+  it("keeps the harness guide layered, evidence-backed, and explicit about Jev limits", () => {
+    const guide = getGuide("harness-engineering-for-ai-coding-agents");
+
+    expect(guide).toBeDefined();
+    expect(guide!.sections[0].heading).toBe("Quick answer");
+    expect(guide!.sections.map((section) => section.heading)).toEqual(
+      expect.arrayContaining([
+        "Model, agent, harness, and delivery platform are different layers",
+        "Integrate a harness into an editor or visual-design workflow",
+        "Use Jev only for bounded decisions",
+        "What belongs in the deterministic verification gate?",
+        "Harness engineering vs. Harness.io",
+      ]),
+    );
+    expect(guide!.sections.find((section) => section.heading === "Use Jev only for bounded decisions")!.body.join(" "))
+      .toMatch(/not authorization/i);
+    expect(guide!.evidence.map((source) => source.publisher)).toEqual(
+      expect.arrayContaining(["OpenAI", "Anthropic", "Microsoft Visual Studio Code", "TypeSafe AI", "Harness"]),
+    );
+    expect(guide!.internalLinks.map((link) => link.slug)).toContain("loop-engineering-ai-coding-agents");
   });
 
   it("keeps the Codex vs Claude Code P3 comparison evidence-backed without fake benchmark metrics", () => {
@@ -376,7 +401,7 @@ describe("guide SEO data", () => {
 
     expect(guide).toBeDefined();
     expect(guide!.resourceIds).toEqual(["coding-agent-comparison"]);
-    expect(guide!.updatedAt).toBe("2026-07-19");
+    expect(guide!.updatedAt).toBe("2026-10-14");
     expect(guide!.decisionTable.columns).toEqual(["Codex", "Claude Code", "GitHub Copilot", "Cursor"]);
     expect(guide!.decisionTable.rows).toHaveLength(12);
     expect(guide!.sections[0].body[0]).toMatch(/There is no universal winner/i);

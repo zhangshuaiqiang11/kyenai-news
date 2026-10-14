@@ -21,6 +21,7 @@ const guideSearchClusters: Record<string, SearchCluster> = {
   "local-vs-cloud-ai-coding-agent": "agent-workflows",
   "agent-governance-checklist-for-software-teams": "agent-workflows",
   "loop-engineering-ai-coding-agents": "agent-workflows",
+  "harness-engineering-for-ai-coding-agents": "agent-workflows",
   "mcp-server-not-showing-tools": "mcp-security",
   "secure-mcp-servers-ai-coding-agents": "mcp-security",
   "cursor-enterprise-organizations-governance": "cursor-governance",
@@ -32,6 +33,20 @@ export function getGuideSearchCluster(slug: string): SearchCluster | undefined {
 }
 
 const editorialSignalsBySlug: Record<string, GuideEditorialSignals> = {
+  "harness-engineering-for-ai-coding-agents": {
+    priority: "P1",
+    primaryKeyword: "agent harness engineering",
+    demandScore: 7.4,
+    attackabilityScore: 8.1,
+    fitScore: 9.2,
+    gscWatchQueries: [
+      "agent harness engineering",
+      "AI coding agent harness",
+      "harness engineering coding agents",
+      "coding agent harness vs model",
+      "Jev decision model coding agent",
+    ],
+  },
   "ai-coding-config-files-guide": {
     priority: "P0",
     primaryKeyword: "AI coding config files",

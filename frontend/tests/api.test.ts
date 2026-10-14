@@ -43,7 +43,7 @@ describe("API article mapping", () => {
 
     expect(selected).toBe(curated);
     if (!selected) throw new Error("Expected a canonical article");
-    expect(selected.sources).toHaveLength(3);
+    expect(selected.sources).toHaveLength(4);
     expect(selected.blocks.some((block) => block.type === "fact_table")).toBe(true);
     expect(selected.blocks.filter((block) => block.type === "faq")).toHaveLength(2);
     expect(selected.blocks.some((block) => block.type === "source_note")).toBe(true);

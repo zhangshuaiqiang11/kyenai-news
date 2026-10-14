@@ -178,9 +178,17 @@ describe("SpaceX Cursor acquisition article", () => {
 
     const citationGroups = screen.getAllByLabelText("Sources for this passage");
     expect(citationGroups.length).toBeGreaterThanOrEqual(4);
+    const firstBlockSourceIds = new Set(cursorArticle.blocks[0].sourceIds);
     expect(
       within(citationGroups[0]).getAllByRole("link").map((link) => link.getAttribute("href")),
-    ).toEqual(cursorArticle.sources.map((source) => source.url));
+    ).toEqual(cursorArticle.sources.filter((source) => firstBlockSourceIds.has(source.id)).map((source) => source.url));
+    expect(
+      citationGroups.some((group) =>
+        within(group).getAllByRole("link").some(
+          (link) => link.getAttribute("href") === "https://cursor.com/en-US/changelog",
+        ),
+      ),
+    ).toBe(true);
   });
 
   it("keeps the public status resources aligned with the visible verification record", () => {
