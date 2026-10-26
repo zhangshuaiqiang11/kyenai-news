@@ -113,7 +113,7 @@ describe("guide SEO data", () => {
     expect(guide).toBeDefined();
     expect(guide).toMatchObject({
       slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
-      updatedAt: "2026-09-08",
+      updatedAt: "2026-10-26",
       resourceIds: ["instruction-files"],
     });
     expect(guide!.metaTitle.length).toBeGreaterThanOrEqual(25);
@@ -123,10 +123,10 @@ describe("guide SEO data", () => {
 
     const quickAnswer = guide!.sections[0].body[0];
     expect(guide!.title).toMatch(/Which File Should You Use/i);
-    expect(quickAnswer).toMatch(/Use AGENTS\.md for Codex/i);
-    expect(quickAnswer).toMatch(/CLAUDE\.md for Claude Code/i);
-    expect(quickAnswer).toMatch(/\.github\/copilot-instructions\.md for broad GitHub Copilot/i);
-    expect(quickAnswer).toMatch(/\.cursor\/rules\/\*\.mdc for current Cursor/i);
+    expect(quickAnswer).toMatch(/Codex → AGENTS\.md/i);
+    expect(quickAnswer).toMatch(/Claude Code → CLAUDE\.md/i);
+    expect(quickAnswer).toMatch(/broad GitHub Copilot → \.github\/copilot-instructions\.md/i);
+    expect(quickAnswer).toMatch(/current Cursor project rules → \.cursor\/rules\/\*\.mdc/i);
     expect(quickAnswer).toMatch(/Copilot support for CLAUDE\.md depends on the Copilot surface/i);
     expect(quickAnswer).toContain(".github/copilot-instructions.md");
     expect(quickAnswer).not.toMatch(/Copilot (always|never) (reads|supports) CLAUDE\.md/i);
@@ -167,6 +167,7 @@ describe("guide SEO data", () => {
     expect(internalSlugs).toEqual(
       expect.arrayContaining([
         "agents-md-template-for-ai-coding-agents",
+        "ai-coding-config-files-guide",
         "does-github-copilot-read-claude-md-support-matrix",
         "agents-md-examples-codex-node-python-monorepos",
         "codex-vs-claude-code",
@@ -219,9 +220,9 @@ describe("guide SEO data", () => {
 
     expect(guide).toBeDefined();
     expect(guide!.resourceIds).toEqual(["agents-md-template"]);
-    expect(guide!.title).toBe("AGENTS.md Template for Codex, Node.js, Python & Monorepos");
-    expect(guide!.metaTitle).toBe("Free AGENTS.md Template for Codex: Copy + Validate (2026)");
-    expect(guide!.updatedAt).toBe("2026-09-08");
+    expect(guide!.title).toBe("AGENTS.md Template for AI Coding Agents (Codex, Node.js & Monorepos)");
+    expect(guide!.metaTitle).toBe("AGENTS.md Template for AI Coding Agents (Codex, 2026)");
+    expect(guide!.updatedAt).toBe("2026-10-26");
   });
 
   it("publishes focused AGENTS.md support pages as narrow, internally linked guides", () => {
@@ -455,18 +456,21 @@ describe("guide SEO data", () => {
 
     expect(signals).toEqual({
       priority: "P0",
-      primaryKeyword: "AGENTS.md vs CLAUDE.md",
+      primaryKeyword: "AGENTS.md vs copilot-instructions.md",
       demandScore: 9,
       attackabilityScore: 9,
       fitScore: 9.2,
       gscWatchQueries: [
+        "copilot-instructions.md vs agents.md",
+        "agents.md vs copilot-instructions.md",
+        "agents.md vs claude.md",
         "claude md vs copilot instructions",
         "claude.md vs copilot-instructions.md",
         "agents md vs claude md vs copilot instructions md",
-        "agents.md vs claude.md",
         "claude.md vs cursorrules",
         "\".cursor/rules\" \".mdc\" \"agents.md\" priority precedence behavior",
         "copilot instructions vs cursor rules",
+        "does cursor support agents.md",
         "ai coding agent instructions",
       ],
       gscBaseline: {
@@ -581,9 +585,9 @@ describe("guide SEO data", () => {
       },
       {
         slug: "agents-md-template-for-ai-coding-agents",
-        title: /AGENTS\.md Template for Codex, Node\.js, Python & Monorepos/i,
+        title: /AGENTS\.md Template for AI Coding Agents \(Codex, Node\.js & Monorepos\)/i,
         headings: ["Copyable starter templates", "Root vs nested AGENTS.md inheritance", "What every template must say"],
-        updatedAt: "2026-09-08",
+        updatedAt: "2026-10-26",
       },
       {
         slug: "agent-mode-vs-chat-mode-in-ide",

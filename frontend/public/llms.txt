@@ -27,13 +27,13 @@
   Explore a reproducible public GitHub snapshot of 400 AGENTS.md, CLAUDE.md, Copilot instruction, and Cursor rule files, including indexed match counts, language mix, test commands, security rules, and common gaps. Last substantively updated: 2026-07-30.
   Markdown: https://www.kyenai.com/guides/ai-coding-agent-instruction-file-adoption-report-2026.md
 - [AGENTS.md vs copilot-instructions.md: Which File Should You Use?](https://www.kyenai.com/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions)
-  Choose between AGENTS.md, copilot-instructions.md, CLAUDE.md, and Cursor rules by tool surface, scope, precedence, and the workflow you need to support. Last substantively updated: 2026-09-08.
+  Choose between AGENTS.md, copilot-instructions.md, CLAUDE.md, and Cursor rules by tool surface, scope, precedence, and the workflow you need to support. Last substantively updated: 2026-10-26.
   Markdown: https://www.kyenai.com/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions.md
 - [Loop Engineering for AI Coding Agents: Stop Rules & Verification](https://www.kyenai.com/guides/loop-engineering-ai-coding-agents)
   Design bounded AI coding-agent loops with Plan-Act-Observe-Verify-Stop, retry caps, proof-of-done checks, and explicit escalation rules. Last substantively updated: 2026-10-14.
   Markdown: https://www.kyenai.com/guides/loop-engineering-ai-coding-agents.md
-- [AGENTS.md Template for Codex, Node.js, Python & Monorepos](https://www.kyenai.com/guides/agents-md-template-for-ai-coding-agents)
-  Copy, download, and validate concise AGENTS.md templates for Codex, Node.js, Python, and monorepos with commands, boundaries, and review checks. Last substantively updated: 2026-09-08.
+- [AGENTS.md Template for AI Coding Agents (Codex, Node.js & Monorepos)](https://www.kyenai.com/guides/agents-md-template-for-ai-coding-agents)
+  Copy, download, and validate concise AGENTS.md templates for Codex, Node.js, Python, and monorepos with commands, boundaries, and review checks. Last substantively updated: 2026-10-26.
   Markdown: https://www.kyenai.com/guides/agents-md-template-for-ai-coding-agents.md
 - [MCP Server Security Checklist: 25 Controls for AI Agents — OAuth, Least Privilege](https://www.kyenai.com/guides/secure-mcp-servers-ai-coding-agents)
   MCP server security starts with a source-backed checklist for OAuth, token audience validation, least privilege, secrets, network boundaries, logging, and revocation. Last substantively updated: 2026-09-08.
@@ -59,10 +59,10 @@
 - [Claude Code subagents workflow examples](https://www.kyenai.com/guides/claude-code-subagents-examples): Workflow patterns for using Claude Code subagents to split research, implementation, review, migration, and verification work.
 - [Claude Code Hooks vs MCP: Setup, Examples and Security](https://www.kyenai.com/guides/claude-code-hooks-mcp-setup): A setup-oriented guide for combining Claude Code hooks, skills, and MCP servers without creating brittle automation.
 - [MCP Server Security Checklist: 25 Controls for AI Agents — OAuth, Least Privilege](https://www.kyenai.com/guides/secure-mcp-servers-ai-coding-agents): MCP server security starts with a source-backed checklist for OAuth, token audience validation, least privilege, secrets, network boundaries, logging, and revocation.
-- [MCP Server Connected but No Tools? 8 tools/list Checks](https://www.kyenai.com/guides/mcp-server-not-showing-tools): Fix an MCP server that is connected but exposes zero tools, is stale or filtered, or is visible but never called across Claude Code, Cursor, GitHub Copilot, and other clients.
+- [MCP Server Connected but No Tools? 8 tools/list Checks](https://www.kyenai.com/guides/mcp-server-not-showing-tools): Check the failing layer first—not a reinstall—when an MCP server is connected but exposes zero tools, is stale or filtered, or is visible but never called in Claude Code, Cursor, or GitHub Copilot.
 - [Antigravity CLI migration from Gemini CLI](https://www.kyenai.com/guides/antigravity-cli-gemini-cli-migration): A migration checklist for Gemini CLI users moving to Antigravity CLI, with the key dates, retained concepts, and verification steps.
 - [Codex vs Claude Code](https://www.kyenai.com/guides/codex-vs-claude-code): Compare Codex vs Claude Code by workflow shape, public same-task examples, repository instructions, review effort, and a same-repo checklist your team can run before standardizing.
-- [AGENTS.md Template for Codex, Node.js, Python & Monorepos](https://www.kyenai.com/guides/agents-md-template-for-ai-coding-agents): Copy, download, and validate concise AGENTS.md templates for Codex, Node.js, Python, and monorepos with commands, boundaries, and review checks.
+- [AGENTS.md Template for AI Coding Agents (Codex, Node.js & Monorepos)](https://www.kyenai.com/guides/agents-md-template-for-ai-coding-agents): Copy, download, and validate concise AGENTS.md templates for Codex, Node.js, Python, and monorepos with commands, boundaries, and review checks.
 - [Does GitHub Copilot Read CLAUDE.md? Support Matrix by Surface](https://www.kyenai.com/guides/does-github-copilot-read-claude-md-support-matrix): Does GitHub Copilot read CLAUDE.md? It depends on the surface. Check Chat, CLI, cloud-agent, and code-review support, then keep .github/copilot-instructions.md as the broad Copilot baseline.
 - [AGENTS.md Examples for Codex: Node.js, Python & Monorepos](https://www.kyenai.com/guides/agents-md-examples-codex-node-python-monorepos): Copy practical AGENTS.md examples for Codex projects, including Node.js apps, Python services, and monorepos with nested package instructions and test commands.
 - [Agent Mode vs Chat Mode: Differences, Risks and When to Use Each](https://www.kyenai.com/guides/agent-mode-vs-chat-mode-in-ide): Use chat mode for questions and small explanations. Use agent mode when the assistant must inspect files, edit code, run commands, react to errors, and bring a task closer to done.

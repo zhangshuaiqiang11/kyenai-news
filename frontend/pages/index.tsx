@@ -37,18 +37,18 @@ type HomeProps = {
 const highImpressionEntries = [
   {
     href: INSTRUCTION_COMPARISON_GUIDE_HREF,
-    label: "Choose AGENTS.md, CLAUDE.md, Copilot instructions, or Cursor rules",
-    note: "Start with the current support matrix, then maintain one shared policy with small tool-specific adapters.",
+    label: "AGENTS.md vs copilot-instructions.md: which file to use",
+    note: "Default by reader for Codex, Copilot, CLAUDE.md, and Cursor rules, then keep thin adapters in sync.",
   },
   {
     href: MCP_TOOL_DISCOVERY_GUIDE_HREF,
-    label: "Fix an MCP server that is connected but shows no tools",
-    note: "Use the interactive fault tree and minimal tools/list reproduction before changing permissions.",
+    label: "MCP server connected but no tools? Fix tools/list",
+    note: "Check config → transport → initialize → Inspector before reinstalling or widening permissions.",
   },
   {
     href: "/guides/agents-md-template-for-ai-coding-agents",
-    label: "Build an AGENTS.md template for Codex",
-    note: "Generate a Node.js, Python, or monorepo starter with setup, verification, boundaries, and proof-of-done rules.",
+    label: "AGENTS.md template for AI coding agents",
+    note: "Copy a Codex-ready starter for Node.js, Python, or monorepos, then validate commands before commit.",
   },
   {
     href: "/guides/does-github-copilot-read-claude-md-support-matrix",

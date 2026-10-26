@@ -7,10 +7,10 @@ import { test } from "node:test";
 const origin = "https://www.kyenai.com";
 const pageContracts = [
   ["/", "KyenAI | AI Coding Agent Templates & Security Playbooks", "Evidence-Backed Templates and Security Playbooks for AI Coding Agents"],
-  ["/guides/agents-md-template-for-ai-coding-agents", "Free AGENTS.md Template for Codex: Copy + Validate", "AGENTS.md Template for Codex, Node.js, Python & Monorepos"],
-  ["/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions", "AGENTS.md vs Copilot Instructions vs CLAUDE.md vs Cursor Rules", "AGENTS.md vs copilot-instructions.md: Which File Should You Use?"],
+  ["/guides/agents-md-template-for-ai-coding-agents", "AGENTS.md Template for AI Coding Agents (Codex, 2026)", "AGENTS.md Template for AI Coding Agents (Codex, Node.js & Monorepos)"],
+  ["/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions", "AGENTS.md vs copilot-instructions.md (and CLAUDE.md, Cursor Rules)", "AGENTS.md vs copilot-instructions.md: Which File Should You Use?"],
   ["/guides/secure-mcp-servers-ai-coding-agents", "MCP Server Security Checklist: 25 Controls", "MCP Server Security Checklist: 25 Controls"],
-  ["/guides/mcp-server-not-showing-tools", "MCP Server Connected but No Tools? 8 Checks for tools/list", "MCP Server Connected but No Tools? 8 tools/list Checks"],
+  ["/guides/mcp-server-not-showing-tools", "MCP Server Connected but No Tools? Fix tools/list", "MCP Server Connected but No Tools? 8 tools/list Checks"],
   ["/guides/codex-vs-claude-code", "Codex vs Claude Code", "Codex vs Claude Code"],
   ["/guides/codex-vs-github-copilot", "Codex vs GitHub Copilot", "Codex vs GitHub Copilot"],
   ["/guides/ai-coding-agents-comparison", "AI Coding Agent Comparison", "AI Coding Agents Comparison"],

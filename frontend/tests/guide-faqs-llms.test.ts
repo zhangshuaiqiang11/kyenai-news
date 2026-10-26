@@ -23,8 +23,9 @@ describe("guide FAQ overrides", () => {
 
     expect(loopFaqs[0].question).toMatch(/loop engineering/i);
     expect(loopFaqs.some((faq) => faq.question.includes("workflow checklist"))).toBe(true);
-    expect(instructionFaqs[0].question).toMatch(/CLAUDE\.md, Copilot Instructions, or AGENTS\.md/i);
-    expect(instructionFaqs.some((faq) => faq.question.includes("Cursor support AGENTS.md"))).toBe(true);
+    expect(instructionFaqs[0].question).toMatch(/copilot-instructions\.md vs agents\.md/i);
+    expect(instructionFaqs.some((faq) => /agents\.md vs claude\.md/i.test(faq.question))).toBe(true);
+    expect(instructionFaqs.some((faq) => /Does Cursor support AGENTS\.md/i.test(faq.question))).toBe(true);
   });
 });
 

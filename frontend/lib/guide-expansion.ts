@@ -305,7 +305,7 @@ export const expansionGuides: Guide[] = [
   },
   {
     id: "guide-agents-md-template",
-    title: "AGENTS.md Template for Codex, Node.js, Python & Monorepos",
+    title: "AGENTS.md Template for AI Coding Agents (Codex, Node.js & Monorepos)",
     slug: "agents-md-template-for-ai-coding-agents",
     summary:
       "Copy, download, and validate concise AGENTS.md templates for Codex, Node.js, Python, and monorepos with commands, boundaries, and review checks.",
@@ -429,7 +429,7 @@ export const expansionGuides: Guide[] = [
       },
       {
         slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
-        anchor: "AGENTS.md vs CLAUDE.md comparison",
+        anchor: "AGENTS.md vs copilot-instructions.md comparison",
         reason: "Readers who need to choose the right instruction file can start there.",
       },
       {
@@ -494,8 +494,8 @@ export const expansionGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
     publishedAt: "2026-06-14",
-    updatedAt: "2026-09-08",
-    metaTitle: "Free AGENTS.md Template for Codex: Copy + Validate (2026)",
+    updatedAt: "2026-10-26",
+    metaTitle: "AGENTS.md Template for AI Coding Agents (Codex, 2026)",
     metaDescription:
       "Download and copy a practical AGENTS.md template for Codex, Node.js, Python, and monorepos, with test commands, safe edit boundaries, and validation steps.",
     resourceIds: ["agents-md-template"],
@@ -503,7 +503,7 @@ export const expansionGuides: Guide[] = [
     primaryAction: {
       href: "/resources/instruction-files/kyenai-agents-md-starter-pack.zip",
       label: "Download the AGENTS.md starter pack",
-      note: "Replace placeholders, run the listed commands, and use the validator before merging the file.",
+      note: "Copy the template, replace placeholders, validate commands, then compare AGENTS.md vs copilot-instructions.md if you also support Copilot.",
     },
   },
   {

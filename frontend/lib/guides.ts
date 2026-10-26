@@ -18,6 +18,8 @@ const coreGuides: Guide[] = [
     audience: "Developer tools teams, staff engineers, platform teams, and AI coding adopters.",
     pageType: "Evidence-backed compatibility guide",
     secondaryKeywords: [
+      "copilot-instructions.md vs agents.md",
+      "agents.md vs copilot-instructions.md",
       "AGENTS.md vs CLAUDE.md",
       "AGENTS.md open standard",
       "GitHub Copilot CLAUDE.md support",
@@ -29,7 +31,7 @@ const coreGuides: Guide[] = [
       {
         heading: "Quick answer",
         body: [
-          "If you need one practical default, use AGENTS.md for Codex, CLAUDE.md for Claude Code, .github/copilot-instructions.md for broad GitHub Copilot coverage, and .cursor/rules/*.mdc for current Cursor project rules. The files are adapters, not interchangeable names: Copilot support for CLAUDE.md depends on the Copilot surface—selected cloud-agent surfaces and Copilot CLI support it, while many Copilot Chat and code-review surfaces do not. Choose the documented reader first, then synchronize only the rules that must agree.",
+          "Default by reader: Codex → AGENTS.md, Claude Code → CLAUDE.md, broad GitHub Copilot → .github/copilot-instructions.md, current Cursor project rules → .cursor/rules/*.mdc. The files are adapters, not interchangeable names: Copilot support for CLAUDE.md depends on the Copilot surface—selected cloud-agent surfaces and Copilot CLI support it, while many Copilot Chat and code-review surfaces do not. Choose the documented reader first, then synchronize only the rules that must agree.",
         ],
       },
       {
@@ -221,8 +223,13 @@ const coreGuides: Guide[] = [
     internalLinks: [
       {
         slug: "does-github-copilot-read-claude-md-support-matrix",
-        anchor: "Does GitHub Copilot read CLAUDE.md? support matrix",
+        anchor: "Copilot × CLAUDE.md support matrix by surface",
         reason: "Readers with the Copilot-specific question should move to the narrow support matrix page instead of staying on the broad comparison.",
+      },
+      {
+        slug: "ai-coding-config-files-guide",
+        anchor: "AI coding config files guide",
+        reason: "See how AGENTS.md, CLAUDE.md, Copilot instructions, and Cursor rules fit the broader config-file map.",
       },
       {
         slug: "agents-md-examples-codex-node-python-monorepos",
@@ -231,7 +238,7 @@ const coreGuides: Guide[] = [
       },
       {
         slug: "agents-md-template-for-ai-coding-agents",
-        anchor: "View the AGENTS.md template for monorepos",
+        anchor: "AGENTS.md template for AI coding agents",
         reason: "Use the template to turn the shared policy into a concise Codex repository adapter.",
       },
       {
@@ -342,10 +349,10 @@ const coreGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["openai-codex-plugins-sites-annotations", "github-copilot-sdk-general-availability"],
     publishedAt: "2026-06-14",
-    updatedAt: "2026-09-08",
-    metaTitle: "AGENTS.md vs Copilot Instructions vs CLAUDE.md vs Cursor Rules (2026)",
+    updatedAt: "2026-10-26",
+    metaTitle: "AGENTS.md vs copilot-instructions.md (and CLAUDE.md, Cursor Rules)",
     metaDescription:
-      "Compare AGENTS.md, copilot-instructions.md, CLAUDE.md, and Cursor rules by supported tool surface, scope, precedence, and safe sync policy.",
+      "AGENTS.md vs copilot-instructions.md: pick Codex, Copilot, CLAUDE.md, or Cursor rules by tool surface, scope, and sync policy in 2026.",
     resourceIds: ["instruction-files"],
     decisionTablePlacement: "above-fold",
     primaryAction: {
@@ -929,7 +936,7 @@ const coreGuides: Guide[] = [
     title: "MCP Server Connected but No Tools? 8 tools/list Checks",
     slug: MCP_TOOL_DISCOVERY_GUIDE_SLUG,
     summary:
-      "Fix an MCP server that is connected but exposes zero tools, is stale or filtered, or is visible but never called across Claude Code, Cursor, GitHub Copilot, and other clients.",
+      "Check the failing layer first—not a reinstall—when an MCP server is connected but exposes zero tools, is stale or filtered, or is visible but never called in Claude Code, Cursor, or GitHub Copilot.",
     intent:
       "Diagnose why an MCP server is not showing tools and identify the first failing layer without widening permissions or reinstalling everything.",
     audience: "Developers, MCP server authors, platform teams, and AI coding tool administrators.",
@@ -1135,10 +1142,10 @@ const coreGuides: Guide[] = [
     ],
     relatedArticleSlugs: ["visual-studio-agent-mode-mcp-general-availability"],
     publishedAt: "2026-07-19",
-    updatedAt: "2026-09-15",
-    metaTitle: "MCP Server Connected but No Tools? 8 Checks for tools/list",
+    updatedAt: "2026-10-26",
+    metaTitle: "MCP Server Connected but No Tools? Fix tools/list (Claude/Cursor/Copilot)",
     metaDescription:
-      "MCP server connected but no tools? Diagnose initialize, tools/list, Inspector, client filters, refresh, authentication, and invocation in 8 checks.",
+      "MCP server connected but no tools? Run config → transport → initialize → Inspector tools/list checks in Claude Code, Cursor, and Copilot.",
     resourceIds: ["mcp-tool-discovery"],
     primaryAction: {
       href: "/resources/mcp-tool-discovery-debug-checklist.md",

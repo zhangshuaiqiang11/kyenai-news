@@ -8,16 +8,16 @@ const protectedGuides = [
   {
     slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
     title: "AGENTS.md vs copilot-instructions.md: Which File Should You Use?",
-    metaTitle: "AGENTS.md vs Copilot Instructions vs CLAUDE.md vs Cursor Rules (2026)",
+    metaTitle: "AGENTS.md vs copilot-instructions.md (and CLAUDE.md, Cursor Rules)",
     publishedAt: "2026-06-14",
-    updatedAt: "2026-09-08",
+    updatedAt: "2026-10-26",
   },
   {
     slug: "agents-md-template-for-ai-coding-agents",
-    title: "AGENTS.md Template for Codex, Node.js, Python & Monorepos",
-    metaTitle: "Free AGENTS.md Template for Codex: Copy + Validate (2026)",
+    title: "AGENTS.md Template for AI Coding Agents (Codex, Node.js & Monorepos)",
+    metaTitle: "AGENTS.md Template for AI Coding Agents (Codex, 2026)",
     publishedAt: "2026-06-14",
-    updatedAt: "2026-09-08",
+    updatedAt: "2026-10-26",
   },
   {
     slug: "loop-engineering-ai-coding-agents",

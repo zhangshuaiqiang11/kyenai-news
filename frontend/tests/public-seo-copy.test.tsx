@@ -270,13 +270,15 @@ describe("public guide SEO copy", () => {
     expect(screen.queryByRole("heading", { name: /same-repository benchmark/i })).toBeNull();
   });
 
-  it("gives the broad comparison unambiguous AGENTS.md vs CLAUDE.md query ownership", () => {
+  it("gives the broad comparison unambiguous AGENTS.md vs copilot-instructions.md query ownership", () => {
     const guide = getGuide("agents-md-vs-claude-md-cursorrules-copilot-instructions")!;
     render(<GuidePage guide={guide} relatedGuides={getInternalLinkedGuides(guide)} relatedArticles={[]} />);
 
-    expect(document.title).toBe("AGENTS.md vs Copilot Instructions vs CLAUDE.md vs Cursor Rules (2026) | KyenAI");
+    expect(document.title).toBe(
+      "AGENTS.md vs copilot-instructions.md (and CLAUDE.md, Cursor Rules) | KyenAI",
+    );
     expect(document.querySelector<HTMLMetaElement>('meta[name="description"]')?.content).toBe(
-      "Compare AGENTS.md, copilot-instructions.md, CLAUDE.md, and Cursor rules by supported tool surface, scope, precedence, and safe sync policy.",
+      "AGENTS.md vs copilot-instructions.md: pick Codex, Copilot, CLAUDE.md, or Cursor rules by tool surface, scope, and sync policy in 2026.",
     );
     expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(
       "AGENTS.md vs copilot-instructions.md: Which File Should You Use?",

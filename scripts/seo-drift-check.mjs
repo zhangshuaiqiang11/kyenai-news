@@ -9,12 +9,12 @@ const pageContracts = [
   },
   {
     path: "/guides/agents-md-template-for-ai-coding-agents",
-    titleIncludes: "Free AGENTS.md Template for Codex: Copy + Validate",
-    h1Includes: "AGENTS.md Template for Codex, Node.js, Python & Monorepos",
+    titleIncludes: "AGENTS.md Template for AI Coding Agents (Codex, 2026)",
+    h1Includes: "AGENTS.md Template for AI Coding Agents (Codex, Node.js & Monorepos)",
   },
   {
     path: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
-    titleIncludes: "AGENTS.md vs Copilot Instructions vs CLAUDE.md vs Cursor Rules",
+    titleIncludes: "AGENTS.md vs copilot-instructions.md (and CLAUDE.md, Cursor Rules)",
     h1Includes: "AGENTS.md vs copilot-instructions.md: Which File Should You Use?",
   },
   {
@@ -24,7 +24,7 @@ const pageContracts = [
   },
   {
     path: "/guides/mcp-server-not-showing-tools",
-    titleIncludes: "MCP Server Connected but No Tools? 8 Checks",
+    titleIncludes: "MCP Server Connected but No Tools? Fix tools/list",
     h1Includes: "MCP Server Connected but No Tools? 8 tools/list Checks",
   },
   {

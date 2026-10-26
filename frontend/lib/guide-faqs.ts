@@ -4,19 +4,19 @@ import type { Guide } from "./types";
 const guideFaqsBySlug: Record<string, FaqItem[]> = {
   "agents-md-vs-claude-md-cursorrules-copilot-instructions": [
     {
-      question: "Which file should you use: CLAUDE.md, Copilot Instructions, or AGENTS.md?",
+      question: "copilot-instructions.md vs agents.md: which should I use?",
       answer:
-        "Use AGENTS.md as an open shared policy only for agents and surfaces that document support, including Codex. Use CLAUDE.md for Claude Code; it can import @AGENTS.md when you want one maintained baseline. Use .github/copilot-instructions.md for broad GitHub Copilot repository guidance and .cursor/rules/*.mdc for scoped Cursor project rules. No filename has identical discovery behavior across every tool.",
+        "Use .github/copilot-instructions.md for broad GitHub Copilot repository coverage. Use AGENTS.md for Codex and for other agents that document AGENTS.md discovery. They are adapters for different readers, not interchangeable filenames; keep shared policy synchronized across both when a repo uses Copilot and Codex together.",
     },
     {
-      question: "Does Cursor support AGENTS.md and CLAUDE.md?",
+      question: "agents.md vs claude.md: what is the difference?",
       answer:
-        "Cursor documents root AGENTS.md as a simple project-wide alternative to .cursor/rules. Cursor CLI also documents loading root AGENTS.md and CLAUDE.md alongside Cursor rules. Use .cursor/rules when you need metadata or path scoping, and do not assume Codex or Claude Code nesting behavior carries over.",
+        "AGENTS.md is the Codex repository instruction file and an open format other agents may document. CLAUDE.md is Claude Code project memory. Claude Code can import @AGENTS.md when you want one maintained baseline, but Copilot support for CLAUDE.md stays surface-specific—use .github/copilot-instructions.md for broad Copilot coverage.",
     },
     {
-      question: "Is AGENTS.md an open standard?",
+      question: "Does Cursor support AGENTS.md?",
       answer:
-        "AGENTS.md is a simple open Markdown format for coding-agent instructions. The official project says it is used by more than 60,000 open-source projects and is stewarded by the Agentic AI Foundation under the Linux Foundation. Tool support still varies by product and surface, so verify the target agent's discovery and precedence rules.",
+        "Yes. Cursor documents root AGENTS.md as a simple project-wide alternative to .cursor/rules, and Cursor CLI documents loading root AGENTS.md alongside Cursor rules. Use .cursor/rules/*.mdc when you need metadata, globs, or path scoping, and do not assume Codex nested-precedence behavior carries over unchanged.",
     },
     {
       question: "Can one repository use AGENTS.md, CLAUDE.md, Copilot instructions, and Cursor rules together?",
@@ -73,9 +73,9 @@ const guideFaqsBySlug: Record<string, FaqItem[]> = {
         "Developers setting up Codex-compatible agents, team leads standardizing repo instructions, and maintainers cleaning stale agent rules across Node.js, Python, and monorepo layouts.",
     },
     {
-      question: "Should you generate AGENTS.md automatically?",
+      question: "What should you do after copying an AGENTS.md template?",
       answer:
-        "Use a generator only as a starter for repository facts you verify yourself: exact setup and test commands, scope, restricted paths, and completion rules. Do not let a model invent a long repository overview. Run every generated command, delete redundant guidance, and audit the final file before committing it.",
+        "Run every listed command from a clean checkout, delete guidance that is not true for the repo, then compare AGENTS.md vs copilot-instructions.md and CLAUDE.md needs for your tool surfaces before you commit. Download the starter pack on this page when you want a validated starting file instead of a blank document.",
     },
   ],
   "codex-vs-claude-code": [
