@@ -1,0 +1,10 @@
+{
+  "benchmarkId": "kyenai-agent-benchmark-2026-v1",
+  "version": "1.0.0",
+  "status": "protocol-published-not-measured",
+  "files": [
+    "benchmark-protocol.json",
+    "benchmark-results.json"
+  ],
+  "limitation": "No client performance value is published until a controlled, version-pinned run has a redacted raw log and reviewable diff."
+}

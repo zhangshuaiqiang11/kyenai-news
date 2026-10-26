@@ -56,5 +56,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   res.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
   res.setHeader("Cache-Control", "public, max-age=86400, s-maxage=86400");
+  res.setHeader("X-Robots-Tag", "noindex, nofollow");
   res.status(200).send(buildOgSvg(title));
 }

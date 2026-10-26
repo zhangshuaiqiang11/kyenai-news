@@ -1,0 +1,41 @@
+{
+  "packVersion": "1.1.0",
+  "license": "CC BY 4.0",
+  "task": {
+    "id": "frontend-dependency-test-fix",
+    "goal": "Restore the focused guide test after a dependency upgrade",
+    "sourceRevision": "8b4f89d55c97d8a4d30149d7d26e2d5bff4f9201",
+    "allowedPaths": ["frontend/components/", "frontend/tests/"],
+    "forbiddenPaths": [".env", "secrets/", "production/"]
+  },
+  "budgets": {
+    "maxIterations": 3,
+    "maxRepeatedFailureCount": 2,
+    "maxWallClockMinutes": 30,
+    "maxTokenCount": 150000,
+    "maxCostUsd": 5
+  },
+  "requiredGates": [
+    {
+      "id": "focused-tests",
+      "command": "npm test --prefix frontend -- guide",
+      "sourceRevision": "8b4f89d55c97d8a4d30149d7d26e2d5bff4f9201",
+      "exitCode": 0,
+      "fresh": true,
+      "receipt": "artifacts/receipts/focused-tests.txt"
+    },
+    {
+      "id": "independent-diff-review",
+      "reviewer": "non-authoring-reviewer",
+      "sourceRevision": "8b4f89d55c97d8a4d30149d7d26e2d5bff4f9201",
+      "verdict": "accepted",
+      "receipt": "artifacts/receipts/diff-review.md"
+    }
+  ],
+  "result": {
+    "terminalState": "verified",
+    "iterationsUsed": 2,
+    "repeatedFailureCount": 0
+  },
+  "exampleNotice": "Illustrative data only. The SHA and receipt paths are examples, not claims about a real run."
+}

@@ -1,6 +1,6 @@
 /** @vitest-environment jsdom */
 import React from "react";
-import { cleanup, render } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import AuthorPage from "../pages/authors/[slug]";
@@ -30,9 +30,6 @@ describe("page indexing metadata", () => {
   it("noindexes utility and archive pages while keeping their links crawlable", () => {
     const pages = [
       <ContactPage key="contact" />,
-      <SourcesPage key="sources" sources={[]} />,
-      <EntitiesPage key="entities" articles={[]} entities={[]} />,
-      <AuthorPage key="author" articles={[]} />,
       <CategoryPage
         key="category"
         category="AI Coding Agents"
@@ -51,6 +48,18 @@ describe("page indexing metadata", () => {
     }
   });
 
+  it("keeps public trust ledgers indexable", () => {
+    for (const page of [
+      <EntitiesPage key="entities" articles={[]} entities={[]} />,
+      <SourcesPage key="sources" sources={[]} />,
+      <AuthorPage key="author" articles={[]} />,
+    ]) {
+      const view = render(page);
+      expectRobots(null);
+      view.unmount();
+    }
+  });
+
   it("removes the noindex directive when a category hub passes its gate", () => {
     render(
       <CategoryPage
@@ -63,5 +72,13 @@ describe("page indexing metadata", () => {
     );
 
     expectRobots(null);
+  });
+
+  it("publishes a KyenAI correction address instead of a placeholder domain", () => {
+    render(<ContactPage />);
+
+    const correctionLink = screen.getByRole("link", { name: "editorial@kyenai.com" });
+    expect(correctionLink.getAttribute("href")).toBe("mailto:editorial@kyenai.com");
+    expect(document.body.textContent).not.toContain("your-production-domain.com");
   });
 });

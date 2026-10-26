@@ -2,6 +2,7 @@ import type { AppProps, NextWebVitalsMetric } from "next/app";
 import Head from "next/head";
 
 import { Analytics } from "../components/Analytics";
+import { getValidGaId } from "../lib/analytics";
 
 import "../styles/globals.css";
 import "../styles/seo-hubs.css";
@@ -25,7 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 
 export function reportWebVitals(metric: NextWebVitalsMetric) {
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const gaId = getValidGaId();
   const gtag = typeof window !== "undefined" ? window.gtag : undefined;
 
   if (!gaId || !gtag) {

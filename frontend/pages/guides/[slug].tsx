@@ -2,26 +2,84 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
+import { AuthorityPathPanel } from "../../components/AuthorityPathPanel";
 import { Layout } from "../../components/Layout";
 import { SeoHead } from "../../components/SeoHead";
 import { getArticles } from "../../lib/api";
+import { getVisibleGuideFaqs } from "../../lib/guide-faqs";
 import { getGuide, getGuides, getInternalLinkedGuides, getRelatedArticlesForGuide } from "../../lib/guides";
 import { EDITORIAL_AUTHOR_NAME, EDITORIAL_AUTHOR_PATH } from "../../lib/editorial";
 import { resolveIndexableGuideTopicHref } from "../../lib/guide-topic-links";
 import {
-  buildBreadcrumbJsonLd,
-  buildFaqPageJsonLd,
-  buildGuideFaqs,
-  buildGuideJsonLd,
+  shouldShowGuideAuthorityPath,
+  shouldShowGuideChecker,
+} from "../../lib/authority-paths";
+import { toGuideSummary } from "../../lib/guide-summary";
+import {
+  buildCanonicalUrl,
+  buildGuideGraphJsonLd,
   buildOgImageUrl,
   formatDate,
 } from "../../lib/seo";
-import type { Article, Guide } from "../../lib/types";
+import type { Article, Guide, GuideSummary } from "../../lib/types";
 
 type GuidePageProps = {
   guide: Guide;
-  relatedGuides: Guide[];
+  relatedGuides: GuideSummary[];
   relatedArticles: Article[];
+};
+
+const bestNextStepsByGuideSlug: Record<string, { href: string; label: string; note: string }> = {
+  "agents-md-vs-claude-md-cursorrules-copilot-instructions": {
+    href: "/guides/ai-coding-agent-instruction-file-adoption-report-2026",
+    label: "See what 400 public GitHub instruction files include and omit",
+    note: "Compare the official support matrix with a dated, downloadable content sample before writing your policy.",
+  },
+  "ai-coding-agent-instruction-file-adoption-report-2026": {
+    href: "/guides/agents-md-template-for-ai-coding-agents",
+    label: "Turn the report gaps into a tested AGENTS.md policy",
+    note: "Use the Node.js, Python, and monorepo templates after checking which controls are true for your repository.",
+  },
+  "agents-md-template-for-ai-coding-agents": {
+    href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
+    label: "Check the CLAUDE.md vs Copilot Instructions support matrix",
+    note: "Use the template only after you know which file each coding tool actually reads.",
+  },
+  "loop-engineering-ai-coding-agents": {
+    href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
+    label: "Write loop stop rules into AGENTS.md, CLAUDE.md, or Copilot instructions",
+    note: "Agent loops need repository instructions that name verification commands and human checkpoints.",
+  },
+  "codex-vs-claude-code": {
+    href: "/guides/loop-engineering-ai-coding-agents",
+    label: "Use loop engineering to compare Codex and Claude Code on the same repo task",
+    note: "Measure behavior with a plan-act-observe-verify loop instead of generic feature lists.",
+  },
+  "ai-coding-agents-comparison": {
+    href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
+    label: "Verify which instruction file each shortlisted coding agent reads",
+    note: "After choosing the operating model, keep one canonical repository policy and audit every tool-specific adapter.",
+  },
+  "claude-code-alternatives": {
+    href: "/guides/codex-vs-claude-code",
+    label: "Run the focused Codex vs Claude Code same-repository protocol",
+    note: "If the selector points to Codex, compare it with the current Claude Code baseline under identical permissions and verification.",
+  },
+  "codex-vs-github-copilot": {
+    href: "/guides/agents-md-vs-claude-md-cursorrules-copilot-instructions",
+    label: "Verify which instruction files each Codex and Copilot surface reads",
+    note: "Choose the tool surface first, then keep one canonical repository policy and audit every adapter.",
+  },
+  "secure-mcp-servers-ai-coding-agents": {
+    href: "/guides/mcp-server-not-showing-tools",
+    label: "Diagnose an MCP server that connects but exposes no tools",
+    note: "Prove configuration, transport, initialization, tools/list, client policy, and refresh behavior before widening permissions.",
+  },
+  "mcp-server-not-showing-tools": {
+    href: "/guides/secure-mcp-servers-ai-coding-agents",
+    label: "Apply least-privilege controls after tool discovery works",
+    note: "A visible tool is not automatically a safe tool; review authentication, permissions, secrets, logging, and revocation before rollout.",
+  },
 };
 
 export const loadInstructionResources = () =>
@@ -33,6 +91,14 @@ const InstructionResources = dynamic(
   () =>
     import("../../components/InstructionGuideResources").then(
       ({ InstructionGuideResources }) => InstructionGuideResources,
+    ),
+  { ssr: true },
+);
+
+const CopilotSurfaceMatrix = dynamic(
+  () =>
+    import("../../components/InstructionCompatibilityMatrix").then(
+      ({ CopilotClaudeSurfaceMatrix }) => CopilotClaudeSurfaceMatrix,
     ),
   { ssr: true },
 );
@@ -76,6 +142,19 @@ const McpSecurityResources = dynamic(
   { ssr: true },
 );
 
+export const loadMcpToolDiscoveryResources = () =>
+  import("../../components/McpToolDiscoveryDebugger").then(
+    ({ McpToolDiscoveryDebugger }) => McpToolDiscoveryDebugger,
+  );
+
+const McpToolDiscoveryResourcePanel = dynamic(
+  () =>
+    import("../../components/McpToolDiscoveryDebugger").then(
+      ({ McpToolDiscoveryDebugger }) => McpToolDiscoveryDebugger,
+    ),
+  { ssr: true },
+);
+
 export const loadLoopEngineeringResources = () =>
   import("../../components/LoopEngineeringResources").then(
     ({ LoopEngineeringResources }) => LoopEngineeringResources,
@@ -89,9 +168,53 @@ const LoopEngineeringResourcePanel = dynamic(
   { ssr: true },
 );
 
+const CodexClaudeResourcePanel = dynamic(
+  () =>
+    import("../../components/CodexClaudeResources").then(
+      ({ CodexClaudeResources }) => CodexClaudeResources,
+    ),
+  { ssr: true },
+);
+
+const CodexCopilotResourcePanel = dynamic(
+  () =>
+    import("../../components/CodexCopilotResources").then(
+      ({ CodexCopilotResources }) => CodexCopilotResources,
+    ),
+  { ssr: true },
+);
+
+const AiCodingAgentComparisonResourcePanel = dynamic(
+  () =>
+    import("../../components/AiCodingAgentComparisonResources").then(
+      ({ AiCodingAgentComparisonResources }) => AiCodingAgentComparisonResources,
+    ),
+  { ssr: true },
+);
+
+const ClaudeCodeAlternativesResourcePanel = dynamic(
+  () =>
+    import("../../components/ClaudeCodeAlternativesResources").then(
+      ({ ClaudeCodeAlternativesResources }) => ClaudeCodeAlternativesResources,
+    ),
+  { ssr: true },
+);
+
+const InstructionAdoptionReportPanel = dynamic(
+  () =>
+    import("../../components/InstructionAdoptionReport").then(
+      ({ InstructionAdoptionReport }) => InstructionAdoptionReport,
+    ),
+  { ssr: true },
+);
+
 function GuideResources({ guide }: { guide: Guide }) {
   if (guide.resourceIds?.includes("instruction-files")) {
     return <InstructionResources />;
+  }
+
+  if (guide.resourceIds?.includes("copilot-surface-matrix")) {
+    return <CopilotSurfaceMatrix />;
   }
 
   if (guide.resourceIds?.includes("agents-md-template")) {
@@ -106,11 +229,56 @@ function GuideResources({ guide }: { guide: Guide }) {
     return <McpSecurityResources />;
   }
 
+  if (guide.resourceIds?.includes("mcp-tool-discovery")) {
+    return <McpToolDiscoveryResourcePanel />;
+  }
+
   if (guide.resourceIds?.includes("loop-engineering")) {
     return <LoopEngineeringResourcePanel />;
   }
 
+  if (guide.resourceIds?.includes("codex-claude-decision")) {
+    return <CodexClaudeResourcePanel />;
+  }
+
+  if (guide.resourceIds?.includes("codex-copilot-decision")) {
+    return <CodexCopilotResourcePanel />;
+  }
+
+  if (guide.resourceIds?.includes("coding-agent-comparison")) {
+    return <AiCodingAgentComparisonResourcePanel />;
+  }
+
+  if (guide.resourceIds?.includes("claude-code-alternatives")) {
+    return <ClaudeCodeAlternativesResourcePanel />;
+  }
+
+  if (guide.resourceIds?.includes("instruction-adoption-report")) {
+    return <InstructionAdoptionReportPanel />;
+  }
+
   return null;
+}
+
+function buildGuideSummary(guide: Guide): string {
+  const evidenceTitles = guide.evidence.slice(0, 3).map((source) => source.title).join("; ");
+  return `${guide.summary} Evidence reviewed for this ${guide.pageType.toLowerCase()}: ${evidenceTitles || "the linked source ledger"}. Decision scope: ${guide.intent} Product behavior after ${formatDate(guide.updatedAt)} and any benchmark result not shown on this page remain unverified.`;
+}
+
+function buildGuideMethodologyDisclosure(guide: Guide): string {
+  const sourceNames = Array.from(new Set(guide.evidence.map((source) => source.publisher))).join(", ");
+
+  return `KyenAI writes this guide as an independent editorial reference, not as an endorsement page for any third-party tool. The comparison, checklist, or workflow advice is based on visible source material${sourceNames ? ` from ${sourceNames}` : ""}, plus the operational constraints named on the page. Product behavior, pricing, availability, and enterprise controls can change after the listed update date, so vendor-specific claims should be rechecked against the linked sources before procurement, migration, or production rollout.`;
+}
+
+function GuideBodyParagraph({ text }: { text: string }) {
+  const codeBlock = text.match(/^```[^\n]*\n([\s\S]*?)\n```$/);
+
+  return codeBlock ? (
+    <pre className="guide-code-block"><code>{codeBlock[1]}</code></pre>
+  ) : (
+    <p>{text}</p>
+  );
 }
 
 export default function GuidePage({ guide, relatedGuides, relatedArticles }: GuidePageProps) {
@@ -119,14 +287,51 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
   const isQuickAnswerSection = (heading: string) => heading.trim().toLowerCase() === "quick answer";
   const quickAnswer = guide.sections.find((section) => isQuickAnswerSection(section.heading))?.body[0] || guide.summary;
   const bodySections = guide.sections.filter((section) => !isQuickAnswerSection(section.heading));
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+  const breadcrumbItems = [
     { name: "Home", path: "/" },
     { name: "Guides", path: "/guides" },
     { name: guide.title, path: guidePath },
-  ]);
-  const guideJsonLd = buildGuideJsonLd(guide);
-  const faqs = buildGuideFaqs(guide);
-  const faqJsonLd = buildFaqPageJsonLd(faqs);
+  ];
+  const faqs = getVisibleGuideFaqs(guide);
+  const guideGraphJsonLd = buildGuideGraphJsonLd(guide, breadcrumbItems, faqs);
+  const bestNextStep = bestNextStepsByGuideSlug[guide.slug];
+  const decisionTableSection = (
+    <section className="guide-table-section" aria-labelledby="guide-decision-table-heading">
+      <h2 id="guide-decision-table-heading">{guide.decisionTable.title}</h2>
+      <p>{guide.decisionTable.intro}</p>
+      <div className="guide-table-wrap">
+        <table aria-labelledby="guide-decision-table-heading">
+          <thead>
+            <tr>
+              <th scope="col">Area</th>
+              {guide.decisionTable.columns.map((column) => (
+                <th key={column} scope="col">
+                  {column}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {guide.decisionTable.rows.map((row) => (
+              <tr key={row.label}>
+                <th scope="row" data-label="Area">
+                  {row.label}
+                </th>
+                {row.values.map((value, index) => (
+                  <td
+                    key={`${row.label}-${guide.decisionTable.columns[index]}`}
+                    data-label={guide.decisionTable.columns[index]}
+                  >
+                    {value}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
 
   return (
     <Layout>
@@ -136,9 +341,8 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
         path={guidePath}
         ogImage={buildOgImageUrl(guide.metaTitle || guide.title)}
       >
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(guideJsonLd) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(guideGraphJsonLd) }} />
+        <link rel="alternate" type="text/markdown" href={`${buildCanonicalUrl(guidePath)}.md`} />
       </SeoHead>
       <article className="article-page guide-page">
         <div className="article-header">
@@ -171,14 +375,45 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
           <h2 id="guide-answer-heading">Quick Answer</h2>
           <p>{quickAnswer}</p>
         </section>
+        {guide.decisionTablePlacement === "above-fold" ? decisionTableSection : null}
+        {guide.primaryAction ? (
+          <section className="answer-panel guide-primary-action" aria-labelledby="guide-primary-action-heading">
+            <h2 id="guide-primary-action-heading">Start here</h2>
+            <p>
+              <Link href={guide.primaryAction.href}>{guide.primaryAction.label}</Link>. {guide.primaryAction.note}
+            </p>
+          </section>
+        ) : null}
         <GuideResources guide={guide} />
+        {shouldShowGuideAuthorityPath(guide.slug) ? (
+          <AuthorityPathPanel
+            currentPath={guidePath}
+            includeChecker={shouldShowGuideChecker(guide.slug)}
+          />
+        ) : null}
+        <section className="answer-panel citation-panel" aria-labelledby="guide-summary-heading">
+          <h2 id="guide-summary-heading">Evidence reviewed</h2>
+          <p>{buildGuideSummary(guide)}</p>
+        </section>
+        {bestNextStep ? (
+          <section className="answer-panel" aria-labelledby="guide-best-next-step-heading">
+            <h2 id="guide-best-next-step-heading">Best next step</h2>
+            <p>
+              <Link href={bestNextStep.href}>{bestNextStep.label}</Link>. {bestNextStep.note}
+            </p>
+          </section>
+        ) : null}
+        <section className="answer-panel methodology-panel" aria-labelledby="guide-methodology-heading">
+          <h2 id="guide-methodology-heading">Methodology and disclosure</h2>
+          <p>{buildGuideMethodologyDisclosure(guide)}</p>
+        </section>
         <div className="article-content-grid">
           <div className="article-body">
             {bodySections.map((section) => (
               <section key={section.heading}>
                 <h2>{section.heading}</h2>
-                {section.body.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
+                {section.body.map((paragraph, index) => (
+                  <GuideBodyParagraph key={`${section.heading}-${index}`} text={paragraph} />
                 ))}
               </section>
             ))}
@@ -190,41 +425,7 @@ export default function GuidePage({ guide, relatedGuides, relatedArticles }: Gui
                 ))}
               </ol>
             </section>
-            <section className="guide-table-section" aria-labelledby="guide-decision-table-heading">
-              <h2 id="guide-decision-table-heading">{guide.decisionTable.title}</h2>
-              <p>{guide.decisionTable.intro}</p>
-              <div className="guide-table-wrap">
-                <table aria-labelledby="guide-decision-table-heading">
-                  <thead>
-                    <tr>
-                      <th scope="col">Area</th>
-                      {guide.decisionTable.columns.map((column) => (
-                        <th key={column} scope="col">
-                          {column}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {guide.decisionTable.rows.map((row) => (
-                      <tr key={row.label}>
-                        <th scope="row" data-label="Area">
-                          {row.label}
-                        </th>
-                        {row.values.map((value, index) => (
-                          <td
-                            key={`${row.label}-${guide.decisionTable.columns[index]}`}
-                            data-label={guide.decisionTable.columns[index]}
-                          >
-                            {value}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
+            {guide.decisionTablePlacement !== "above-fold" ? decisionTableSection : null}
             <section>
               <h2>Execution steps</h2>
               <div className="guide-action-list">
@@ -356,8 +557,9 @@ export const getStaticProps: GetStaticProps<GuidePageProps> = async ({ params })
   return {
     props: {
       guide,
-      relatedGuides: getInternalLinkedGuides(guide),
+      relatedGuides: getInternalLinkedGuides(guide).map(toGuideSummary),
       relatedArticles: getRelatedArticlesForGuide(guide, await getArticles()),
     },
+    revalidate: 300,
   };
 };

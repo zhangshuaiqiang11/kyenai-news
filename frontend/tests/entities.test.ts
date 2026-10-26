@@ -4,6 +4,7 @@ import { brandEntities, getArticleEntities } from "../lib/entities";
 import { buildArticleJsonLd } from "../lib/seo";
 import { seedArticles } from "../lib/seed";
 import { buildSitemapEntries } from "../lib/sitemap";
+import { spacexCursorAcquisitionArticle } from "../lib/articles/spacex-cursor-acquisition";
 
 describe("brand entity ledger", () => {
   it("tracks requested AI brands as sourced entities without implying endorsement", () => {
@@ -19,6 +20,8 @@ describe("brand entity ledger", () => {
       "Gemini",
       "Grok",
       "xAI",
+      "SpaceX",
+      "Anysphere",
     ];
 
     for (const name of requiredNames) {
@@ -29,6 +32,19 @@ describe("brand entity ledger", () => {
       expect(entity?.mentionPolicy.toLowerCase()).toContain("not an endorsement");
       expect(entity?.sourceType).toBe("official");
     }
+  });
+
+  it("identifies the buyer and target on the SpaceX-Cursor transaction article", () => {
+    const names = getArticleEntities(spacexCursorAcquisitionArticle).map((entity) => entity.name);
+    const mentions = buildArticleJsonLd(spacexCursorAcquisitionArticle).mentions;
+
+    expect(names).toEqual(expect.arrayContaining(["SpaceX", "Anysphere", "Cursor"]));
+    expect(mentions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ "@type": "Organization", name: "SpaceX" }),
+        expect.objectContaining({ "@type": "Organization", name: "Anysphere" }),
+      ]),
+    );
   });
 
   it("attaches only vetted entity references to articles and Article JSON-LD mentions", () => {

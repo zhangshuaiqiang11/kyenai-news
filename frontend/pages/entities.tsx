@@ -32,14 +32,19 @@ export default function EntitiesPage({ articles, entities }: EntitiesPageProps) 
     itemListElement: entities.map((entity, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      name: entity.name,
-      url: `${buildCanonicalUrl("/entities")}#${entity.slug}`,
+      item: {
+        "@type": entity.kind,
+        "@id": `${buildCanonicalUrl("/entities")}#${entity.slug}`,
+        name: entity.name,
+        url: `${buildCanonicalUrl("/entities")}#${entity.slug}`,
+        sameAs: entity.officialUrl,
+      },
     })),
   };
 
   return (
     <Layout>
-      <SeoHead title="Entity Ledger" description={description} path="/entities" robots="noindex,follow">
+      <SeoHead title="Entity Ledger" description={description} path="/entities">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(entityListJsonLd) }} />
       </SeoHead>
@@ -47,7 +52,7 @@ export default function EntitiesPage({ articles, entities }: EntitiesPageProps) 
         <h1>Entity Ledger</h1>
         <p>
           Official AI, coding, and search-platform entities referenced for market context. These mentions help readers
-          and answer engines understand relationships without implying partnership, endorsement, certification, or ranking claims.
+          and search systems understand relationships without implying partnership, endorsement, certification, or ranking claims.
         </p>
         <section aria-labelledby="covered-entities-heading">
           <h2 id="covered-entities-heading">Covered Entities</h2>

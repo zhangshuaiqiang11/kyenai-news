@@ -12,6 +12,7 @@ import { Layout } from "../components/Layout";
 
 const originalBuildTimestamp = process.env.NEXT_PUBLIC_BUILD_TIMESTAMP;
 const originalLatestEditorialUpdate = process.env.NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE;
+const originalEditorialTimeZone = process.env.NEXT_PUBLIC_EDITORIAL_TIME_ZONE;
 
 vi.mock("next/router", () => ({
   useRouter: () => ({
@@ -31,6 +32,11 @@ afterEach(() => {
     delete process.env.NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE;
   } else {
     process.env.NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE = originalLatestEditorialUpdate;
+  }
+  if (originalEditorialTimeZone === undefined) {
+    delete process.env.NEXT_PUBLIC_EDITORIAL_TIME_ZONE;
+  } else {
+    process.env.NEXT_PUBLIC_EDITORIAL_TIME_ZONE = originalEditorialTimeZone;
   }
 });
 
@@ -66,6 +72,7 @@ describe("Layout", () => {
   it("shows the editorial update derived into the build environment", () => {
     process.env.NEXT_PUBLIC_BUILD_TIMESTAMP = "2026-06-14T12:00:00.000Z";
     process.env.NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE = "2026-06-14";
+    process.env.NEXT_PUBLIC_EDITORIAL_TIME_ZONE = "Asia/Shanghai";
 
     render(
       <Layout>
@@ -81,8 +88,9 @@ describe("Layout", () => {
   });
 
   it("does not show a site update label when all editorial dates are in the future", () => {
-    process.env.NEXT_PUBLIC_BUILD_TIMESTAMP = "2026-06-13T23:59:59.000Z";
+    process.env.NEXT_PUBLIC_BUILD_TIMESTAMP = "2026-06-13T12:00:00.000Z";
     process.env.NEXT_PUBLIC_LATEST_EDITORIAL_UPDATE = "2026-06-14";
+    process.env.NEXT_PUBLIC_EDITORIAL_TIME_ZONE = "Asia/Shanghai";
 
     const { container } = render(
       <Layout>

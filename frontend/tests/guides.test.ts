@@ -1,14 +1,26 @@
 import { describe, expect, it } from "vitest";
 
-import { getGuideEditorialSignals, getPriorityGuides } from "../lib/guide-editorial";
+import { getGuideEditorialSignals, getGuideSearchCluster, getPriorityGuides } from "../lib/guide-editorial";
 import { getGuide, getGuides, getInternalLinkedGuides } from "../lib/guides";
 import { buildGuideFaqs, buildGuideItemListJsonLd, buildGuideJsonLd } from "../lib/seo";
 
 describe("guide SEO data", () => {
-  it("keeps every guide meta title within 25 to 65 characters", () => {
+  it("assigns every guide a single Month 4 search cluster", () => {
+    for (const guide of getGuides()) {
+      expect(getGuideSearchCluster(guide.slug), guide.slug).toBeDefined();
+    }
+  });
+  it("keeps immutable publication dates at or before substantive updates", () => {
+    for (const guide of getGuides()) {
+      expect(new Date(guide.publishedAt).getTime(), guide.slug).toBeLessThanOrEqual(
+        new Date(guide.updatedAt).getTime(),
+      );
+    }
+  });
+  it("keeps every guide meta title within 25 to 75 characters", () => {
     for (const guide of getGuides()) {
       expect.soft(guide.metaTitle.length, guide.slug).toBeGreaterThanOrEqual(25);
-      expect.soft(guide.metaTitle.length, guide.slug).toBeLessThanOrEqual(65);
+      expect.soft(guide.metaTitle.length, guide.slug).toBeLessThanOrEqual(75);
     }
   });
 
@@ -49,18 +61,27 @@ describe("guide SEO data", () => {
     const guides = getGuides();
     const slugs = guides.map((guide) => guide.slug);
 
-    expect(guides).toHaveLength(11);
+    expect(guides).toHaveLength(20);
+    expect(slugs).toContain("ai-coding-config-files-guide");
     expect(slugs).toContain("agents-md-vs-claude-md-cursorrules-copilot-instructions");
     expect(slugs).toContain("claude-code-subagents-examples");
     expect(slugs).toContain("claude-code-hooks-mcp-setup");
     expect(slugs).toContain("secure-mcp-servers-ai-coding-agents");
+    expect(slugs).toContain("mcp-server-not-showing-tools");
     expect(slugs).toContain("antigravity-cli-gemini-cli-migration");
     expect(slugs).toContain("codex-vs-claude-code");
     expect(slugs).toContain("agents-md-template-for-ai-coding-agents");
+    expect(slugs).toContain("does-github-copilot-read-claude-md-support-matrix");
+    expect(slugs).toContain("agents-md-examples-codex-node-python-monorepos");
     expect(slugs).toContain("agent-mode-vs-chat-mode-in-ide");
     expect(slugs).toContain("local-vs-cloud-ai-coding-agent");
     expect(slugs).toContain("agent-governance-checklist-for-software-teams");
     expect(slugs).toContain("loop-engineering-ai-coding-agents");
+    expect(slugs).toContain("ai-coding-agent-instruction-file-adoption-report-2026");
+    expect(slugs).toContain("codex-vs-github-copilot");
+    expect(slugs).toContain("ai-coding-agents-comparison");
+    expect(slugs).toContain("claude-code-alternatives");
+    expect(slugs).toContain("harness-engineering-for-ai-coding-agents");
     expect(guides.every((guide) => guide.evidence.length >= 2)).toBe(true);
     expect(guides.every((guide) => guide.checklist.length >= 5)).toBe(true);
   });
@@ -73,7 +94,7 @@ describe("guide SEO data", () => {
     );
 
     expect(new Set(slugs).size).toBe(slugs.length);
-    expect(primaryKeywords).toHaveLength(11);
+    expect(primaryKeywords).toHaveLength(20);
     expect(primaryKeywords.every(Boolean)).toBe(true);
     expect(new Set(primaryKeywords).size).toBe(primaryKeywords.length);
   });
@@ -92,43 +113,63 @@ describe("guide SEO data", () => {
     expect(guide).toBeDefined();
     expect(guide).toMatchObject({
       slug: "agents-md-vs-claude-md-cursorrules-copilot-instructions",
-      updatedAt: "2026-06-14",
+      updatedAt: "2026-10-26",
       resourceIds: ["instruction-files"],
     });
     expect(guide!.metaTitle.length).toBeGreaterThanOrEqual(25);
-    expect(guide!.metaTitle.length).toBeLessThanOrEqual(65);
+    expect(guide!.metaTitle.length).toBeLessThanOrEqual(75);
     expect(guide!.metaDescription.length).toBeGreaterThanOrEqual(90);
     expect(guide!.metaDescription.length).toBeLessThanOrEqual(160);
 
     const quickAnswer = guide!.sections[0].body[0];
+    expect(guide!.title).toMatch(/Which File Should You Use/i);
+    expect(quickAnswer).toMatch(/Codex → AGENTS\.md/i);
+    expect(quickAnswer).toMatch(/Claude Code → CLAUDE\.md/i);
+    expect(quickAnswer).toMatch(/broad GitHub Copilot → \.github\/copilot-instructions\.md/i);
+    expect(quickAnswer).toMatch(/current Cursor project rules → \.cursor\/rules\/\*\.mdc/i);
     expect(quickAnswer).toMatch(/Copilot support for CLAUDE\.md depends on the Copilot surface/i);
-    expect(quickAnswer).toMatch(/selected cloud-agent surfaces support it/i);
-    expect(quickAnswer).toMatch(/many Copilot Chat, code-review, and CLI surfaces do not/i);
     expect(quickAnswer).toContain(".github/copilot-instructions.md");
     expect(quickAnswer).not.toMatch(/Copilot (always|never) (reads|supports) CLAUDE\.md/i);
+    expect(guide!.sections.map((section) => section.heading)).toEqual(
+      expect.arrayContaining([
+        "Copilot compatibility varies by surface",
+        "CLAUDE.md vs AGENTS.md: What Is the Difference?",
+        "Does Cursor Support AGENTS.md?",
+        "CLAUDE.md vs copilot-instructions.md",
+        "How Do Nested AGENTS.md Files Work?",
+        "Can One Repository Use All Four Instruction Files?",
+        "Which File Should Be the Canonical Source?",
+      ]),
+    );
 
     const guideCopy = JSON.stringify(guide);
     expect(guideCopy).toContain(".cursor/rules/*.mdc");
-    expect(guideCopy).toMatch(/status is unknown in the cited current documentation/i);
+    expect(guideCopy).toMatch(/legacy|deprecated/i);
     expect(guideCopy).toMatch(/same task/i);
     expect(guideCopy).toMatch(/same repository/i);
     expect(guideCopy).toMatch(/measured success/i);
     expect(guideCopy).toMatch(/elapsed time/i);
     expect(guideCopy).toMatch(/human interventions/i);
-    expect(guideCopy).not.toMatch(/\.cursorrules (is|was|has been) (officially )?deprecated/i);
+    expect(guideCopy).toMatch(/\.cursorrules as legacy and deprecated/i);
 
     expect(guide!.evidence.map((source) => source.url)).toEqual([
-      "https://developers.openai.com/codex/guides/agents-md",
-      "https://docs.anthropic.com/en/docs/claude-code/memory",
+      "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+      "https://agents.md/",
+      "https://code.claude.com/docs/en/memory",
       "https://docs.github.com/en/copilot/reference/custom-instructions-support",
-      "https://docs.github.com/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot",
-      "https://cursor.com/docs/rules",
+      "https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions",
+      "https://docs.cursor.com/context/rules-for-ai",
+      "https://docs.cursor.com/en/cli/using",
+      "https://arxiv.org/abs/2606.15828",
     ]);
 
     const internalSlugs = guide!.internalLinks.map((link) => link.slug);
     expect(internalSlugs).toEqual(
       expect.arrayContaining([
         "agents-md-template-for-ai-coding-agents",
+        "ai-coding-config-files-guide",
+        "does-github-copilot-read-claude-md-support-matrix",
+        "agents-md-examples-codex-node-python-monorepos",
         "codex-vs-claude-code",
         "claude-code-hooks-mcp-setup",
         "secure-mcp-servers-ai-coding-agents",
@@ -136,7 +177,9 @@ describe("guide SEO data", () => {
     );
     expect(new Set(internalSlugs).size).toBe(internalSlugs.length);
 
-    const unrelatedGuides = getGuides().filter((candidate) => candidate.slug !== guide!.slug);
+    const unrelatedGuides = getGuides().filter(
+      (candidate) => ![guide!.slug, "ai-coding-config-files-guide"].includes(candidate.slug),
+    );
     expect(unrelatedGuides.every((candidate) => !candidate.resourceIds?.includes("instruction-files"))).toBe(true);
   });
 
@@ -177,6 +220,46 @@ describe("guide SEO data", () => {
 
     expect(guide).toBeDefined();
     expect(guide!.resourceIds).toEqual(["agents-md-template"]);
+    expect(guide!.title).toBe("AGENTS.md Template for AI Coding Agents (Codex, Node.js & Monorepos)");
+    expect(guide!.metaTitle).toBe("AGENTS.md Template for AI Coding Agents (Codex, 2026)");
+    expect(guide!.updatedAt).toBe("2026-10-26");
+  });
+
+  it("publishes focused AGENTS.md support pages as narrow, internally linked guides", () => {
+    const copilotGuide = getGuide("does-github-copilot-read-claude-md-support-matrix");
+    const examplesGuide = getGuide("agents-md-examples-codex-node-python-monorepos");
+
+    expect(copilotGuide).toBeDefined();
+    expect(examplesGuide).toBeDefined();
+    expect(copilotGuide!.title).toMatch(/Does GitHub Copilot Read CLAUDE\.md/i);
+    expect(copilotGuide!.sections.map((section) => section.heading)).toEqual(
+      expect.arrayContaining([
+        "Support is decided by surface",
+        "Recommended file policy",
+        "How to verify your repository",
+      ]),
+    );
+    expect(copilotGuide!.sections[0].body[0]).toMatch(/support by surface/i);
+    expect(copilotGuide!.sections[0].body[0]).toMatch(/\.github\/copilot-instructions\.md/i);
+    expect(copilotGuide!.sections[0].body[0]).not.toMatch(/always|never/i);
+    expect(copilotGuide!.evidence.map((source) => source.publisher)).toEqual(
+      expect.arrayContaining(["GitHub", "Anthropic"]),
+    );
+
+    expect(examplesGuide!.title).toMatch(/Node\.js, Python & Monorepos/i);
+    expect(examplesGuide!.sections.map((section) => section.heading)).toEqual(
+      expect.arrayContaining(["Node.js example", "Python service example", "Monorepo example"]),
+    );
+    expect(examplesGuide!.sections[0].body[0]).toMatch(/root file/i);
+    expect(examplesGuide!.sections[0].body[0]).toMatch(/nested files/i);
+
+    const mainGuide = getGuide("agents-md-vs-claude-md-cursorrules-copilot-instructions");
+    expect(mainGuide!.internalLinks.map((link) => link.slug)).toEqual(
+      expect.arrayContaining([
+        "does-github-copilot-read-claude-md-support-matrix",
+        "agents-md-examples-codex-node-python-monorepos",
+      ]),
+    );
   });
 
   it("attaches loop pattern resources to the loop engineering guide", () => {
@@ -184,12 +267,29 @@ describe("guide SEO data", () => {
 
     expect(guide).toBeDefined();
     expect(guide!.resourceIds).toEqual(["loop-engineering"]);
-    expect(guide!.updatedAt).toBe("2026-06-15");
+    expect(guide!.updatedAt).toBe("2026-10-14");
 
     const quickAnswer = guide!.sections[0].body[0];
-    expect(quickAnswer).toMatch(/act → observe → reason/i);
-    expect(quickAnswer).toMatch(/stop rule/i);
+    expect(guide!.title).toMatch(/Loop Engineering for AI Coding Agents: Stop Rules & Verification/i);
+    expect(guide!.summary).toMatch(/Plan-Act-Observe-Verify-Stop/i);
+    expect(guide!.summary).toMatch(/proof-of-done checks/i);
+    expect(quickAnswer).toMatch(/Loop engineering means designing the repeatable control loop/i);
+    expect(quickAnswer).toMatch(/Addy Osmani's framing is useful context/i);
+    expect(quickAnswer).toMatch(/Plan → Act → Observe → Verify → Stop/i);
+    expect(quickAnswer).toMatch(/token or cost caps/i);
+    expect(quickAnswer).toMatch(/required human checkpoint/i);
     expect(quickAnswer).not.toMatch(/in today's fast-paced|unlock|revolutionize|game-changer/i);
+    expect(guide!.sections.map((section) => section.heading)).toEqual(
+      expect.arrayContaining([
+        "What Is Addy Osmani's Loop Engineering Approach?",
+        "How Does Loop Engineering Work for AI Coding Agents?",
+        "Loop Engineering vs Prompt Engineering",
+        "A Practical Loop Engineering Example",
+        "When Should an AI Agent Stop the Loop?",
+        "AI coding agent workflow checklist",
+        "Loop Engineering vs Agent Harness Engineering",
+      ]),
+    );
 
     const unrelatedGuides = getGuides().filter((candidate) => candidate.slug !== guide!.slug);
     expect(unrelatedGuides.every((candidate) => !candidate.resourceIds?.includes("loop-engineering"))).toBe(true);
@@ -201,6 +301,7 @@ describe("guide SEO data", () => {
         "codex-vs-claude-code",
         "secure-mcp-servers-ai-coding-agents",
         "claude-code-subagents-examples",
+        "harness-engineering-for-ai-coding-agents",
         "agent-governance-checklist-for-software-teams",
       ]),
     );
@@ -222,21 +323,167 @@ describe("guide SEO data", () => {
     );
   });
 
+  it("keeps the harness guide layered, evidence-backed, and explicit about Jev limits", () => {
+    const guide = getGuide("harness-engineering-for-ai-coding-agents");
+
+    expect(guide).toBeDefined();
+    expect(guide!.sections[0].heading).toBe("Quick answer");
+    expect(guide!.sections.map((section) => section.heading)).toEqual(
+      expect.arrayContaining([
+        "Model, agent, harness, and delivery platform are different layers",
+        "Integrate a harness into an editor or visual-design workflow",
+        "Use Jev only for bounded decisions",
+        "What belongs in the deterministic verification gate?",
+        "Harness engineering vs. Harness.io",
+      ]),
+    );
+    expect(guide!.sections.find((section) => section.heading === "Use Jev only for bounded decisions")!.body.join(" "))
+      .toMatch(/not authorization/i);
+    expect(guide!.evidence.map((source) => source.publisher)).toEqual(
+      expect.arrayContaining(["OpenAI", "Anthropic", "Microsoft Visual Studio Code", "TypeSafe AI", "Harness"]),
+    );
+    expect(guide!.internalLinks.map((link) => link.slug)).toContain("loop-engineering-ai-coding-agents");
+  });
+
+  it("keeps the Codex vs Claude Code P3 comparison evidence-backed without fake benchmark metrics", () => {
+    const guide = getGuide("codex-vs-claude-code");
+
+    expect(guide).toBeDefined();
+    expect(guide!.updatedAt).toBe("2026-07-19");
+    expect(guide!.resourceIds).toEqual(["codex-claude-decision"]);
+    expect(guide!.decisionTable.rows).toHaveLength(13);
+    expect(guide!.decisionTable.rows.map((row) => row.label)).toEqual(
+      expect.arrayContaining(["Installation and runtime", "Permission model", "Data control", "Poor-fit scenario"]),
+    );
+    expect(guide!.sections.map((section) => section.heading)).toEqual(
+      expect.arrayContaining(["Public example evidence", "Same-task experiment protocol", "Same-repo scoring rubric"]),
+    );
+
+    const guideCopy = JSON.stringify(guide);
+    expect(guideCopy).toMatch(/Tom's Guide comparison published on May 17, 2026/i);
+    expect(guideCopy).toMatch(/not a final verdict for your repository/i);
+    expect(guideCopy).toMatch(/fix one failing test/i);
+    expect(guideCopy).toMatch(/add one small API endpoint/i);
+    expect(guideCopy).toMatch(/refactor one UI component/i);
+    expect(guideCopy).toMatch(/elapsed time/i);
+    expect(guideCopy).toMatch(/changed files/i);
+    expect(guideCopy).toMatch(/human interventions/i);
+    expect(guideCopy).toMatch(/Not measured/i);
+    expect(guideCopy).not.toMatch(/KyenAI (tested|measured|found)/i);
+    expect(guide!.evidence.map((source) => source.publisher)).toEqual(
+      expect.arrayContaining(["OpenAI", "Anthropic", "Tom's Guide"]),
+    );
+  });
+
+  it("publishes a current Codex vs GitHub Copilot agent-platform comparison", () => {
+    const guide = getGuide("codex-vs-github-copilot");
+
+    expect(guide).toBeDefined();
+    expect(guide!.resourceIds).toEqual(["codex-copilot-decision"]);
+    expect(guide!.updatedAt).toBe("2026-07-19");
+    expect(guide!.decisionTable.rows).toHaveLength(14);
+    expect(guide!.sections[0].body[0]).toMatch(/Neither is only a code-completion product in 2026/i);
+    expect(guide!.sections.map((section) => section.heading)).toEqual(
+      expect.arrayContaining([
+        "Codex CLI vs GitHub Copilot CLI",
+        "Parallel agents and isolated work",
+        "AGENTS.md vs Copilot custom instructions",
+        "Pricing and usage are not one static number",
+        "How to run a fair same-repository pilot",
+      ]),
+    );
+    expect(guide!.evidence.map((source) => source.publisher)).toEqual(expect.arrayContaining(["OpenAI", "GitHub"]));
+    expect(JSON.stringify(guide)).toMatch(/Not measured/i);
+    expect(JSON.stringify(guide)).not.toMatch(/KyenAI (tested|measured|found)/i);
+  });
+
+  it("publishes the four-tool AI coding agents comparison pillar", () => {
+    const guide = getGuide("ai-coding-agents-comparison");
+
+    expect(guide).toBeDefined();
+    expect(guide!.resourceIds).toEqual(["coding-agent-comparison"]);
+    expect(guide!.updatedAt).toBe("2026-10-14");
+    expect(guide!.decisionTable.columns).toEqual(["Codex", "Claude Code", "GitHub Copilot", "Cursor"]);
+    expect(guide!.decisionTable.rows).toHaveLength(12);
+    expect(guide!.sections[0].body[0]).toMatch(/There is no universal winner/i);
+    expect(guide!.evidence.map((source) => source.publisher)).toEqual(
+      expect.arrayContaining(["OpenAI", "Anthropic", "GitHub", "Cursor"]),
+    );
+    expect(JSON.stringify(guide)).toMatch(/Not measured/i);
+    expect(JSON.stringify(guide)).not.toMatch(/KyenAI (tested|measured|found)/i);
+  });
+
+  it("publishes a source-aware Claude Code alternatives decision page", () => {
+    const guide = getGuide("claude-code-alternatives");
+
+    expect(guide).toBeDefined();
+    expect(guide!.resourceIds).toEqual(["claude-code-alternatives"]);
+    expect(guide!.publishedAt).toBe("2026-07-19");
+    expect(guide!.decisionTable.rows).toHaveLength(8);
+    expect(guide!.sections[0].body[0]).toMatch(/Stay with Claude Code/i);
+    expect(guide!.sections.map((section) => section.heading)).toEqual(
+      expect.arrayContaining([
+        "When you should stay with Claude Code",
+        "4. Gemini CLI: for Google's open-source terminal agent",
+        "Free and open-source alternatives are not cost-free",
+        "How to run a fair replacement pilot",
+      ]),
+    );
+    expect(guide!.evidence.map((source) => source.publisher)).toEqual(
+      expect.arrayContaining(["Anthropic", "OpenAI", "GitHub", "Cursor", "Google", "Cline", "Aider", "OpenCode"]),
+    );
+    expect(JSON.stringify(guide)).toMatch(/Not measured/i);
+    expect(JSON.stringify(guide)).not.toMatch(/KyenAI (tested|measured|found)/i);
+  });
+
+  it("publishes the instruction-file adoption report with downloadable-data boundaries", () => {
+    const guide = getGuide("ai-coding-agent-instruction-file-adoption-report-2026");
+
+    expect(guide).toBeDefined();
+    expect(guide!.resourceIds).toEqual(["instruction-adoption-report"]);
+    expect(guide!.publishedAt).toBe("2026-07-19");
+    expect(guide!.sections[0].body[0]).toMatch(/158,592 indexed file matches/i);
+    expect(guide!.sections[0].body[0]).toMatch(/file matches—not unique repositories or adoption rates/i);
+    expect(guide!.sections.map((section) => section.heading)).toEqual(
+      expect.arrayContaining(["What the GitHub match counts mean", "What the 400-file sample found", "Test commands and security patterns"]),
+    );
+    expect(guide!.evidence.every((source) => source.publisher === "GitHub")).toBe(true);
+    expect(JSON.stringify(guide)).toMatch(/best-match/i);
+  });
+
   it("keeps private editorial signals available by guide slug", () => {
-    const signals = getGuideEditorialSignals("codex-vs-claude-code");
+    const signals = getGuideEditorialSignals("agents-md-vs-claude-md-cursorrules-copilot-instructions");
 
     expect(signals).toEqual({
       priority: "P0",
-      primaryKeyword: "Codex vs Claude Code",
+      primaryKeyword: "AGENTS.md vs copilot-instructions.md",
       demandScore: 9,
-      attackabilityScore: 8,
-      fitScore: 9.4,
+      attackabilityScore: 9,
+      fitScore: 9.2,
       gscWatchQueries: [
-        "codex vs claude code",
-        "openai codex vs claude code",
-        "codex alternatives",
-        "claude code alternatives",
+        "copilot-instructions.md vs agents.md",
+        "agents.md vs copilot-instructions.md",
+        "agents.md vs claude.md",
+        "claude md vs copilot instructions",
+        "claude.md vs copilot-instructions.md",
+        "agents md vs claude md vs copilot instructions md",
+        "claude.md vs cursorrules",
+        "\".cursor/rules\" \".mdc\" \"agents.md\" priority precedence behavior",
+        "copilot instructions vs cursor rules",
+        "does cursor support agents.md",
+        "ai coding agent instructions",
       ],
+      gscBaseline: {
+        source: "Google Search Console",
+        dimension: "page",
+        startDate: "2026-06-10",
+        endDate: "2026-09-09",
+        clicks: 39,
+        impressions: 2937,
+        ctr: 0.0133,
+        averagePosition: 8.98,
+      },
+      emergencyPriority: 105,
     });
   });
 
@@ -244,13 +491,14 @@ describe("guide SEO data", () => {
     const priorityGuides = getPriorityGuides();
 
     expect(priorityGuides.map((guide) => guide.slug)).toEqual([
-      "agents-md-template-for-ai-coding-agents",
-      "loop-engineering-ai-coding-agents",
       "agents-md-vs-claude-md-cursorrules-copilot-instructions",
-      "codex-vs-claude-code",
-      "local-vs-cloud-ai-coding-agent",
+      "mcp-server-not-showing-tools",
+      "agents-md-template-for-ai-coding-agents",
+      "does-github-copilot-read-claude-md-support-matrix",
+      "secure-mcp-servers-ai-coding-agents",
     ]);
     expect(JSON.stringify(priorityGuides)).not.toContain('"demandScore"');
+    expect(JSON.stringify(priorityGuides)).not.toContain('"gscBaseline"');
   });
 
   it("builds crawlable TechArticle JSON-LD and FAQ content from visible guide facts", () => {
@@ -315,5 +563,48 @@ describe("guide SEO data", () => {
     expect(faqs[0].answer).not.toBe("");
     expect(faqs[2].answer).toBe("This guide does not currently list supporting source records.");
     expect(faqs[2].answer).not.toContain("from .");
+  });
+
+  it("keeps P1 near-page-one guide titles and content aligned with the execution plan", () => {
+    const expected = [
+      {
+        slug: "local-vs-cloud-ai-coding-agent",
+        title: /Security, Cost and Speed Compared/i,
+        headings: ["Security, cost, and speed comparison", "Hybrid architecture"],
+      },
+      {
+        slug: "claude-code-hooks-mcp-setup",
+        title: /Hooks vs MCP/i,
+        headings: ["Hooks vs Skills vs MCP", "Logging and troubleshooting", "Claude Code hooks not working: common fixes"],
+        updatedAt: "2026-06-26",
+      },
+      {
+        slug: "agent-governance-checklist-for-software-teams",
+        title: /Permissions, Logs and Approvals/i,
+        headings: ["Permission levels", "Prohibited actions and approval conditions", "Audit log fields"],
+      },
+      {
+        slug: "agents-md-template-for-ai-coding-agents",
+        title: /AGENTS\.md Template for AI Coding Agents \(Codex, Node\.js & Monorepos\)/i,
+        headings: ["Copyable starter templates", "Root vs nested AGENTS.md inheritance", "What every template must say"],
+        updatedAt: "2026-10-26",
+      },
+      {
+        slug: "agent-mode-vs-chat-mode-in-ide",
+        title: /Differences, Risks and When to Use Each/i,
+        headings: ["Key differences", "High-risk scenarios"],
+      },
+    ];
+
+    for (const item of expected) {
+      const guide = getGuide(item.slug);
+      expect(guide, item.slug).toBeDefined();
+      expect(guide!.title).toMatch(item.title);
+      const headings = guide!.sections.map((section) => section.heading);
+      for (const heading of item.headings) {
+        expect(headings, `${item.slug}: ${heading}`).toContain(heading);
+      }
+      expect(guide!.updatedAt).toBe(item.updatedAt ?? "2026-06-18");
+    }
   });
 });

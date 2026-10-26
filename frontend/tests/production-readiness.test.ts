@@ -36,6 +36,7 @@ describe("production SEO data readiness", () => {
       "BING_SITE_URL",
       "INDEXNOW_KEY",
       "INDEXNOW_HOST",
+      "INDEXNOW_SUBMIT_TOKEN",
       "PAGESPEED_API_KEY",
     ]) {
       expect(envExample).toContain(envName);
@@ -62,5 +63,16 @@ describe("production SEO data readiness", () => {
     expect(seoHead).toContain('rel="icon" href="/favicon.ico"');
     expect(seoHead).toContain('rel="icon" type="image/png" sizes="512x512" href="/icon.png"');
     expect(seoHead).toContain('rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"');
+  });
+
+  it("sets baseline production security headers without blocking Next.js inline data", () => {
+    const caddyfile = fs.readFileSync(path.join(repoRoot, "Caddyfile"), "utf8");
+
+    expect(caddyfile).toContain("Strict-Transport-Security");
+    expect(caddyfile).toContain("X-Content-Type-Options");
+    expect(caddyfile).toContain("X-Frame-Options");
+    expect(caddyfile).toContain("Referrer-Policy");
+    expect(caddyfile).toContain("Permissions-Policy");
+    expect(caddyfile.match(/import security_headers/g)).toHaveLength(2);
   });
 });

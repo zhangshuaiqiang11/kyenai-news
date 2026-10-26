@@ -1,0 +1,79 @@
+{
+  "templateVersion": "1.1.0",
+  "verifiedAt": "2026-07-30",
+  "license": "CC BY 4.0",
+  "preferredCitation": "KyenAI. (2026). Loop Engineering Proof-of-Done Pack (Version 1.1.0). https://www.kyenai.com/guides/loop-engineering-ai-coding-agents",
+  "purpose": "KyenAI starter contract for evidence-gated AI coding agent loops. This is not the Proof-or-Stop reference implementation.",
+  "trustBoundary": "A satisfied gate proves only the named check against the recorded source revision. It does not prove semantic program correctness.",
+  "task": {
+    "id": "replace-with-task-id",
+    "goal": "replace-with-a-bounded-observable-outcome",
+    "sourceRevision": "replace-with-an-immutable-git-sha",
+    "allowedPaths": [
+      "replace/with/scoped/path"
+    ],
+    "forbiddenPaths": [
+      ".env",
+      "secrets/",
+      "production/"
+    ]
+  },
+  "budgets": {
+    "maxIterations": 3,
+    "maxRepeatedFailureCount": 2,
+    "maxWallClockMinutes": 30,
+    "maxTokenCount": 150000,
+    "maxCostUsd": null
+  },
+  "requiredGates": [
+    {
+      "id": "focused-tests",
+      "transition": "running -> ready-for-review",
+      "evidenceType": "command-receipt",
+      "command": "replace-with-focused-test-command",
+      "mustMatchSourceRevision": true,
+      "mustBeFresh": true,
+      "required": true
+    },
+    {
+      "id": "project-verification",
+      "transition": "ready-for-review -> verified",
+      "evidenceType": "command-receipt",
+      "command": "replace-with-project-verification-command",
+      "mustMatchSourceRevision": true,
+      "mustBeFresh": true,
+      "required": true
+    },
+    {
+      "id": "independent-diff-review",
+      "transition": "ready-for-review -> verified",
+      "evidenceType": "review-receipt",
+      "reviewer": "replace-with-a-human-policy-or-non-authoring-evaluator",
+      "mustMatchSourceRevision": true,
+      "mustBeFresh": true,
+      "required": true
+    }
+  ],
+  "stopConditions": [
+    "all-required-gates-satisfied",
+    "iteration-budget-reached",
+    "same-root-cause-repeated",
+    "permission-expansion-requested",
+    "destructive-or-production-boundary-reached",
+    "evidence-is-stale-or-source-revision-mismatched"
+  ],
+  "allowedTerminalStates": [
+    "verified",
+    "review-required",
+    "blocked",
+    "stopped-by-budget",
+    "stopped-by-policy"
+  ],
+  "result": {
+    "claimedState": "planned",
+    "terminalState": null,
+    "evidenceReceipts": [],
+    "failureSignature": null,
+    "escalationOwner": "replace-with-owner"
+  }
+}

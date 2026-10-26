@@ -1,0 +1,14 @@
+{
+  "benchmarkId": "kyenai-agent-benchmark-2026-v1",
+  "version": "1.0.0",
+  "verifiedAt": "2026-09-15",
+  "status": "protocol-published-not-measured",
+  "files": [
+    "kyenai-agent-benchmark-2026-v1-tasks.json",
+    "kyenai-agent-benchmark-2026-v1-methodology.md",
+    "kyenai-agent-benchmark-2026-v1-results.json",
+    "kyenai-agent-benchmark-2026-v1-raw-logs/README.md",
+    "kyenai-agent-benchmark-2026-v1-citation.bib"
+  ],
+  "limitation": "No client performance value is published until a controlled, version-pinned run has a redacted raw log and reviewable diff."
+}
